@@ -4,6 +4,7 @@ import RichText from '@/components/RichText.astro';
 import type { BeforeAfterPair } from '@/domain/BeforeAfterPair';
 import type { RichTitle } from '@/domain/RichTitle';
 import type { Photo } from '@/domain/Photo';
+import { sanityPhotoUrl } from '@/infrastructure/sanity/imageUrl';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 import BeforeAfterSlider from '@/islands/BeforeAfterSlider';
 
@@ -17,7 +18,9 @@ const { title, lead, pairs } = Astro.props;
 
 const optimize = async (photo: Photo) => {
   if (photo.asset.provider !== 'local') {
-    return { src: photo.asset.ref, width: 1200, height: 1500 };
+    const width = Math.min(1200, photo.asset.width ?? 1200);
+    const height = photo.asset.width && photo.asset.height ? Math.round((width * photo.asset.height) / photo.asset.width) : 1500;
+    return { src: sanityPhotoUrl(photo, width), width, height };
   }
   const optimized = await getImage({ src: resolveLocalPhoto(photo.asset.ref).image, width: 1200, format: 'webp' });
   return {

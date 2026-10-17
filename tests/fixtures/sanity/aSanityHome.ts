@@ -1,0 +1,37 @@
+import type { SanityHomeDocument } from '@/infrastructure/sanity/documents/SanityHomeDocument';
+import { aSanityPhoto } from './aSanityPhoto';
+import { aSanityTitle } from './aSanityTitle';
+
+export const aSanityHome = (overrides: Partial<SanityHomeDocument> = {}): SanityHomeDocument => ({
+  bajada: 'Fotografía y video.',
+  puertaEncargosFoto: aSanityPhoto({ id: 'foto-ed02' }),
+  puertaEncargosEtiqueta: 'Puerta 1',
+  puertaEncargosTitulo: aSanityTitle(['Encargos']),
+  puertaEncargosSubtitulo: 'Editorial · Retratos · Marcas · Eventos',
+  puertaObraFoto: aSanityPhoto({ id: 'foto-au01', facets: [] }),
+  puertaObraEtiqueta: 'Puerta 2',
+  puertaObraTitulo: aSanityTitle(['Obra', true]),
+  puertaObraSubtitulo: 'Series personales · Copias de autor',
+  ticker: ['Editorial', 'Obra'],
+  sobreMiCta: 'Trabajemos juntos',
+  encargosEyebrow: 'Encargos',
+  encargosTitulo: aSanityTitle(['Cuatro '], ['miradas', true]),
+  miniaturasEditorial: [aSanityPhoto()],
+  miniaturasRetratos: [aSanityPhoto({ id: 'foto-rt02', facets: ['retratos'] })],
+  miniaturasMarcas: [aSanityPhoto({ id: 'foto-mk01', facets: ['marcas'] })],
+  miniaturasEventos: [aSanityPhoto({ id: 'foto-ev01', facets: ['eventos'] })],
+  tiraEditorial: [aSanityPhoto(), null],
+  marcasEyebrow: 'Para marcas',
+  marcasTitulo: aSanityTitle(['La fotografía también construye '], ['identidad', true]),
+  marcasServicios: [{ titulo: 'Gastronomía', precio: 'desde [PRECIO]' }],
+  marcasCta: 'Ver servicios para marcas',
+  marcasGrilla: [aSanityPhoto({ id: 'foto-mk01', facets: ['marcas'] })],
+  obraTitulo: aSanityTitle(['Obra', true]),
+  obraBajada: 'Series personales en blanco y negro.',
+  obraFotos: [aSanityPhoto({ id: 'foto-au01', facets: [] })],
+  obraCta: 'Entrar a la obra',
+  contactoTitulo: 'Hablemos.',
+  contactoBajada: 'Contame qué tenés en mente.',
+  tiposDeTrabajo: ['Editorial & moda', 'Copia de autor'],
+  ...overrides,
+});
