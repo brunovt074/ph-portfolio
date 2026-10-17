@@ -32,4 +32,5 @@ export const aHome = (): HomeContent => ({
   contactTitle: 'Hablemos.',
   contactLead: '',
   workTypes: [],
+  translations: { es: true, en: false, pt: false },
 });

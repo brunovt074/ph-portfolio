@@ -1,6 +1,7 @@
 import type { Clock } from '@/domain/Clock';
 import type { ContentRepository } from '@/domain/ContentRepository';
 import type { ErrorReporter } from '@/domain/ErrorReporter';
+import { defaultLocale } from '@/domain/Locale';
 import { CalendarUnavailableError } from '@/domain/scheduling/CalendarUnavailableError';
 import type { CalendarProvider } from '@/domain/scheduling/CalendarProvider';
 import type { ListAvailableSlotsInput } from '../inputs/ListAvailableSlotsInput';
@@ -30,7 +31,7 @@ export class ListAvailableSlots {
     if (!isRealDate(from) || !isRealDate(to) || from > to || to > addDays(from, MAX_RANGE_DAYS - 1)) {
       return fail('invalid_range');
     }
-    const offers = await this.content.getBookingOffers();
+    const offers = await this.content.getBookingOffers(defaultLocale);
     const offer = offers.find((candidate) => candidate.slug === offerSlug);
     if (!offer) {
       return fail('offer_not_found');

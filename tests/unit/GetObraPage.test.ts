@@ -4,7 +4,7 @@ import { FakeContentRepository } from '../fakes/FakeContentRepository';
 
 describe('GetObraPage', () => {
   it('shows the manifesto and the four series in order', async () => {
-    const page = await new GetObraPage(new FakeContentRepository()).execute();
+    const page = await new GetObraPage(new FakeContentRepository()).execute('es');
 
     expect(page.obra.quote).toBe('Una bitácora de mi trabajo.');
     expect(page.series.map((item) => item.number)).toEqual(['I', 'II', 'III', 'IV']);

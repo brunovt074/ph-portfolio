@@ -1,7 +1,9 @@
+import type { SanityLocalized } from './SanityLocalized';
+
 export interface SanityBrandPackageDocument {
-  nombre: string;
-  precio: string;
-  items: string[];
+  nombre: SanityLocalized<string>;
+  precio: SanityLocalized<string>;
+  items: SanityLocalized<string[]>;
   destacado?: boolean | null;
   orden?: number | null;
 }

@@ -1,8 +1,10 @@
+import type { SanityLocalized } from './SanityLocalized';
+
 export interface SanityBookingOfferDocument {
-  titulo: string;
+  titulo: SanityLocalized<string>;
   slug: string;
   faceta?: string | null;
-  descripcion?: string | null;
+  descripcion?: SanityLocalized<string> | null;
   precio?: number | null;
   duracionMinutos?: number | null;
   porcentajeSena?: number | null;

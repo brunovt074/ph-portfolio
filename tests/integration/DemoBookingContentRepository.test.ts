@@ -12,7 +12,7 @@ describe('DemoBookingContentRepository', () => {
   it('fills the unpriced sessions with the demo prices and durations so a demo shows the full booking flow', async () => {
     const repository = new DemoBookingContentRepository(createSeedRepository(), demoData);
 
-    const offers = await repository.getBookingOffers();
+    const offers = await repository.getBookingOffers('es');
 
     expect(offers.map((offer) => [offer.slug, offer.priceCents, offer.durationMinutes])).toEqual([
       ['retrato-personal', 8_500_000, 90],
@@ -25,7 +25,7 @@ describe('DemoBookingContentRepository', () => {
   it('never overrides a price or a duration Sarah loaded in the CMS', async () => {
     const inner = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 7_000_000, durationMinutes: 60 })] });
 
-    const [offer] = await new DemoBookingContentRepository(inner, { ...noDemo, prices: { maternidad: 95_000 }, durations: { maternidad: 90 } }).getBookingOffers();
+    const [offer] = await new DemoBookingContentRepository(inner, { ...noDemo, prices: { maternidad: 95_000 }, durations: { maternidad: 90 } }).getBookingOffers('es');
 
     expect(offer).toMatchObject({ priceCents: 7_000_000, durationMinutes: 60 });
   });
@@ -33,7 +33,7 @@ describe('DemoBookingContentRepository', () => {
   it('leaves a session without demo data unpriced and without duration', async () => {
     const inner = new FakeContentRepository({ bookingOffers: [aBookingOffer({ slug: 'bodas', priceCents: null })] });
 
-    const [offer] = await new DemoBookingContentRepository(inner, { ...noDemo, prices: { maternidad: 95_000 } }).getBookingOffers();
+    const [offer] = await new DemoBookingContentRepository(inner, { ...noDemo, prices: { maternidad: 95_000 } }).getBookingOffers('es');
 
     expect(offer).toMatchObject({ priceCents: null, durationMinutes: null });
   });
@@ -58,14 +58,14 @@ describe('DemoBookingContentRepository', () => {
     const inner = new FakeContentRepository();
     const repository = new DemoBookingContentRepository(inner, noDemo);
 
-    expect(await repository.getSettings()).toBe(await inner.getSettings());
-    expect(await repository.getHome()).toBe(await inner.getHome());
-    expect(await repository.getFacets()).toBe(await inner.getFacets());
-    expect(await repository.getBrands()).toBe(await inner.getBrands());
-    expect(await repository.getObra()).toBe(await inner.getObra());
-    expect(await repository.getSeries()).toBe(await inner.getSeries());
-    expect(await repository.getPrints()).toBe(await inner.getPrints());
-    expect(await repository.getPrintsContent()).toBe(await inner.getPrintsContent());
+    expect(await repository.getSettings('es')).toBe(await inner.getSettings('es'));
+    expect(await repository.getHome('es')).toBe(await inner.getHome('es'));
+    expect(await repository.getFacets('es')).toBe(await inner.getFacets('es'));
+    expect(await repository.getBrands('es')).toBe(await inner.getBrands('es'));
+    expect(await repository.getObra('es')).toBe(await inner.getObra('es'));
+    expect(await repository.getSeries('es')).toBe(await inner.getSeries('es'));
+    expect(await repository.getPrints('es')).toBe(await inner.getPrints('es'));
+    expect(await repository.getPrintsContent('es')).toBe(await inner.getPrintsContent('es'));
     expect(await repository.getTexts('pt')).toBe(await inner.getTexts('pt'));
   });
 });

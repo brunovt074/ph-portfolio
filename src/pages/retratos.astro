@@ -14,8 +14,8 @@ import { getBookingCatalog } from '@/infrastructure/getBookingCatalog';
 import { contentRepository } from '@/infrastructure/container';
 
 const bookingHref = pathTo('es', { route: 'reservas' });
-const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('retratos');
-const offers = await getBookingCatalog().listBookingOffers.execute();
+const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('es', 'retratos');
+const { offers } = await getBookingCatalog().listBookingOffers.execute('es');
 const bookingLinks = Object.fromEntries(
   offers
     .filter((offer) => offer.bookable)

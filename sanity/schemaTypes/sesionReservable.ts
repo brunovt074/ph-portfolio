@@ -1,20 +1,21 @@
 import { defineField, defineType } from 'sanity';
+import { campoParrafo, campoTexto } from './campos';
 
 export const sesionReservable = defineType({
   name: 'sesionReservable',
   title: 'Sesión reservable',
   type: 'document',
   fields: [
-    defineField({ name: 'titulo', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
+    campoTexto('titulo', 'Título'),
     defineField({
       name: 'slug',
       title: 'Dirección web',
       type: 'slug',
-      options: { source: 'titulo' },
+      options: { source: 'titulo.es' },
       validation: (rule) => rule.required(),
     }),
     defineField({ name: 'faceta', title: 'Faceta', type: 'reference', to: [{ type: 'faceta' }], validation: (rule) => rule.required() }),
-    defineField({ name: 'descripcion', title: 'Descripción', type: 'text', rows: 3, validation: (rule) => rule.required().max(200) }),
+    campoParrafo('descripcion', 'Descripción'),
     defineField({
       name: 'precio',
       title: 'Precio',

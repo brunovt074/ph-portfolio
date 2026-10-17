@@ -6,7 +6,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
 import { contentRepository } from '@/infrastructure/container';
 
-const settings = await new GetSiteSettings(contentRepository).execute();
+const settings = await new GetSiteSettings(contentRepository).execute('es');
 const exits = [
   { label: 'Inicio', href: '/' },
   { label: 'Editorial', href: '/editorial' },

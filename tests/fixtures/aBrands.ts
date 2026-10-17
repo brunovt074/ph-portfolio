@@ -13,4 +13,5 @@ export const aBrands = (): BrandsContent => ({
   packagesTitle: 'Paquetes',
   packagesCta: 'Elegir este paquete',
   packages: [],
+  translations: { es: true, en: false, pt: false },
 });

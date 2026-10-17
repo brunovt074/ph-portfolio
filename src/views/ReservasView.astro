@@ -19,11 +19,11 @@ interface Props {
 
 const { locale } = Astro.props;
 const catalog = getBookingCatalog();
-const [settings, texts, offers, retratos] = await Promise.all([
-  new GetSiteSettings(contentRepository).execute(),
+const [settings, texts, { offers }, retratos] = await Promise.all([
+  new GetSiteSettings(contentRepository).execute(locale),
   new GetSiteTexts(contentRepository).execute(locale),
-  catalog.listBookingOffers.execute(),
-  new GetFacetPage(contentRepository).execute('retratos'),
+  catalog.listBookingOffers.execute(locale),
+  new GetFacetPage(contentRepository).execute(locale, 'retratos'),
 ]);
 const booking = texts.booking;
 ---

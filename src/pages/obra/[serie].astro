@@ -14,13 +14,13 @@ import { ListSeriesSlugs } from '@/application/ListSeriesSlugs';
 import { contentRepository } from '@/infrastructure/container';
 
 export async function getStaticPaths() {
-  const slugs = await new ListSeriesSlugs(contentRepository).execute();
+  const slugs = await new ListSeriesSlugs(contentRepository).execute('es');
   return slugs.map((serie) => ({ params: { serie } }));
 }
 
 const { serie } = Astro.params;
-const { series, previous, next, prints, obra } = await new GetSeriesPage(contentRepository).execute(serie ?? '');
-const settings = await contentRepository.getSettings();
+const { series, previous, next, prints, obra } = await new GetSeriesPage(contentRepository).execute('es', serie ?? '');
+const settings = await contentRepository.getSettings('es');
 const screens = new BuildSeriesSequence().execute(series.photos);
 ---
 <BaseLayout title={series.title} description={series.curatorialLine} theme="obra" image={series.photos[0]?.photo}>

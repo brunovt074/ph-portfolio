@@ -1,6 +1,8 @@
 import type { ContentRepository } from '@/domain/ContentRepository';
+import { locales, type Locale } from '@/domain/Locale';
 import type { CalendarProvider } from '@/domain/scheduling/CalendarProvider';
-import type { BookingOfferView } from '../results/BookingOfferView';
+import type { Translations } from '@/domain/Translations';
+import type { BookingOffersPage } from '../results/BookingOffersPage';
 import { schedulingModeFor } from '../scheduling/schedulingModeFor';
 import { calculateDeposit } from './calculateDeposit';
 
@@ -10,10 +12,10 @@ export class ListBookingOffers {
     private readonly calendar: CalendarProvider | null,
   ) {}
 
-  async execute(): Promise<BookingOfferView[]> {
-    const offers = await this.content.getBookingOffers();
+  async execute(locale: Locale): Promise<BookingOffersPage> {
+    const offers = await this.content.getBookingOffers(locale);
     const settings = await this.content.getSchedulingSettings();
-    return offers.map((offer) => {
+    const views = offers.map((offer) => {
       const priceCents = offer.priceCents ?? 0;
       const bookable = priceCents > 0;
       return {
@@ -29,5 +31,9 @@ export class ListBookingOffers {
         bookable,
       };
     });
+    const translations = Object.fromEntries(
+      locales.map((language) => [language, offers.every((offer) => offer.translations[language])]),
+    ) as Translations;
+    return { offers: views, translations };
   }
 }

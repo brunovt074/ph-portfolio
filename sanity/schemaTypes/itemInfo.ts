@@ -1,12 +1,13 @@
 import { defineField, defineType } from 'sanity';
+import { requiredSpanish } from './campos';
 
 export const itemInfo = defineType({
   name: 'itemInfo',
   title: 'Dato con título',
   type: 'object',
   fields: [
-    defineField({ name: 'titulo', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
-    defineField({ name: 'descripcion', title: 'Descripción', type: 'text', rows: 3, validation: (rule) => rule.required() }),
+    defineField({ name: 'titulo', title: 'Título', type: 'textoLocalizado', validation: (rule) => requiredSpanish(rule) }),
+    defineField({ name: 'descripcion', title: 'Descripción', type: 'parrafoLocalizado', validation: (rule) => requiredSpanish(rule) }),
   ],
-  preview: { select: { title: 'titulo', subtitle: 'descripcion' } },
+  preview: { select: { title: 'titulo.es', subtitle: 'descripcion.es' } },
 });

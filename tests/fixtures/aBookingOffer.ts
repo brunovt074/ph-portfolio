@@ -9,5 +9,6 @@ export const aBookingOffer = (overrides: Partial<BookingOffer> = {}): BookingOff
   depositPercent: 50,
   durationMinutes: null,
   order: 1,
+  translations: { es: true, en: false, pt: false },
   ...overrides,
 });

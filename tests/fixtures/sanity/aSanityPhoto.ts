@@ -2,7 +2,7 @@ import type { SanityPhotoDocument } from '@/infrastructure/sanity/documents/Sani
 
 export const aSanityPhoto = (overrides: Partial<SanityPhotoDocument> = {}): SanityPhotoDocument => ({
   id: 'foto-ed01',
-  alt: 'Modelo de peluca roja con gorro de piel blanco',
+  alt: { es: 'Modelo de peluca roja con gorro de piel blanco' },
   titulo: null,
   tituloProvisorio: null,
   lugar: null,

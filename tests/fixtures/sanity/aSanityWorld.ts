@@ -10,6 +10,7 @@ import { printsQuery } from '@/infrastructure/sanity/queries/printsQuery';
 import { schedulingQuery } from '@/infrastructure/sanity/queries/schedulingQuery';
 import { seriesQuery } from '@/infrastructure/sanity/queries/seriesQuery';
 import { settingsQuery } from '@/infrastructure/sanity/queries/settingsQuery';
+import { siteTextsQuery } from '@/infrastructure/sanity/queries/siteTextsQuery';
 import { FakeSanityClient } from '../../fakes/FakeSanityClient';
 import { aSanityBookingOffer } from './aSanityBookingOffer';
 import { aSanityBeforeAfter, aSanityBrands, aSanityPackage } from './aSanityBrands';
@@ -17,6 +18,7 @@ import { aSanityFacet } from './aSanityFacet';
 import { aSanityHome } from './aSanityHome';
 import { aSanityObra, aSanityPrint, aSanityPrintsPage, aSanitySeries } from './aSanityObra';
 import { aSanitySettings } from './aSanitySettings';
+import { aSanitySiteTexts } from './aSanitySiteTexts';
 
 export interface SanityWorld {
   settings: unknown;
@@ -31,6 +33,7 @@ export interface SanityWorld {
   printsPage: unknown;
   bookingOffers: unknown;
   scheduling: unknown;
+  siteTexts: unknown;
 }
 
 export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityClient => {
@@ -47,6 +50,7 @@ export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityC
     printsPage: aSanityPrintsPage(),
     bookingOffers: [aSanityBookingOffer()],
     scheduling: null,
+    siteTexts: aSanitySiteTexts(),
     ...overrides,
   };
   return new FakeSanityClient(
@@ -63,6 +67,7 @@ export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityC
       [printsPageQuery, world.printsPage],
       [bookingOffersQuery, world.bookingOffers],
       [schedulingQuery, world.scheduling],
+      [siteTextsQuery, world.siteTexts],
     ]),
   );
 };

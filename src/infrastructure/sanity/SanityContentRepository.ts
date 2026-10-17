@@ -11,7 +11,7 @@ import type { SchedulingSettings } from '@/domain/scheduling/SchedulingSettings'
 import type { Series } from '@/domain/Series';
 import type { SiteSettings } from '@/domain/SiteSettings';
 import type { SiteTexts } from '@/domain/SiteTexts';
-import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
+import { resolveSiteTexts } from '@/infrastructure/texts/resolveSiteTexts';
 import type { SanityBeforeAfterDocument } from './documents/SanityBeforeAfterDocument';
 import type { SanityBookingOfferDocument } from './documents/SanityBookingOfferDocument';
 import type { SanityBrandPackageDocument } from './documents/SanityBrandPackageDocument';
@@ -24,6 +24,7 @@ import type { SanityPrintsPageDocument } from './documents/SanityPrintsPageDocum
 import type { SanitySchedulingDocument } from './documents/SanitySchedulingDocument';
 import type { SanitySeriesDocument } from './documents/SanitySeriesDocument';
 import type { SanitySettingsDocument } from './documents/SanitySettingsDocument';
+import type { SanitySiteTextsDocument } from './documents/SanitySiteTextsDocument';
 import { hasImageAsset } from './mapping/hasImageAsset';
 import { isFacetSlug } from './mapping/isFacetSlug';
 import { toBookingOffer } from './mapping/toBookingOffer';
@@ -48,59 +49,60 @@ import { printsQuery } from './queries/printsQuery';
 import { schedulingQuery } from './queries/schedulingQuery';
 import { seriesQuery } from './queries/seriesQuery';
 import { settingsQuery } from './queries/settingsQuery';
+import { siteTextsQuery } from './queries/siteTextsQuery';
 import type { SanityClientPort } from './SanityClientPort';
 import { SanityDocumentNotFoundError } from './SanityDocumentNotFoundError';
 
 export class SanityContentRepository implements ContentRepository {
   constructor(private readonly client: SanityClientPort) {}
 
-  async getSettings(): Promise<SiteSettings> {
-    return toSettings(await this.singleton<SanitySettingsDocument>(settingsQuery, 'ajustes'));
+  async getSettings(locale: Locale): Promise<SiteSettings> {
+    return toSettings(await this.singleton<SanitySettingsDocument>(settingsQuery, 'ajustes'), locale);
   }
 
-  async getHome(): Promise<HomeContent> {
-    return toHome(await this.singleton<SanityHomeDocument>(homeQuery, 'paginaInicio'));
+  async getHome(locale: Locale): Promise<HomeContent> {
+    return toHome(await this.singleton<SanityHomeDocument>(homeQuery, 'paginaInicio'), locale);
   }
 
-  async getFacets(): Promise<Facet[]> {
+  async getFacets(locale: Locale): Promise<Facet[]> {
     const documents = await this.client.fetch<SanityFacetDocument[]>(facetsQuery);
-    return documents.filter((document) => isFacetSlug(document.slug)).map(toFacet);
+    return documents.filter((document) => isFacetSlug(document.slug)).map((document) => toFacet(document, locale));
   }
 
-  async getBrands(): Promise<BrandsContent> {
+  async getBrands(locale: Locale): Promise<BrandsContent> {
     const [page, packages, pairs] = await Promise.all([
       this.singleton<SanityBrandsDocument>(brandsQuery, 'paginaMarcas'),
       this.client.fetch<SanityBrandPackageDocument[]>(brandPackagesQuery),
       this.client.fetch<SanityBeforeAfterDocument[]>(beforeAfterQuery),
     ]);
-    return toBrands(page, packages, pairs);
+    return toBrands(page, packages, pairs, locale);
   }
 
-  async getObra(): Promise<ObraContent> {
+  async getObra(locale: Locale): Promise<ObraContent> {
     const [page, prints] = await Promise.all([
       this.singleton<SanityObraDocument>(obraQuery, 'paginaObra'),
-      this.getPrints(),
+      this.getPrints(locale),
     ]);
-    return toObra(page, prints);
+    return toObra(page, prints, locale);
   }
 
-  async getSeries(): Promise<Series[]> {
+  async getSeries(locale: Locale): Promise<Series[]> {
     const documents = await this.client.fetch<SanitySeriesDocument[]>(seriesQuery);
-    return documents.map(toSeries);
+    return documents.map((document) => toSeries(document, locale));
   }
 
-  async getPrints(): Promise<Print[]> {
+  async getPrints(locale: Locale): Promise<Print[]> {
     const documents = await this.client.fetch<SanityPrintDocument[]>(printsQuery);
-    return documents.filter((document) => hasImageAsset(document.foto)).map(toPrint);
+    return documents.filter((document) => hasImageAsset(document.foto)).map((document) => toPrint(document, locale));
   }
 
-  async getPrintsContent(): Promise<PrintsContent> {
-    return toPrintsContent(await this.singleton<SanityPrintsPageDocument>(printsPageQuery, 'paginaCopias'));
+  async getPrintsContent(locale: Locale): Promise<PrintsContent> {
+    return toPrintsContent(await this.singleton<SanityPrintsPageDocument>(printsPageQuery, 'paginaCopias'), locale);
   }
 
-  async getBookingOffers(): Promise<BookingOffer[]> {
+  async getBookingOffers(locale: Locale): Promise<BookingOffer[]> {
     const documents = await this.client.fetch<SanityBookingOfferDocument[]>(bookingOffersQuery);
-    return documents.flatMap((document) => toBookingOffer(document) ?? []);
+    return documents.flatMap((document) => toBookingOffer(document, locale) ?? []);
   }
 
   async getSchedulingSettings(): Promise<SchedulingSettings> {
@@ -108,7 +110,7 @@ export class SanityContentRepository implements ContentRepository {
   }
 
   async getTexts(locale: Locale): Promise<SiteTexts> {
-    return defaultSiteTexts[locale];
+    return resolveSiteTexts(await this.client.fetch<SanitySiteTextsDocument | null>(siteTextsQuery), locale);
   }
 
   private async singleton<T>(query: string, documentId: string): Promise<T> {

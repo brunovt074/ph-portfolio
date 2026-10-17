@@ -27,7 +27,7 @@ if (!status.ok) {
   return new Response(null, { status: 404 });
 }
 const view = status.value;
-const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute(), new GetSiteTexts(contentRepository).execute('es')]);
+const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute('es'), new GetSiteTexts(contentRepository).execute('es')]);
 const booking = texts.booking;
 const localeTag = localeTagOf('es');
 const description = describeBooking(view, booking, localeTag, services.timeZone);

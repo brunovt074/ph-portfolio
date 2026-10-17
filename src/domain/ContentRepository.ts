@@ -12,15 +12,15 @@ import type { SiteSettings } from './SiteSettings';
 import type { SiteTexts } from './SiteTexts';
 
 export interface ContentRepository {
-  getSettings(): Promise<SiteSettings>;
-  getHome(): Promise<HomeContent>;
-  getFacets(): Promise<Facet[]>;
-  getBrands(): Promise<BrandsContent>;
-  getObra(): Promise<ObraContent>;
-  getSeries(): Promise<Series[]>;
-  getPrints(): Promise<Print[]>;
-  getPrintsContent(): Promise<PrintsContent>;
-  getBookingOffers(): Promise<BookingOffer[]>;
+  getSettings(locale: Locale): Promise<SiteSettings>;
+  getHome(locale: Locale): Promise<HomeContent>;
+  getFacets(locale: Locale): Promise<Facet[]>;
+  getBrands(locale: Locale): Promise<BrandsContent>;
+  getObra(locale: Locale): Promise<ObraContent>;
+  getSeries(locale: Locale): Promise<Series[]>;
+  getPrints(locale: Locale): Promise<Print[]>;
+  getPrintsContent(locale: Locale): Promise<PrintsContent>;
+  getBookingOffers(locale: Locale): Promise<BookingOffer[]>;
   getSchedulingSettings(): Promise<SchedulingSettings>;
   getTexts(locale: Locale): Promise<SiteTexts>;
 }

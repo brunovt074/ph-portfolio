@@ -5,6 +5,7 @@ export const deskStructure: StructureResolver = (S) =>
   S.list()
     .title('Contenidos')
     .items([
+      S.listItem().title('Textos del sitio').child(S.list().title('Textos del sitio').items([singletonItem(S, 'textosDelSitio', 'Textos del sitio')])),
       S.listItem().title('Ajustes generales').child(S.list().title('Ajustes generales').items([singletonItem(S, 'ajustes', 'Ajustes generales')])),
       S.listItem()
         .title('Páginas')

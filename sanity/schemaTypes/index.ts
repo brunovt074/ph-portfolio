@@ -5,6 +5,7 @@ import { copia } from './copia';
 import { faceta } from './faceta';
 import { foto } from './foto';
 import { itemInfo } from './itemInfo';
+import { listaLocalizada, parrafoLocalizado, slugLocalizado, textoLocalizado, tituloLocalizado } from './localizados';
 import { paginaCopias } from './paginaCopias';
 import { paginaInicio } from './paginaInicio';
 import { paginaMarcas } from './paginaMarcas';
@@ -13,10 +14,16 @@ import { paqueteMarca } from './paqueteMarca';
 import { serie } from './serie';
 import { sesionReservable } from './sesionReservable';
 import { servicio } from './servicio';
+import { textosDelSitio } from './textosDelSitio';
 import { tituloConItalica } from './tituloConItalica';
 
 export const schemaTypes = [
   tituloConItalica,
+  textoLocalizado,
+  parrafoLocalizado,
+  tituloLocalizado,
+  listaLocalizada,
+  slugLocalizado,
   servicio,
   itemInfo,
   foto,
@@ -32,4 +39,5 @@ export const schemaTypes = [
   paginaCopias,
   sesionReservable,
   agendaReservas,
+  textosDelSitio,
 ];

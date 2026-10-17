@@ -14,6 +14,7 @@ export const aFacet = (slug: FacetSlug, number: number, name: string): Facet => 
   services: [],
   ctaText: 'Contanos',
   ctaButton: 'Reservar',
+  translations: { es: true, en: false, pt: false },
 });
 
 export const allFacets = (): Facet[] => [
