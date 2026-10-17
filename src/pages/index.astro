@@ -14,7 +14,7 @@ import { GetHomePage } from '@/application/GetHomePage';
 import { contentRepository } from '@/infrastructure/container';
 import { buildPersonSchema, buildProfessionalServiceSchema } from '@/seo/structuredData';
 
-const { home, facets, settings } = await new GetHomePage(contentRepository).execute();
+const { home, facets, settings } = await new GetHomePage(contentRepository).execute('es');
 const heroPhoto = home.encargosDoor.photo;
 const jsonLd = [buildPersonSchema(settings, Astro.site!), await buildProfessionalServiceSchema(settings, Astro.site!, heroPhoto)];
 ---

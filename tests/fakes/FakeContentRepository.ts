@@ -47,35 +47,35 @@ export class FakeContentRepository implements ContentRepository {
     };
   }
 
-  async getSettings(): Promise<SiteSettings> {
+  async getSettings(_locale: Locale): Promise<SiteSettings> {
     return this.data.settings;
   }
 
-  async getHome(): Promise<HomeContent> {
+  async getHome(_locale: Locale): Promise<HomeContent> {
     return this.data.home;
   }
 
-  async getFacets(): Promise<Facet[]> {
+  async getFacets(_locale: Locale): Promise<Facet[]> {
     return this.data.facets;
   }
 
-  async getBrands(): Promise<BrandsContent> {
+  async getBrands(_locale: Locale): Promise<BrandsContent> {
     return this.data.brands;
   }
 
-  async getObra(): Promise<ObraContent> {
+  async getObra(_locale: Locale): Promise<ObraContent> {
     return this.data.obra;
   }
 
-  async getSeries(): Promise<Series[]> {
+  async getSeries(_locale: Locale): Promise<Series[]> {
     return this.data.series;
   }
 
-  async getPrints(): Promise<Print[]> {
+  async getPrints(_locale: Locale): Promise<Print[]> {
     return this.data.prints;
   }
 
-  async getPrintsContent(): Promise<PrintsContent> {
+  async getPrintsContent(_locale: Locale): Promise<PrintsContent> {
     return this.data.printsContent;
   }
 

@@ -46,20 +46,20 @@ import { SanityDocumentNotFoundError } from './SanityDocumentNotFoundError';
 export class SanityContentRepository implements ContentRepository {
   constructor(private readonly client: SanityClientPort) {}
 
-  async getSettings(): Promise<SiteSettings> {
+  async getSettings(_locale: Locale): Promise<SiteSettings> {
     return toSettings(await this.singleton<SanitySettingsDocument>(settingsQuery, 'ajustes'));
   }
 
-  async getHome(): Promise<HomeContent> {
-    return toHome(await this.singleton<SanityHomeDocument>(homeQuery, 'paginaInicio'));
+  async getHome(locale: Locale): Promise<HomeContent> {
+    return toHome(await this.singleton<SanityHomeDocument>(homeQuery, 'paginaInicio'), locale);
   }
 
-  async getFacets(): Promise<Facet[]> {
+  async getFacets(_locale: Locale): Promise<Facet[]> {
     const documents = await this.client.fetch<SanityFacetDocument[]>(facetsQuery);
     return documents.filter((document) => isFacetSlug(document.slug)).map(toFacet);
   }
 
-  async getBrands(): Promise<BrandsContent> {
+  async getBrands(_locale: Locale): Promise<BrandsContent> {
     const [page, packages, pairs] = await Promise.all([
       this.singleton<SanityBrandsDocument>(brandsQuery, 'paginaMarcas'),
       this.client.fetch<SanityBrandPackageDocument[]>(brandPackagesQuery),
@@ -68,25 +68,25 @@ export class SanityContentRepository implements ContentRepository {
     return toBrands(page, packages, pairs);
   }
 
-  async getObra(): Promise<ObraContent> {
+  async getObra(locale: Locale): Promise<ObraContent> {
     const [page, prints] = await Promise.all([
       this.singleton<SanityObraDocument>(obraQuery, 'paginaObra'),
-      this.getPrints(),
+      this.getPrints(locale),
     ]);
     return toObra(page, prints);
   }
 
-  async getSeries(): Promise<Series[]> {
+  async getSeries(_locale: Locale): Promise<Series[]> {
     const documents = await this.client.fetch<SanitySeriesDocument[]>(seriesQuery);
     return documents.map(toSeries);
   }
 
-  async getPrints(): Promise<Print[]> {
+  async getPrints(_locale: Locale): Promise<Print[]> {
     const documents = await this.client.fetch<SanityPrintDocument[]>(printsQuery);
     return documents.filter((document) => hasImageAsset(document.foto)).map(toPrint);
   }
 
-  async getPrintsContent(): Promise<PrintsContent> {
+  async getPrintsContent(_locale: Locale): Promise<PrintsContent> {
     return toPrintsContent(await this.singleton<SanityPrintsPageDocument>(printsPageQuery, 'paginaCopias'));
   }
 

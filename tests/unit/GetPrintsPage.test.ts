@@ -9,7 +9,7 @@ describe('GetPrintsPage', () => {
       prints: [aPrint('copia-au01', 'oficios'), aPrint('copia-au03', 'geometrias', false)],
     });
 
-    const page = await new GetPrintsPage(repository).execute();
+    const page = await new GetPrintsPage(repository).execute('es');
 
     expect(page.prints.map((print) => print.id)).toEqual(['copia-au01']);
     expect(page.content.cta).toBe('Consultar esta copia');

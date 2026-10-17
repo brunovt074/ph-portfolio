@@ -17,10 +17,10 @@ const cloneSeed = () => structuredClone(realSeed);
 
 describe('SeedContentRepository with the real handoff data', () => {
   it('resolves every photo referenced by the content out of the 65 in the seed', async () => {
-    const facets = await repository().getFacets();
-    const home = await repository().getHome();
-    const brands = await repository().getBrands();
-    const series = await repository().getSeries();
+    const facets = await repository().getFacets('es');
+    const home = await repository().getHome('es');
+    const brands = await repository().getBrands('es');
+    const series = await repository().getSeries('es');
     const ids = new Set<string>();
     facets.forEach((facet) => [...facet.cover, ...facet.gallery].forEach((photo) => ids.add(photo.id)));
     Object.values(home.facetThumbnails).forEach((photos) => photos.forEach((photo) => ids.add(photo.id)));
@@ -41,7 +41,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     const shuffled = cloneContent();
     shuffled.facets.reverse();
 
-    const facets = await new SeedContentRepository(realSeed, shuffled).getFacets();
+    const facets = await new SeedContentRepository(realSeed, shuffled).getFacets('es');
 
     expect(facets.map((facet) => facet.slug)).toEqual(['editorial', 'retratos', 'marcas', 'eventos']);
     expect(facets[0]?.title).toEqual([
@@ -56,7 +56,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   });
 
   it('builds the four series with the expected slugs, layouts and display titles', async () => {
-    const series = await repository().getSeries();
+    const series = await repository().getSeries('es');
 
     expect(series.map((item) => item.slug)).toEqual(['oficios', 'geometrias', 'lo-que-queda', 'viajes-en-color']);
     expect(series.map((item) => item.number)).toEqual(['I', 'II', 'III', 'IV']);
@@ -70,7 +70,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   });
 
   it('links each of the 6 prints to the series that contains its photo', async () => {
-    const prints = await repository().getPrints();
+    const prints = await repository().getPrints('es');
     const bySeries = Object.fromEntries(prints.map((print) => [print.id, print.series.slug]));
 
     expect(prints).toHaveLength(6);
@@ -93,13 +93,13 @@ describe('SeedContentRepository with the real handoff data', () => {
       first.disponibles = 7;
     }
 
-    const prints = await new SeedContentRepository(withStock, realContent).getPrints();
+    const prints = await new SeedContentRepository(withStock, realContent).getPrints('es');
 
     expect(prints[0]?.available).toBe(7);
   });
 
   it('offers 3 brand packages with Identidad as the featured one', async () => {
-    const { packages } = await repository().getBrands();
+    const { packages } = await repository().getBrands('es');
 
     expect(packages.map((pack) => pack.name)).toEqual(['Esencial', 'Identidad', 'Mensual']);
     expect(packages.map((pack) => pack.featured)).toEqual([false, true, false]);
@@ -107,7 +107,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   });
 
   it('marks the before and after pair as provisional until Lara uploads the real retouch', async () => {
-    const brands = await repository().getBrands();
+    const brands = await repository().getBrands('es');
 
     expect(brands.beforeAfter).toHaveLength(1);
     expect(brands.beforeAfter[0]?.before.id).toBe('mk01');
@@ -122,7 +122,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   });
 
   it('exposes the obra manifesto, opening photo and the first three print photos for the teaser', async () => {
-    const obra = await repository().getObra();
+    const obra = await repository().getObra('es');
 
     expect(obra.opening.photo.id).toBe('au05');
     expect(obra.printsTeaser.photos.map((photo) => photo.id)).toEqual(['au03', 'au01', 'au14']);
@@ -131,9 +131,9 @@ describe('SeedContentRepository with the real handoff data', () => {
   });
 
   it('keeps provisional titles, placeholders and null years on obra photos only', async () => {
-    const series = await repository().getSeries();
+    const series = await repository().getSeries('es');
     const bidones = series[0]?.photos[0]?.photo;
-    const home = await repository().getHome();
+    const home = await repository().getHome('es');
 
     expect(bidones?.title).toBe('Bidones');
     expect(bidones?.provisionalTitle).toBe(true);
@@ -145,7 +145,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   });
 
   it('builds the settings with the portrait, exhibitions placeholder and print info', async () => {
-    const settings = await repository().getSettings();
+    const settings = await repository().getSettings('es');
 
     expect(settings.portrait.id).toBe('retrato-lara');
     expect(settings.portrait.alt).toBe('Lara Vischi con su cámara, en blanco y negro');
@@ -165,8 +165,8 @@ describe('SeedContentRepository with the real handoff data', () => {
   });
 
   it('maps the home content and the prints page content', async () => {
-    const home = await repository().getHome();
-    const printsContent = await repository().getPrintsContent();
+    const home = await repository().getHome('es');
+    const printsContent = await repository().getPrintsContent('es');
 
     expect(home.encargosTitle).toEqual([
       { text: 'Cuatro ', italic: false },
@@ -186,7 +186,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     const incomplete = cloneContent();
     incomplete.obra.seriesSlugs = {};
 
-    const failure = new SeedContentRepository(realSeed, incomplete).getSeries();
+    const failure = new SeedContentRepository(realSeed, incomplete).getSeries('es');
 
     await expect(failure).rejects.toBeInstanceOf(MissingContentError);
     await expect(failure).rejects.toThrow('Missing content for series slug: I');
@@ -196,7 +196,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     const incomplete = cloneContent();
     incomplete.obra.seriesDisplayTitles = {};
 
-    const failure = new SeedContentRepository(realSeed, incomplete).getSeries();
+    const failure = new SeedContentRepository(realSeed, incomplete).getSeries('es');
 
     await expect(failure).rejects.toThrow('Missing content for series display title: I');
   });
@@ -205,7 +205,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     const incomplete = cloneContent();
     incomplete.obra.seriesCuratorialTexts = {};
 
-    const failure = new SeedContentRepository(realSeed, incomplete).getSeries();
+    const failure = new SeedContentRepository(realSeed, incomplete).getSeries('es');
 
     await expect(failure).rejects.toThrow('Missing content for series curatorial text: I');
   });
@@ -215,7 +215,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     const door = broken.home.doors.encargos;
     door.photo = 'zz99';
 
-    const failure = new SeedContentRepository(realSeed, broken).getHome();
+    const failure = new SeedContentRepository(realSeed, broken).getHome('es');
 
     await expect(failure).rejects.toBeInstanceOf(UnknownPhotoError);
     await expect(failure).rejects.toThrow('Unknown photo id: zz99');
@@ -228,6 +228,26 @@ describe('SeedContentRepository with the real handoff data', () => {
       first.foto = 'ed01';
     }
 
-    await expect(new SeedContentRepository(broken, realContent).getPrints()).rejects.toBeInstanceOf(UnknownPhotoError);
+    await expect(new SeedContentRepository(broken, realContent).getPrints('es')).rejects.toBeInstanceOf(UnknownPhotoError);
+  });
+
+  it('serves Spanish content and the requested language texts in seed mode', async () => {
+    const english = await repository().getHome('en');
+
+    expect(english.lead).toBe((await repository().getHome('es')).lead);
+    expect(await repository().getTexts('en')).toEqual(defaultSiteTexts.en);
+  });
+
+  it('points the home doors to the visitor language', async () => {
+    const home = await repository().getHome('pt');
+
+    expect(home.encargosDoor.href).toBe('/pt/#encargos');
+    expect(home.obraDoor.href).toBe('/pt/obra');
+  });
+
+  it('gives every seed series the same slug in all languages', async () => {
+    const [series] = await repository().getSeries('en');
+
+    expect(series?.slugs).toEqual({ es: 'oficios', en: 'oficios', pt: 'oficios' });
   });
 });

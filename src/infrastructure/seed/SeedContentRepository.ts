@@ -6,6 +6,7 @@ import type { HomeDoor } from '@/domain/HomeDoor';
 import type { ObraContent } from '@/domain/ObraContent';
 import type { Photo } from '@/domain/Photo';
 import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
 import type { Print } from '@/domain/Print';
 import type { PrintsContent } from '@/domain/PrintsContent';
 import type { Series } from '@/domain/Series';
@@ -45,7 +46,7 @@ export class SeedContentRepository implements ContentRepository {
     this.photos = new Map(this.seed.fotos.map((photo) => [photo.id, this.toPhoto(photo)]));
   }
 
-  async getSettings(): Promise<SiteSettings> {
+  async getSettings(_locale: Locale): Promise<SiteSettings> {
     const { ajustes } = this.seed;
     return {
       email: ajustes.email,
@@ -66,12 +67,12 @@ export class SeedContentRepository implements ContentRepository {
     };
   }
 
-  async getHome(): Promise<HomeContent> {
+  async getHome(locale: Locale): Promise<HomeContent> {
     const { home } = this.content;
     return {
       lead: home.lead,
-      encargosDoor: this.toDoor(home.doors.encargos, '/#encargos'),
-      obraDoor: this.toDoor(home.doors.obra, '/obra'),
+      encargosDoor: this.toDoor(home.doors.encargos, pathTo(locale, { route: 'home', hash: 'encargos' })),
+      obraDoor: this.toDoor(home.doors.obra, pathTo(locale, { route: 'obra' })),
       ticker: home.ticker,
       aboutCta: home.about.cta,
       encargosEyebrow: home.encargos.eyebrow,
@@ -98,7 +99,7 @@ export class SeedContentRepository implements ContentRepository {
     };
   }
 
-  async getFacets(): Promise<Facet[]> {
+  async getFacets(_locale: Locale): Promise<Facet[]> {
     return [...this.content.facets]
       .sort((first, second) => first.number - second.number)
       .map((facet) => ({
@@ -117,7 +118,7 @@ export class SeedContentRepository implements ContentRepository {
       }));
   }
 
-  async getBrands(): Promise<BrandsContent> {
+  async getBrands(_locale: Locale): Promise<BrandsContent> {
     const { brands } = this.content;
     return {
       headerCta: brands.headerCta,
@@ -150,9 +151,9 @@ export class SeedContentRepository implements ContentRepository {
     };
   }
 
-  async getObra(): Promise<ObraContent> {
+  async getObra(locale: Locale): Promise<ObraContent> {
     const { obra } = this.content;
-    const prints = await this.getPrints();
+    const prints = await this.getPrints(locale);
     return {
       opening: {
         photo: this.photo(obra.opening.photo),
@@ -177,11 +178,12 @@ export class SeedContentRepository implements ContentRepository {
     };
   }
 
-  async getSeries(): Promise<Series[]> {
+  async getSeries(_locale: Locale): Promise<Series[]> {
     const { obra } = this.content;
     return this.seed.series.map((series) => ({
       number: series.numero,
       slug: this.slugOf(series),
+      slugs: this.slugsOf(series),
       title: series.titulo,
       displayTitle: parseRichTitle(this.requiredBySeries(obra.seriesDisplayTitles, series, 'series display title')),
       years: series.anios,
@@ -191,7 +193,7 @@ export class SeedContentRepository implements ContentRepository {
     }));
   }
 
-  async getPrints(): Promise<Print[]> {
+  async getPrints(_locale: Locale): Promise<Print[]> {
     return this.seed.copias.map((copy) => {
       const owner = this.seed.series.find((series) => series.fotos.some((entry) => entry.foto === copy.foto));
       if (!owner) {
@@ -209,7 +211,7 @@ export class SeedContentRepository implements ContentRepository {
     });
   }
 
-  async getPrintsContent(): Promise<PrintsContent> {
+  async getPrintsContent(_locale: Locale): Promise<PrintsContent> {
     const { prints } = this.content;
     return {
       title: parseRichTitle(prints.title),
@@ -226,6 +228,11 @@ export class SeedContentRepository implements ContentRepository {
 
   private slugOf(series: SeedSeries): string {
     return this.requiredBySeries(this.content.obra.seriesSlugs, series, 'series slug');
+  }
+
+  private slugsOf(series: SeedSeries): Record<Locale, string> {
+    const slug = this.slugOf(series);
+    return { es: slug, en: slug, pt: slug };
   }
 
   private requiredBySeries(entries: Record<string, string>, series: SeedSeries, section: string): string {

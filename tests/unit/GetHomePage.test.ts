@@ -4,7 +4,7 @@ import { FakeContentRepository } from '../fakes/FakeContentRepository';
 
 describe('GetHomePage', () => {
   it('gives the visitor the two doors, the four facets and the contact settings', async () => {
-    const page = await new GetHomePage(new FakeContentRepository()).execute();
+    const page = await new GetHomePage(new FakeContentRepository()).execute('es');
 
     expect(page.home.encargosDoor.href).toBe('/#encargos');
     expect(page.home.obraDoor.href).toBe('/obra');
