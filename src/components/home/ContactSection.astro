@@ -1,16 +1,18 @@
 ---
 import ContactForm from './ContactForm.astro';
+import type { Locale } from '@/domain/Locale';
 import type { HomeContent } from '@/domain/HomeContent';
 import type { SiteSettings } from '@/domain/SiteSettings';
 import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  locale: Locale;
   texts: SiteTexts;
   home: HomeContent;
   settings: SiteSettings;
 }
 
-const { texts, home, settings } = Astro.props;
+const { locale, texts, home, settings } = Astro.props;
 
 const digits = (value: string) => value.replace(/\D/g, '');
 const isPlaceholder = (value: string) => value.startsWith('[');
@@ -27,7 +29,7 @@ const channels = [
     <h2 id="contacto-title" class="t-display contact-title">{home.contactTitle}</h2>
     <p class="t-lead contact-lead">{home.contactLead}</p>
     <div class="contact-form-area">
-      <ContactForm texts={texts.contact} workTypes={home.workTypes} />
+      <ContactForm locale={locale} texts={texts.contact} workTypes={home.workTypes} />
     </div>
     <dl class="contact-list">
       {channels.map((channel) => (

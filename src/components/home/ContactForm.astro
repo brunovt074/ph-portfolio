@@ -1,8 +1,10 @@
 ---
 import Button from '@/components/Button.astro';
+import type { Locale } from '@/domain/Locale';
 import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  locale: Locale;
   texts: SiteTexts['contact'];
   workTypes?: string[];
   variant?: 'general' | 'copia';
@@ -11,7 +13,7 @@ interface Props {
   submitLabel?: string;
 }
 
-const { texts, workTypes = [], variant = 'general', copies = [], idPrefix = 'contacto', submitLabel = texts.submit } = Astro.props;
+const { locale, texts, workTypes = [], variant = 'general', copies = [], idPrefix = 'contacto', submitLabel = texts.submit } = Astro.props;
 const isCopyInquiry = variant === 'copia';
 const tipoByQuery: Record<string, string> = {
   editorial: texts.workTypeEditorial,
@@ -27,7 +29,9 @@ const tipoByQuery: Record<string, string> = {
   data-contact-form
   data-variant={variant}
   data-tipos={JSON.stringify(tipoByQuery)}
+  data-messages={JSON.stringify(texts)}
 >
+  <input type="hidden" name="idioma" value={locale} />
   <div class="field">
     <label class="t-eyebrow" for={`${idPrefix}-nombre`}>{texts.name}<span aria-hidden="true"> *</span></label>
     <input id={`${idPrefix}-nombre`} name="nombre" type="text" required minlength="2" maxlength="80" autocomplete="name" aria-describedby={`${idPrefix}-nombre-error`} />

@@ -6,7 +6,7 @@ import { UnavailableMessageSender } from '@/infrastructure/email/UnavailableMess
 import { MessageDeliveryError } from '@/domain/MessageDeliveryError';
 
 const configured = { apiKey: 're_test', toEmail: 'sarah@example.com', fromEmail: 'sitio@example.com', consoleDelivery: false };
-const message = { name: 'Sofía', email: 'sofia@marca.com', type: '', message: 'Hola, quiero una sesión.', copy: '' };
+const message = { name: 'Sofía', email: 'sofia@marca.com', type: '', message: 'Hola, quiero una sesión.', copy: '', locale: 'es' as const };
 
 describe('createMessageSender', () => {
   it('uses Resend when the account is configured', () => {

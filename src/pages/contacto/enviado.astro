@@ -1,9 +1,20 @@
 ---
 import ContactResult from '@/components/contact/ContactResult.astro';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { parseLocale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import { contentRepository } from '@/infrastructure/container';
+
+export const prerender = false;
+
+const locale = parseLocale(Astro.url.searchParams.get('idioma'));
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
 ---
 <ContactResult
-  title="¡Gracias por escribir!"
-  lead="Recibí tu consulta. Te respondo dentro de las próximas 48 horas."
-  backLabel="Volver al inicio"
-  backHref="/"
+  locale={locale}
+  texts={texts}
+  title={texts.contact.sentTitle}
+  lead={texts.contact.sentLead}
+  backLabel={texts.nav.backHome}
+  backHref={pathTo(locale, { route: 'home' })}
 />
