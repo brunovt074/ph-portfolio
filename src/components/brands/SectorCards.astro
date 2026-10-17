@@ -49,6 +49,12 @@ const { title, sectors } = Astro.props;
     padding-top: 16px;
   }
 
+  @media (min-width: 600px) {
+    figcaption h3 {
+      min-height: 2lh;
+    }
+  }
+
   figcaption p {
     margin: 8px 0 0;
     color: var(--fg-muted);

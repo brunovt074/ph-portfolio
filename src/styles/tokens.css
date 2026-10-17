@@ -1,23 +1,17 @@
-/* Lara Vischi — design tokens
-   Fuente única de verdad para colores, tipografía y espacios.
-   Con Tailwind v4: importar este archivo y exponer las variables en @theme. */
-
 :root {
-  /* ---------- Tipografía ---------- */
-  --font-display: "Bodoni Moda Variable", "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif; /* títulos, logotipo, citas */
-  --font-body: "Archivo Variable", "Archivo", "Helvetica Neue", Arial, sans-serif;           /* texto, UI, etiquetas */
+  --font-display: "Bodoni Moda Variable", "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --font-body: "Archivo Variable", "Archivo", "Helvetica Neue", Arial, sans-serif;
 
-  /* Escala (fluida). Usar SIEMPRE estos pasos. */
-  --text-display: clamp(64px, 10vw, 168px);  /* H1 de página, "Hablemos" */
-  --text-h2: clamp(40px, 5vw, 72px);         /* títulos de sección */
-  --text-cta: clamp(36px, 4.5vw, 64px);      /* bandas de llamado a la acción */
-  --text-quote: clamp(28px, 3vw, 44px);      /* citas, manifiesto */
-  --text-h3: clamp(28px, 3vw, 36px);         /* títulos de tarjeta / serie */
-  --text-list: clamp(32px, 4vw, 56px);       /* filas del índice de encargos */
-  --text-lead: 18px;                         /* párrafo destacado */
+  --text-display: clamp(64px, 10vw, 168px);
+  --text-h2: clamp(40px, 5vw, 72px);
+  --text-cta: clamp(36px, 4.5vw, 64px);
+  --text-quote: clamp(28px, 3vw, 44px);
+  --text-h3: clamp(28px, 3vw, 36px);
+  --text-list: clamp(32px, 4vw, 56px);
+  --text-lead: 18px;
   --text-body: 16px;
   --text-small: 15px;
-  --text-eyebrow: 13px;                      /* etiquetas en mayúsculas */
+  --text-eyebrow: 13px;
   --text-logo: 22px;
 
   --leading-display: 0.88;
@@ -27,41 +21,39 @@
   --tracking-display: -0.03em;
   --tracking-heading: -0.02em;
   --tracking-logo: 0.01em;
-  --tracking-eyebrow: 0.22em;   /* eyebrows: uppercase */
-  --tracking-nav: 0.14em;       /* navegación: uppercase */
+  --tracking-eyebrow: 0.22em;
+  --tracking-nav: 0.14em;
   --tracking-button: 0.06em;
 
-  /* ---------- Color: núcleo ---------- */
-  --ink: #0D0D0C;          /* fondo oscuro principal / texto sobre claro */
-  --paper: #EFEBE4;        /* texto sobre oscuro / fondo claro */
-  --sand: #E9E3D9;         /* fondo de Marcas y bandas cálidas */
-  --gallery: #F7F6F3;      /* blanco galería */
-  --surface-2: #161514;    /* fondo del bloque de contacto */
+  --ink: #0D0D0C;
+  --paper: #EFEBE4;
+  --sand: #E9E3D9;
+  --gallery: #F7F6F3;
+  --surface-2: #161514;
 
-  --text-muted-dark: #A7A198;   /* texto secundario sobre --ink (AA) */
-  --text-soft-dark: #CFC9BF;    /* párrafos sobre --ink */
-  --text-muted-light: #5E5A54;  /* texto secundario sobre claro (AA) */
-  --text-soft-light: #3A3733;   /* párrafos sobre claro */
+  --text-muted-dark: #A7A198;
+  --text-soft-dark: #CFC9BF;
+  --text-muted-light: #5E5A54;
+  --text-soft-light: #3A3733;
 
-  --accent: #E0452B;            /* rojo de acento: sobre fondos oscuros */
-  --accent-on-light: #B8331D;   /* rojo de acento: sobre fondos claros (AA) */
+  --accent: #E0452B;
+  --accent-on-light: #B8331D;
 
   --line-dark: rgba(239, 235, 228, 0.14);
   --line-light: rgba(13, 13, 12, 0.18);
   --door-label-bg: rgba(13, 13, 12, 0.8);
 
-  /* ---------- Color: por sección ---------- */
-  --eventos-bg: #07120D;        /* verde noche (carnaval) */
-  --eventos-accent: #C6F432;    /* lima */
-  --obra-bg: #121211;           /* carbón */
-  --obra-ink: #ECE8E1;          /* marfil */
+  --eventos-bg: #07120D;
+  --eventos-accent: #C6F432;
+  --obra-bg: #121211;
+  --obra-ink: #ECE8E1;
   --obra-muted: #9A958C;
 
-  /* ---------- Espacio y forma ---------- */
-  --gutter: clamp(16px, 4vw, 56px);          /* margen lateral de página */
-  --section-y: clamp(64px, 8vw, 120px);      /* padding vertical de sección */
-  --gap-photo: 12px;                         /* separación entre fotos */
-  --radius-pill: 999px;                      /* solo botones; fotos SIN radio */
-  --tap: 44px;                               /* objetivo táctil mínimo */
+  --gutter: clamp(16px, 4vw, 56px);
+  --section-y: clamp(64px, 8vw, 120px);
+  --gap-photo: 12px;
+  --radius-pill: 999px;
+  --tap: 44px;
   --button-h: 48px;
+  --header-h: 72px;
 }

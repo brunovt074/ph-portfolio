@@ -1,6 +1,6 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
-import ObraHeader from '@/components/ObraHeader.astro';
+import Header from '@/components/Header.astro';
 import AboutWork from '@/components/obra/AboutWork.astro';
 import ObraIntro from '@/components/obra/ObraIntro.astro';
 import OpeningFigure from '@/components/obra/OpeningFigure.astro';
@@ -17,7 +17,7 @@ const { obra, series, settings } = await new GetObraPage(contentRepository).exec
   description="Obra personal de Lara Vischi: series fotográficas, una bitácora del paso del tiempo y copias de autor en edición limitada."
   theme="obra"
 >
-  <ObraHeader slot="header" />
+  <Header slot="header" variant="obra" />
   <OpeningFigure opening={obra.opening} />
   <ObraIntro quote={obra.quote} />
   <SeriesIndex title={obra.seriesTitle} series={series} />
@@ -25,7 +25,7 @@ const { obra, series, settings } = await new GetObraPage(contentRepository).exec
   <PrintsTeaser teaser={obra.printsTeaser} />
   <FooterNav
     slot="footer"
-    previous={{ label: 'Eventos', href: '/eventos' }}
+    previous={{ label: 'Encargos', href: '/#encargos' }}
     next={{ label: 'Copias de autor', href: '/obra/copias' }}
     settings={settings}
     logoVariant="obra"

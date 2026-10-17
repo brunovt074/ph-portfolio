@@ -1,0 +1,67 @@
+---
+interface Props {
+  items: string[];
+  label: string;
+}
+
+const { items, label } = Astro.props;
+const copies = [0, 1, 2, 3];
+---
+<div class="ticker-wrap">
+  <p class="sr-only">{label}</p>
+  <div class="ticker" data-ticker aria-hidden="true">
+    <div class="ticker-track">
+      {copies.map((copy) => (
+        <ul class="ticker-sequence" aria-hidden={copy === 0 ? undefined : 'true'}>
+          {items.map((item) => (
+            <li class="ticker-item">
+              <em>{item}</em>
+              <span class="ticker-mark">✦</span>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .ticker {
+    overflow: hidden;
+    padding-block: 18px;
+    border-block: 1px solid var(--line);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+  }
+
+  .ticker-sequence {
+    display: flex;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 11;
+  }
+
+  .ticker-mark {
+    padding-inline: clamp(20px, 3vw, 40px);
+    color: var(--accent-current);
+    font-family: var(--font-body);
+    font-size: 0.6em;
+  }
+</style>

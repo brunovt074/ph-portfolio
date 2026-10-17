@@ -72,4 +72,104 @@ const sliders = await Promise.all(
     gap: clamp(32px, 5vw, 64px);
     margin-top: clamp(28px, 4vw, 56px);
   }
+
+  .sliders :global(.ba) {
+    margin: 0;
+  }
+
+  .sliders :global(.ba-frame) {
+    --knob-half: calc(var(--tap) / 2);
+    position: relative;
+    max-width: min(100%, 45rem);
+    margin-inline: auto;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .sliders :global(.ba-image) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .sliders :global(.ba-before) {
+    clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+  }
+
+  .sliders :global(.ba-provisional) {
+    filter: saturate(0.35) contrast(0.82) brightness(1.06);
+  }
+
+  .sliders :global(.ba-label) {
+    position: absolute;
+    top: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--door-label-bg);
+    color: var(--paper);
+    pointer-events: none;
+  }
+
+  .sliders :global(.ba-label-before) {
+    left: 0.75rem;
+  }
+
+  .sliders :global(.ba-label-after) {
+    right: 0.75rem;
+  }
+
+  .sliders :global(.ba-divider) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 0.125rem;
+    margin-left: -0.0625rem;
+    background: var(--paper);
+    pointer-events: none;
+  }
+
+  .sliders :global(.ba-knob) {
+    position: absolute;
+    top: 50%;
+    left: clamp(var(--knob-half), var(--pos), calc(100% - var(--knob-half)));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tap);
+    height: var(--tap);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: var(--text-lead);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .sliders :global(.ba-frame:has(input:focus-visible) .ba-knob) {
+    outline: 2px solid var(--accent-current);
+    outline-offset: 3px;
+  }
+
+  .sliders :global(.ba-range) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+
+  .sliders :global(.ba-note) {
+    max-width: min(100%, 45rem);
+    margin: 0.75rem auto 0;
+    color: var(--fg-muted);
+    font-size: var(--text-small);
+    text-align: center;
+  }
 </style>

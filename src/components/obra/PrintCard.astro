@@ -17,7 +17,7 @@ const edition = editionLabel
 const inquiryHref = `/?tipo=copia&copia=${encodeURIComponent(title)}#contacto`;
 ---
 <article class="print-card" data-reveal="darkroom">
-  <PassepartoutPhoto photo={print.photo} sizes="(min-width: 700px) 340px, 100vw" />
+  <PassepartoutPhoto photo={print.photo} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" />
   <div class="print-body">
     <h2 class="t-h3"><em>{title}</em></h2>
     <p class="t-eyebrow">Serie {print.series.number} · {print.series.title}</p>

@@ -3,29 +3,22 @@ import '@fontsource-variable/bodoni-moda/opsz.css';
 import '@fontsource-variable/bodoni-moda/opsz-italic.css';
 import '@fontsource-variable/archivo/index.css';
 import '@/styles/global.css';
-import bodoniLatin from '../../node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url';
-import tokensSource from '@/styles/tokens.css?raw';
+import bodoniLatin from '@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url';
+import { themeColors } from '@/styles/themeColors';
+import type { ThemeName } from '@/styles/themeColors';
 import SkipLink from '@/components/SkipLink.astro';
 
 interface Props {
   title: string;
   description: string;
-  theme: 'ink' | 'paper' | 'sand' | 'eventos' | 'obra';
+  theme: ThemeName;
   ogImage?: string;
   home?: boolean;
 }
 
 const { title, description, theme, ogImage, home = false } = Astro.props;
 
-const themeToken: Record<Props['theme'], string> = {
-  ink: 'ink',
-  paper: 'paper',
-  sand: 'sand',
-  eventos: 'eventos-bg',
-  obra: 'obra-bg',
-};
-
-const themeColor = new RegExp(`--${themeToken[theme]}:\\s*(#[0-9A-Fa-f]{6})`).exec(tokensSource)?.[1];
+const themeColor = themeColors[theme];
 
 const fullTitle = home ? title : `${title} — Lara Vischi`;
 ---
@@ -47,7 +40,7 @@ const fullTitle = home ? title : `${title} — Lara Vischi`;
   <body data-theme={theme}>
     <SkipLink />
     <slot name="header" />
-    <main id="contenido">
+    <main id="contenido" tabindex="-1">
       <slot />
     </main>
     <slot name="footer" />

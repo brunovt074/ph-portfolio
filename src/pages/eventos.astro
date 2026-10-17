@@ -1,11 +1,11 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
+import Ticker from '@/components/Ticker.astro';
 import CtaBand from '@/components/facet/CtaBand.astro';
 import DenseGallery from '@/components/facet/DenseGallery.astro';
 import FacetIntro from '@/components/facet/FacetIntro.astro';
 import ServiceColumns from '@/components/facet/ServiceColumns.astro';
-import TickerBand from '@/components/facet/TickerBand.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetFacetPage } from '@/application/GetFacetPage';
 import { contentRepository } from '@/infrastructure/container';
@@ -25,7 +25,7 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
     <DenseGallery photos={facet.gallery} />
   </section>
   <div class="events-ticker">
-    <TickerBand words={tickerWords} />
+    <Ticker items={tickerWords} label={tickerWords.join(', ')} />
   </div>
   <ServiceColumns title="Servicios" services={facet.services} numerals="roman" />
   <CtaBand title={facet.ctaText} buttonLabel={facet.ctaButton} href={contactHref} theme="lime" />

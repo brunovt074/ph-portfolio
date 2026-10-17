@@ -1,6 +1,6 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
-import ObraHeader from '@/components/ObraHeader.astro';
+import Header from '@/components/Header.astro';
 import RichText from '@/components/RichText.astro';
 import PrintCard from '@/components/obra/PrintCard.astro';
 import PrintInfoBand from '@/components/obra/PrintInfoBand.astro';
@@ -11,7 +11,7 @@ import { contentRepository } from '@/infrastructure/container';
 const { prints, content, settings } = await new GetPrintsPage(contentRepository).execute();
 ---
 <BaseLayout title="Copias de autor" description={content.lead} theme="obra">
-  <ObraHeader slot="header" current="/obra/copias" />
+  <Header slot="header" variant="obra" current="copias" />
   <section class="prints-intro container">
     <h1 class="t-display" data-split><RichText title={content.title} /></h1>
     <p class="t-lead">{content.lead}</p>

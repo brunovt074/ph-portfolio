@@ -16,11 +16,11 @@ const tipoByQuery: Record<string, string> = {
 ---
 <form class="contact-form" method="post" action="/api/contacto" data-contact-form data-tipos={JSON.stringify(tipoByQuery)}>
   <div class="field">
-    <label class="t-eyebrow" for="contacto-nombre">Nombre</label>
+    <label class="t-eyebrow" for="contacto-nombre">Nombre<span aria-hidden="true"> *</span></label>
     <input id="contacto-nombre" name="nombre" type="text" required autocomplete="name" />
   </div>
   <div class="field">
-    <label class="t-eyebrow" for="contacto-email">Email</label>
+    <label class="t-eyebrow" for="contacto-email">Email<span aria-hidden="true"> *</span></label>
     <input id="contacto-email" name="email" type="email" required autocomplete="email" />
   </div>
   <div class="field">
@@ -31,11 +31,12 @@ const tipoByQuery: Record<string, string> = {
     </select>
   </div>
   <div class="field">
-    <label class="t-eyebrow" for="contacto-mensaje">Mensaje</label>
+    <label class="t-eyebrow" for="contacto-mensaje">Mensaje<span aria-hidden="true"> *</span></label>
     <textarea id="contacto-mensaje" name="mensaje" rows="5" required></textarea>
   </div>
   <input type="hidden" name="copia" value="" />
   <div>
+    <p class="required-note">* Campos obligatorios</p>
     <Button type="submit" variant="primary">Enviar consulta</Button>
   </div>
 </form>
@@ -45,6 +46,13 @@ const tipoByQuery: Record<string, string> = {
     display: flex;
     flex-direction: column;
     gap: clamp(20px, 2.5vw, 32px);
+  }
+
+  .required-note {
+    margin: 0;
+    font-size: 13px;
+    color: var(--fg-muted);
+    margin-bottom: 12px;
   }
 
   .field {

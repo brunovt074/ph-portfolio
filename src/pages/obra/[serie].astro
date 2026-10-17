@@ -1,6 +1,6 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
-import ObraHeader from '@/components/ObraHeader.astro';
+import Header from '@/components/Header.astro';
 import RichText from '@/components/RichText.astro';
 import SeriesNav from '@/components/obra/SeriesNav.astro';
 import SeriesPrintsBand from '@/components/obra/SeriesPrintsBand.astro';
@@ -22,7 +22,7 @@ const settings = await contentRepository.getSettings();
 const screens = new BuildSeriesSequence().execute(series.photos);
 ---
 <BaseLayout title={series.title} description={series.curatorialLine} theme="obra">
-  <ObraHeader slot="header" />
+  <Header slot="header" variant="obra" />
   <section class="series-intro container">
     <p class="t-eyebrow">Serie {series.number} · {series.photos.length} fotografías · {series.years}</p>
     <h1 class="t-display" data-split><RichText title={series.displayTitle} /></h1>

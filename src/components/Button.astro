@@ -2,14 +2,13 @@
 interface Props {
   href?: string;
   variant?: 'primary' | 'secondary';
-  size?: 'md';
   type?: 'button' | 'submit';
   class?: string;
 }
 
-const { href, variant = 'primary', size = 'md', type = 'button', class: className } = Astro.props;
+const { href, variant = 'primary', type = 'button', class: className } = Astro.props;
 const external = href?.startsWith('http') ?? false;
-const classes = ['button', `button-${variant}`, `button-${size}`, className];
+const classes = ['button', `button-${variant}`, className];
 ---
 {href ? (
   <a class:list={classes} href={href} {...(external ? { target: '_blank', rel: 'noopener' } : {})}>

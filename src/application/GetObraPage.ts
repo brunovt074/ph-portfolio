@@ -1,13 +1,5 @@
 import type { ContentRepository } from '@/domain/ContentRepository';
-import type { ObraContent } from '@/domain/ObraContent';
-import type { Series } from '@/domain/Series';
-import type { SiteSettings } from '@/domain/SiteSettings';
-
-export interface ObraPageData {
-  obra: ObraContent;
-  series: Series[];
-  settings: SiteSettings;
-}
+import type { ObraPageData } from './results/ObraPageData';
 
 export class GetObraPage {
   constructor(private readonly repository: ContentRepository) {}

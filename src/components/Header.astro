@@ -1,39 +1,44 @@
 ---
-import type { FacetSlug } from '@/domain/FacetSlug';
-import type { NavLink } from '@/domain/NavLink';
 import Button from './Button.astro';
 import Logo from './Logo.astro';
 import MobileMenu from './MobileMenu.astro';
+import { navigationLinks } from './navigationLinks';
+import type { HeaderVariant } from './navigationLinks';
 
 interface Props {
-  current?: FacetSlug | 'obra' | 'home';
+  variant?: HeaderVariant;
+  current?: string;
   ctaLabel?: string;
   ctaHref?: string;
 }
 
-const { current = 'home', ctaLabel = 'Reservar sesión', ctaHref = '/#contacto' } = Astro.props;
+const { variant = 'site', current = 'home', ctaLabel, ctaHref } = Astro.props;
 
-const links: (NavLink & { key: string })[] = [
-  { key: 'editorial', label: 'Editorial', href: '/editorial' },
-  { key: 'retratos', label: 'Retratos', href: '/retratos' },
-  { key: 'marcas', label: 'Marcas', href: '/marcas' },
-  { key: 'eventos', label: 'Eventos', href: '/eventos' },
-  { key: 'obra', label: 'Obra', href: '/obra' },
-];
+const links = navigationLinks(variant);
+const resolvedCtaLabel = ctaLabel ?? (variant === 'site' ? 'Reservar sesión' : undefined);
+const resolvedCtaHref = ctaHref ?? (variant === 'site' ? '/#contacto' : undefined);
+const cta = resolvedCtaLabel && resolvedCtaHref ? { label: resolvedCtaLabel, href: resolvedCtaHref } : undefined;
 const currentHref = links.find((link) => link.key === current)?.href;
+const navLabel = variant === 'obra' ? 'Obra' : 'Principal';
 ---
 <header class="site-header">
   <div class="container site-header-row">
-    <Logo />
-    <nav class="site-nav" aria-label="Principal">
+    <Logo variant={variant === 'obra' ? 'obra' : 'default'} />
+    <nav class="site-nav" aria-label={navLabel}>
       {links.map((link) => (
-        <a class="t-nav site-nav-link" href={link.href} aria-current={link.key === current ? 'page' : undefined}>
-          {link.label}
+        <a
+          class:list={['t-nav', 'site-nav-link', link.muted && 'site-nav-muted']}
+          href={link.href}
+          aria-current={link.key === current ? 'page' : undefined}
+        >
+          {link.label}{link.muted && <span aria-hidden="true"> ↗</span>}
         </a>
       ))}
     </nav>
-    <MobileMenu links={links} ctaLabel={ctaLabel} ctaHref={ctaHref} current={currentHref} />
-    <Button class="header-cta" href={ctaHref} variant="primary">{ctaLabel}</Button>
+    <div class="header-actions">
+      <MobileMenu links={links} {...(cta ? { ctaLabel: cta.label, ctaHref: cta.href } : {})} current={currentHref} />
+      {cta && <Button class="header-cta" href={cta.href} variant="primary">{cta.label}</Button>}
+    </div>
   </div>
 </header>
 
@@ -44,13 +49,13 @@ const currentHref = links.find((link) => link.key === current)?.href;
     align-items: center;
     justify-content: space-between;
     gap: 0 24px;
-    min-height: 72px;
+    min-height: var(--header-h);
   }
 
   .site-nav {
     display: flex;
     gap: 4px;
-    order: 4;
+    order: 3;
     flex-basis: 100%;
     overflow-x: auto;
     scrollbar-width: none;
@@ -58,6 +63,11 @@ const currentHref = links.find((link) => link.key === current)?.href;
 
   .site-nav::-webkit-scrollbar {
     display: none;
+  }
+
+  :global(html:not(.js)) .site-nav {
+    flex-wrap: wrap;
+    overflow: visible;
   }
 
   .site-nav-link {
@@ -70,16 +80,20 @@ const currentHref = links.find((link) => link.key === current)?.href;
     white-space: nowrap;
   }
 
+  .site-nav-muted {
+    color: var(--fg-muted);
+  }
+
   .site-nav-link[aria-current='page'] {
     color: var(--accent-current);
   }
 
-  :global(.mobile-menu) {
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px 16px;
+    margin-left: auto;
     order: 2;
-  }
-
-  :global(.header-cta) {
-    order: 3;
   }
 
   @media (min-width: 900px) {
@@ -87,6 +101,10 @@ const currentHref = links.find((link) => link.key === current)?.href;
       order: 2;
       flex-basis: auto;
       overflow: visible;
+    }
+
+    .header-actions {
+      order: 3;
     }
   }
 

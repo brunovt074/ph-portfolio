@@ -1,9 +1,9 @@
 ---
-import type { NavLink } from '@/domain/NavLink';
 import Button from './Button.astro';
+import type { HeaderLink } from './HeaderLink';
 
 interface Props {
-  links: NavLink[];
+  links: HeaderLink[];
   ctaLabel?: string;
   ctaHref?: string;
   current?: string | undefined;
@@ -15,14 +15,14 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
   <button type="button" class="t-nav mobile-menu-trigger" aria-expanded="false" aria-controls="mobile-menu-panel" data-menu-open>
     Menú
   </button>
-  <div id="mobile-menu-panel" class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Menú principal" hidden data-menu-panel>
+  <div id="mobile-menu-panel" class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Menú" hidden data-menu-panel>
     <div class="mobile-menu-bar container">
       <button type="button" class="t-nav mobile-menu-close" data-menu-close>Cerrar</button>
     </div>
-    <nav class="mobile-menu-links container" aria-label="Menú principal">
+    <nav class="mobile-menu-links container" aria-label="Secciones">
       {links.map((link) => (
         <a class="t-h2" href={link.href} aria-current={current === link.href ? 'page' : undefined} data-menu-link>
-          {link.label}
+          {link.label}{link.muted && <span aria-hidden="true"> ↗</span>}
         </a>
       ))}
       {ctaLabel && ctaHref && <Button href={ctaHref} variant="primary">{ctaLabel}</Button>}
@@ -63,7 +63,7 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    min-height: 72px;
+    min-height: var(--header-h);
   }
 
   .mobile-menu-links {

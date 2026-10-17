@@ -11,12 +11,13 @@ interface Props {
 }
 
 const { previous, next, settings, logoVariant = 'default' } = Astro.props;
+const hasPager = Boolean(previous || next);
 const year = new Date().getFullYear();
 const profile = (account: string) => `https://instagram.com/${account.replace(/^@/, '')}`;
 ---
 <footer class="site-footer section">
   <div class="container">
-    {(previous || next) && (
+    {hasPager && (
       <nav class="footer-pager" aria-label="Navegación entre secciones">
         {previous ? (
           <a class="footer-link" href={previous.href} rel="prev">
@@ -34,12 +35,14 @@ const profile = (account: string) => `https://instagram.com/${account.replace(/^
         )}
       </nav>
     )}
-    <div class="footer-meta">
+    <div class:list={['footer-meta', !hasPager && 'footer-meta-bare']}>
       <Logo variant={logoVariant} />
       <ul class="footer-social">
         {settings.instagram.map((account) => (
           <li>
-            <a class="footer-social-link" href={profile(account)} target="_blank" rel="noopener">{account}</a>
+            <a class="footer-social-link" href={profile(account)} target="_blank" rel="noopener noreferrer">
+              {account}<span class="sr-only"> (Instagram, se abre en una pestaña nueva)</span>
+            </a>
           </li>
         ))}
       </ul>
@@ -79,6 +82,10 @@ const profile = (account: string) => `https://instagram.com/${account.replace(/^
     justify-content: space-between;
     gap: 16px 32px;
     padding-top: 32px;
+  }
+
+  .footer-meta-bare {
+    padding-top: 0;
   }
 
   .footer-social {

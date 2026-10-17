@@ -1,22 +1,36 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const routes = ['/', '/editorial', '/retratos', '/marcas', '/eventos', '/obra', '/obra/oficios', '/obra/geometrias', '/obra/copias'];
+const routes = [
+  { path: '/', status: 200 },
+  { path: '/editorial', status: 200 },
+  { path: '/retratos', status: 200 },
+  { path: '/marcas', status: 200 },
+  { path: '/eventos', status: 200 },
+  { path: '/obra', status: 200 },
+  { path: '/obra/oficios', status: 200 },
+  { path: '/obra/geometrias', status: 200 },
+  { path: '/obra/lo-que-queda', status: 200 },
+  { path: '/obra/viajes-en-color', status: 200 },
+  { path: '/obra/copias', status: 200 },
+  { path: '/ruta-inexistente', status: 404 },
+];
 
 const screenshotName = (route: string): string => (route === '/' ? 'index' : route.slice(1).replaceAll('/', '-'));
 
-for (const route of routes) {
+for (const { path: route, status } of routes) {
   test(`smoke ${route}`, async ({ page }, testInfo) => {
     const consoleErrors: string[] = [];
     page.on('console', (message) => {
-      if (message.type() === 'error') {
+      const isExpectedNotFound = status === 404 && message.text().includes('status of 404');
+      if (message.type() === 'error' && !isExpectedNotFound) {
         consoleErrors.push(message.text());
       }
     });
     page.on('pageerror', (error) => consoleErrors.push(error.message));
 
     const response = await page.goto(route, { waitUntil: 'load' });
-    expect(response?.status()).toBe(200);
+    expect(response?.status()).toBe(status);
     await expect(page.locator('h1')).toHaveCount(1);
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);

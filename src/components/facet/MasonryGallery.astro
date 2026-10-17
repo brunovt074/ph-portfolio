@@ -1,35 +1,130 @@
 ---
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
   photos: PhotoModel[];
 }
 
 const { photos } = Astro.props;
+
+const FALLBACK_ASPECT = 1.25;
+
+const aspectOf = (photo: PhotoModel) => {
+  if (photo.asset.provider !== 'local') return FALLBACK_ASPECT;
+  const { image } = resolveLocalPhoto(photo.asset.ref);
+  return image.height / image.width;
+};
+
+const EXHAUSTIVE_LIMIT = 4_000_000;
+
+const aspects = photos.map(aspectOf);
+
+const greedyAssignment = (columnCount: number) => {
+  const heights: number[] = Array.from({ length: columnCount }, () => 0);
+  return aspects.map((aspect) => {
+    const target = heights.indexOf(Math.min(...heights));
+    heights[target] = (heights[target] ?? 0) + aspect;
+    return target;
+  });
+};
+
+const spreadOf = (assignment: number[], columnCount: number) => {
+  const heights: number[] = Array.from({ length: columnCount }, () => 0);
+  assignment.forEach((target, index) => {
+    heights[target] = (heights[target] ?? 0) + (aspects[index] ?? 0);
+  });
+  return Math.max(...heights) - Math.min(...heights);
+};
+
+const bestAssignment = (columnCount: number) => {
+  let best = greedyAssignment(columnCount);
+  if (columnCount ** Math.max(photos.length - 1, 0) > EXHAUSTIVE_LIMIT) return best;
+  let bestSpread = spreadOf(best, columnCount);
+  const current: number[] = [];
+  const search = (index: number) => {
+    if (index === photos.length) {
+      const spread = spreadOf(current, columnCount);
+      if (spread < bestSpread) {
+        bestSpread = spread;
+        best = [...current];
+      }
+      return;
+    }
+    const lastColumn = index === 0 ? 1 : columnCount;
+    for (let column = 0; column < lastColumn; column++) {
+      current[index] = column;
+      search(index + 1);
+    }
+  };
+  search(0);
+  return best;
+};
+
+const distribute = (columnCount: number) => {
+  const assignment = bestAssignment(columnCount);
+  const columns: PhotoModel[][] = Array.from({ length: columnCount }, () => []);
+  photos.forEach((photo, index) => columns[assignment[index] ?? 0]?.push(photo));
+  return columns;
+};
+
+const layouts = [
+  { name: 'wide', columns: distribute(3), sizes: '(min-width: 900px) 33vw, 100vw' },
+  { name: 'narrow', columns: distribute(2), sizes: '(min-width: 600px) 50vw, 50vw' },
+];
 ---
 <h2 class="sr-only">Galería</h2>
-<div class="masonry">
-  {photos.map((photo) => (
-    <figure class="masonry-item" data-reveal>
-      <Photo photo={photo} sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw" />
-    </figure>
+<div class="gallery-track">
+  {layouts.map((layout) => (
+    <div class={`masonry-cols masonry-${layout.name}`}>
+      {layout.columns.map((column) => (
+        <div class="masonry-col">
+          {column.map((photo) => (
+            <figure class="masonry-item" data-reveal>
+              <Photo photo={photo} sizes={layout.sizes} />
+            </figure>
+          ))}
+        </div>
+      ))}
+    </div>
   ))}
 </div>
 
 <style>
-  .masonry {
-    columns: 3 280px;
-    column-gap: var(--gap-photo);
+  .masonry-cols {
+    display: flex;
+    gap: var(--gap-photo);
+  }
+
+  .masonry-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-photo);
   }
 
   .masonry-item {
-    margin: 0 0 var(--gap-photo);
-    break-inside: avoid;
+    margin: 0;
   }
 
   .masonry-item :global(img) {
     width: 100%;
     height: auto;
+  }
+
+  .masonry-wide {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .masonry-wide {
+      display: flex;
+    }
+
+    .masonry-narrow {
+      display: none;
+    }
   }
 </style>

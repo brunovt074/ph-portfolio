@@ -13,13 +13,17 @@ const { series, screens } = Astro.props;
 <div data-sequence data-total={series.photos.length} data-number={series.number}>
   {screens.map((screen) => {
     if (screen.kind === 'pair') {
+      const pairs = [
+        { entry: screen.items[0], position: screen.positions[0] },
+        { entry: screen.items[1], position: screen.positions[1] },
+      ];
       return (
         <section class="screen screen-pair container" data-layout="pair">
-          {screen.items.map((entry, index) => (
+          {pairs.map(({ entry, position }) => (
             <SequenceFigure
               series={series}
               entry={entry}
-              position={screen.positions[index] as number}
+              position={position}
               layout="pair"
               sizes="(min-width: 768px) 46vw, 100vw"
             />

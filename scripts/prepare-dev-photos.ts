@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, statSync, writeFileSync, readFileSync } from 'no
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+import { MissingImageDimensionsError } from './MissingImageDimensionsError';
 
 interface SeedPhoto {
   id: string;
@@ -63,13 +64,21 @@ const isFresh = (source: string, target: string): boolean =>
 const readExistingLqip = (): Record<string, Lqip> =>
   existsSync(lqipPath) ? (JSON.parse(readFileSync(lqipPath, 'utf8')) as Record<string, Lqip>) : {};
 
+const readDimensions = async (file: string): Promise<{ width: number; height: number }> => {
+  const { width, height } = await sharp(file).metadata();
+  if (!width || !height) {
+    throw new MissingImageDimensionsError(file);
+  }
+  return { width, height };
+};
+
 const buildLqip = async (file: string): Promise<Lqip> => {
-  const metadata = await sharp(file).metadata();
+  const { width, height } = await readDimensions(file);
   const buffer = await sharp(file).resize(24).blur().webp({ quality: 40 }).toBuffer();
   return {
     lqip: `data:image/webp;base64,${buffer.toString('base64')}`,
-    width: metadata.width ?? 0,
-    height: metadata.height ?? 0,
+    width,
+    height,
   };
 };
 
@@ -79,8 +88,8 @@ const processSource = async (source: Source): Promise<void> => {
   if (source.crop) {
     pipeline = pipeline.extract(source.crop);
   } else if (source.kind === 'alta') {
-    const { width, height } = await sharp(source.path).metadata();
-    pipeline = pipeline.extract(highCrop(source.id, width ?? 0, height ?? 0));
+    const { width, height } = await readDimensions(source.path);
+    pipeline = pipeline.extract(highCrop(source.id, width, height));
   }
   await pipeline.toColourspace('srgb').jpeg({ quality: 90, mozjpeg: true }).toFile(target);
 };

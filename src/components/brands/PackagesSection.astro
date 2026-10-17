@@ -23,9 +23,15 @@ const ordered = [...packages].sort((a, b) => a.order - b.order);
 <style>
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: clamp(16px, 2vw, 24px);
-    align-items: stretch;
     margin-top: clamp(28px, 4vw, 56px);
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: 0;
+    }
   }
 </style>

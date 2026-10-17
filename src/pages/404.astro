@@ -1,15 +1,71 @@
 ---
 import Button from '@/components/Button.astro';
+import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { contentRepository } from '@/infrastructure/container';
+
+const settings = await new GetSiteSettings(contentRepository).execute();
+const exits = [
+  { label: 'Inicio', href: '/' },
+  { label: 'Editorial', href: '/editorial' },
+  { label: 'Retratos', href: '/retratos' },
+  { label: 'Marcas', href: '/marcas' },
+  { label: 'Eventos', href: '/eventos' },
+  { label: 'Obra', href: '/obra' },
+];
 ---
 <BaseLayout title="Página no encontrada" description="Esta página no existe." theme="ink">
   <Header slot="header" />
   <section class="section">
-    <div class="container">
-      <h1 class="t-display">Esta página no existe</h1>
+    <div class="container not-found">
+      <h1 class="t-display" data-split>Esta página no existe</h1>
       <p class="t-lead">Puede que el enlace haya cambiado. Volvé al inicio y seguí desde ahí.</p>
-      <Button href="/" variant="secondary">Volver al inicio</Button>
+      <nav aria-label="Salidas">
+        <ul class="not-found-exits">
+          {exits.map((exit) => (
+            <li><a class="t-h3 not-found-exit" href={exit.href}>{exit.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+      <div>
+        <Button href="/" variant="secondary">Volver al inicio</Button>
+      </div>
     </div>
   </section>
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
 </BaseLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(24px, 3vw, 40px);
+  }
+
+  .not-found-exits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px clamp(20px, 3vw, 40px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .not-found-exit {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (hover: hover) {
+    .not-found-exit:hover {
+      color: var(--accent-current);
+    }
+  }
+</style>
