@@ -24,6 +24,7 @@ Copiá `.env.example` a `.env` y completá:
 | `CONTACT_TO_EMAIL` | Casilla de Sarah donde llegan las consultas. |
 | `CONTACT_FROM_EMAIL` | Remitente verificado en Resend, por ejemplo `Sitio Sarah Moreau <contacto@tu-dominio.com>`. |
 | `CONTACT_DELIVERY_MODE` | `console` escribe las consultas en el log del servidor en lugar de enviarlas (pruebas locales y e2e). Dejarla vacía en producción. |
+| `TRUST_PROXY` | `true` si el sitio corre detrás de un proxy de confianza (hosting con balanceador): el límite de envíos usa la primera IP de `x-forwarded-for`. Vacía = usa la IP de la conexión. No la actives si el servidor es accesible directamente, porque cualquiera podría falsear ese encabezado. El formulario admite 5 envíos cada 10 minutos por IP. |
 
 En el hosting definí `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SITE_URL` y las variables de email (nunca el token de escritura de Sanity).
 

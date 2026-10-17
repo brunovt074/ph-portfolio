@@ -1,4 +1,5 @@
 ---
+import Arrow from '@/components/Arrow.astro';
 import { getImage } from 'astro:assets';
 import Photo from '@/components/Photo.astro';
 import type { Facet } from '@/domain/Facet';
@@ -32,7 +33,7 @@ const number = String(facet.number).padStart(2, '0');
         <Photo class="index-thumb" photo={{ ...photo, alt: '' }} ratio="3/4" sizes="88px" />
       ))}
     </span>
-    <span class="t-h3 index-arrow" aria-hidden="true">→</span>
+    <span class="t-h3 index-arrow" aria-hidden="true"><Arrow direction="right" /></span>
   </a>
 </li>
 

@@ -1,4 +1,5 @@
 ---
+import Arrow from '@/components/Arrow.astro';
 import Button from './Button.astro';
 import type { HeaderLink } from './HeaderLink';
 
@@ -22,7 +23,7 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
     <nav class="mobile-menu-links container" aria-label="Secciones">
       {links.map((link, index) => (
         <a class="t-h2" style={`--i: ${index}`} href={link.href} aria-current={current === link.href ? 'page' : undefined} data-menu-link>
-          {link.label}{link.muted && <span aria-hidden="true"> ↗</span>}
+          {link.label}{link.muted && <Arrow direction="up-right" />}
         </a>
       ))}
       {ctaLabel && ctaHref && <span class="mobile-menu-cta" style={`--i: ${links.length}`}><Button href={ctaHref} variant="primary">{ctaLabel}</Button></span>}

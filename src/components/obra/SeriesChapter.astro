@@ -1,4 +1,5 @@
 ---
+import Arrow from '@/components/Arrow.astro';
 import Photo from '@/components/Photo.astro';
 import RichText from '@/components/RichText.astro';
 import type { Series } from '@/domain/Series';
@@ -21,7 +22,7 @@ const reversed = index % 2 === 1;
     <p class="t-lead">{series.curatorialLine}</p>
     <a class="t-nav chapter-link" href={`/obra/${series.slug}`}>
       <span>Ver serie<span class="sr-only"> {series.title}</span></span>
-      <span class="chapter-arrow" aria-hidden="true">→</span>
+      <span class="chapter-arrow" aria-hidden="true"><Arrow direction="right" /></span>
     </a>
   </div>
   <div class="chapter-photos">

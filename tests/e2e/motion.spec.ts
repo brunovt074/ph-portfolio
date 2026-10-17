@@ -88,28 +88,29 @@ test('editorial gallery pins and moves sideways on wide screens only', async ({ 
   test.skip(!wide && !narrow, 'pin is verified at 1440 and 375');
 
   await page.goto('/editorial');
-  await page.waitForTimeout(1200);
   const section = page.locator('[data-gallery="horizontal"]');
+  const pinned = page.locator('.pin-spacer > [data-gallery="horizontal"]');
 
   if (narrow) {
+    await page.waitForLoadState('load');
     await expect(section).not.toHaveClass(/is-horizontal/);
+    await expect(pinned).toHaveCount(0);
     expect(await trackShift(page)).toBe(0);
     return;
   }
 
   await expect(section).toHaveClass(/is-horizontal/);
+  await expect(pinned).toBeAttached();
   await section.evaluate((element) => element.scrollIntoView({ behavior: 'instant' }));
-  await page.evaluate(() => window.scrollBy(0, 500));
-  await page.waitForTimeout(1500);
-  const first = await trackShift(page);
-  const top = await section.evaluate((element) => Math.round(element.getBoundingClientRect().top));
-  await page.evaluate(() => window.scrollBy(0, 700));
-  await page.waitForTimeout(1500);
-  const second = await trackShift(page);
+  await page.mouse.move(720, 450);
 
-  expect(first).toBeLessThan(0);
-  expect(second).toBeLessThan(first);
-  expect(top).toBe(0);
+  await page.mouse.wheel(0, 500);
+  await expect.poll(() => trackShift(page)).toBeLessThan(0);
+  const first = await trackShift(page);
+
+  await page.mouse.wheel(0, 700);
+  await expect.poll(() => trackShift(page)).toBeLessThan(first);
+  await expect.poll(() => section.evaluate((element) => Math.abs(Math.round(element.getBoundingClientRect().top)))).toBe(0);
 });
 
 test('lightbox opens from a photo, closes with Escape and returns focus', async ({ page }) => {

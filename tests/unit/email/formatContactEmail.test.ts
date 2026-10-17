@@ -18,6 +18,12 @@ describe('formatContactEmail', () => {
     expect(formatContactEmail({ ...base, type: '' }).subject).toBe('Nueva consulta: Consulta general — Sofía Paredes');
   });
 
+  it('keeps the subject on one line when the visitor tries to inject a header', () => {
+    const subject = formatContactEmail({ ...base, type: 'A\r\nBcc: x@y.com', name: 'Sofía\nParedes' }).subject;
+
+    expect(subject).toBe('Nueva consulta: A Bcc: x@y.com — Sofía Paredes');
+  });
+
   it('mentions the print a collector asked about', () => {
     expect(formatContactEmail({ ...base, type: 'Copia de autor', copy: 'Sin título 03' }).text).toContain('Copia consultada: Sin título 03');
   });

@@ -1,6 +1,7 @@
 import type { Series } from '@/domain/Series';
 import type { SeriesPhoto } from '@/domain/SeriesPhoto';
 import type { SanitySeriesDocument } from '../documents/SanitySeriesDocument';
+import { hasImageAsset } from './hasImageAsset';
 import { seriesLayouts } from './seriesLayouts';
 import { toPhoto } from './toPhoto';
 import { toRichTitle } from './toRichTitle';
@@ -8,7 +9,7 @@ import { toRichTitle } from './toRichTitle';
 const toSeriesPhotos = (entries: NonNullable<SanitySeriesDocument['fotos']>): SeriesPhoto[] =>
   entries.flatMap((entry) => {
     const layout = seriesLayouts[entry.layout];
-    return entry.foto === null || layout === undefined ? [] : [{ photo: toPhoto(entry.foto), layout }];
+    return entry.foto === null || !hasImageAsset(entry.foto) || layout === undefined ? [] : [{ photo: toPhoto(entry.foto), layout }];
   });
 
 export const toSeries = (document: SanitySeriesDocument): Series => ({

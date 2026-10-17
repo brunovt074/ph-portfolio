@@ -1,4 +1,5 @@
 import { actions, isInputError } from 'astro:actions';
+import { contactValidationMessages } from '@/actions/contactValidationMessages';
 import { clearFieldErrors, focusFirstInvalid, showFieldError } from './fieldErrors';
 import type { FieldName } from './FieldName';
 import { preselectContactForm } from './preselectContactForm';
@@ -25,6 +26,16 @@ const showInputErrors = (form: HTMLFormElement, fields: Record<string, string[] 
   focusFirstInvalid(form);
 };
 
+const messageFor = (error: { code: string; message: string }): string => {
+  if (error.code === 'SERVICE_UNAVAILABLE') {
+    return error.message;
+  }
+  if (error.code === 'TOO_MANY_REQUESTS') {
+    return contactValidationMessages.rateLimited;
+  }
+  return GENERIC_ERROR_MESSAGE;
+};
+
 const deliver = async (form: HTMLFormElement): Promise<void> => {
   const { error } = await actions.contact(new FormData(form));
   if (!error) {
@@ -37,7 +48,7 @@ const deliver = async (form: HTMLFormElement): Promise<void> => {
     showInputErrors(form, error.fields);
     return;
   }
-  setStatus(form, 'error', error.message || GENERIC_ERROR_MESSAGE);
+  setStatus(form, 'error', messageFor(error));
 };
 
 export const submitContactForm = async (form: HTMLFormElement): Promise<void> => {

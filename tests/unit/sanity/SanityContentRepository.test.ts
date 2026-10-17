@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import type { SanityPhotoDocument } from '@/infrastructure/sanity/documents/SanityPhotoDocument';
 import { SanityContentRepository } from '@/infrastructure/sanity/SanityContentRepository';
 import { SanityDocumentNotFoundError } from '@/infrastructure/sanity/SanityDocumentNotFoundError';
 import { aBareSanityImage, aSanityPhoto } from '../../fixtures/sanity/aSanityPhoto';
@@ -60,6 +61,15 @@ describe('SanityContentRepository', () => {
       expect(facet?.cover).toHaveLength(1);
     });
 
+    it('skips a photo whose image Sarah has not uploaded yet', async () => {
+      const unfinished = aSanityPhoto({ id: 'foto-sin-imagen', image: { asset: null } as unknown as SanityPhotoDocument['image'] });
+      const repository = repositoryWith({ facets: [aSanityFacet({ galeria: [unfinished, aSanityPhoto({ id: 'foto-rt01' })] })] });
+
+      const [facet] = await repository.getFacets();
+
+      expect(facet?.gallery.map((photo) => photo.id)).toEqual(['rt01']);
+    });
+
     it('treats a missing gallery as empty', async () => {
       const repository = repositoryWith({ facets: [aSanityFacet({ portada: null, galeria: null })] });
 
@@ -100,6 +110,14 @@ describe('SanityContentRepository', () => {
         { title: 'Retrato personal', description: 'Una sesión para vos.', price: '[PRECIO]' },
         { title: 'Marca personal' },
       ]);
+    });
+
+    it('discards a facet whose slug the site does not know', async () => {
+      const repository = repositoryWith({ facets: [aSanityFacet({ slug: 'bodas' }), aSanityFacet({ slug: 'eventos' })] });
+
+      const facets = await repository.getFacets();
+
+      expect(facets.map((facet) => facet.slug)).toEqual(['eventos']);
     });
 
     it('maps the facet texts and omits the optional quote', async () => {
@@ -223,6 +241,15 @@ describe('SanityContentRepository', () => {
       ]);
     });
 
+    it('skips a series photo whose image is still missing', async () => {
+      const unfinished = aSanityPhoto({ id: 'foto-sin-imagen', image: { asset: null } as unknown as SanityPhotoDocument['image'] });
+      const repository = repositoryWith({ series: [aSanitySeries({ fotos: [{ layout: 'centro', foto: unfinished }] })] });
+
+      const [series] = await repository.getSeries();
+
+      expect(series?.photos).toEqual([]);
+    });
+
     it('maps the curatorial data and the display title with an italic word', async () => {
       const [series] = await repositoryWith().getSeries();
 
@@ -243,6 +270,13 @@ describe('SanityContentRepository', () => {
   });
 
   describe('prints', () => {
+    it('hides a print whose photo has no image yet', async () => {
+      const unfinished = aSanityPhoto({ image: { asset: null } as unknown as SanityPhotoDocument['image'] });
+      const repository = repositoryWith({ prints: [aSanityPrint({ foto: unfinished })] });
+
+      expect(await repository.getPrints()).toEqual([]);
+    });
+
     it('maps edition, sizes and the series of a print', async () => {
       const [print] = await repositoryWith().getPrints();
 

@@ -17,6 +17,8 @@ import type { SanityPrintDocument } from './documents/SanityPrintDocument';
 import type { SanityPrintsPageDocument } from './documents/SanityPrintsPageDocument';
 import type { SanitySeriesDocument } from './documents/SanitySeriesDocument';
 import type { SanitySettingsDocument } from './documents/SanitySettingsDocument';
+import { hasImageAsset } from './mapping/hasImageAsset';
+import { isFacetSlug } from './mapping/isFacetSlug';
 import { toBrands } from './mapping/toBrands';
 import { toFacet } from './mapping/toFacet';
 import { toHome } from './mapping/toHome';
@@ -51,7 +53,7 @@ export class SanityContentRepository implements ContentRepository {
 
   async getFacets(): Promise<Facet[]> {
     const documents = await this.client.fetch<SanityFacetDocument[]>(facetsQuery);
-    return documents.map(toFacet);
+    return documents.filter((document) => isFacetSlug(document.slug)).map(toFacet);
   }
 
   async getBrands(): Promise<BrandsContent> {
@@ -78,7 +80,7 @@ export class SanityContentRepository implements ContentRepository {
 
   async getPrints(): Promise<Print[]> {
     const documents = await this.client.fetch<SanityPrintDocument[]>(printsQuery);
-    return documents.map(toPrint);
+    return documents.filter((document) => hasImageAsset(document.foto)).map(toPrint);
   }
 
   async getPrintsContent(): Promise<PrintsContent> {
