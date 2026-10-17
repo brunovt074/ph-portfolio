@@ -1,0 +1,29 @@
+---
+import FooterNav from '@/components/FooterNav.astro';
+import ObraHeader from '@/components/ObraHeader.astro';
+import RichText from '@/components/RichText.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetSeriesPage } from '@/application/GetSeriesPage';
+import { ListSeriesSlugs } from '@/application/ListSeriesSlugs';
+import { contentRepository } from '@/infrastructure/container';
+
+export async function getStaticPaths() {
+  const slugs = await new ListSeriesSlugs(contentRepository).execute();
+  return slugs.map((serie) => ({ params: { serie } }));
+}
+
+const { serie } = Astro.params;
+const { series, previous, next } = await new GetSeriesPage(contentRepository).execute(serie ?? '');
+const settings = await contentRepository.getSettings();
+---
+<BaseLayout title={series.title} description={series.curatorialLine} theme="obra">
+  <ObraHeader slot="header" />
+  <section class="section">
+    <div class="container">
+      <p class="t-eyebrow">Serie {series.number}</p>
+      <h1 class="t-display"><RichText title={series.displayTitle} /></h1>
+      <p class="t-lead">{series.curatorialLine}</p>
+    </div>
+  </section>
+  <FooterNav slot="footer" previous={previous} next={next} settings={settings} logoVariant="obra" />
+</BaseLayout>

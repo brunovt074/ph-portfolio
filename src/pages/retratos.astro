@@ -1,0 +1,21 @@
+---
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import RichText from '@/components/RichText.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetFacetPage } from '@/application/GetFacetPage';
+import { contentRepository } from '@/infrastructure/container';
+
+const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('retratos');
+---
+<BaseLayout title={facet.name} description={facet.indexDescription} theme="paper">
+  <Header slot="header" current="retratos" ctaLabel={facet.ctaButton} />
+  <section class="section">
+    <div class="container">
+      <p class="t-eyebrow">{String(facet.number).padStart(2, '0')} · {facet.name}</p>
+      <h1 class="t-display"><RichText title={facet.title} /></h1>
+      <p class="t-lead">{facet.lead}</p>
+    </div>
+  </section>
+  <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
+</BaseLayout>

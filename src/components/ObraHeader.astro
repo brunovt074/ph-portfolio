@@ -1,0 +1,91 @@
+---
+import type { NavLink } from '@/domain/NavLink';
+import Logo from './Logo.astro';
+import MobileMenu from './MobileMenu.astro';
+
+interface Props {
+  current?: string;
+}
+
+const links: NavLink[] = [
+  { label: 'Series', href: '/obra#series' },
+  { label: 'Copias de autor', href: '/obra/copias' },
+  { label: 'Sobre la obra', href: '/obra#sobre' },
+];
+const menuLinks: NavLink[] = [...links, { label: 'Encargos ↗', href: '/#encargos' }];
+const { current } = Astro.props;
+---
+<header class="obra-header">
+  <div class="container obra-header-row">
+    <Logo variant="obra" />
+    <nav class="obra-nav" aria-label="Obra">
+      {links.map((link) => (
+        <a class="t-nav obra-nav-link" href={link.href} aria-current={current === link.href ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+      <a class="t-nav obra-nav-link obra-nav-external" href="/#encargos">Encargos ↗</a>
+    </nav>
+    <MobileMenu links={menuLinks} current={current} />
+  </div>
+</header>
+
+<style>
+  .obra-header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 24px;
+    min-height: 72px;
+  }
+
+  .obra-nav {
+    display: flex;
+    gap: 4px;
+    order: 3;
+    flex-basis: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .obra-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .obra-nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding-inline: 12px;
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .obra-nav-link[aria-current='page'] {
+    color: var(--accent-current);
+  }
+
+  .obra-nav-external {
+    color: var(--fg-muted);
+  }
+
+  :global(.mobile-menu) {
+    order: 2;
+  }
+
+  @media (min-width: 900px) {
+    .obra-nav {
+      order: 2;
+      flex-basis: auto;
+      overflow: visible;
+    }
+  }
+
+  @media (max-width: 899px) {
+    :global(html.js) .obra-nav {
+      display: none;
+    }
+  }
+</style>

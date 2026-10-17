@@ -1,0 +1,10 @@
+---
+import type { RichTitle } from '@/domain/RichTitle';
+
+interface Props {
+  title: RichTitle;
+}
+
+const { title } = Astro.props;
+---
+{title.map((segment) => (segment.italic ? <em>{segment.text}</em> : segment.text))}

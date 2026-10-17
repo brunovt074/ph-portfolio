@@ -1,0 +1,74 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary';
+  size?: 'md';
+  type?: 'button' | 'submit';
+  class?: string;
+}
+
+const { href, variant = 'primary', size = 'md', type = 'button', class: className } = Astro.props;
+const external = href?.startsWith('http') ?? false;
+const classes = ['button', `button-${variant}`, `button-${size}`, className];
+---
+{href ? (
+  <a class:list={classes} href={href} {...(external ? { target: '_blank', rel: 'noopener' } : {})}>
+    <slot />
+  </a>
+) : (
+  <button class:list={classes} type={type}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--button-h);
+    padding-inline: 28px;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: var(--tracking-button);
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color 200ms,
+      color 200ms,
+      border-color 200ms;
+  }
+
+  .button-primary {
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+  }
+
+  .button-secondary {
+    background: transparent;
+    color: inherit;
+    border-color: currentColor;
+  }
+
+  @media (hover: hover) {
+    .button-primary:hover,
+    .button-secondary:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--fg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button {
+      transition: none;
+    }
+  }
+</style>

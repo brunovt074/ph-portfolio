@@ -1,0 +1,104 @@
+---
+import type { FacetSlug } from '@/domain/FacetSlug';
+import type { NavLink } from '@/domain/NavLink';
+import Button from './Button.astro';
+import Logo from './Logo.astro';
+import MobileMenu from './MobileMenu.astro';
+
+interface Props {
+  current?: FacetSlug | 'obra' | 'home';
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const { current = 'home', ctaLabel = 'Reservar sesión', ctaHref = '/#contacto' } = Astro.props;
+
+const links: (NavLink & { key: string })[] = [
+  { key: 'editorial', label: 'Editorial', href: '/editorial' },
+  { key: 'retratos', label: 'Retratos', href: '/retratos' },
+  { key: 'marcas', label: 'Marcas', href: '/marcas' },
+  { key: 'eventos', label: 'Eventos', href: '/eventos' },
+  { key: 'obra', label: 'Obra', href: '/obra' },
+];
+const currentHref = links.find((link) => link.key === current)?.href;
+---
+<header class="site-header">
+  <div class="container site-header-row">
+    <Logo />
+    <nav class="site-nav" aria-label="Principal">
+      {links.map((link) => (
+        <a class="t-nav site-nav-link" href={link.href} aria-current={link.key === current ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+    <MobileMenu links={links} ctaLabel={ctaLabel} ctaHref={ctaHref} current={currentHref} />
+    <Button class="header-cta" href={ctaHref} variant="primary">{ctaLabel}</Button>
+  </div>
+</header>
+
+<style>
+  .site-header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 24px;
+    min-height: 72px;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 4px;
+    order: 4;
+    flex-basis: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding-inline: 12px;
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-nav-link[aria-current='page'] {
+    color: var(--accent-current);
+  }
+
+  :global(.mobile-menu) {
+    order: 2;
+  }
+
+  :global(.header-cta) {
+    order: 3;
+  }
+
+  @media (min-width: 900px) {
+    .site-nav {
+      order: 2;
+      flex-basis: auto;
+      overflow: visible;
+    }
+  }
+
+  @media (max-width: 899px) {
+    :global(html.js) .site-nav {
+      display: none;
+    }
+  }
+
+  @media (max-width: 599px) {
+    :global(html.js) :global(.header-cta) {
+      display: none;
+    }
+  }
+</style>

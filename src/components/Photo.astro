@@ -1,0 +1,98 @@
+---
+import PhotoMedia from './PhotoMedia.astro';
+import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
+import type { Photo } from '@/domain/Photo';
+
+interface Props {
+  photo: Photo;
+  sizes: string;
+  ratio?: string;
+  loading?: 'lazy' | 'eager';
+  priority?: boolean;
+  class?: string;
+  transitionName?: string;
+  fit?: 'cover' | 'contain';
+}
+
+const { photo, sizes, ratio, loading = 'lazy', priority = false, class: className, transitionName, fit = 'cover' } = Astro.props;
+
+const resolved = photo.asset.provider === 'local' ? resolveLocalPhoto(photo.asset.ref) : undefined;
+const containerStyle = [
+  ratio ? `aspect-ratio: ${ratio}` : '',
+  resolved?.lqip ? `background-image: url(${resolved.lqip})` : '',
+]
+  .filter(Boolean)
+  .join('; ');
+const classes = ['photo', ratio && 'photo-ratio', className];
+---
+{transitionName ? (
+  <div class:list={classes} style={containerStyle} transition:name={transitionName}>
+    <PhotoMedia photo={photo} sizes={sizes} loading={loading} priority={priority} fit={fit} />
+  </div>
+) : (
+  <div class:list={classes} style={containerStyle}>
+    <PhotoMedia photo={photo} sizes={sizes} loading={loading} priority={priority} fit={fit} />
+  </div>
+)}
+
+<style is:global>
+  .photo {
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0;
+    box-shadow: none;
+    border: 0;
+  }
+
+  .photo picture {
+    display: contents;
+  }
+
+  .photo-ratio img {
+    width: 100%;
+    height: 100%;
+  }
+
+  html.js .photo img:not([fetchpriority='high']) {
+    opacity: 0;
+    transition: opacity 300ms;
+    animation: photo-failsafe 0s 2.5s forwards;
+  }
+
+  @keyframes photo-failsafe {
+    to {
+      opacity: 1;
+    }
+  }
+
+  html.js .photo img.is-loaded {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.js .photo img {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const reveal = (image: HTMLImageElement) => {
+    const show = () => image.classList.add('is-loaded');
+    if (image.complete) {
+      show();
+      return;
+    }
+    image.addEventListener('load', show, { once: true });
+    image.addEventListener('error', show, { once: true });
+  };
+
+  const revealAll = () => {
+    document.querySelectorAll<HTMLImageElement>('.photo img:not(.is-loaded)').forEach(reveal);
+  };
+
+  revealAll();
+  document.addEventListener('astro:page-load', revealAll);
+</script>
