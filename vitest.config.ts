@@ -13,6 +13,7 @@ export default defineConfig({
       include: [
         'src/application/**',
         'sanity/validation/reservedSlugs.ts',
+        'sanity/validation/seriesSlugTakenQuery.ts',
         'src/domain/Locale.ts',
         'src/domain/formatText.ts',
         'src/domain/routing/**',

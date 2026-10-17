@@ -1,12 +1,11 @@
 import type { CustomValidator } from 'sanity';
 import { locales, type Locale } from '../../src/domain/Locale';
 import { seriesSlugProblem } from './reservedSlugs';
+import { seriesSlugTakenQuery } from './seriesSlugTakenQuery';
 
 type SeriesSlugs = Partial<Record<Locale, { current?: string }>>;
 
 const localeNames: Record<Locale, string> = { es: 'español', en: 'inglés', pt: 'portugués' };
-
-const duplicatesQuery = 'count(*[_type == "serie" && slug[$locale].current == $slug && !(_id in [$id, "drafts." + $id])])';
 
 export const seriesSlugValidation: CustomValidator<unknown> = async (value, context) => {
   const slugs = value as SeriesSlugs | undefined;
@@ -18,7 +17,7 @@ export const seriesSlugValidation: CustomValidator<unknown> = async (value, cont
     if (!current) continue;
     const reserved = seriesSlugProblem(current, locale);
     if (reserved !== true) return `${reserved} (${localeNames[locale]})`;
-    const duplicates = await client.fetch<number>(duplicatesQuery, { locale, slug: current, id });
+    const duplicates = await client.fetch<number>(seriesSlugTakenQuery(locale), { slug: current, id });
     if (duplicates > 0) return `Ya hay otra serie con la dirección "${current}" en ${localeNames[locale]}.`;
   }
   return true;
