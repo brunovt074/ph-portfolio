@@ -65,3 +65,8 @@ const copies = [0, 1, 2, 3];
     font-size: 0.6em;
   }
 </style>
+
+<script>
+  import { afterLoad } from '@/motion/afterLoad';
+  afterLoad(() => import('@/motion/velocityMarquee'));
+</script>

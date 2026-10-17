@@ -1,4 +1,5 @@
 ---
+import LightboxLink from '@/components/LightboxLink.astro';
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
 
@@ -26,14 +27,16 @@ const shapeOf = (index: number) => {
 };
 ---
 <h2 class="sr-only">Galería</h2>
-<div class="dense-gallery">
+<div class="dense-gallery" data-lightbox-group>
   {arranged.map((photo, index) => (
     <figure class:list={['dense-item', shapeOf(index)]} data-reveal>
-      <Photo
-        photo={photo}
-        priority={index === 0}
-        sizes={index === 0 ? '(min-width: 768px) 30vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
-      />
+      <LightboxLink photo={photo}>
+        <Photo
+          photo={photo}
+          priority={index === 0}
+          sizes={index === 0 ? '(min-width: 768px) 30vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+        />
+      </LightboxLink>
     </figure>
   ))}
 </div>
@@ -52,6 +55,7 @@ const shapeOf = (index: number) => {
     min-height: 0;
   }
 
+  .dense-item :global(.lightbox-link),
   .dense-item :global(.photo),
   .dense-item :global(img) {
     width: 100%;

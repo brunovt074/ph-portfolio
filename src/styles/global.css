@@ -225,3 +225,33 @@ main:focus {
   padding-inline: var(--gutter);
   margin-inline: auto;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js.motion-pending [data-split] {
+    visibility: hidden;
+  }
+}
+
+.split-line-mask {
+  padding-block: 0.08em;
+  margin-block: -0.08em;
+  padding-inline: 0.06em;
+  margin-inline: -0.06em;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}

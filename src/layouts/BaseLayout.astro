@@ -6,6 +6,7 @@ import '@/styles/global.css';
 import bodoniLatin from '@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url';
 import { themeColors } from '@/styles/themeColors';
 import type { ThemeName } from '@/styles/themeColors';
+import { ClientRouter } from 'astro:transitions';
 import SkipLink from '@/components/SkipLink.astro';
 
 interface Props {
@@ -33,16 +34,31 @@ const fullTitle = home ? title : `${title} — Lara Vischi`;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href={bodoniLatin} as="font" type="font/woff2" crossorigin />
     {ogImage && <meta property="og:image" content={ogImage} />}
+    <ClientRouter />
     <script is:inline>
-      document.documentElement.classList.add('js');
+      {
+        const arm = () => {
+          const root = document.documentElement;
+          root.classList.add('js', 'motion-pending');
+          setTimeout(() => root.classList.remove('motion-pending'), 2500);
+        };
+        arm();
+        document.addEventListener('astro:after-swap', arm);
+      }
     </script>
   </head>
   <body data-theme={theme}>
     <SkipLink />
     <slot name="header" />
-    <main id="contenido" tabindex="-1">
+    <main id="contenido" tabindex="-1" transition:animate="fade">
       <slot />
     </main>
     <slot name="footer" />
   </body>
 </html>
+
+<script>
+  import { afterLoad } from '@/motion/afterLoad';
+  afterLoad(() => import('@/motion/smoothScroll'));
+  afterLoad(() => import('@/motion/titleReveal'));
+</script>

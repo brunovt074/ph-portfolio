@@ -1,7 +1,9 @@
 ---
+import { getImage } from 'astro:assets';
 import Photo from '@/components/Photo.astro';
 import type { Facet } from '@/domain/Facet';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
   facet: Facet;
@@ -9,10 +11,16 @@ interface Props {
 }
 
 const { facet, thumbnails } = Astro.props;
+const first = thumbnails[0];
+const previewSource = first
+  ? first.asset.provider === 'local'
+    ? (await getImage({ src: resolveLocalPhoto(first.asset.ref).image, width: 600, format: 'webp', quality: 72 })).src
+    : first.asset.ref
+  : undefined;
 const number = String(facet.number).padStart(2, '0');
 ---
 <li class="index-item">
-  <a class="index-row" href={`/${facet.slug}`} data-index-row data-facet={facet.slug}>
+  <a class="index-row" href={`/${facet.slug}`} data-index-row data-facet={facet.slug} data-preview-src={previewSource}>
     <span class="t-numeral index-number">{number}</span>
     <span class="index-body">
       <span class="t-list index-title">{facet.name}</span>

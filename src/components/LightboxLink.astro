@@ -1,0 +1,36 @@
+---
+import { getImage } from 'astro:assets';
+import type { Photo } from '@/domain/Photo';
+import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
+
+interface Props {
+  photo: Photo;
+}
+
+const { photo } = Astro.props;
+
+const MAX_WIDTH = 1920;
+
+const href =
+  photo.asset.provider === 'local'
+    ? (
+        await getImage({
+          src: resolveLocalPhoto(photo.asset.ref).image,
+          width: Math.min(MAX_WIDTH, resolveLocalPhoto(photo.asset.ref).image.width),
+          format: 'webp',
+          quality: 82,
+        })
+      ).src
+    : photo.asset.ref;
+---
+<a class="lightbox-link" href={href} data-lightbox data-alt={photo.alt}>
+  <slot />
+</a>
+
+<style>
+  .lightbox-link {
+    display: block;
+    color: inherit;
+    cursor: zoom-in;
+  }
+</style>

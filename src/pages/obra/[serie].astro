@@ -1,7 +1,9 @@
 ---
+import FilmGrain from '@/components/obra/FilmGrain.astro';
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import RichText from '@/components/RichText.astro';
+import SeriesCounter from '@/components/obra/SeriesCounter.astro';
 import SeriesNav from '@/components/obra/SeriesNav.astro';
 import SeriesPrintsBand from '@/components/obra/SeriesPrintsBand.astro';
 import SeriesSequence from '@/components/obra/SeriesSequence.astro';
@@ -23,12 +25,14 @@ const screens = new BuildSeriesSequence().execute(series.photos);
 ---
 <BaseLayout title={series.title} description={series.curatorialLine} theme="obra">
   <Header slot="header" variant="obra" />
+  <FilmGrain />
   <section class="series-intro container">
     <p class="t-eyebrow">Serie {series.number} · {series.photos.length} fotografías · {series.years}</p>
     <h1 class="t-display" data-split><RichText title={series.displayTitle} /></h1>
     <p class="t-lead">{series.curatorialText}</p>
   </section>
   <SeriesSequence series={series} screens={screens} />
+  <SeriesCounter />
   {prints.length > 0 && <SeriesPrintsBand band={obra.seriesPrintsBand} />}
   <SeriesNav previous={previous} next={next} />
   <FooterNav slot="footer" settings={settings} logoVariant="obra" />

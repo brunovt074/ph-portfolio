@@ -1,4 +1,5 @@
 ---
+import Lightbox from '@/components/Lightbox.astro';
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import CoverTriptych from '@/components/facet/CoverTriptych.astro';
@@ -22,9 +23,10 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
   <FacetIntro facet={facet} />
   <CoverTriptych photos={facet.cover} />
   <section class="container section" data-gallery="horizontal">
-    <MasonryGallery photos={facet.gallery} />
+    <MasonryGallery photos={facet.gallery} horizontal />
   </section>
   <ServiceColumns title="Servicios" services={facet.services} numerals="roman" />
   <CtaBand title={facet.ctaText} buttonLabel={facet.ctaButton} href={contactHref} theme="accent" />
+  <Lightbox />
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
 </BaseLayout>

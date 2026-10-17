@@ -1,13 +1,15 @@
 ---
+import LightboxLink from '@/components/LightboxLink.astro';
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
   photos: PhotoModel[];
+  horizontal?: boolean;
 }
 
-const { photos } = Astro.props;
+const { photos, horizontal = false } = Astro.props;
 
 const FALLBACK_ASPECT = 1.25;
 
@@ -70,19 +72,21 @@ const distribute = (columnCount: number) => {
 };
 
 const layouts = [
-  { name: 'wide', columns: distribute(3), sizes: '(min-width: 900px) 33vw, 100vw' },
+  { name: 'wide', columns: distribute(3), sizes: horizontal ? '(min-width: 1024px) 50vw, (min-width: 900px) 33vw, 100vw' : '(min-width: 900px) 33vw, 100vw' },
   { name: 'narrow', columns: distribute(2), sizes: '(min-width: 600px) 50vw, 50vw' },
 ];
 ---
 <h2 class="sr-only">Galería</h2>
-<div class="gallery-track">
+<div class="gallery-track" data-lightbox-group>
   {layouts.map((layout) => (
     <div class={`masonry-cols masonry-${layout.name}`}>
       {layout.columns.map((column) => (
         <div class="masonry-col">
           {column.map((photo) => (
             <figure class="masonry-item" data-reveal>
-              <Photo photo={photo} sizes={layout.sizes} />
+              <LightboxLink photo={photo}>
+                <Photo photo={photo} sizes={layout.sizes} />
+              </LightboxLink>
             </figure>
           ))}
         </div>
@@ -118,6 +122,51 @@ const layouts = [
     display: none;
   }
 
+  :global([data-gallery='horizontal'].is-horizontal) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    min-height: 100svh;
+    max-width: none;
+    padding-block: 0;
+    overflow-x: clip;
+  }
+
+  :global(.is-horizontal) .masonry-narrow {
+    display: none;
+  }
+
+  :global(.is-horizontal) .masonry-wide {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--gap-photo);
+    align-items: center;
+    width: max-content;
+    height: 78vh;
+  }
+
+  :global(.is-horizontal) .masonry-wide .masonry-col {
+    display: contents;
+  }
+
+  :global(.is-horizontal) .masonry-wide .masonry-item {
+    flex: 0 0 auto;
+    height: 100%;
+    width: auto;
+  }
+
+  :global(.is-horizontal) .masonry-wide :global(.lightbox-link),
+  :global(.is-horizontal) .masonry-wide :global(.photo) {
+    height: 100%;
+    width: auto;
+  }
+
+  :global(.is-horizontal) .masonry-wide .masonry-item :global(img) {
+    height: 100%;
+    width: auto;
+    max-width: none;
+  }
+
   @media (min-width: 900px) {
     .masonry-wide {
       display: flex;
@@ -128,3 +177,8 @@ const layouts = [
     }
   }
 </style>
+
+<script>
+  import { afterLoad } from '@/motion/afterLoad';
+  afterLoad(() => import('@/motion/horizontalGallery'));
+</script>

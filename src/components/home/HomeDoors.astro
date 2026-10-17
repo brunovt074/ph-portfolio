@@ -119,9 +119,49 @@ const doors = [
     }
   }
 
+  .home-door::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .home-door-label {
+    z-index: 1;
+  }
+
+  @media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .home-doors {
+      transition: grid-template-columns 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .home-door::after {
+      transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .home-doors:has([data-door='encargos']:hover) {
+      grid-template-columns: 3.4fr 1.6fr;
+    }
+
+    .home-doors:has([data-door='obra']:hover) {
+      grid-template-columns: 2.4fr 2.6fr;
+    }
+
+    .home-doors:has(.home-door:hover) .home-door:not(:hover)::after {
+      opacity: 0.35;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .home-door-arrow {
       transition: none;
     }
   }
 </style>
+
+<script>
+  import { afterLoad } from '@/motion/afterLoad';
+  afterLoad(() => import('@/motion/homeDoors'));
+</script>
