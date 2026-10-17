@@ -5,9 +5,11 @@ interface Props {
   title: string;
   services: Service[];
   numerals: 'roman' | 'none';
+  bookingLinks?: Record<string, string>;
+  bookingLabel?: string;
 }
 
-const { title, services, numerals } = Astro.props;
+const { title, services, numerals, bookingLinks = {}, bookingLabel = '' } = Astro.props;
 const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
 ---
 <section class="container section service-columns">
@@ -23,6 +25,9 @@ const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
             <span class="t-eyebrow">Inversión</span>
             <span class="service-price-value">{service.price}</span>
           </p>
+        )}
+        {Object.hasOwn(bookingLinks, service.title) && (
+          <a class="service-booking" href={bookingLinks[service.title]}>{bookingLabel}<span class="sr-only"> — {service.title}</span></a>
         )}
       </li>
     ))}
@@ -79,6 +84,15 @@ const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
     gap: 4px;
     margin: auto 0 0;
     padding-top: 12px;
+  }
+
+  .service-booking {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    width: fit-content;
+    color: var(--accent-current);
+    font-weight: 600;
   }
 
   .service-price-value {

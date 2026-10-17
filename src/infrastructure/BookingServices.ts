@@ -14,4 +14,6 @@ export interface BookingServices {
   getBookingStatus: GetBookingStatus;
   retryDepositCheckout: RetryDepositCheckout;
   simulatedGateway: SimulatedPaymentGateway | null;
+  demoPricing: boolean;
+  timeZone: string;
 }

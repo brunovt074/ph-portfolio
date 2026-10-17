@@ -1,6 +1,7 @@
 import { ActionError } from 'astro:actions';
-import { defineMiddleware } from 'astro:middleware';
+import { defineMiddleware, sequence } from 'astro:middleware';
 import { TRUST_PROXY } from 'astro:env/server';
+import { bookingRateLimit } from '@/middleware/bookingRateLimit';
 import { contactValidationMessages } from '@/actions/contactValidationMessages';
 import { contactRateLimiter } from '@/infrastructure/rateLimit/contactRateLimiter';
 import { resolveClientKey } from '@/infrastructure/rateLimit/resolveClientKey';
@@ -19,7 +20,7 @@ const rateLimitedAction = () => {
   });
 };
 
-export const onRequest = defineMiddleware((context, next) => {
+const contactRateLimit = defineMiddleware((context, next) => {
   const { pathname } = context.url;
   const isForm = isFormSubmission(pathname);
   const isAction = pathname.startsWith(ACTION_PATH_PREFIX);
@@ -32,3 +33,5 @@ export const onRequest = defineMiddleware((context, next) => {
   }
   return isForm ? context.redirect(LIMIT_REDIRECT, 303) : rateLimitedAction();
 });
+
+export const onRequest = sequence(contactRateLimit, bookingRateLimit);

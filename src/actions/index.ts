@@ -1,3 +1,4 @@
+import { booking } from './booking';
 import { contact } from './contact';
 
-export const server = { contact };
+export const server = { contact, booking };

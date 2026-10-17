@@ -1,0 +1,38 @@
+---
+import type { SiteTexts } from '@/domain/SiteTexts';
+import BookingField from './BookingField.astro';
+import BookingStep from './BookingStep.astro';
+
+interface Props {
+  texts: SiteTexts['booking'];
+}
+
+const { texts } = Astro.props;
+---
+<BookingStep id="reserva-datos" legend={texts.detailsLegend}>
+  <div class="fields">
+    <BookingField id="reserva-nombre" name="nombre" label={texts.nameLabel} required minlength={2} maxlength={80} autocomplete="name" />
+    <BookingField id="reserva-email" name="email" label={texts.emailLabel} type="email" required maxlength={200} autocomplete="email" inputmode="email" />
+    <BookingField id="reserva-telefono" name="telefono" label={texts.phoneLabel} type="tel" required maxlength={30} autocomplete="tel" inputmode="tel" />
+    <BookingField id="reserva-notas" name="notas" label={texts.notesLabel} multiline maxlength={1000} />
+    <div class="trap" aria-hidden="true">
+      <label for="reserva-sitio-web">Sitio web</label>
+      <input id="reserva-sitio-web" name="sitio_web" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+  </div>
+</BookingStep>
+
+<style>
+  .fields {
+    display: grid;
+    gap: clamp(20px, 2.5vw, 32px);
+  }
+
+  .trap {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>

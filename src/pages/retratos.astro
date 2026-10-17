@@ -9,10 +9,18 @@ import ServiceColumns from '@/components/facet/ServiceColumns.astro';
 import StaggeredPair from '@/components/facet/StaggeredPair.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetFacetPage } from '@/application/GetFacetPage';
+import { pathTo } from '@/domain/routing/pathTo';
+import { getBookingCatalog } from '@/infrastructure/getBookingCatalog';
 import { contentRepository } from '@/infrastructure/container';
 
-const contactHref = '/?tipo=retratos#contacto';
+const bookingHref = pathTo('es', { route: 'reservas' });
 const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('retratos');
+const offers = await getBookingCatalog().listBookingOffers.execute();
+const bookingLinks = Object.fromEntries(
+  offers
+    .filter((offer) => offer.bookable)
+    .map((offer) => [offer.title, pathTo('es', { route: 'reservas', query: { sesion: offer.slug }, hash: 'reserva' })]),
+);
 ---
 <BaseLayout
   title={facet.name}
@@ -20,15 +28,15 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
   theme="paper"
   image={facet.cover[0]}
 >
-  <Header slot="header" current="retratos" ctaLabel="Reservar sesión" ctaHref={contactHref} />
+  <Header slot="header" current="retratos" ctaLabel="Reservar sesión" ctaHref={bookingHref} />
   <FacetIntro facet={facet} split>
     <StaggeredPair photos={facet.cover} />
   </FacetIntro>
   <section class="container section">
     <GridGallery photos={facet.gallery} ratio="3/4" />
   </section>
-  <ServiceColumns title="Sesiones" services={facet.services} numerals="none" />
-  {facet.quote && <QuoteBand quote={facet.quote} buttonLabel={facet.ctaButton} href={contactHref} />}
+  <ServiceColumns title="Sesiones" services={facet.services} numerals="none" bookingLinks={bookingLinks} bookingLabel="Reservar" />
+  {facet.quote && <QuoteBand quote={facet.quote} buttonLabel={facet.ctaButton} href={bookingHref} />}
   <Lightbox />
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
 </BaseLayout>

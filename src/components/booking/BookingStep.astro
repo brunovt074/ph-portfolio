@@ -1,0 +1,28 @@
+---
+interface Props {
+  id: string;
+  legend: string;
+}
+
+const { id, legend } = Astro.props;
+---
+<fieldset class="step">
+  <legend class="t-h3" id={`${id}-legend`}>{legend}</legend>
+  <slot />
+</fieldset>
+
+<style>
+  .step {
+    display: grid;
+    gap: 20px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+    margin-bottom: 20px;
+  }
+</style>

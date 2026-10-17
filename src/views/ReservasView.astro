@@ -1,0 +1,81 @@
+---
+import BookingAside from '@/components/booking/BookingAside.astro';
+import BookingForm from '@/components/booking/BookingForm.astro';
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import RichText from '@/components/RichText.astro';
+import { GetFacetPage } from '@/application/GetFacetPage';
+import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import type { Locale } from '@/domain/Locale';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getBookingCatalog } from '@/infrastructure/getBookingCatalog';
+import { contentRepository } from '@/infrastructure/container';
+import { parseRichTitle } from '@/infrastructure/seed/parseRichTitle';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const catalog = getBookingCatalog();
+const [settings, texts, offers, retratos] = await Promise.all([
+  new GetSiteSettings(contentRepository).execute(),
+  new GetSiteTexts(contentRepository).execute(locale),
+  catalog.listBookingOffers.execute(),
+  new GetFacetPage(contentRepository).execute('retratos'),
+]);
+const booking = texts.booking;
+---
+<BaseLayout title={booking.metaTitle} description={booking.metaDescription} theme="paper" image={retratos.facet.gallery[0]}>
+  <Header slot="header" current="reservas" ctaLabel={texts.nav.bookSession} ctaHref="#reserva" />
+  <section class="section">
+    <div class="container booking">
+      <header class="booking-intro">
+        <p class="t-eyebrow">{booking.eyebrow}</p>
+        <h1 class="t-display" data-split><RichText title={parseRichTitle(booking.title)} /></h1>
+        <p class="t-lead">{booking.lead}</p>
+      </header>
+      {catalog.demoPricing && <p class="demo-banner" role="note">{booking.demoBanner}</p>}
+      <div class="booking-layout">
+        <BookingForm offers={offers} texts={booking} locale={locale} timeZone={catalog.timeZone} />
+        <BookingAside texts={booking} />
+      </div>
+    </div>
+  </section>
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+</BaseLayout>
+
+<style>
+  .booking {
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+  }
+
+  .booking-intro {
+    display: grid;
+    justify-items: start;
+    gap: clamp(16px, 2vw, 28px);
+  }
+
+  .demo-banner {
+    margin: 0;
+    padding: 12px 16px;
+    border: 1px solid var(--accent-current);
+    color: var(--accent-current);
+    font-weight: 600;
+  }
+
+  .booking-layout {
+    display: grid;
+    gap: clamp(48px, 6vw, 80px);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .booking-layout {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: clamp(48px, 6vw, 96px);
+    }
+  }
+</style>

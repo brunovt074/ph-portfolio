@@ -1,0 +1,263 @@
+---
+import type { Locale } from '@/domain/Locale';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import BookingField from './BookingField.astro';
+import BookingStep from './BookingStep.astro';
+
+interface Props {
+  texts: SiteTexts['booking'];
+  hasSlotSessions: boolean;
+  locale: Locale;
+}
+
+const { texts, hasSlotSessions } = Astro.props;
+const frames = [
+  { value: 'manana', label: texts.frameMorning },
+  { value: 'tarde', label: texts.frameAfternoon },
+  { value: 'indistinto', label: texts.frameAny },
+];
+---
+<BookingStep id="reserva-agenda" legend={texts.scheduleLegend}>
+  <div class="schedule">
+    <p class="schedule-hint" data-panel="choose" hidden>{texts.scheduleChooseFirst}</p>
+
+    <div class="panel" data-panel="request">
+      {hasSlotSessions && <p class="no-js-note">{texts.slotsNoScript}</p>}
+      <BookingField id="reserva-fecha" name="fecha" label={texts.dateLabel} type="date" required help={texts.dateHelp} />
+      <div class="frames" role="radiogroup" aria-labelledby="reserva-franja-legend" data-field="franja">
+        <p class="t-eyebrow" id="reserva-franja-legend">{texts.frameLegend}</p>
+        <div class="pills">
+          {frames.map((frame) => (
+            <label class="pill">
+              <input class="pill-input" type="radio" name="franja" value={frame.value} checked={frame.value === 'indistinto'} />
+              <span class="pill-label">{frame.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" data-panel="slots" data-slot-picker hidden>
+      <div class="days-row">
+        <button class="arrow" type="button" data-days-previous aria-label={texts.daysPrevious}>
+          <span aria-hidden="true">←</span>
+        </button>
+        <div class="days" role="group" aria-label={texts.dayStripLabel} data-slot-days></div>
+        <button class="arrow" type="button" data-days-next aria-label={texts.daysNext}>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+      <div class="pills slot-grid" role="radiogroup" aria-label={texts.slotTimesLabel} aria-describedby="reserva-slot-error" tabindex="-1" data-field="slot" data-slot-grid></div>
+      <p class="slot-status" role="status" aria-live="polite" data-slot-status></p>
+      <p class="field-error" id="reserva-slot-error" data-error-for="slot" hidden></p>
+      <p class="zone-note">{texts.timeZoneNote}</p>
+      <template data-day-template>
+        <button class="day" type="button" data-day>
+          <span class="day-weekday" data-weekday></span>
+          <span class="day-number" data-number></span>
+        </button>
+      </template>
+      <template data-slot-template>
+        <label class="pill">
+          <input class="pill-input" type="radio" name="slot" />
+          <span class="pill-label" data-time></span>
+        </label>
+      </template>
+    </div>
+  </div>
+</BookingStep>
+
+<style>
+  .schedule {
+    display: grid;
+    gap: 20px;
+  }
+
+  .panel {
+    display: grid;
+    gap: 24px;
+  }
+
+  .schedule-hint,
+  .slot-status,
+  .zone-note {
+    margin: 0;
+    color: var(--fg-soft);
+  }
+
+  .zone-note {
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+  }
+
+  .slot-status:empty {
+    display: none;
+  }
+
+  .no-js-note {
+    margin: 0;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    color: var(--fg-soft);
+  }
+
+  :global(html.js) .no-js-note {
+    display: none;
+  }
+
+  .field-error {
+    margin: 0;
+    color: var(--accent-current);
+  }
+
+  .frames {
+    display: grid;
+    gap: 12px;
+  }
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pill {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .pill-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .pill-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--tap);
+    min-height: var(--tap);
+    padding-inline: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition:
+      background-color 200ms,
+      color 200ms,
+      border-color 200ms;
+  }
+
+  .pill-input:checked + .pill-label {
+    border-color: var(--accent-current);
+    background: var(--accent-current);
+    color: var(--bg);
+  }
+
+  .pill-input:focus-visible + .pill-label {
+    outline: 2px solid var(--accent-current);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) {
+    .pill-input:not(:checked) + .pill-label:hover {
+      border-color: var(--fg);
+    }
+  }
+
+  .slot-grid[aria-invalid='true'] .pill-label {
+    border-color: var(--accent-current);
+  }
+
+  .days-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .days {
+    display: flex;
+    gap: 4px;
+    padding-block: 4px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--fg);
+    font-size: var(--text-lead);
+    cursor: pointer;
+  }
+
+  .arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .day {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 56px;
+    min-height: 72px;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-bottom-color: var(--line);
+    background: transparent;
+    color: var(--fg);
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+
+  .day-weekday {
+    font-size: var(--text-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-nav);
+    color: var(--fg-muted);
+  }
+
+  .day-number {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-style: italic;
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+  }
+
+  .day[aria-pressed='true'] {
+    border-color: var(--accent-current);
+    border-bottom-color: var(--accent-current);
+  }
+
+  .day[aria-pressed='true'] .day-number {
+    color: var(--accent-current);
+  }
+
+  .day:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pill-label {
+      transition: none;
+    }
+  }
+</style>

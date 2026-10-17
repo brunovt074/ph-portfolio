@@ -1,0 +1,81 @@
+---
+import Button from '@/components/Button.astro';
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { formatText } from '@/domain/formatText';
+import { formatMoney } from '@/formatting/formatMoney';
+import { localeTagOf } from '@/formatting/localeTag';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getBookingServices } from '@/infrastructure/bookingContainer';
+import { contentRepository } from '@/infrastructure/container';
+
+export const prerender = false;
+
+const services = await getBookingServices();
+const gateway = services.simulatedGateway;
+const checkout = gateway?.findCheckout(Astro.params.checkoutId ?? '');
+if (!gateway || !checkout) {
+  return new Response(null, { status: 404 });
+}
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const approved = form.get('decision') === 'approved';
+  const paymentId = gateway.settle(checkout.checkoutId, approved ? 'approved' : 'rejected');
+  await services.processPaymentNotification.execute('simulado', { headers: {}, query: {}, body: { paymentId } });
+  return Astro.redirect(`${checkout.returnUrl}?estado=${approved ? 'aprobado' : 'error'}`, 303);
+}
+const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute(), new GetSiteTexts(contentRepository).execute('es')]);
+const booking = texts.booking;
+const amount = formatMoney(checkout.amountCents, localeTagOf('es'));
+---
+<BaseLayout title={booking.simulatorTitle} description={booking.simulatorBanner} theme="ink" noindex>
+  <Header slot="header" current="reservas" />
+  <p class="simulator-banner" role="note">{booking.simulatorBanner}</p>
+  <section class="section">
+    <div class="container simulator">
+      <h1 class="t-display" data-split>{booking.simulatorTitle}</h1>
+      <p class="t-lead">{checkout.title}</p>
+      <p class="amount t-h3">{formatText(booking.simulatorAmount, { amount })}</p>
+      <div class="decisions">
+        <form method="post">
+          <input type="hidden" name="decision" value="approved" />
+          <Button type="submit" variant="primary">{booking.simulatorApprove}</Button>
+        </form>
+        <form method="post">
+          <input type="hidden" name="decision" value="rejected" />
+          <Button type="submit" variant="secondary">{booking.simulatorReject}</Button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+</BaseLayout>
+
+<style>
+  .simulator-banner {
+    margin: 0;
+    padding: 12px var(--gutter);
+    background: var(--accent-current);
+    color: var(--bg);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .simulator {
+    display: grid;
+    justify-items: start;
+    gap: clamp(20px, 3vw, 32px);
+  }
+
+  .amount {
+    margin: 0;
+  }
+
+  .decisions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+</style>

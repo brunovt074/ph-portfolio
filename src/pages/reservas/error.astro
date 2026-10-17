@@ -1,0 +1,26 @@
+---
+import ContactResult from '@/components/contact/ContactResult.astro';
+import { bookingFieldNames, bookingValidationMessages } from '@/actions/bookingValidationMessages';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { pathTo } from '@/domain/routing/pathTo';
+import { contentRepository } from '@/infrastructure/container';
+
+export const prerender = false;
+
+const { booking } = await new GetSiteTexts(contentRepository).execute('es');
+
+const reasons: Record<string, string> = {
+  sesion: booking.problemOffer,
+  fecha: booking.errorDate,
+  turno: booking.problemSlotTaken,
+  agenda: booking.problemCalendar,
+  pago: booking.problemGateway,
+  limite: booking.problemRateLimited,
+};
+
+const fields = (Astro.url.searchParams.get('campos') ?? '').split(',');
+const problems = bookingFieldNames.filter((name) => fields.includes(name)).map((name) => bookingValidationMessages[name]);
+const reason = Astro.url.searchParams.get('motivo') ?? '';
+const lead = Object.hasOwn(reasons, reason) ? (reasons[reason] as string) : booking.errorPageLead;
+---
+<ContactResult title={booking.errorPageTitle} lead={lead} problems={problems} backLabel={booking.errorPageBack} backHref={pathTo('es', { route: 'reservas', hash: 'reserva' })} />

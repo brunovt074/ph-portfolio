@@ -269,6 +269,16 @@ describe('CreateBooking', () => {
       expect(morning.ok).toBe(true);
     });
 
+    it('a client who proposes a date without a turn books by request in a session that has turns', async () => {
+      const world = aSlotWorld();
+
+      const result = await world.createBooking.execute(slotInput({ slotStart: '', preferredDate: '2026-11-20', timeSlot: 'afternoon' }));
+
+      expect(result.ok).toBe(true);
+      const [booking] = world.bookings.all();
+      expect(booking?.schedule).toEqual({ kind: 'request', preferredDate: '2026-11-20', timeSlot: 'afternoon' });
+    });
+
     it('a turn is required', async () => {
       const world = aSlotWorld();
       const { slotStart: _omitted, ...withoutSlot } = slotInput();

@@ -1,0 +1,98 @@
+---
+import type { SiteTexts } from '@/domain/SiteTexts';
+
+interface Props {
+  texts: SiteTexts['booking'];
+}
+
+const { texts } = Astro.props;
+const steps = [
+  { title: texts.howStep1Title, text: texts.howStep1Text },
+  { title: texts.howStep2Title, text: texts.howStep2Text },
+  { title: texts.howStep3Title, text: texts.howStep3Text },
+];
+---
+<aside class="aside">
+  <section aria-labelledby="como-funciona">
+    <h2 class="t-h3" id="como-funciona">{texts.howTitle}</h2>
+    <ol class="steps">
+      {steps.map((step, index) => (
+        <li class="how-step">
+          <span class="t-numeral how-numeral" aria-hidden="true">{index + 1}</span>
+          <div class="how-body">
+            <h3 class="how-title">{step.title}</h3>
+            <p class="how-text">{step.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+  <section class="conditions" id="condiciones" aria-labelledby="condiciones-titulo">
+    <h2 class="t-h3" id="condiciones-titulo">{texts.conditionsTitle}</h2>
+    <p class="policy">{texts.cancellationPolicy}</p>
+    <p>{texts.balanceNote}</p>
+    <p>{texts.paymentMethods}</p>
+  </section>
+</aside>
+
+<style>
+  .aside {
+    display: grid;
+    align-content: start;
+    gap: clamp(32px, 4vw, 56px);
+  }
+
+  .steps {
+    display: grid;
+    gap: 24px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .how-step {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .how-numeral {
+    color: var(--accent-current);
+  }
+
+  .how-title {
+    margin: 0 0 4px;
+    font-size: var(--text-body);
+    font-weight: 600;
+  }
+
+  .how-text {
+    margin: 0;
+    color: var(--fg-soft);
+  }
+
+  .conditions {
+    display: grid;
+    gap: 12px;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .conditions p {
+    margin: 0;
+    color: var(--fg-soft);
+  }
+
+  .policy {
+    font-weight: 600;
+    color: var(--accent-current);
+  }
+
+  @media (min-width: 1024px) {
+    .aside {
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+    }
+  }
+</style>

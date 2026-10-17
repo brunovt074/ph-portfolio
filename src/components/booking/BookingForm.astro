@@ -1,0 +1,58 @@
+---
+import type { BookingOfferView } from '@/application/results/BookingOfferView';
+import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import { localeTagOf } from '@/formatting/localeTag';
+import CustomerFields from './CustomerFields.astro';
+import PaymentStep from './PaymentStep.astro';
+import SchedulePanel from './SchedulePanel.astro';
+import SessionCards from './SessionCards.astro';
+
+interface Props {
+  offers: BookingOfferView[];
+  texts: SiteTexts['booking'];
+  locale: Locale;
+  timeZone: string;
+}
+
+const { offers, texts, locale, timeZone } = Astro.props;
+const hasSlotSessions = offers.some((offer) => offer.bookable && offer.scheduling === 'slots');
+const depositPercent = offers.find((offer) => offer.bookable)?.depositPercent ?? 0;
+---
+<form
+  id="reserva"
+  class="booking-form"
+  method="post"
+  action="/reservas/iniciar"
+  novalidate
+  aria-label={texts.formLabel}
+  data-booking-form
+  data-texts={JSON.stringify(texts)}
+  data-time-zone={timeZone}
+  data-locale-tag={localeTagOf(locale)}
+  data-slots-endpoint="/api/bookings/slots"
+>
+  <SessionCards offers={offers} texts={texts} locale={locale} />
+  <SchedulePanel texts={texts} hasSlotSessions={hasSlotSessions} locale={locale} />
+  <CustomerFields texts={texts} />
+  <PaymentStep texts={texts} depositPercent={depositPercent} conditionsHref={`${pathTo(locale, { route: 'reservas' })}#condiciones`} />
+</form>
+
+<style>
+  .booking-form {
+    display: grid;
+    gap: clamp(40px, 5vw, 72px);
+    min-width: 0;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+</style>
+
+<script>
+  import { afterLoad } from '@/motion/afterLoad';
+
+  const startForms = () => import('@/forms/booking/initBookingForms').then(({ initBookingForms }) => initBookingForms());
+
+  afterLoad(startForms);
+  document.addEventListener('astro:page-load', startForms);
+</script>

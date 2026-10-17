@@ -15,6 +15,22 @@ describe('defaultSiteTexts', () => {
     }
   });
 
+  it('keeps the placeholders of every text identical to the Spanish one in every language', () => {
+    const leaves = (locale: (typeof locales)[number]) =>
+      Object.entries(defaultSiteTexts[locale]).flatMap(([group, keys]) =>
+        Object.entries(keys as Record<string, string>).map(([key, value]) => [`${group}.${key}`, placeholdersOf(value)] as const),
+      );
+    for (const locale of locales) {
+      expect(leaves(locale)).toEqual(leaves('es'));
+    }
+  });
+
+  it('keeps the cancellation policy visible as a placeholder in every language', () => {
+    for (const locale of locales) {
+      expect(defaultSiteTexts[locale].booking.cancellationPolicy).toMatch(/^\[[^\]]+\]$/);
+    }
+  });
+
   it('has a non-empty default for every key in every language', () => {
     for (const locale of locales) {
       for (const [group, keys] of Object.entries(defaultSiteTexts[locale])) {

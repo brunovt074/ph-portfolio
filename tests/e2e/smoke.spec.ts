@@ -13,6 +13,7 @@ const routes = [
   { path: '/obra/lo-que-queda', status: 200 },
   { path: '/obra/viajes-en-color', status: 200 },
   { path: '/obra/copias', status: 200 },
+  { path: '/reservas', status: 200 },
   { path: '/ruta-inexistente', status: 404 },
 ];
 

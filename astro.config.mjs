@@ -20,7 +20,7 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   integrations: [
     react(),
-    sitemap({ filter: (page) => !/\/(admin|contacto)(\/|$)/.test(new URL(page).pathname) }),
+    sitemap({ filter: (page) => !/\/(admin|contacto|api)(\/|$)|\/reservas\/.+/.test(new URL(page).pathname) }),
     ...sanityIntegrations,
   ],
   env: {

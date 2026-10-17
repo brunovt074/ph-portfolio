@@ -99,3 +99,5 @@ En ambos casos retirá `@astrojs/node` y revisá la guía oficial del adaptador 
 ## 8. Analítica (recomendación, aún no instalada)
 
 Usar una herramienta sin cookies, así no hace falta banner de consentimiento: Cloudflare Web Analytics (gratis, si el sitio queda en Cloudflare) o Plausible. Se agrega con un solo `<script>` en `src/layouts/BaseLayout.astro`. Eventos útiles para medir: envío del formulario de contacto y clic en "Consultar esta copia".
+
+Pagos, reservas y agenda: ver [docs/08-pagos.md](08-pagos.md).

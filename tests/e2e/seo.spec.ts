@@ -12,6 +12,7 @@ const indexablePages = [
   '/obra/lo-que-queda',
   '/obra/viajes-en-color',
   '/obra/copias',
+  '/reservas',
 ];
 
 interface PageSeo {
@@ -95,6 +96,9 @@ test('sitemap index and robots.txt respond and keep private paths out', async ({
   const sitemap = await request.get('/sitemap-0.xml');
   const body = await sitemap.text();
   expect(body).toContain('/obra/copias/');
+  expect(body).toContain('/reservas/');
+  expect(body).not.toMatch(/\/reservas\/[^<]+</);
+  expect(body).not.toContain('/api/');
   expect(body).not.toContain('/contacto');
   expect(body).not.toContain('/admin');
 
@@ -102,6 +106,8 @@ test('sitemap index and robots.txt respond and keep private paths out', async ({
   expect(robots.status()).toBe(200);
   const text = await robots.text();
   expect(text).toContain('Disallow: /admin');
+  expect(text).toContain('Disallow: /reservas/');
+  expect(text).toContain('Disallow: /api/');
   expect(text).toContain('Sitemap:');
 });
 

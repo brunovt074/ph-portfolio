@@ -62,7 +62,7 @@ export class CreateBooking {
     }
     const settings = await this.content.getSchedulingSettings();
     const durationMinutes = slotDurationFor(offer, settings, this.calendar);
-    if (durationMinutes === null) {
+    if (durationMinutes === null || (!input.slotStart && input.preferredDate)) {
       return this.bookRequest(offer, totalCents, input);
     }
     return this.bookSlot(offer, totalCents, input, settings, durationMinutes);

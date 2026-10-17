@@ -1,0 +1,76 @@
+---
+import BookingSummary from '@/components/booking/BookingSummary.astro';
+import { describeBooking } from '@/components/booking/describeBooking';
+import Button from '@/components/Button.astro';
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import RichText from '@/components/RichText.astro';
+import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { pathTo } from '@/domain/routing/pathTo';
+import { localeTagOf } from '@/formatting/localeTag';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getBookingServices } from '@/infrastructure/bookingContainer';
+import { contentRepository } from '@/infrastructure/container';
+import { isUuid } from '@/infrastructure/db/isUuid';
+import { parseRichTitle } from '@/infrastructure/seed/parseRichTitle';
+
+export const prerender = false;
+
+const bookingId = Astro.params.id ?? '';
+if (!isUuid(bookingId)) {
+  return new Response(null, { status: 404 });
+}
+const services = await getBookingServices();
+const status = await services.getBookingStatus.execute(bookingId);
+if (!status.ok) {
+  return new Response(null, { status: 404 });
+}
+const view = status.value;
+const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute(), new GetSiteTexts(contentRepository).execute('es')]);
+const booking = texts.booking;
+const localeTag = localeTagOf('es');
+const description = describeBooking(view, booking, localeTag, services.timeZone);
+const title = parseRichTitle(description.title);
+const plainTitle = title.map((segment) => segment.text).join('');
+const newBookingHref = pathTo('es', { route: 'reservas', query: { sesion: view.offerSlug }, hash: 'reserva' });
+const contactHref = pathTo('es', { route: 'home', query: { tipo: 'retratos' }, hash: 'contacto' });
+Astro.response.headers.set('Cache-Control', 'no-store');
+---
+<BaseLayout title={plainTitle} description={description.lead} theme="paper" noindex>
+  <Header slot="header" current="reservas" />
+  <section class="section">
+    <div class="container result">
+      <p class="t-eyebrow">{booking.resultEyebrow}</p>
+      <h1 class="t-display" data-split><RichText title={title} /></h1>
+      <p class="t-lead">{description.lead}</p>
+      {description.note && <p class="note">{description.note}</p>}
+      <BookingSummary view={view} texts={booking} localeTag={localeTag} timeZone={services.timeZone} />
+      {description.action === 'refresh' && <Button href={Astro.url.pathname} variant="primary">{booking.pendingRefresh}</Button>}
+      {description.action === 'retry' && (
+        <form method="post" action="/reservas/reintentar">
+          <input type="hidden" name="reserva" value={view.id} />
+          <Button type="submit" variant="primary">{booking.retryButton}</Button>
+        </form>
+      )}
+      {description.action === 'new' && <Button href={newBookingHref} variant="primary">{booking.expiredButton}</Button>}
+      {description.action === 'contact' && <Button href={contactHref} variant="primary">{booking.cancelledButton}</Button>}
+    </div>
+  </section>
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+</BaseLayout>
+
+<style>
+  .result {
+    display: grid;
+    justify-items: start;
+    gap: clamp(20px, 3vw, 32px);
+    padding-block: var(--section-y);
+  }
+
+  .note {
+    margin: 0;
+    font-weight: 600;
+    color: var(--accent-current);
+  }
+</style>
