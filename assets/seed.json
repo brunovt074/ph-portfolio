@@ -1,0 +1,769 @@
+{
+  "_nota": "Datos iniciales del mockup. Títulos de obra provisorios: los define Sarah. Fotos en baja resolución (~280px).",
+  "ajustes": {
+    "email": "[EMAIL]",
+    "whatsapp": "[NÚMERO]",
+    "instagram": [
+      "@sarahmoreau.ph",
+      "@sarahmoreau.ph",
+      "@sarahmoreau.studio"
+    ],
+    "frase": "Cada fotografía es un registro de nuestro paso.",
+    "sobre_mi": "[Trayectoria, ciudad y formación]",
+    "statement": "[Statement artístico]",
+    "retrato": "fotos-baja/retrato-sarah-provisorio.jpg"
+  },
+  "fotos": [
+    {
+      "id": "ed01",
+      "archivo": "fotos-baja/editorial/ed01.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo de peluca roja con gorro de piel blanco y reflejos múltiples",
+      "destacada": true
+    },
+    {
+      "id": "ed02",
+      "archivo": "fotos-baja/editorial/ed02.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo de cabello rojo enrulado sobre fondo verde",
+      "destacada": true
+    },
+    {
+      "id": "ed03",
+      "archivo": "fotos-baja/editorial/ed03.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo con traje rosa sentado sobre un cielo de nubes",
+      "destacada": true
+    },
+    {
+      "id": "ed04",
+      "archivo": "fotos-baja/editorial/ed04.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo con vestido de tul lila entre juncos",
+      "destacada": false
+    },
+    {
+      "id": "ed05",
+      "archivo": "fotos-baja/editorial/ed05.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo con gorro de piel sobre fondo de damero ondulado",
+      "destacada": true
+    },
+    {
+      "id": "ed06",
+      "archivo": "fotos-baja/editorial/ed06.jpg",
+      "faceta": "editorial",
+      "alt": "Retrato en blanco y negro con delineado gráfico",
+      "destacada": true
+    },
+    {
+      "id": "ed07",
+      "archivo": "fotos-baja/editorial/ed07.jpg",
+      "faceta": "editorial",
+      "alt": "Retrato bañado en luz azul",
+      "destacada": true
+    },
+    {
+      "id": "ed08",
+      "archivo": "fotos-baja/editorial/ed08.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo con chaqueta de cuero y cintas gráficas en blanco y negro",
+      "destacada": false
+    },
+    {
+      "id": "ed09",
+      "archivo": "fotos-baja/editorial/ed09.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo con guante blanco luminoso sobre fondo oscuro",
+      "destacada": false
+    },
+    {
+      "id": "ed10",
+      "archivo": "fotos-baja/editorial/ed10.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo con pasamontañas rosa",
+      "destacada": false
+    },
+    {
+      "id": "ed11",
+      "archivo": "fotos-baja/editorial/ed11.jpg",
+      "faceta": "editorial",
+      "alt": "Dos retratos femeninos en blanco y negro",
+      "destacada": false
+    },
+    {
+      "id": "ed12",
+      "archivo": "fotos-baja/editorial/ed12.jpg",
+      "faceta": "editorial",
+      "alt": "Dos modelos con abrigos frente a torres de vidrio",
+      "destacada": false
+    },
+    {
+      "id": "ed13",
+      "archivo": "fotos-baja/editorial/ed13.jpg",
+      "faceta": "editorial",
+      "alt": "Modelo con anteojos oscuros y anillos de plata",
+      "destacada": false
+    },
+    {
+      "id": "ed14",
+      "archivo": "fotos-baja/editorial/ed14.jpg",
+      "faceta": "editorial",
+      "alt": "Estilismo urbano con gorro de piel y chaqueta estampada",
+      "destacada": false
+    },
+    {
+      "id": "rt01",
+      "archivo": "fotos-baja/retratos/rt01.jpg",
+      "faceta": "retratos",
+      "alt": "Retrato de estudio con boina negra",
+      "destacada": false
+    },
+    {
+      "id": "rt02",
+      "archivo": "fotos-baja/retratos/rt02.jpg",
+      "faceta": "retratos",
+      "alt": "Primer plano con boina negra y manos en el rostro",
+      "destacada": true
+    },
+    {
+      "id": "rt03",
+      "archivo": "fotos-baja/retratos/rt03.jpg",
+      "faceta": "retratos",
+      "alt": "Retrato de maternidad en clave baja",
+      "destacada": true
+    },
+    {
+      "id": "rt04",
+      "archivo": "fotos-baja/retratos/rt04.jpg",
+      "faceta": "retratos",
+      "alt": "Familia jugando en una casita de madera",
+      "destacada": false
+    },
+    {
+      "id": "rt05",
+      "archivo": "fotos-baja/retratos/rt05.jpg",
+      "faceta": "retratos",
+      "alt": "Madre abrazando a su bebé",
+      "destacada": false
+    },
+    {
+      "id": "rt06",
+      "archivo": "fotos-baja/retratos/rt06.jpg",
+      "faceta": "retratos",
+      "alt": "Retrato con maquillaje en tonos cálidos",
+      "destacada": false
+    },
+    {
+      "id": "rt07",
+      "archivo": "fotos-baja/retratos/rt07.jpg",
+      "faceta": "retratos",
+      "alt": "Retrato profesional con blazer azul",
+      "destacada": false
+    },
+    {
+      "id": "rt08",
+      "archivo": "fotos-baja/retratos/rt08.jpg",
+      "faceta": "retratos",
+      "alt": "Mujer de cabello blanco sonriendo en estudio",
+      "destacada": false
+    },
+    {
+      "id": "rt09",
+      "archivo": "fotos-baja/retratos/rt09.jpg",
+      "faceta": "retratos",
+      "alt": "Pareja con maquillaje artístico",
+      "destacada": false
+    },
+    {
+      "id": "rt10",
+      "archivo": "fotos-baja/retratos/rt10.jpg",
+      "faceta": "retratos",
+      "alt": "Retrato al aire libre entre árboles",
+      "destacada": false
+    },
+    {
+      "id": "mk01",
+      "archivo": "fotos-baja/marcas/mk01.jpg",
+      "faceta": "marcas",
+      "alt": "Sérum facial sobre agua lila",
+      "destacada": true
+    },
+    {
+      "id": "mk02",
+      "archivo": "fotos-baja/marcas/mk02.jpg",
+      "faceta": "marcas",
+      "alt": "Frascos de cosmética sobre fondo lila",
+      "destacada": false
+    },
+    {
+      "id": "mk03",
+      "archivo": "fotos-baja/marcas/mk03.jpg",
+      "faceta": "marcas",
+      "alt": "Alfajores en clave oscura",
+      "destacada": true
+    },
+    {
+      "id": "mk04",
+      "archivo": "fotos-baja/marcas/mk04.jpg",
+      "faceta": "marcas",
+      "alt": "Manos amasando masa de pizza",
+      "destacada": false
+    },
+    {
+      "id": "mk05",
+      "archivo": "fotos-baja/marcas/mk05.jpg",
+      "faceta": "marcas",
+      "alt": "Pizza en su caja",
+      "destacada": false
+    },
+    {
+      "id": "mk06",
+      "archivo": "fotos-baja/marcas/mk06.jpg",
+      "faceta": "marcas",
+      "alt": "Anillo dorado sobre fondo blanco",
+      "destacada": false
+    },
+    {
+      "id": "mk07",
+      "archivo": "fotos-baja/marcas/mk07.jpg",
+      "faceta": "marcas",
+      "alt": "Collares de plata sobre fondo verde",
+      "destacada": true
+    },
+    {
+      "id": "mk08",
+      "archivo": "fotos-baja/marcas/mk08.jpg",
+      "faceta": "marcas",
+      "alt": "Línea de sérums sobre fondo terracota",
+      "destacada": false
+    },
+    {
+      "id": "mk09",
+      "archivo": "fotos-baja/marcas/mk09.jpg",
+      "faceta": "marcas",
+      "alt": "Dormitorio con panel de madera",
+      "destacada": true
+    },
+    {
+      "id": "mk10",
+      "archivo": "fotos-baja/marcas/mk10.jpg",
+      "faceta": "marcas",
+      "alt": "Aceite de oliva cayendo sobre una ensalada",
+      "destacada": false
+    },
+    {
+      "id": "mk11",
+      "archivo": "fotos-baja/marcas/mk11.jpg",
+      "faceta": "marcas",
+      "alt": "Prenda de jean con hebilla de sol",
+      "destacada": false
+    },
+    {
+      "id": "ev01",
+      "archivo": "fotos-baja/eventos/ev01.jpg",
+      "faceta": "eventos",
+      "alt": "Bailarina de comparsa con plumas verdes",
+      "destacada": true
+    },
+    {
+      "id": "ev02",
+      "archivo": "fotos-baja/eventos/ev02.jpg",
+      "faceta": "eventos",
+      "alt": "Pasista de carnaval con tocado de plumas",
+      "destacada": false
+    },
+    {
+      "id": "ev03",
+      "archivo": "fotos-baja/eventos/ev03.jpg",
+      "faceta": "eventos",
+      "alt": "Artista con hombreras de plumas blancas",
+      "destacada": false
+    },
+    {
+      "id": "ev04",
+      "archivo": "fotos-baja/eventos/ev04.jpg",
+      "faceta": "eventos",
+      "alt": "Show sobre escenario con luces verdes",
+      "destacada": false
+    },
+    {
+      "id": "ev05",
+      "archivo": "fotos-baja/eventos/ev05.jpg",
+      "faceta": "eventos",
+      "alt": "Bailarín saltando en el escenario",
+      "destacada": false
+    },
+    {
+      "id": "ev06",
+      "archivo": "fotos-baja/eventos/ev06.jpg",
+      "faceta": "eventos",
+      "alt": "Bailarina entre humo verde",
+      "destacada": false
+    },
+    {
+      "id": "ev07",
+      "archivo": "fotos-baja/eventos/ev07.jpg",
+      "faceta": "eventos",
+      "alt": "Niña bailando en el escenario",
+      "destacada": false
+    },
+    {
+      "id": "ev08",
+      "archivo": "fotos-baja/eventos/ev08.jpg",
+      "faceta": "eventos",
+      "alt": "Reina de carnaval con tocado plateado",
+      "destacada": false
+    },
+    {
+      "id": "ev09",
+      "archivo": "fotos-baja/eventos/ev09.jpg",
+      "faceta": "eventos",
+      "alt": "Carroza con plumas amarillas y azules",
+      "destacada": false
+    },
+    {
+      "id": "ev10",
+      "archivo": "fotos-baja/eventos/ev10.jpg",
+      "faceta": "eventos",
+      "alt": "Partido de pádel en cancha roja",
+      "destacada": false
+    },
+    {
+      "id": "au01",
+      "archivo": "fotos-baja/obra/au01.jpg",
+      "faceta": "obra",
+      "alt": "Hombre cargando bidones frente a una pared de chapa",
+      "titulo": "Bidones",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au02",
+      "archivo": "fotos-baja/obra/au02.jpg",
+      "faceta": "obra",
+      "alt": "Motos estacionadas en una vereda",
+      "titulo": "Motos",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au05",
+      "archivo": "fotos-baja/obra/au05.jpg",
+      "faceta": "obra",
+      "alt": "Mano abierta en blanco y negro",
+      "titulo": "Mano",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au13",
+      "archivo": "fotos-baja/obra/au13.jpg",
+      "faceta": "obra",
+      "alt": "Ciclista en un callejón empedrado",
+      "titulo": "Callejón",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au03",
+      "archivo": "fotos-baja/obra/au03.jpg",
+      "faceta": "obra",
+      "alt": "Columnas oscuras alineadas en fuga",
+      "titulo": "Fuga",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au04",
+      "archivo": "fotos-baja/obra/au04.jpg",
+      "faceta": "obra",
+      "alt": "Fachada ondulante vista desde abajo",
+      "titulo": "Ola de piedra",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au06",
+      "archivo": "fotos-baja/obra/au06.jpg",
+      "faceta": "obra",
+      "alt": "Torre de ladrillo contra el cielo",
+      "titulo": "Campanario",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au15",
+      "archivo": "fotos-baja/obra/au15.jpg",
+      "faceta": "obra",
+      "alt": "Fachada con aires acondicionados y un cable en diagonal",
+      "titulo": "Diagonal",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au19",
+      "archivo": "fotos-baja/obra/au19.jpg",
+      "faceta": "obra",
+      "alt": "Edificio de ladrillo en ángulo contra un cielo oscuro",
+      "titulo": "Cornisa",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au16",
+      "archivo": "fotos-baja/obra/au16.jpg",
+      "faceta": "obra",
+      "alt": "Pórtico con columnas y tejado ornamentado",
+      "titulo": "Pórtico",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au17",
+      "archivo": "fotos-baja/obra/au17.jpg",
+      "faceta": "obra",
+      "alt": "Terraza con escalones hacia un cielo de nubes",
+      "titulo": "Escalera al cielo",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au18",
+      "archivo": "fotos-baja/obra/au18.jpg",
+      "faceta": "obra",
+      "alt": "Estatua de piedra con un pájaro posado",
+      "titulo": "Visita",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au12",
+      "archivo": "fotos-baja/obra/au12.jpg",
+      "faceta": "obra",
+      "alt": "Retrato entre hojas en blanco y negro",
+      "titulo": "Follaje",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au20",
+      "archivo": "fotos-baja/obra/au20.jpg",
+      "faceta": "obra",
+      "alt": "Hoja sobre el pavimento mojado",
+      "titulo": "Hoja caída",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au14",
+      "archivo": "fotos-baja/obra/au14.jpg",
+      "faceta": "obra",
+      "alt": "Hoja translúcida sobre fondo negro",
+      "titulo": "Nervadura",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au07",
+      "archivo": "fotos-baja/obra/au07.jpg",
+      "faceta": "obra",
+      "alt": "Cerros y árboles secos en blanco y negro",
+      "titulo": "Cerros",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au08",
+      "archivo": "fotos-baja/obra/au08.jpg",
+      "faceta": "obra",
+      "alt": "Cerros de colores en la puna",
+      "titulo": "Cerros de colores",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au09",
+      "archivo": "fotos-baja/obra/au09.jpg",
+      "faceta": "obra",
+      "alt": "Camino nevado en la niebla",
+      "titulo": "Niebla",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au11",
+      "archivo": "fotos-baja/obra/au11.jpg",
+      "faceta": "obra",
+      "alt": "Camioneta roja bajo un árbol",
+      "titulo": "Camioneta roja",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    },
+    {
+      "id": "au10",
+      "archivo": "fotos-baja/obra/au10.jpg",
+      "faceta": "obra",
+      "alt": "Copa de vidrio sostenida por una mano",
+      "titulo": "Copa",
+      "titulo_provisorio": true,
+      "lugar": "[Ciudad]",
+      "anio": null
+    }
+  ],
+  "series": [
+    {
+      "numero": "I",
+      "titulo": "Oficios",
+      "lineaCuratorial": "Gente trabajando, calles que se repiten, gestos que nadie mira dos veces.",
+      "anios": "[AÑOS]",
+      "fotos": [
+        {
+          "foto": "au01",
+          "layout": "centro"
+        },
+        {
+          "foto": "au02",
+          "layout": "izquierda"
+        },
+        {
+          "foto": "au05",
+          "layout": "derecha"
+        },
+        {
+          "foto": "au13",
+          "layout": "sangre"
+        }
+      ]
+    },
+    {
+      "numero": "II",
+      "titulo": "Geometrías",
+      "lineaCuratorial": "La arquitectura mirada desde abajo: líneas, sombras y el cielo como fondo neutro.",
+      "anios": "[AÑOS]",
+      "fotos": [
+        {
+          "foto": "au03",
+          "layout": "centro"
+        },
+        {
+          "foto": "au04",
+          "layout": "izquierda"
+        },
+        {
+          "foto": "au06",
+          "layout": "derecha"
+        },
+        {
+          "foto": "au15",
+          "layout": "par"
+        },
+        {
+          "foto": "au19",
+          "layout": "par"
+        },
+        {
+          "foto": "au16",
+          "layout": "centro"
+        },
+        {
+          "foto": "au17",
+          "layout": "sangre"
+        }
+      ]
+    },
+    {
+      "numero": "III",
+      "titulo": "Lo que queda",
+      "lineaCuratorial": "Hojas, piedra y piel. Lo pequeño que sobrevive al paso del tiempo.",
+      "anios": "[AÑOS]",
+      "fotos": [
+        {
+          "foto": "au18",
+          "layout": "centro"
+        },
+        {
+          "foto": "au12",
+          "layout": "izquierda"
+        },
+        {
+          "foto": "au20",
+          "layout": "derecha"
+        },
+        {
+          "foto": "au14",
+          "layout": "centro"
+        },
+        {
+          "foto": "au07",
+          "layout": "sangre"
+        }
+      ]
+    },
+    {
+      "numero": "IV",
+      "titulo": "Viajes en color",
+      "lineaCuratorial": "La única serie en color: paisajes y escenas encontradas en el camino.",
+      "anios": "[AÑOS]",
+      "fotos": [
+        {
+          "foto": "au08",
+          "layout": "centro"
+        },
+        {
+          "foto": "au09",
+          "layout": "izquierda"
+        },
+        {
+          "foto": "au11",
+          "layout": "derecha"
+        },
+        {
+          "foto": "au10",
+          "layout": "centro"
+        }
+      ]
+    }
+  ],
+  "copias": [
+    {
+      "foto": "au03",
+      "edicion": 10,
+      "disponibles": null,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "[PRECIO]"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "[PRECIO]"
+        }
+      ]
+    },
+    {
+      "foto": "au01",
+      "edicion": 10,
+      "disponibles": null,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "[PRECIO]"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "[PRECIO]"
+        }
+      ]
+    },
+    {
+      "foto": "au14",
+      "edicion": 10,
+      "disponibles": null,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "[PRECIO]"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "[PRECIO]"
+        }
+      ]
+    },
+    {
+      "foto": "au18",
+      "edicion": 10,
+      "disponibles": null,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "[PRECIO]"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "[PRECIO]"
+        }
+      ]
+    },
+    {
+      "foto": "au17",
+      "edicion": 10,
+      "disponibles": null,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "[PRECIO]"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "[PRECIO]"
+        }
+      ]
+    },
+    {
+      "foto": "au08",
+      "edicion": 10,
+      "disponibles": null,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "[PRECIO]"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "[PRECIO]"
+        }
+      ]
+    }
+  ],
+  "paquetesMarca": [
+    {
+      "nombre": "Esencial",
+      "precio": "[PRECIO]",
+      "items": [
+        "Hasta 10 productos",
+        "Fondo liso, luz de estudio",
+        "20 fotos para e-commerce"
+      ]
+    },
+    {
+      "nombre": "Identidad",
+      "precio": "[PRECIO]",
+      "destacado": true,
+      "items": [
+        "Concepto y dirección de arte",
+        "Producto + ambientadas",
+        "40 fotos + 3 reels"
+      ]
+    },
+    {
+      "nombre": "Mensual",
+      "precio": "[PRECIO] / mes",
+      "items": [
+        "Contenido fresco cada mes",
+        "Foto + video para redes",
+        "Prioridad en agenda"
+      ]
+    }
+  ]
+}
