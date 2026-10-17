@@ -15,7 +15,7 @@ const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
   <ul class="service-list">
     {services.map((service, index) => (
       <li class="service">
-        {numerals === 'roman' && <span class="service-numeral t-h3" aria-hidden="true">{romans[index]}</span>}
+        {numerals === 'roman' && <span class="service-numeral t-numeral" aria-hidden="true">{romans[index]}</span>}
         <h3 class="t-h3">{service.title}</h3>
         {service.description && <p class="service-description">{service.description}</p>}
         {service.price && (
@@ -53,7 +53,6 @@ const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
   }
 
   .service-numeral {
-    font-style: italic;
     color: var(--accent-current);
   }
 

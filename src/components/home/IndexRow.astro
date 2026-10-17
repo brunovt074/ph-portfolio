@@ -13,7 +13,7 @@ const number = String(facet.number).padStart(2, '0');
 ---
 <li class="index-item">
   <a class="index-row" href={`/${facet.slug}`} data-index-row data-facet={facet.slug}>
-    <span class="t-h3 index-number">{number}</span>
+    <span class="t-numeral index-number">{number}</span>
     <span class="index-body">
       <span class="t-list index-title">{facet.name}</span>
       <span class="index-description">{facet.indexDescription}</span>
@@ -48,7 +48,6 @@ const number = String(facet.number).padStart(2, '0');
 
   .index-number {
     min-width: 2.2em;
-    font-style: italic;
     color: var(--fg-muted);
   }
 

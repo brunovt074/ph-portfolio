@@ -11,7 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/application/**', 'src/infrastructure/seed/**'],
-      exclude: ['src/infrastructure/seed/SeedData.ts', 'src/infrastructure/seed/ContentData.ts'],
+      exclude: ['src/infrastructure/seed/data/**', 'src/application/results/**'],
       thresholds: { lines: 100, functions: 100, branches: 100, statements: 100 },
     },
   },

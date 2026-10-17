@@ -1,11 +1,7 @@
 import type { ContentRepository } from '@/domain/ContentRepository';
 import type { FacetSlug } from '@/domain/FacetSlug';
-import type { SiteSettings } from '@/domain/SiteSettings';
-import { locateFacet, type LocatedFacet } from './locateFacet';
-
-export interface FacetPageData extends LocatedFacet {
-  settings: SiteSettings;
-}
+import { locateFacet } from './locateFacet';
+import type { FacetPageData } from './results/FacetPageData';
 
 export class GetFacetPage {
   constructor(private readonly repository: ContentRepository) {}

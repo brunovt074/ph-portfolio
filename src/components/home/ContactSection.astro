@@ -21,47 +21,68 @@ const channels = [
 ];
 ---
 <section id="contacto" class="contact section" data-theme="surface" aria-labelledby="contacto-title">
-  <div class="container">
+  <div class="container contact-grid">
     <h2 id="contacto-title" class="t-display contact-title">{home.contactTitle}</h2>
-    <div class="contact-grid">
-      <div class="contact-info">
-        <p class="t-lead">{home.contactLead}</p>
-        <dl class="contact-list">
-          {channels.map((channel) => (
-            <div class="contact-row">
-              <dt class="t-eyebrow">{channel.label}</dt>
-              <dd>
-                {channel.entries.map((entry) => (
-                  entry.href ? <a class="contact-link" href={entry.href} target={entry.href.startsWith('http') ? '_blank' : undefined} rel={entry.href.startsWith('http') ? 'noopener' : undefined}>{entry.text}</a> : <span class="contact-text">{entry.text}</span>
-                ))}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </div>
+    <p class="t-lead contact-lead">{home.contactLead}</p>
+    <div class="contact-form-area">
       <ContactForm workTypes={home.workTypes} />
     </div>
+    <dl class="contact-list">
+      {channels.map((channel) => (
+        <div class="contact-row">
+          <dt class="t-eyebrow">{channel.label}</dt>
+          <dd>
+            {channel.entries.map((entry) => {
+              if (!entry.href) {
+                return <span class="contact-text">{entry.text}</span>;
+              }
+              const external = entry.href.startsWith('http');
+              return (
+                <a class="contact-link" href={entry.href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>
+                  {entry.text}
+                  {external && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
+                </a>
+              );
+            })}
+          </dd>
+        </div>
+      ))}
+    </dl>
   </div>
 </section>
 
 <style>
-  .contact-title {
-    margin-bottom: clamp(32px, 5vw, 72px);
+  .contact {
+    border-top: 1px solid var(--line);
   }
 
   .contact-grid {
     display: grid;
-    gap: clamp(40px, 6vw, 96px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'title'
+      'lead'
+      'form'
+      'list';
+    gap: clamp(24px, 3vw, 40px);
     align-items: start;
   }
 
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(24px, 3vw, 40px);
+  .contact-title {
+    grid-area: title;
+    margin-bottom: clamp(8px, 2vw, 32px);
+  }
+
+  .contact-lead {
+    grid-area: lead;
+  }
+
+  .contact-form-area {
+    grid-area: form;
   }
 
   .contact-list {
+    grid-area: list;
     margin: 0;
   }
 
@@ -111,6 +132,12 @@ const channels = [
   @media (min-width: 900px) {
     .contact-grid {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr;
+      grid-template-areas:
+        'title title'
+        'lead form'
+        'list form';
+      column-gap: clamp(40px, 6vw, 96px);
     }
   }
 

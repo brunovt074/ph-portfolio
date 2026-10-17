@@ -1,6 +1,7 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
+import Ticker from '@/components/Ticker.astro';
 import AboutSection from '@/components/home/AboutSection.astro';
 import BrandsTeaser from '@/components/home/BrandsTeaser.astro';
 import ContactSection from '@/components/home/ContactSection.astro';
@@ -8,7 +9,6 @@ import EditorialStrip from '@/components/home/EditorialStrip.astro';
 import EncargosIndex from '@/components/home/EncargosIndex.astro';
 import HomeHero from '@/components/home/HomeHero.astro';
 import ObraTeaser from '@/components/home/ObraTeaser.astro';
-import Ticker from '@/components/home/Ticker.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetHomePage } from '@/application/GetHomePage';
 import { contentRepository } from '@/infrastructure/container';
@@ -18,12 +18,12 @@ const { home, facets, settings } = await new GetHomePage(contentRepository).exec
 <BaseLayout title="Sarah Moreau — Fotografía y video" description={home.lead} theme="ink" home>
   <Header slot="header" current="home" />
   <HomeHero home={home} />
-  <Ticker items={home.ticker} />
+  <Ticker items={home.ticker} label={home.ticker.join(', ')} />
   <AboutSection settings={settings} cta={home.aboutCta} />
   <EncargosIndex home={home} facets={facets} />
   <EditorialStrip photos={home.editorialStrip} />
   <BrandsTeaser home={home} />
   <ObraTeaser home={home} />
   <ContactSection home={home} settings={settings} />
-  <FooterNav slot="footer" previous={null} next={{ label: 'Editorial', href: '/editorial' }} settings={settings} />
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
 </BaseLayout>

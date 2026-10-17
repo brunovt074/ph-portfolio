@@ -15,7 +15,7 @@ const { title, steps } = Astro.props;
   <ol>
     {steps.map((step, index) => (
       <li>
-        <span class="number">{String(index + 1).padStart(2, '0')}</span>
+        <span class="number t-numeral">{String(index + 1).padStart(2, '0')}</span>
         <h3 class="t-h3">{step.title}</h3>
         <p>{step.description}</p>
       </li>
@@ -45,9 +45,6 @@ const { title, steps } = Astro.props;
   .number {
     display: block;
     margin-bottom: 20px;
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: var(--text-h3);
     line-height: 1;
     color: var(--accent-current);
   }

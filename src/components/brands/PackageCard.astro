@@ -8,13 +8,21 @@ interface Props {
 }
 
 const { pack, cta } = Astro.props;
+const FEATURED_LABEL = 'Más elegido';
+const [amount = pack.price, ...suffixParts] = pack.price.split(' / ');
+const suffix = suffixParts.join(' / ');
 ---
 <article class="card" data-theme={pack.featured ? 'paper' : undefined}>
-  <div class="head">
-    {pack.featured && <span class="t-eyebrow">Más elegido</span>}
-    <h3 class="t-h3">{pack.name}</h3>
-  </div>
-  <p class="price">{pack.price}</p>
+  {pack.featured ? (
+    <span class="t-eyebrow">{FEATURED_LABEL}</span>
+  ) : (
+    <span class="t-eyebrow eyebrow-spacer" aria-hidden="true">{FEATURED_LABEL}</span>
+  )}
+  <h3 class="t-h3">{pack.name}</h3>
+  <p class="price">
+    <span class="price-amount">{amount}</span>
+    {suffix && <span class="price-suffix">/ {suffix}</span>}
+  </p>
   <ul>
     {pack.items.map((item) => <li>{item}</li>)}
   </ul>
@@ -30,9 +38,9 @@ const { pack, cta } = Astro.props;
     border: 1px solid var(--line);
   }
 
-  .head {
-    display: grid;
-    gap: 12px;
+  .eyebrow-spacer {
+    display: none;
+    visibility: hidden;
   }
 
   .price {
@@ -41,6 +49,20 @@ const { pack, cta } = Astro.props;
     font-size: var(--text-h2);
     line-height: 1;
     letter-spacing: var(--tracking-heading);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.3em;
+    min-width: 0;
+  }
+
+  .price-amount,
+  .price-suffix {
+    white-space: nowrap;
+  }
+
+  .price-suffix {
+    font-size: var(--text-h3);
   }
 
   ul {
@@ -48,6 +70,7 @@ const { pack, cta } = Astro.props;
     margin: 0;
     padding: 0;
     display: grid;
+    align-content: start;
     gap: 12px;
     color: var(--fg-soft);
   }
@@ -66,5 +89,23 @@ const { pack, cta } = Astro.props;
   .card :global(.cta) {
     margin-top: auto;
     align-self: flex-start;
+  }
+
+  @media (min-width: 900px) {
+    .card {
+      display: grid;
+      grid-row: span 5;
+      grid-template-rows: subgrid;
+      row-gap: 20px;
+    }
+
+    .eyebrow-spacer {
+      display: block;
+    }
+
+    .card :global(.cta) {
+      align-self: end;
+      justify-self: start;
+    }
   }
 </style>

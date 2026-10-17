@@ -7,33 +7,26 @@ interface Props {
   photo: Photo;
   sizes: string;
   ratio?: string | undefined;
-  loading?: 'lazy' | 'eager';
   priority?: boolean;
   class?: string | undefined;
   transitionName?: string | undefined;
-  fit?: 'cover' | 'contain';
 }
 
-const { photo, sizes, ratio, loading = 'lazy', priority = false, class: className, transitionName, fit = 'cover' } = Astro.props;
+const { photo, sizes, ratio, priority = false, class: className, transitionName } = Astro.props;
 
 const resolved = photo.asset.provider === 'local' ? resolveLocalPhoto(photo.asset.ref) : undefined;
 const containerStyle = [
   ratio ? `aspect-ratio: ${ratio}` : '',
+  transitionName ? `view-transition-name: ${transitionName}` : '',
   resolved?.lqip ? `background-image: url(${resolved.lqip})` : '',
 ]
   .filter(Boolean)
   .join('; ');
 const classes = ['photo', ratio && 'photo-ratio', className];
 ---
-{transitionName ? (
-  <div class:list={classes} style={containerStyle} transition:name={transitionName}>
-    <PhotoMedia photo={photo} sizes={sizes} loading={loading} priority={priority} fit={fit} />
-  </div>
-) : (
-  <div class:list={classes} style={containerStyle}>
-    <PhotoMedia photo={photo} sizes={sizes} loading={loading} priority={priority} fit={fit} />
-  </div>
-)}
+<div class:list={classes} style={containerStyle}>
+  <PhotoMedia photo={photo} sizes={sizes} priority={priority} />
+</div>
 
 <style is:global>
   .photo {

@@ -1,4 +1,5 @@
 import type { ImageMetadata } from 'astro';
+import type { ResolvedLocalPhoto } from './ResolvedLocalPhoto';
 
 interface LqipEntry {
   lqip: string;
@@ -17,11 +18,6 @@ const imagesById = new Map<string, ImageMetadata>(
 );
 
 const lqipById: Record<string, LqipEntry> = Object.values(lqipModules)[0] ?? {};
-
-export interface ResolvedLocalPhoto {
-  image: ImageMetadata;
-  lqip?: string;
-}
 
 export const resolveLocalPhoto = (id: string): ResolvedLocalPhoto => {
   const image = imagesById.get(id);

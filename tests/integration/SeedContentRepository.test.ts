@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import content from '../../assets/content.json';
 import seed from '../../assets/seed.json';
-import type { ContentData } from '@/infrastructure/seed/ContentData';
-import type { SeedData } from '@/infrastructure/seed/SeedData';
+import type { ContentData } from '@/infrastructure/seed/data/ContentData';
+import type { SeedData } from '@/infrastructure/seed/data/SeedData';
 import { SeedContentRepository } from '@/infrastructure/seed/SeedContentRepository';
+import { MissingContentError } from '@/infrastructure/seed/MissingContentError';
 import { UnknownPhotoError } from '@/infrastructure/seed/UnknownPhotoError';
 
 const realSeed = seed as SeedData;
@@ -174,17 +175,32 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(printsContent.info).toHaveLength(4);
   });
 
-  it('falls back to safe defaults when a series has no slug, display title or curatorial text yet', async () => {
+  it('refuses to publish a series that has no slug yet', async () => {
     const incomplete = cloneContent();
     incomplete.obra.seriesSlugs = {};
+
+    const failure = new SeedContentRepository(realSeed, incomplete).getSeries();
+
+    await expect(failure).rejects.toBeInstanceOf(MissingContentError);
+    await expect(failure).rejects.toThrow('Missing content for series slug: I');
+  });
+
+  it('refuses to publish a series that has no display title yet', async () => {
+    const incomplete = cloneContent();
     incomplete.obra.seriesDisplayTitles = {};
+
+    const failure = new SeedContentRepository(realSeed, incomplete).getSeries();
+
+    await expect(failure).rejects.toThrow('Missing content for series display title: I');
+  });
+
+  it('refuses to publish a series that has no curatorial text yet', async () => {
+    const incomplete = cloneContent();
     incomplete.obra.seriesCuratorialTexts = {};
 
-    const series = await new SeedContentRepository(realSeed, incomplete).getSeries();
+    const failure = new SeedContentRepository(realSeed, incomplete).getSeries();
 
-    expect(series[0]?.slug).toBe('i');
-    expect(series[0]?.displayTitle).toEqual([{ text: 'Oficios', italic: false }]);
-    expect(series[0]?.curatorialText).toBe('');
+    await expect(failure).rejects.toThrow('Missing content for series curatorial text: I');
   });
 
   it('fails with UnknownPhotoError when the content references a photo that does not exist', async () => {

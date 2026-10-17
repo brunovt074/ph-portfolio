@@ -95,11 +95,21 @@ img {
   .t-cta,
   .t-quote,
   .t-h3,
-  .t-list {
+  .t-list,
+  .t-numeral {
     font-family: var(--font-display);
     font-weight: 400;
     font-optical-sizing: auto;
     margin: 0;
+  }
+
+  .t-display,
+  .t-h2,
+  .t-cta,
+  .t-quote,
+  .t-h3,
+  .t-list {
+    text-wrap: balance;
   }
 
   .t-display em,
@@ -127,24 +137,42 @@ img {
     font-size: var(--text-cta);
     line-height: var(--leading-heading);
     letter-spacing: var(--tracking-heading);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 28;
   }
 
   .t-quote {
     font-size: var(--text-quote);
     line-height: 1.15;
     letter-spacing: var(--tracking-heading);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 28;
   }
 
   .t-h3 {
     font-size: var(--text-h3);
     line-height: var(--leading-heading);
     letter-spacing: var(--tracking-heading);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 11;
   }
 
   .t-list {
     font-size: var(--text-list);
     line-height: var(--leading-heading);
     letter-spacing: var(--tracking-heading);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 11;
+  }
+
+  .t-numeral {
+    font-size: var(--text-h3);
+    font-style: italic;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 11;
+    font-variant-numeric: lining-nums;
   }
 
   .t-lead {
@@ -155,6 +183,7 @@ img {
     max-width: 35em;
     color: var(--fg-soft);
     margin: 0;
+    text-wrap: pretty;
   }
 
   .t-eyebrow {
@@ -176,6 +205,18 @@ img {
   .section {
     padding-block: var(--section-y);
   }
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.section:not([data-theme]) + .section:not([data-theme]) {
+  padding-top: 0;
+}
+
+main:focus {
+  outline: none;
 }
 
 .container {

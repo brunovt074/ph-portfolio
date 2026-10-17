@@ -1,17 +1,8 @@
 import type { ContentRepository } from '@/domain/ContentRepository';
 import type { NavLink } from '@/domain/NavLink';
-import type { ObraContent } from '@/domain/ObraContent';
-import type { Print } from '@/domain/Print';
 import type { Series } from '@/domain/Series';
 import { SeriesNotFoundError } from './errors/SeriesNotFoundError';
-
-export interface SeriesPageData {
-  series: Series;
-  previous: NavLink | null;
-  next: NavLink | null;
-  prints: Print[];
-  obra: ObraContent;
-}
+import type { SeriesPageData } from './results/SeriesPageData';
 
 const toLink = (series: Series): NavLink => ({ label: `${series.number}. ${series.title}`, href: `/obra/${series.slug}` });
 

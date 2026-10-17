@@ -17,10 +17,10 @@ const doors = [
 <div class="home-doors">
   {doors.map(({ key, door, sizes, priority }) => (
     <a class="home-door" href={door.href} data-door={key}>
-      <Photo class="home-door-photo" photo={door.photo} sizes={sizes} priority={priority} />
+      <Photo class="home-door-photo" photo={{ ...door.photo, alt: '' }} sizes={sizes} priority={priority} />
       <span class="home-door-label">
         <span class="home-door-text">
-          <span class="t-eyebrow">{door.label}</span>
+          <span class="t-eyebrow" aria-hidden="true">{door.label}</span>
           <span class="t-h2 home-door-title"><RichText title={door.title} /></span>
         </span>
         <span class="home-door-side">

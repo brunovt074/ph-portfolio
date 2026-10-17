@@ -1,12 +1,6 @@
-import type { BrandsContent } from '@/domain/BrandsContent';
 import type { ContentRepository } from '@/domain/ContentRepository';
-import type { SiteSettings } from '@/domain/SiteSettings';
-import { locateFacet, type LocatedFacet } from './locateFacet';
-
-export interface BrandsPageData extends LocatedFacet {
-  brands: BrandsContent;
-  settings: SiteSettings;
-}
+import { locateFacet } from './locateFacet';
+import type { BrandsPageData } from './results/BrandsPageData';
 
 export class GetBrandsPage {
   constructor(private readonly repository: ContentRepository) {}

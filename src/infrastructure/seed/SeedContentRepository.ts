@@ -11,8 +11,14 @@ import type { Series } from '@/domain/Series';
 import type { SeriesLayout } from '@/domain/SeriesLayout';
 import type { Service } from '@/domain/Service';
 import type { SiteSettings } from '@/domain/SiteSettings';
-import type { ContentData, ContentDoor, ContentService } from './ContentData';
-import type { SeedData, SeedPhoto, SeedSeries, SeedSeriesPhoto } from './SeedData';
+import type { ContentData } from './data/ContentData';
+import type { ContentDoor } from './data/ContentDoor';
+import type { ContentService } from './data/ContentService';
+import type { SeedData } from './data/SeedData';
+import type { SeedPhoto } from './data/SeedPhoto';
+import type { SeedSeries } from './data/SeedSeries';
+import type { SeedSeriesPhoto } from './data/SeedSeriesPhoto';
+import { MissingContentError } from './MissingContentError';
 import { parseRichTitle } from './parseRichTitle';
 import { UnknownPhotoError } from './UnknownPhotoError';
 
@@ -143,7 +149,7 @@ export class SeedContentRepository implements ContentRepository {
 
   async getObra(): Promise<ObraContent> {
     const { obra } = this.content;
-    const activePrints = await this.getPrints();
+    const prints = await this.getPrints();
     return {
       opening: {
         photo: this.photo(obra.opening.photo),
@@ -159,10 +165,7 @@ export class SeedContentRepository implements ContentRepository {
         title: parseRichTitle(obra.printsTeaser.title),
         lead: obra.printsTeaser.lead,
         cta: obra.printsTeaser.cta,
-        photos: activePrints
-          .filter((print) => print.active)
-          .slice(0, 3)
-          .map((print) => print.photo),
+        photos: prints.slice(0, 3).map((print) => print.photo),
       },
       seriesPrintsBand: {
         title: parseRichTitle(obra.seriesPrintsBand.title),
@@ -177,10 +180,10 @@ export class SeedContentRepository implements ContentRepository {
       number: series.numero,
       slug: this.slugOf(series),
       title: series.titulo,
-      displayTitle: parseRichTitle(obra.seriesDisplayTitles[series.numero] ?? series.titulo),
+      displayTitle: parseRichTitle(this.requiredBySeries(obra.seriesDisplayTitles, series, 'series display title')),
       years: series.anios,
       curatorialLine: series.lineaCuratorial,
-      curatorialText: obra.seriesCuratorialTexts[series.numero] ?? '',
+      curatorialText: this.requiredBySeries(obra.seriesCuratorialTexts, series, 'series curatorial text'),
       photos: series.fotos.map((entry) => ({ photo: this.photo(entry.foto), layout: layouts[entry.layout] })),
     }));
   }
@@ -215,7 +218,15 @@ export class SeedContentRepository implements ContentRepository {
   }
 
   private slugOf(series: SeedSeries): string {
-    return this.content.obra.seriesSlugs[series.numero] ?? series.numero.toLowerCase();
+    return this.requiredBySeries(this.content.obra.seriesSlugs, series, 'series slug');
+  }
+
+  private requiredBySeries(entries: Record<string, string>, series: SeedSeries, section: string): string {
+    const value = entries[series.numero];
+    if (value === undefined) {
+      throw new MissingContentError(section, series.numero);
+    }
+    return value;
   }
 
   private toDoor(door: ContentDoor, href: string): HomeDoor {
