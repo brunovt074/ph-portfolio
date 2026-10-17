@@ -18,14 +18,14 @@ const resolved = photo.asset.provider === 'local' ? resolveLocalPhoto(photo.asse
 const containerStyle = [
   ratio ? `aspect-ratio: ${ratio}` : '',
   transitionName ? `view-transition-name: ${transitionName}` : '',
-  resolved?.lqip ? `background-image: url(${resolved.lqip})` : '',
+  (resolved?.lqip ?? photo.asset.lqip) ? `background-image: url(${resolved?.lqip ?? photo.asset.lqip})` : '',
 ]
   .filter(Boolean)
   .join('; ');
 const classes = ['photo', ratio && 'photo-ratio', className];
 ---
 <div class:list={classes} style={containerStyle}>
-  <PhotoMedia photo={photo} sizes={sizes} priority={priority} />
+  <PhotoMedia photo={photo} sizes={sizes} priority={priority} ratio={ratio} />
 </div>
 
 <style is:global>

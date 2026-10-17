@@ -2,14 +2,16 @@
 import { Picture } from 'astro:assets';
 import type { Photo } from '@/domain/Photo';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
+import { parseRatio, sanityPhotoUrl, sanitySrcset, sanityWidths } from '@/infrastructure/sanity/imageUrl';
 
 interface Props {
   photo: Photo;
   sizes: string;
   priority: boolean;
+  ratio?: string | undefined;
 }
 
-const { photo, sizes, priority } = Astro.props;
+const { photo, sizes, priority, ratio } = Astro.props;
 
 const hotspot = photo.asset.hotspot;
 const objectPosition = hotspot ? `${hotspot.x * 100}% ${hotspot.y * 100}%` : '50% 50%';
@@ -17,6 +19,17 @@ const resolved = photo.asset.provider === 'local' ? resolveLocalPhoto(photo.asse
 const widths = resolved
   ? [...[480, 800, 1080, 1440, 1920].filter((width) => width < resolved.image.width), resolved.image.width]
   : [];
+const remote = photo.asset.provider === 'sanity';
+const numericRatio = ratio ? parseRatio(ratio) : undefined;
+const remoteWidth = remote ? Math.min(1080, sanityWidths(photo).at(-1) ?? 1080) : undefined;
+const remoteHeight =
+  remote && remoteWidth
+    ? numericRatio
+      ? Math.round(remoteWidth / numericRatio)
+      : photo.asset.width && photo.asset.height
+        ? Math.round((remoteWidth * photo.asset.height) / photo.asset.width)
+        : undefined
+    : undefined;
 const imageStyle = `object-fit: cover; object-position: ${objectPosition}`;
 const imageLoading = priority ? 'eager' : 'lazy';
 ---
@@ -30,6 +43,19 @@ const imageLoading = priority ? 'eager' : 'lazy';
     quality={78}
     loading={imageLoading}
     fetchpriority={priority ? 'high' : undefined}
+    style={imageStyle}
+  />
+) : remote ? (
+  <img
+    src={sanityPhotoUrl(photo, remoteWidth ?? 1080, numericRatio)}
+    srcset={sanitySrcset(photo, numericRatio)}
+    sizes={sizes}
+    width={remoteWidth}
+    height={remoteHeight}
+    alt={photo.alt}
+    loading={imageLoading}
+    fetchpriority={priority ? 'high' : undefined}
+    decoding="async"
     style={imageStyle}
   />
 ) : (

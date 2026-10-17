@@ -3,6 +3,7 @@ import { getImage } from 'astro:assets';
 import Photo from '@/components/Photo.astro';
 import type { Facet } from '@/domain/Facet';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import { sanityPhotoUrl } from '@/infrastructure/sanity/imageUrl';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
@@ -15,7 +16,7 @@ const first = thumbnails[0];
 const previewSource = first
   ? first.asset.provider === 'local'
     ? (await getImage({ src: resolveLocalPhoto(first.asset.ref).image, width: 600, format: 'webp', quality: 72 })).src
-    : first.asset.ref
+    : sanityPhotoUrl(first, 600)
   : undefined;
 const number = String(facet.number).padStart(2, '0');
 ---

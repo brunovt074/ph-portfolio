@@ -2,6 +2,7 @@
 import LightboxLink from '@/components/LightboxLink.astro';
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import { sanityAspect } from '@/infrastructure/sanity/imageUrl';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
@@ -14,7 +15,10 @@ const { photos, horizontal = false } = Astro.props;
 const FALLBACK_ASPECT = 1.25;
 
 const aspectOf = (photo: PhotoModel) => {
-  if (photo.asset.provider !== 'local') return FALLBACK_ASPECT;
+  if (photo.asset.provider !== 'local') {
+    const aspect = sanityAspect(photo);
+    return aspect ? 1 / aspect : FALLBACK_ASPECT;
+  }
   const { image } = resolveLocalPhoto(photo.asset.ref);
   return image.height / image.width;
 };

@@ -1,6 +1,7 @@
 ---
 import { getImage } from 'astro:assets';
 import type { Photo } from '@/domain/Photo';
+import { sanityPhotoUrl } from '@/infrastructure/sanity/imageUrl';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
@@ -21,7 +22,7 @@ const href =
           quality: 82,
         })
       ).src
-    : photo.asset.ref;
+    : sanityPhotoUrl(photo, Math.min(MAX_WIDTH, photo.asset.width ?? MAX_WIDTH));
 ---
 <a class="lightbox-link" href={href} data-lightbox data-alt={photo.alt}>
   <slot />

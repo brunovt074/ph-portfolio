@@ -1,0 +1,50 @@
+import { defineArrayMember, defineField, defineType } from 'sanity';
+import { campoLista, campoParrafo, campoTexto, campoTitulo } from './campos';
+import { fotoReferencias } from './fotoReferencias';
+import { fotoUnica } from './fotoUnica';
+
+export const paginaInicio = defineType({
+  name: 'paginaInicio',
+  title: 'Página de inicio',
+  type: 'document',
+  groups: [
+    { name: 'puertas', title: 'Las dos puertas', default: true },
+    { name: 'encargos', title: 'Encargos' },
+    { name: 'marcas', title: 'Marcas' },
+    { name: 'obra', title: 'Obra' },
+    { name: 'contacto', title: 'Contacto' },
+  ],
+  fields: [
+    { ...campoParrafo('bajada', 'Bajada principal', 'El texto de apertura de la home.'), group: 'puertas' },
+    { ...fotoUnica('puertaEncargosFoto', 'Puerta Encargos: foto', 'La foto de la puerta de trabajos por encargo.'), group: 'puertas' },
+    { ...campoTexto('puertaEncargosEtiqueta', 'Puerta Encargos: etiqueta'), group: 'puertas' },
+    { ...campoTitulo('puertaEncargosTitulo', 'Puerta Encargos: título'), group: 'puertas' },
+    { ...campoTexto('puertaEncargosSubtitulo', 'Puerta Encargos: subtítulo'), group: 'puertas' },
+    { ...fotoUnica('puertaObraFoto', 'Puerta Obra: foto', 'La foto de la puerta de la obra personal.'), group: 'puertas' },
+    { ...campoTexto('puertaObraEtiqueta', 'Puerta Obra: etiqueta'), group: 'puertas' },
+    { ...campoTitulo('puertaObraTitulo', 'Puerta Obra: título'), group: 'puertas' },
+    { ...campoTexto('puertaObraSubtitulo', 'Puerta Obra: subtítulo'), group: 'puertas' },
+    { ...campoLista('ticker', 'Cinta de palabras', 'Las palabras que pasan en la cinta de la home.'), group: 'puertas' },
+    { ...campoTexto('sobreMiCta', 'Botón de la sección "Sobre mí"'), group: 'puertas' },
+    { ...campoTexto('encargosEyebrow', 'Encargos: rótulo superior'), group: 'encargos' },
+    { ...campoTitulo('encargosTitulo', 'Encargos: título'), group: 'encargos' },
+    { ...fotoReferencias({ name: 'miniaturasEditorial', title: 'Miniaturas de Editorial', description: 'Hasta 3 fotos.', max: 3 }), group: 'encargos' },
+    { ...fotoReferencias({ name: 'miniaturasRetratos', title: 'Miniaturas de Retratos', description: 'Hasta 3 fotos.', max: 3 }), group: 'encargos' },
+    { ...fotoReferencias({ name: 'miniaturasMarcas', title: 'Miniaturas de Marcas', description: 'Hasta 3 fotos.', max: 3 }), group: 'encargos' },
+    { ...fotoReferencias({ name: 'miniaturasEventos', title: 'Miniaturas de Eventos', description: 'Hasta 3 fotos.', max: 3 }), group: 'encargos' },
+    { ...fotoReferencias({ name: 'tiraEditorial', title: 'Tira de fotos editoriales', description: 'Las fotos de la franja horizontal.' }), group: 'encargos' },
+    { ...campoTexto('marcasEyebrow', 'Marcas: rótulo superior'), group: 'marcas' },
+    { ...campoTitulo('marcasTitulo', 'Marcas: título'), group: 'marcas' },
+    { ...defineField({ name: 'marcasServicios', title: 'Marcas: servicios', type: 'array', of: [defineArrayMember({ type: 'servicio' })] }), group: 'marcas' },
+    { ...campoTexto('marcasCta', 'Marcas: botón'), group: 'marcas' },
+    { ...fotoReferencias({ name: 'marcasGrilla', title: 'Marcas: grilla de fotos', description: 'Hasta 4 fotos.', max: 4 }), group: 'marcas' },
+    { ...campoTitulo('obraTitulo', 'Obra: título'), group: 'obra' },
+    { ...campoParrafo('obraBajada', 'Obra: bajada'), group: 'obra' },
+    { ...fotoReferencias({ name: 'obraFotos', title: 'Obra: fotos', description: 'Hasta 4 fotos.', max: 4 }), group: 'obra' },
+    { ...campoTexto('obraCta', 'Obra: botón'), group: 'obra' },
+    { ...campoTexto('contactoTitulo', 'Contacto: título'), group: 'contacto' },
+    { ...campoParrafo('contactoBajada', 'Contacto: bajada'), group: 'contacto' },
+    { ...campoLista('tiposDeTrabajo', 'Tipos de trabajo del formulario', 'Las opciones del desplegable "¿Qué necesitás?".'), group: 'contacto' },
+  ],
+  preview: { prepare: () => ({ title: 'Página de inicio' }) },
+});
