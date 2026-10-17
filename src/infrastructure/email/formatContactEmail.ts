@@ -1,4 +1,5 @@
 import type { ContactMessage } from '@/domain/ContactMessage';
+import { contactLanguageLabels } from './contactLanguageLabels';
 import type { FormattedEmail } from './FormattedEmail';
 
 const NO_TYPE_LABEL = 'Consulta general';
@@ -11,6 +12,7 @@ export const formatContactEmail = (message: ContactMessage): FormattedEmail => {
     `Nombre: ${message.name}`,
     `Email: ${message.email}`,
     `Tipo de trabajo: ${type}`,
+    `Idioma: ${contactLanguageLabels[message.locale]}`,
     ...(message.copy ? [`Copia consultada: ${message.copy}`] : []),
     '',
     message.message,

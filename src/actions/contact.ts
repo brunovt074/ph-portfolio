@@ -2,7 +2,9 @@ import { ActionError, defineAction } from 'astro:actions';
 import { z } from 'astro/zod';
 import { MessageDeliveryError } from '@/domain/MessageDeliveryError';
 import { sendContactMessage } from '@/infrastructure/contactContainer';
-import { contactValidationMessages as messages } from './contactValidationMessages';
+import { parseLocale } from '@/domain/Locale';
+
+const messages = { nombre: 'nombre', email: 'email', tipo: 'tipo', mensaje: 'mensaje', copia: 'copia', unavailable: 'unavailable' } as const;
 
 const COPY_INQUIRY_TYPE = 'Copia de autor';
 
@@ -18,6 +20,7 @@ export const contact = defineAction({
     mensaje: z.string({ error: messages.mensaje }).trim().min(10, messages.mensaje).max(2000, messages.mensaje),
     copia: singleLineText(120, messages.copia),
     sitio_web: z.string().max(200).nullish().transform((value) => value ?? ''),
+    idioma: z.string().nullish().transform((value) => parseLocale(value)),
   }).refine((input) => input.tipo !== COPY_INQUIRY_TYPE || input.copia !== '', { path: ['copia'], message: messages.copia }),
   handler: async (input) => {
     try {
@@ -27,6 +30,7 @@ export const contact = defineAction({
         type: input.tipo,
         message: input.mensaje,
         copy: input.copia,
+        locale: input.idioma,
         website: input.sitio_web,
       });
     } catch (error) {

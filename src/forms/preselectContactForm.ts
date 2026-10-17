@@ -1,3 +1,6 @@
+import { formatText } from '@/domain/formatText';
+import { readFormMessages } from './readFormMessages';
+
 export const preselectContactForm = (form: HTMLFormElement): void => {
   const params = new URLSearchParams(location.search);
   const tipos: Record<string, string> = JSON.parse(form.dataset.tipos ?? '{}');
@@ -12,7 +15,7 @@ export const preselectContactForm = (form: HTMLFormElement): void => {
   if (copia && copySelect) {
     copySelect.value = copia;
     if (copySelect.value === copia && message && !message.value) {
-      message.value = `Hola, me interesa la copia "${copia}".`;
+      message.value = formatText(readFormMessages(form).copyMessage, { copy: copia });
     }
   }
 };

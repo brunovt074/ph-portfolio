@@ -50,7 +50,7 @@ const jsonLd = prints.length > 0 ? [await buildPrintsSchema(prints, Astro.site!,
   <section id="consulta" class="print-inquiry section" aria-labelledby="consulta-title">
     <div class="container print-inquiry-grid">
       <h2 id="consulta-title" class="t-display">{texts.pages.printsInquiryTitle}</h2>
-      <ContactForm texts={texts.contact} variant="copia" copies={copyTitles} idPrefix="consulta" submitLabel={texts.pages.printsInquirySubmit} />
+      <ContactForm locale={locale} texts={texts.contact} variant="copia" copies={copyTitles} idPrefix="consulta" submitLabel={texts.pages.printsInquirySubmit} />
     </div>
   </section>
   <FooterNav slot="footer" locale={locale} texts={texts} previous={{ label: texts.nav.obra, href: pathTo(locale, { route: 'obra' }) }} next={null} settings={settings} logoVariant="obra" />

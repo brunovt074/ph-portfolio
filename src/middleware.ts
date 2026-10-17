@@ -1,18 +1,18 @@
 import { ActionError } from 'astro:actions';
 import { defineMiddleware } from 'astro:middleware';
 import { TRUST_PROXY } from 'astro:env/server';
-import { contactValidationMessages } from '@/actions/contactValidationMessages';
+import { localeFromReferer } from '@/domain/routing/localeFromReferer';
 import { contactRateLimiter } from '@/infrastructure/rateLimit/contactRateLimiter';
 import { resolveClientKey } from '@/infrastructure/rateLimit/resolveClientKey';
 
 const FORM_PATH = '/contacto/enviar';
 const ACTION_PATH_PREFIX = '/_actions/contact';
-const LIMIT_REDIRECT = '/contacto/error?motivo=limite';
+const limitRedirect = (referer: string | null) => `/contacto/error?motivo=limite&idioma=${localeFromReferer(referer)}`;
 
 const isFormSubmission = (pathname: string) => pathname === FORM_PATH || pathname === `${FORM_PATH}/`;
 
 const rateLimitedAction = () => {
-  const error = new ActionError({ code: 'TOO_MANY_REQUESTS', message: contactValidationMessages.rateLimited });
+  const error = new ActionError({ code: 'TOO_MANY_REQUESTS', message: 'rateLimited' });
   return new Response(JSON.stringify({ ...error, message: error.message }), {
     status: error.status,
     headers: { 'Content-Type': 'application/json' },
@@ -30,5 +30,5 @@ export const onRequest = defineMiddleware((context, next) => {
   if (contactRateLimiter.hit(key)) {
     return next();
   }
-  return isForm ? context.redirect(LIMIT_REDIRECT, 303) : rateLimitedAction();
+  return isForm ? context.redirect(limitRedirect(context.request.headers.get('referer')), 303) : rateLimitedAction();
 });

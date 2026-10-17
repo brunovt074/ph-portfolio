@@ -20,8 +20,17 @@ describe('SendContactMessage', () => {
         type: 'Marca / producto',
         message: 'Necesito fotos de producto para el lanzamiento de mi tienda online.',
         copy: '',
+        locale: 'es',
       },
     ]);
+  });
+
+  it('passes the visitor language to the email', async () => {
+    const sender = new FakeMessageSender();
+
+    await new SendContactMessage(sender, new FakeErrorReporter()).execute(aContactSubmission({ locale: 'en' }));
+
+    expect(sender.sent[0]?.locale).toBe('en');
   });
 
   it('forwards which print a collector asked about', async () => {

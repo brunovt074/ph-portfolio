@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { defaultSiteTexts } from '../../src/infrastructure/texts/defaults/defaultSiteTexts';
 
 const validInquiry = {
   nombre: 'Sofía Paredes',
@@ -163,7 +164,7 @@ test.describe('contact form without JavaScript', () => {
 
     expect(response.status()).toBe(303);
     const location = response.headers().location ?? '';
-    expect(location).toBe('/contacto/error?campos=nombre,email,mensaje');
+    expect(location).toBe('/contacto/error?campos=nombre,email,mensaje&idioma=es');
 
     await page.goto(location);
     await expect(page.locator('h1')).toHaveText('No se pudo enviar');
@@ -180,10 +181,10 @@ test.describe('contact form without JavaScript', () => {
     const blocked = await send();
 
     expect(blocked.status()).toBe(303);
-    expect(blocked.headers().location).toBe('/contacto/error?motivo=limite');
+    expect(blocked.headers().location).toBe('/contacto/error?motivo=limite&idioma=es');
 
     await page.setExtraHTTPHeaders(headers);
-    await page.goto('/contacto/error?motivo=limite');
+    await page.goto('/contacto/error?motivo=limite&idioma=es');
     await expect(page.locator('.t-lead')).toHaveText('Recibimos muchas consultas desde tu conexión. Probá de nuevo en unos minutos.');
   });
 });
@@ -204,5 +205,64 @@ test.describe('contact form rate limit with JavaScript', () => {
     await page.getByRole('button', { name: 'Enviar consulta' }).click();
 
     await expect(page.locator('#contacto [data-form-status]')).toHaveText('Recibimos muchas consultas desde tu conexión. Probá de nuevo en unos minutos.');
+  });
+});
+
+test.describe('contact form in English and Portuguese', () => {
+  test('English visitor sees validation errors in English', async ({ page }) => {
+    await page.goto('/en/#contacto');
+    await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
+    await page.locator('#contacto-nombre').fill('S');
+    await page.locator('#contacto-email').fill(validInquiry.email);
+    await page.locator('#contacto-mensaje').fill('short');
+
+    await page.getByRole('button', { name: defaultSiteTexts.en.contact.submit }).click();
+
+    await expect(page.locator('[data-error-for="nombre"]')).toHaveText(defaultSiteTexts.en.contact.errorNombre);
+    await expect(page.locator('[data-error-for="mensaje"]')).toHaveText(defaultSiteTexts.en.contact.errorMensaje);
+    await expect(page.locator('#contacto [data-form-status]')).toHaveText(defaultSiteTexts.en.contact.fieldErrors);
+  });
+
+  test('Portuguese visitor confirms an inquiry in Portuguese', async ({ page }) => {
+    await page.goto('/pt/#contacto');
+    await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
+    await page.locator('#contacto-nombre').fill(validInquiry.nombre);
+    await page.locator('#contacto-email').fill(validInquiry.email);
+    await page.locator('#contacto-mensaje').fill(validInquiry.mensaje);
+
+    await page.getByRole('button', { name: defaultSiteTexts.pt.contact.submit }).click();
+
+    await expect(page.locator('#contacto [data-form-status]')).toHaveText(defaultSiteTexts.pt.contact.success);
+  });
+
+  test.describe('without JavaScript', () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('Portuguese visitor lands on the Portuguese result page', async ({ page }) => {
+      await page.goto('/pt/');
+      await page.locator('#contacto-nombre').fill(validInquiry.nombre);
+      await page.locator('#contacto-email').fill(validInquiry.email);
+      await page.locator('#contacto-mensaje').fill(validInquiry.mensaje);
+
+      await page.getByRole('button', { name: defaultSiteTexts.pt.contact.submit }).click();
+
+      await expect(page).toHaveURL(/\/contacto\/enviado\?idioma=pt$/);
+      await expect(page.locator('h1')).toHaveText(defaultSiteTexts.pt.contact.sentTitle);
+      await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
+    });
+
+    test('rate limited English visitor sees the English message', async ({ page, request }) => {
+      const headers = { 'x-forwarded-for': uniqueAddress(), referer: 'http://localhost:4321/en/' };
+      const send = () => request.post('/contacto/enviar', { headers, form: { nombre: 'S', email: 'roto', mensaje: 'corto', idioma: 'en' }, maxRedirects: 0 });
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        await send();
+      }
+      const blocked = await send();
+
+      expect(blocked.headers().location).toBe('/contacto/error?motivo=limite&idioma=en');
+
+      await page.goto('/contacto/error?motivo=limite&idioma=en');
+      await expect(page.locator('.t-lead')).toHaveText(defaultSiteTexts.en.contact.rateLimited);
+    });
   });
 });

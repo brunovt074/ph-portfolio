@@ -1,24 +1,29 @@
 ---
 import ContactResult from '@/components/contact/ContactResult.astro';
-import { contactValidationMessages } from '@/actions/contactValidationMessages';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { parseLocale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import { fieldErrorKeys } from '@/forms/fieldErrorKeys';
+import type { FieldName } from '@/forms/FieldName';
+import { contentRepository } from '@/infrastructure/container';
 
 export const prerender = false;
 
-const fieldKeys = ['nombre', 'email', 'tipo', 'mensaje', 'copia'] as const;
-
+const locale = parseLocale(Astro.url.searchParams.get('idioma'));
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
 const fields = (Astro.url.searchParams.get('campos') ?? '').split(',');
-const problems = fieldKeys.filter((key) => fields.includes(key)).map((key) => contactValidationMessages[key]);
+const problems = (Object.keys(fieldErrorKeys) as FieldName[])
+  .filter((key) => fields.includes(key))
+  .map((key) => texts.contact[fieldErrorKeys[key]]);
 const rateLimited = Astro.url.searchParams.get('motivo') === 'limite';
-const lead = rateLimited
-  ? contactValidationMessages.rateLimited
-  : problems.length > 0
-    ? 'No pudimos enviar tu consulta. Revisá estos datos y probá de nuevo.'
-    : contactValidationMessages.unavailable;
+const lead = rateLimited ? texts.contact.rateLimited : problems.length > 0 ? texts.contact.errorLead : texts.contact.unavailable;
 ---
 <ContactResult
-  title="No se pudo enviar"
+  locale={locale}
+  texts={texts}
+  title={texts.contact.errorTitle}
   lead={lead}
   problems={problems}
-  backLabel="Volver al formulario"
-  backHref="/#contacto"
+  backLabel={texts.contact.backToForm}
+  backHref={pathTo(locale, { route: 'home', hash: 'contacto' })}
 />
