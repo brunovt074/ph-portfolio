@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { requiredSpanishAlt } from './campos';
 
 export const foto = defineType({
   name: 'foto',
@@ -16,14 +17,14 @@ export const foto = defineType({
     defineField({
       name: 'alt',
       title: 'Descripción de la foto',
-      type: 'string',
+      type: 'textoLocalizado',
       description: 'Una frase que describa lo que se ve (para personas que no pueden ver la imagen y para Google). Entre 10 y 160 letras.',
-      validation: (rule) => rule.required().min(10).max(160),
+      validation: (rule) => requiredSpanishAlt(rule),
     }),
     defineField({
       name: 'titulo',
       title: 'Título',
-      type: 'string',
+      type: 'textoLocalizado',
       description: 'Opcional. Es obligatorio si la foto va en una serie de Obra.',
     }),
     defineField({
@@ -51,7 +52,7 @@ export const foto = defineType({
     }),
   ],
   preview: {
-    select: { title: 'titulo', alt: 'alt', media: 'imagen', lugar: 'lugar', anio: 'anio' },
+    select: { title: 'titulo.es', alt: 'alt.es', media: 'imagen', lugar: 'lugar', anio: 'anio' },
     prepare: ({ title, alt, media, lugar, anio }) => ({
       title: title ?? alt,
       subtitle: [lugar, anio].filter(Boolean).join(' · '),

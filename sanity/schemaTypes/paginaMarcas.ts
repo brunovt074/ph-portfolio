@@ -22,7 +22,7 @@ export const paginaMarcas = defineType({
             campoParrafo('descripcion', 'Descripción'),
             fotoUnica('foto', 'Foto', 'La foto que representa al rubro.'),
           ],
-          preview: { select: { title: 'titulo', subtitle: 'descripcion', media: 'foto.imagen' } },
+          preview: { select: { title: 'titulo.es', subtitle: 'descripcion.es', media: 'foto.imagen' } },
         }),
       ],
       validation: (rule) => rule.required().min(1),
