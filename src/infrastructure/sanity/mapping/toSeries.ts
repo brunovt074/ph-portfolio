@@ -15,6 +15,7 @@ const toSeriesPhotos = (entries: NonNullable<SanitySeriesDocument['fotos']>): Se
 export const toSeries = (document: SanitySeriesDocument): Series => ({
   number: document.numero,
   slug: document.slug,
+  slugs: { es: document.slug, en: document.slug, pt: document.slug },
   title: document.titulo,
   displayTitle: toRichTitle(document.tituloVisible),
   years: document.anios,

@@ -4,7 +4,7 @@ import { FakeContentRepository } from '../fakes/FakeContentRepository';
 
 describe('GetSiteSettings', () => {
   it('returns the contact data every footer needs', async () => {
-    const settings = await new GetSiteSettings(new FakeContentRepository()).execute();
+    const settings = await new GetSiteSettings(new FakeContentRepository()).execute('es');
 
     expect(settings.instagram).toEqual(['@sarahmoreau.ph']);
     expect(settings.portrait.id).toBe('retrato-sarah');

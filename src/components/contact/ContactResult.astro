@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { title, lead, problems = [], backLabel, backHref } = Astro.props;
-const settings = await new GetSiteSettings(contentRepository).execute();
+const settings = await new GetSiteSettings(contentRepository).execute('es');
 ---
 <BaseLayout title={title} description={lead} theme="ink" noindex>
   <Header slot="header" />

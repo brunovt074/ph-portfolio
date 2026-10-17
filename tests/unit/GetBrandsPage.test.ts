@@ -5,7 +5,7 @@ import { FakeContentRepository } from '../fakes/FakeContentRepository';
 
 describe('GetBrandsPage', () => {
   it('offers the brand packages with navigation from Retratos to Eventos', async () => {
-    const page = await new GetBrandsPage(new FakeContentRepository()).execute();
+    const page = await new GetBrandsPage(new FakeContentRepository()).execute('es');
 
     expect(page.facet.slug).toBe('marcas');
     expect(page.brands.packagesTitle).toBe('Paquetes');
@@ -17,6 +17,6 @@ describe('GetBrandsPage', () => {
   it('fails when the Marcas facet is missing from the content', async () => {
     const repository = new FakeContentRepository({ facets: [] });
 
-    await expect(new GetBrandsPage(repository).execute()).rejects.toBeInstanceOf(FacetNotFoundError);
+    await expect(new GetBrandsPage(repository).execute('es')).rejects.toBeInstanceOf(FacetNotFoundError);
   });
 });

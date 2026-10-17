@@ -5,8 +5,8 @@ describe('createSeedRepository', () => {
   it('wires the handoff JSON files into a ready-to-use repository', async () => {
     const repository = createSeedRepository();
 
-    const facets = await repository.getFacets();
-    const settings = await repository.getSettings();
+    const facets = await repository.getFacets('es');
+    const settings = await repository.getSettings('es');
 
     expect(facets).toHaveLength(4);
     expect(settings.instagram).toContain('@sarahmoreau.ph');
