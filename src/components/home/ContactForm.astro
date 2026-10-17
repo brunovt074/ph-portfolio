@@ -2,42 +2,75 @@
 import Button from '@/components/Button.astro';
 
 interface Props {
-  workTypes: string[];
+  workTypes?: string[];
+  variant?: 'general' | 'copia';
+  copies?: string[];
+  idPrefix?: string;
+  submitLabel?: string;
 }
 
-const { workTypes } = Astro.props;
+const { workTypes = [], variant = 'general', copies = [], idPrefix = 'contacto', submitLabel = 'Enviar consulta' } = Astro.props;
+const isCopyInquiry = variant === 'copia';
 const tipoByQuery: Record<string, string> = {
   editorial: 'Editorial & moda',
   retratos: 'Retrato / sesión',
   marcas: 'Marca / producto',
   eventos: 'Evento',
-  copia: 'Copia de autor',
 };
 ---
-<form class="contact-form" method="post" action="/api/contacto" data-contact-form data-tipos={JSON.stringify(tipoByQuery)}>
+<form
+  class="contact-form"
+  method="post"
+  action="/contacto/enviar"
+  data-contact-form
+  data-variant={variant}
+  data-tipos={JSON.stringify(tipoByQuery)}
+>
   <div class="field">
-    <label class="t-eyebrow" for="contacto-nombre">Nombre<span aria-hidden="true"> *</span></label>
-    <input id="contacto-nombre" name="nombre" type="text" required autocomplete="name" />
+    <label class="t-eyebrow" for={`${idPrefix}-nombre`}>Nombre<span aria-hidden="true"> *</span></label>
+    <input id={`${idPrefix}-nombre`} name="nombre" type="text" required minlength="2" maxlength="80" autocomplete="name" aria-describedby={`${idPrefix}-nombre-error`} />
+    <p class="field-error" id={`${idPrefix}-nombre-error`} data-error-for="nombre" hidden></p>
   </div>
   <div class="field">
-    <label class="t-eyebrow" for="contacto-email">Email<span aria-hidden="true"> *</span></label>
-    <input id="contacto-email" name="email" type="email" required autocomplete="email" />
+    <label class="t-eyebrow" for={`${idPrefix}-email`}>Email<span aria-hidden="true"> *</span></label>
+    <input id={`${idPrefix}-email`} name="email" type="email" required autocomplete="email" aria-describedby={`${idPrefix}-email-error`} />
+    <p class="field-error" id={`${idPrefix}-email-error`} data-error-for="email" hidden></p>
   </div>
+  {isCopyInquiry ? (
+    <>
+      <input type="hidden" name="tipo" value="Copia de autor" />
+      <div class="field">
+        <label class="t-eyebrow" for={`${idPrefix}-copia`}>Copia que te interesa<span aria-hidden="true"> *</span></label>
+        <select id={`${idPrefix}-copia`} name="copia" required aria-describedby={`${idPrefix}-copia-error`}>
+          <option value="">Elegí una copia</option>
+          {copies.map((copy) => <option value={copy}>{copy}</option>)}
+        </select>
+        <p class="field-error" id={`${idPrefix}-copia-error`} data-error-for="copia" hidden></p>
+      </div>
+    </>
+  ) : (
+    <div class="field">
+      <label class="t-eyebrow" for={`${idPrefix}-tipo`}>Tipo de trabajo</label>
+      <select id={`${idPrefix}-tipo`} name="tipo" aria-describedby={`${idPrefix}-tipo-error`}>
+        <option value="">Elegí una opción</option>
+        {workTypes.map((type) => <option value={type}>{type}</option>)}
+      </select>
+      <p class="field-error" id={`${idPrefix}-tipo-error`} data-error-for="tipo" hidden></p>
+    </div>
+  )}
   <div class="field">
-    <label class="t-eyebrow" for="contacto-tipo">Tipo de trabajo</label>
-    <select id="contacto-tipo" name="tipo">
-      <option value="">Elegí una opción</option>
-      {workTypes.map((type) => <option value={type}>{type}</option>)}
-    </select>
+    <label class="t-eyebrow" for={`${idPrefix}-mensaje`}>Mensaje<span aria-hidden="true"> *</span></label>
+    <textarea id={`${idPrefix}-mensaje`} name="mensaje" rows="5" required minlength="10" maxlength="2000" aria-describedby={`${idPrefix}-mensaje-error`}></textarea>
+    <p class="field-error" id={`${idPrefix}-mensaje-error`} data-error-for="mensaje" hidden></p>
   </div>
-  <div class="field">
-    <label class="t-eyebrow" for="contacto-mensaje">Mensaje<span aria-hidden="true"> *</span></label>
-    <textarea id="contacto-mensaje" name="mensaje" rows="5" required></textarea>
+  <div class="trap" aria-hidden="true">
+    <label for={`${idPrefix}-sitio-web`}>Sitio web</label>
+    <input id={`${idPrefix}-sitio-web`} name="sitio_web" type="text" tabindex="-1" autocomplete="off" />
   </div>
-  <input type="hidden" name="copia" value="" />
   <div>
     <p class="required-note">* Campos obligatorios</p>
-    <Button type="submit" variant="primary">Enviar consulta</Button>
+    <Button type="submit" variant="primary">{submitLabel}</Button>
+    <p class="form-status" role="status" aria-live="polite" data-form-status></p>
   </div>
 </form>
 
@@ -61,6 +94,32 @@ const tipoByQuery: Record<string, string> = {
     gap: 4px;
   }
 
+  .field-error,
+  .form-status {
+    margin: 0;
+    color: var(--accent-current);
+  }
+
+  .form-status {
+    margin-top: 16px;
+  }
+
+  .form-status:empty {
+    display: none;
+  }
+
+  .form-status[data-state='success'] {
+    color: var(--fg);
+  }
+
+  .trap {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
   input,
   select,
   textarea {
@@ -75,6 +134,12 @@ const tipoByQuery: Record<string, string> = {
     font-family: var(--font-body);
     font-size: var(--text-body);
     transition: border-color 200ms;
+  }
+
+  input[aria-invalid='true'],
+  select[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-bottom-color: var(--accent-current);
   }
 
   select option {
@@ -102,21 +167,8 @@ const tipoByQuery: Record<string, string> = {
 </style>
 
 <script>
-  const applyQuery = () => {
-    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
-    if (!form) return;
-    const tipos: Record<string, string> = JSON.parse(form.dataset.tipos ?? '{}');
-    const params = new URLSearchParams(location.search);
-    const tipo = params.get('tipo');
-    const copia = params.get('copia');
-    const select = form.querySelector<HTMLSelectElement>('select[name="tipo"]');
-    const message = form.querySelector<HTMLTextAreaElement>('textarea[name="mensaje"]');
-    const copiaField = form.querySelector<HTMLInputElement>('input[name="copia"]');
-    if (tipo && select && tipos[tipo]) select.value = tipos[tipo];
-    if (copia && copiaField) copiaField.value = copia;
-    if (copia && message && !message.value) message.value = `Hola, me interesa la copia "${copia}".`;
-  };
+  import { initContactForms } from '@/forms/initContactForms';
 
-  applyQuery();
-  document.addEventListener('astro:page-load', applyQuery);
+  initContactForms();
+  document.addEventListener('astro:page-load', initContactForms);
 </script>

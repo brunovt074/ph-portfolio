@@ -19,8 +19,13 @@ Copiá `.env.example` a `.env` y completá:
 | `PUBLIC_SANITY_PROJECT_ID` | Activa Sanity y el Studio. Vacía = modo semilla. |
 | `PUBLIC_SANITY_DATASET` | Por defecto `production`. |
 | `SANITY_WRITE_TOKEN` | Solo para `npm run seed`. No se usa en el sitio. |
+| `SITE_URL` | URL pública final (canonical, Open Graph, sitemap, JSON-LD). Por defecto `https://sarahmoreau.example`. |
+| `RESEND_API_KEY` | Clave de Resend para enviar el formulario de contacto. |
+| `CONTACT_TO_EMAIL` | Casilla de Sarah donde llegan las consultas. |
+| `CONTACT_FROM_EMAIL` | Remitente verificado en Resend, por ejemplo `Sitio Sarah Moreau <contacto@tu-dominio.com>`. |
+| `CONTACT_DELIVERY_MODE` | `console` escribe las consultas en el log del servidor en lugar de enviarlas (pruebas locales y e2e). Dejarla vacía en producción. |
 
-En el hosting definí las dos primeras (nunca el token).
+En el hosting definí `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SITE_URL` y las variables de email (nunca el token de escritura de Sanity).
 
 ## 3. Cargar los contenidos iniciales
 
@@ -59,3 +64,37 @@ En el hosting definí las dos primeras (nunca el token).
 4. Dejá "Publicada en la tienda" encendida y tocá Publicar. Para ocultarla sin borrarla, apagala.
 
 Las páginas con textos (Inicio, Marcas, Obra, Copias) se editan en Páginas.
+
+## 6. Servidor, formulario de contacto y email
+
+El sitio sigue siendo estático (`output: 'static'`), pero usa el adaptador `@astrojs/node` en modo `standalone` porque el formulario necesita un servidor. Solo son bajo demanda la acción `contact` (`/_actions/contact`), el endpoint `POST /contacto/enviar` (envío sin JavaScript) y `/contacto/error`; el resto se sirve prerenderizado.
+
+- `npm run build` genera `dist/client` (estático) y `dist/server/entry.mjs`. Se levanta con `HOST=0.0.0.0 PORT=4321 node dist/server/entry.mjs`.
+- Con JavaScript, el formulario llama a la acción y muestra el resultado en la misma página. Sin JavaScript, envía a `/contacto/enviar` y redirige a `/contacto/enviado` o `/contacto/error`.
+- Sin `RESEND_API_KEY`: en desarrollo (`npm run dev`) las consultas se loguean en la terminal; en producción el visitante ve un mensaje para escribir por email o WhatsApp. Para probar el build localmente sin Resend usá `CONTACT_DELIVERY_MODE=console`.
+
+### Configurar Resend
+
+1. Creá una cuenta en https://resend.com y verificá el dominio desde el que se enviará (registros DNS).
+2. Creá una API key con permiso de envío.
+3. Cargá `RESEND_API_KEY`, `CONTACT_TO_EMAIL` y `CONTACT_FROM_EMAIL` en el hosting.
+4. Probá el formulario en producción: el mail llega con `Reply-To` apuntando al visitante.
+
+### Cambiar de hosting
+
+Hay que cambiar el adaptador en `astro.config.mjs` y reinstalar el paquete correspondiente; el código de la acción no cambia.
+
+- Vercel: `npm i @astrojs/vercel`, `import vercel from '@astrojs/vercel'` y `adapter: vercel()`.
+- Cloudflare: `npm i @astrojs/cloudflare`, `import cloudflare from '@astrojs/cloudflare'` y `adapter: cloudflare()`. Las variables se definen en el panel de Cloudflare y los secretos del servidor se leen igual con `astro:env/server`.
+
+En ambos casos retirá `@astrojs/node` y revisá la guía oficial del adaptador antes de publicar.
+
+## 7. SEO
+
+- Cada página define título y descripción propios; la imagen para redes (1200 x 630) sale de la foto principal de la página. Con fotos en baja resolución la imagen generada es más chica; con las definitivas queda en 1200 x 630.
+- `sitemap-index.xml` y `robots.txt` se generan solos a partir de `SITE_URL`; `/admin` y `/contacto/*` quedan afuera.
+- La home publica datos estructurados `Person` y `ProfessionalService`; `/obra/copias` publica un `ItemList` de `VisualArtwork`. Se omiten los valores que todavía son placeholders (email, teléfono, precios). Cuando Sarah cargue dirección o teléfono reales se pueden sumar a `src/seo/structuredData.ts`.
+
+## 8. Analítica (recomendación, aún no instalada)
+
+Usar una herramienta sin cookies, así no hace falta banner de consentimiento: Cloudflare Web Analytics (gratis, si el sitio queda en Cloudflare) o Plausible. Se agrega con un solo `<script>` en `src/layouts/BaseLayout.astro`. Eventos útiles para medir: envío del formulario de contacto y clic en "Consultar esta copia".

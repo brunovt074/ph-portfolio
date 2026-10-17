@@ -17,6 +17,7 @@ const { obra, series, settings } = await new GetObraPage(contentRepository).exec
   title="Obra"
   description="Obra personal de Sarah Moreau: series fotográficas, una bitácora del paso del tiempo y copias de autor en edición limitada."
   theme="obra"
+  image={obra.opening.photo}
 >
   <Header slot="header" variant="obra" />
   <FilmGrain />

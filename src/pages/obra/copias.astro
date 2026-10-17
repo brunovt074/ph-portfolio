@@ -8,10 +8,14 @@ import PrintInfoBand from '@/components/obra/PrintInfoBand.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetPrintsPage } from '@/application/GetPrintsPage';
 import { contentRepository } from '@/infrastructure/container';
+import { buildPrintsSchema } from '@/seo/structuredData';
+import ContactForm from '@/components/home/ContactForm.astro';
 
 const { prints, content, settings } = await new GetPrintsPage(contentRepository).execute();
+const copyTitles = prints.map((print) => print.photo.title ?? 'Sin título');
+const jsonLd = prints.length > 0 ? [await buildPrintsSchema(prints, Astro.site!)] : [];
 ---
-<BaseLayout title="Copias de autor" description={content.lead} theme="obra">
+<BaseLayout title="Copias de autor" description={content.lead} theme="obra" image={prints[2]?.photo ?? prints[0]?.photo} jsonLd={jsonLd}>
   <Header slot="header" variant="obra" current="copias" />
   <FilmGrain />
   <section class="prints-intro container">
@@ -22,6 +26,12 @@ const { prints, content, settings } = await new GetPrintsPage(contentRepository)
     {prints.map((print) => <PrintCard print={print} cta={content.cta} editionLabel={content.editionLabel} />)}
   </section>
   <PrintInfoBand items={content.info} />
+  <section id="consulta" class="print-inquiry section" aria-labelledby="consulta-title">
+    <div class="container print-inquiry-grid">
+      <h2 id="consulta-title" class="t-display">Consultá una copia</h2>
+      <ContactForm variant="copia" copies={copyTitles} idPrefix="consulta" submitLabel="Consultar esta copia" />
+    </div>
+  </section>
   <FooterNav slot="footer" previous={{ label: 'Obra', href: '/obra' }} next={null} settings={settings} logoVariant="obra" />
 </BaseLayout>
 
@@ -37,5 +47,23 @@ const { prints, content, settings } = await new GetPrintsPage(contentRepository)
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
     gap: clamp(32px, 4vw, 64px);
     padding-bottom: calc(var(--section-y) * 1.5);
+  }
+
+  .print-inquiry {
+    border-top: 1px solid var(--line);
+  }
+
+  .print-inquiry-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(24px, 3vw, 40px);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .print-inquiry-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(40px, 6vw, 96px);
+    }
   }
 </style>

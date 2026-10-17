@@ -12,10 +12,13 @@ import ObraTeaser from '@/components/home/ObraTeaser.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetHomePage } from '@/application/GetHomePage';
 import { contentRepository } from '@/infrastructure/container';
+import { buildPersonSchema, buildProfessionalServiceSchema } from '@/seo/structuredData';
 
 const { home, facets, settings } = await new GetHomePage(contentRepository).execute();
+const heroPhoto = home.encargosDoor.photo;
+const jsonLd = [buildPersonSchema(settings, Astro.site!), await buildProfessionalServiceSchema(settings, Astro.site!, heroPhoto)];
 ---
-<BaseLayout title="Sarah Moreau — Fotografía y video" description={home.lead} theme="ink" home>
+<BaseLayout title="Sarah Moreau — Fotografía y video" description={home.lead} theme="ink" image={heroPhoto} jsonLd={jsonLd} home>
   <Header slot="header" current="home" />
   <HomeHero home={home} />
   <Ticker items={home.ticker} label={home.ticker.join(', ')} />

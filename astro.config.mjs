@@ -1,7 +1,9 @@
+import node from '@astrojs/node';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import { loadEnv } from 'vite';
 
 const env = { ...loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), ''), ...process.env };
@@ -15,7 +17,20 @@ const sanityIntegrations = projectId
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://sarahmoreau.example',
   output: 'static',
-  integrations: [react(), ...sanityIntegrations],
+  adapter: node({ mode: 'standalone' }),
+  integrations: [
+    react(),
+    sitemap({ filter: (page) => !/\/(admin|contacto)(\/|$)/.test(new URL(page).pathname) }),
+    ...sanityIntegrations,
+  ],
+  env: {
+    schema: {
+      RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CONTACT_TO_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CONTACT_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CONTACT_DELIVERY_MODE: envField.string({ context: 'server', access: 'secret', optional: true }),
+    },
+  },
   prefetch: true,
   image: { responsiveStyles: false },
   vite: { plugins: [tailwindcss()] },

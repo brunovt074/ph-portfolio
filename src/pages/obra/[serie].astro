@@ -23,7 +23,7 @@ const { series, previous, next, prints, obra } = await new GetSeriesPage(content
 const settings = await contentRepository.getSettings();
 const screens = new BuildSeriesSequence().execute(series.photos);
 ---
-<BaseLayout title={series.title} description={series.curatorialLine} theme="obra">
+<BaseLayout title={series.title} description={series.curatorialLine} theme="obra" image={series.photos[0]?.photo}>
   <Header slot="header" variant="obra" />
   <FilmGrain />
   <section class="series-intro container">

@@ -18,6 +18,7 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
   title={facet.name}
   description="Sesiones personales, maternidad, familias y marca personal, en estudio o en tu espacio. Retratos sin pose por Sarah Moreau."
   theme="paper"
+  image={facet.cover[0]}
 >
   <Header slot="header" current="retratos" ctaLabel="Reservar sesión" ctaHref={contactHref} />
   <FacetIntro facet={facet} split>

@@ -17,6 +17,7 @@ const { facet, brands, previous, next, settings } = await new GetBrandsPage(cont
   title="Fotografía para marcas"
   description="Fotografía de producto, gastronomía, joyería y espacios para tu tienda online, tus redes y tus campañas. Pedí tu presupuesto."
   theme="sand"
+  image={facet.cover[0]}
 >
   <Header slot="header" current="marcas" ctaLabel={brands.headerCta} ctaHref="/?tipo=marcas#contacto" />
   <BrandsHero facet={facet} />
