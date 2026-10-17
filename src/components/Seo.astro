@@ -1,6 +1,5 @@
 ---
 import type { SeoImage } from '@/seo/SeoImage';
-import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@/seo/resolveSeoImage';
 
 interface Props {
   title: string;
@@ -26,8 +25,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 {image && (
   <>
     <meta property="og:image" content={image.url} />
-    <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
-    <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
+    <meta property="og:image:width" content={String(image.width)} />
+    <meta property="og:image:height" content={String(image.height)} />
     <meta property="og:image:alt" content={image.alt} />
     <meta name="twitter:image" content={image.url} />
     <meta name="twitter:image:alt" content={image.alt} />

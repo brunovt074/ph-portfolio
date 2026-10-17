@@ -167,8 +167,10 @@ const tipoByQuery: Record<string, string> = {
 </style>
 
 <script>
-  import { initContactForms } from '@/forms/initContactForms';
+  import { afterLoad } from '@/motion/afterLoad';
 
-  initContactForms();
-  document.addEventListener('astro:page-load', initContactForms);
+  const startForms = () => import('@/forms/initContactForms').then(({ initContactForms }) => initContactForms());
+
+  afterLoad(startForms);
+  document.addEventListener('astro:page-load', startForms);
 </script>

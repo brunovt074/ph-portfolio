@@ -22,11 +22,20 @@ const jsonLd = [buildPersonSchema(settings, Astro.site!), await buildProfessiona
   <Header slot="header" current="home" />
   <HomeHero home={home} />
   <Ticker items={home.ticker} label={home.ticker.join(', ')} />
-  <AboutSection settings={settings} cta={home.aboutCta} />
-  <EncargosIndex home={home} facets={facets} />
-  <EditorialStrip photos={home.editorialStrip} />
-  <BrandsTeaser home={home} />
-  <ObraTeaser home={home} />
-  <ContactSection home={home} settings={settings} />
+  <div class="home-below">
+    <AboutSection settings={settings} cta={home.aboutCta} />
+    <EncargosIndex home={home} facets={facets} />
+    <EditorialStrip photos={home.editorialStrip} />
+    <BrandsTeaser home={home} />
+    <ObraTeaser home={home} />
+    <ContactSection home={home} settings={settings} />
+  </div>
   <FooterNav slot="footer" previous={null} next={null} settings={settings} />
 </BaseLayout>
+
+<style>
+  .home-below > :global(*) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
+</style>

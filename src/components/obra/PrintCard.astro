@@ -7,9 +7,10 @@ interface Props {
   print: Print;
   cta: string;
   editionLabel: string;
+  priority?: boolean;
 }
 
-const { print, cta, editionLabel } = Astro.props;
+const { print, cta, editionLabel, priority = false } = Astro.props;
 const title = print.photo.title ?? 'Sin título';
 const edition = editionLabel
   .replace('{edicion}', String(print.edition))
@@ -17,7 +18,7 @@ const edition = editionLabel
 const inquiryHref = `?copia=${encodeURIComponent(title)}#consulta`;
 ---
 <article class="print-card" data-reveal="darkroom">
-  <PassepartoutPhoto photo={print.photo} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" />
+  <PassepartoutPhoto photo={print.photo} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" priority={priority} />
   <div class="print-body">
     <h2 class="t-h3"><em>{title}</em></h2>
     <p class="t-eyebrow">Serie {print.series.number} · {print.series.title}</p>

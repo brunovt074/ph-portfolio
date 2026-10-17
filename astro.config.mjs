@@ -31,6 +31,7 @@ export default defineConfig({
       CONTACT_DELIVERY_MODE: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
+  build: { inlineStylesheets: 'always' },
   prefetch: true,
   image: { responsiveStyles: false },
   vite: { plugins: [tailwindcss()] },
