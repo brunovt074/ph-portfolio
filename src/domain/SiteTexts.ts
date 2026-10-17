@@ -53,6 +53,17 @@ export interface SiteTexts {
     seriesEyebrow: string;
     printsInquiryTitle: string;
     eventsTicker: string;
+    seriesCount: string;
+    printSeries: string;
+    printsInquirySubmit: string;
+    placeholderCity: string;
+    placeholderYear: string;
+    placeholderCount: string;
+    beforeLabel: string;
+    afterLabel: string;
+    compareLabel: string;
+    compareValue: string;
+    compareProvisionalNote: string;
   };
   contact: {
     name: string;

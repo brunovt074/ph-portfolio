@@ -1,18 +1,21 @@
 ---
 import Button from '@/components/Button.astro';
 import RichText from '@/components/RichText.astro';
+import type { Locale } from '@/domain/Locale';
 import type { ObraContent } from '@/domain/ObraContent';
+import { pathTo } from '@/domain/routing/pathTo';
 
 interface Props {
+  locale: Locale;
   band: ObraContent['seriesPrintsBand'];
 }
 
-const { band } = Astro.props;
+const { locale, band } = Astro.props;
 ---
 <section data-theme="ivory" class="prints-band">
   <div class="container prints-band-row">
     <h2 class="t-cta prints-band-title"><RichText title={band.title} /></h2>
-    <Button href="/obra/copias" variant="primary">{band.cta}</Button>
+    <Button href={pathTo(locale, { route: 'copias' })} variant="primary">{band.cta}</Button>
   </div>
 </section>
 

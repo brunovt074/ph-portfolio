@@ -4,37 +4,55 @@ import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import { pathTo } from '@/domain/routing/pathTo';
 import { contentRepository } from '@/infrastructure/container';
 
-const settings = await new GetSiteSettings(contentRepository).execute('es');
+const locale = 'es';
+const [settings, texts] = await Promise.all([
+  new GetSiteSettings(contentRepository).execute(locale),
+  new GetSiteTexts(contentRepository).execute(locale),
+]);
+const alternates = alternatePaths(() => ({ route: 'home' }));
 const exits = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Editorial', href: '/editorial' },
-  { label: 'Retratos', href: '/retratos' },
-  { label: 'Marcas', href: '/marcas' },
-  { label: 'Eventos', href: '/eventos' },
-  { label: 'Obra', href: '/obra' },
+  { label: texts.nav.home, href: pathTo(locale, { route: 'home' }) },
+  { label: texts.nav.editorial, href: pathTo(locale, { route: 'editorial' }) },
+  { label: texts.nav.retratos, href: pathTo(locale, { route: 'retratos' }) },
+  { label: texts.nav.marcas, href: pathTo(locale, { route: 'marcas' }) },
+  { label: texts.nav.eventos, href: pathTo(locale, { route: 'eventos' }) },
+  { label: texts.nav.obra, href: pathTo(locale, { route: 'obra' }) },
+  { label: 'English', href: alternates.en, lang: 'en' },
+  { label: 'Português', href: alternates.pt, lang: 'pt' },
 ];
 ---
-<BaseLayout title="Página no encontrada" description="Esta página no existe." theme="ink" noindex>
-  <Header slot="header" />
+<BaseLayout
+  title={texts.seo.notFoundTitle}
+  description={texts.seo.notFoundDescription}
+  theme="ink"
+  noindex
+  locale={locale}
+  alternates={alternates}
+  skipLabel={texts.a11y.skipToContent}
+>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} />
   <section class="section">
     <div class="container not-found">
-      <h1 class="t-display" data-split>Esta página no existe</h1>
-      <p class="t-lead">Puede que el enlace haya cambiado. Volvé al inicio y seguí desde ahí.</p>
-      <nav aria-label="Salidas">
+      <h1 class="t-display" data-split>{texts.notFound.title}</h1>
+      <p class="t-lead">{texts.notFound.lead}</p>
+      <nav aria-label={texts.a11y.exits}>
         <ul class="not-found-exits">
           {exits.map((exit) => (
-            <li><a class="t-h3 not-found-exit" href={exit.href}>{exit.label}</a></li>
+            <li><a class="t-h3 not-found-exit" href={exit.href} lang={exit.lang} hreflang={exit.lang}>{exit.label}</a></li>
           ))}
         </ul>
       </nav>
       <div>
-        <Button href="/" variant="secondary">Volver al inicio</Button>
+        <Button href={alternates.es} variant="secondary">{texts.nav.backHome}</Button>
       </div>
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={null} next={null} settings={settings} />
 </BaseLayout>
 
 <style>

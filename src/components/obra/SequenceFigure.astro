@@ -2,9 +2,11 @@
 import Photo from '@/components/Photo.astro';
 import type { Series } from '@/domain/Series';
 import type { SeriesPhoto } from '@/domain/SeriesPhoto';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import { photoAspect } from './photoAspect';
 
 interface Props {
+  texts: SiteTexts['pages'];
   series: Series;
   entry: SeriesPhoto;
   position: number;
@@ -12,7 +14,7 @@ interface Props {
   layout: SeriesPhoto['layout'];
 }
 
-const { series, entry, position, sizes, layout } = Astro.props;
+const { texts, series, entry, position, sizes, layout } = Astro.props;
 const { photo } = entry;
 const aspect = photoAspect(photo);
 const first = position === 1;
@@ -27,7 +29,7 @@ const bleed = layout === 'bleed';
     transitionName={first ? `serie-${series.slug}-1` : undefined}
   />
   <figcaption class:list={['sequence-caption', { container: bleed }]} data-caption>
-    {series.number}.{position} — <em>{photo.title ?? 'Sin título'}</em>, {photo.place ?? '[Ciudad]'}, {photo.year ?? '[AÑO]'}
+    {series.number}.{position} — <em>{photo.title ?? texts.untitled}</em>, {photo.place ?? texts.placeholderCity}, {photo.year ?? texts.placeholderYear}
   </figcaption>
 </figure>
 

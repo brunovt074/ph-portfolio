@@ -7,10 +7,14 @@ import bodoniLatin from '@fontsource-variable/bodoni-moda/files/bodoni-moda-lati
 import { themeColors } from '@/styles/themeColors';
 import type { ThemeName } from '@/styles/themeColors';
 import { ClientRouter } from 'astro:transitions';
+import HreflangLinks from '@/components/HreflangLinks.astro';
 import JsonLd from '@/components/JsonLd.astro';
 import Seo from '@/components/Seo.astro';
 import SkipLink from '@/components/SkipLink.astro';
+import type { Locale } from '@/domain/Locale';
 import type { Photo } from '@/domain/Photo';
+import type { Translations } from '@/domain/Translations';
+import { htmlLanguages } from '@/seo/htmlLanguages';
 import { resolveSeoImage } from '@/seo/resolveSeoImage';
 
 interface Props {
@@ -21,9 +25,13 @@ interface Props {
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
   home?: boolean;
+  locale: Locale;
+  alternates: Record<Locale, string>;
+  translations?: Translations;
+  skipLabel: string;
 }
 
-const { title, description, theme, image, jsonLd = [], noindex = false, home = false } = Astro.props;
+const { title, description, theme, image, jsonLd = [], noindex = false, home = false, locale, alternates, translations = { es: true, en: true, pt: true }, skipLabel } = Astro.props;
 
 const themeColor = themeColors[theme];
 
@@ -31,7 +39,7 @@ const fullTitle = home ? title : `${title} — Lara Vischi`;
 const seoImage = image && Astro.site ? await resolveSeoImage(image, Astro.site) : undefined;
 ---
 <!doctype html>
-<html lang="es-AR">
+<html lang={htmlLanguages[locale]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,7 +48,8 @@ const seoImage = image && Astro.site ? await resolveSeoImage(image, Astro.site) 
     <meta name="theme-color" content={themeColor} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href={bodoniLatin} as="font" type="font/woff2" crossorigin />
-    <Seo title={fullTitle} description={description} image={seoImage} noindex={noindex} />
+    <Seo title={fullTitle} description={description} image={seoImage} noindex={noindex} locale={locale} alternates={alternates} translations={translations} />
+    {translations[locale] && !noindex && Astro.site && <HreflangLinks alternates={alternates} translations={translations} site={Astro.site} />}
     {jsonLd.map((data) => <JsonLd data={data} />)}
     <ClientRouter />
     <script is:inline>
@@ -56,7 +65,7 @@ const seoImage = image && Astro.site ? await resolveSeoImage(image, Astro.site) 
     </script>
   </head>
   <body data-theme={theme}>
-    <SkipLink />
+    <SkipLink label={skipLabel} />
     <slot name="header" />
     <main id="contenido" tabindex="-1" transition:animate="fade">
       <slot />

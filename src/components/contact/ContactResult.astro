@@ -4,6 +4,8 @@ import Header from '@/components/Header.astro';
 import Button from '@/components/Button.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { contentRepository } from '@/infrastructure/container';
 
 interface Props {
@@ -15,10 +17,15 @@ interface Props {
 }
 
 const { title, lead, problems = [], backLabel, backHref } = Astro.props;
-const settings = await new GetSiteSettings(contentRepository).execute('es');
+const locale = 'es';
+const [settings, texts] = await Promise.all([
+  new GetSiteSettings(contentRepository).execute(locale),
+  new GetSiteTexts(contentRepository).execute(locale),
+]);
+const alternates = alternatePaths(() => ({ route: 'home' }));
 ---
-<BaseLayout title={title} description={lead} theme="ink" noindex>
-  <Header slot="header" />
+<BaseLayout title={title} description={lead} theme="ink" noindex locale={locale} alternates={alternates} skipLabel={texts.a11y.skipToContent}>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} />
   <section class="section">
     <div class="container result">
       <h1 class="t-display" data-split>{title}</h1>
@@ -31,7 +38,7 @@ const settings = await new GetSiteSettings(contentRepository).execute('es');
       <Button href={backHref} variant="primary">{backLabel}</Button>
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={null} next={null} settings={settings} />
 </BaseLayout>
 
 <style>

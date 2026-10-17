@@ -1,30 +1,37 @@
 ---
 import Arrow from '@/components/Arrow.astro';
 import Button from './Button.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 import Logo from './Logo.astro';
 import MobileMenu from './MobileMenu.astro';
 import { navigationLinks } from './navigationLinks';
 import type { HeaderVariant } from './navigationLinks';
+import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  locale: Locale;
+  texts: SiteTexts;
+  alternates: Record<Locale, string>;
   variant?: HeaderVariant;
   current?: string;
   ctaLabel?: string;
   ctaHref?: string;
 }
 
-const { variant = 'site', current = 'home', ctaLabel, ctaHref } = Astro.props;
+const { locale, texts, alternates, variant = 'site', current = 'home', ctaLabel, ctaHref } = Astro.props;
 
-const links = navigationLinks(variant);
-const resolvedCtaLabel = ctaLabel ?? (variant === 'site' ? 'Reservar sesión' : undefined);
-const resolvedCtaHref = ctaHref ?? (variant === 'site' ? '/#contacto' : undefined);
+const links = navigationLinks(variant, locale, texts);
+const resolvedCtaLabel = ctaLabel ?? (variant === 'site' ? texts.nav.bookSession : undefined);
+const resolvedCtaHref = ctaHref ?? (variant === 'site' ? pathTo(locale, { route: 'home', hash: 'contacto' }) : undefined);
 const cta = resolvedCtaLabel && resolvedCtaHref ? { label: resolvedCtaLabel, href: resolvedCtaHref } : undefined;
 const currentHref = links.find((link) => link.key === current)?.href;
-const navLabel = variant === 'obra' ? 'Obra' : 'Principal';
+const navLabel = variant === 'obra' ? texts.a11y.obraNav : texts.a11y.mainNav;
 ---
 <header class="site-header">
   <div class="container site-header-row">
-    <Logo variant={variant === 'obra' ? 'obra' : 'default'} />
+    <Logo variant={variant === 'obra' ? 'obra' : 'default'} locale={locale} texts={texts.nav} />
     <nav class="site-nav" aria-label={navLabel}>
       {links.map((link) => (
         <a
@@ -37,7 +44,8 @@ const navLabel = variant === 'obra' ? 'Obra' : 'Principal';
       ))}
     </nav>
     <div class="header-actions">
-      <MobileMenu links={links} {...(cta ? { ctaLabel: cta.label, ctaHref: cta.href } : {})} current={currentHref} />
+      <span class="header-switcher"><LanguageSwitcher locale={locale} alternates={alternates} label={texts.a11y.languageSwitcher} /></span>
+      <MobileMenu links={links} locale={locale} alternates={alternates} texts={texts.a11y} {...(cta ? { ctaLabel: cta.label, ctaHref: cta.href } : {})} current={currentHref} />
       {cta && <Button class="header-cta" href={cta.href} variant="primary">{cta.label}</Button>}
     </div>
   </div>
@@ -110,7 +118,8 @@ const navLabel = variant === 'obra' ? 'Obra' : 'Principal';
   }
 
   @media (max-width: 899px) {
-    :global(html.js) .site-nav {
+    :global(html.js) .site-nav,
+    :global(html.js) .header-switcher {
       display: none;
     }
   }

@@ -2,15 +2,17 @@
 import LightboxLink from '@/components/LightboxLink.astro';
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
   photos: PhotoModel[];
+  texts: SiteTexts['pages'];
   ratio: string;
 }
 
-const { photos, ratio } = Astro.props;
+const { photos, ratio, texts } = Astro.props;
 ---
-<h2 class="sr-only">Galería</h2>
+<h2 class="sr-only">{texts.gallery}</h2>
 <div class="grid-gallery" data-lightbox-group>
   {photos.map((photo) => (
     <figure class="grid-gallery-item" data-reveal>

@@ -1,26 +1,32 @@
 ---
 import Arrow from '@/components/Arrow.astro';
 import Button from './Button.astro';
+import type { Locale } from '@/domain/Locale';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import type { HeaderLink } from './HeaderLink';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
   links: HeaderLink[];
+  locale: Locale;
+  alternates: Record<Locale, string>;
+  texts: SiteTexts['a11y'];
   ctaLabel?: string;
   ctaHref?: string;
   current?: string | undefined;
 }
 
-const { links, ctaLabel, ctaHref, current } = Astro.props;
+const { links, locale, alternates, texts, ctaLabel, ctaHref, current } = Astro.props;
 ---
 <div class="mobile-menu" data-mobile-menu>
   <button type="button" class="t-nav mobile-menu-trigger" aria-expanded="false" aria-controls="mobile-menu-panel" data-menu-open>
-    Menú
+    {texts.mobileMenu}
   </button>
-  <div id="mobile-menu-panel" class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Menú" hidden data-menu-panel>
+  <div id="mobile-menu-panel" class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label={texts.mobileMenu} hidden data-menu-panel>
     <div class="mobile-menu-bar container">
-      <button type="button" class="t-nav mobile-menu-close" data-menu-close>Cerrar</button>
+      <button type="button" class="t-nav mobile-menu-close" data-menu-close>{texts.mobileMenuClose}</button>
     </div>
-    <nav class="mobile-menu-links container" aria-label="Secciones">
+    <nav class="mobile-menu-links container" aria-label={texts.sections}>
       {links.map((link, index) => (
         <a class="t-h2" style={`--i: ${index}`} href={link.href} aria-current={current === link.href ? 'page' : undefined} data-menu-link>
           {link.label}{link.muted && <Arrow direction="up-right" />}
@@ -28,6 +34,9 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
       ))}
       {ctaLabel && ctaHref && <span class="mobile-menu-cta" style={`--i: ${links.length}`}><Button href={ctaHref} variant="primary">{ctaLabel}</Button></span>}
     </nav>
+    <div class="mobile-menu-language container">
+      <LanguageSwitcher locale={locale} alternates={alternates} label={texts.languageSwitcher} />
+    </div>
   </div>
 </div>
 
@@ -85,6 +94,10 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
 
   .mobile-menu-links a[aria-current='page'] {
     color: var(--accent-current);
+  }
+
+  .mobile-menu-language {
+    padding-block: 16px 48px;
   }
 
   .mobile-menu-cta {

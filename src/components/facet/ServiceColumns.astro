@@ -1,13 +1,15 @@
 ---
 import type { Service } from '@/domain/Service';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
   title: string;
+  texts: SiteTexts['pages'];
   services: Service[];
   numerals: 'roman' | 'none';
 }
 
-const { title, services, numerals } = Astro.props;
+const { title, texts, services, numerals } = Astro.props;
 const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
 ---
 <section class="container section service-columns">
@@ -20,7 +22,7 @@ const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
         {service.description && <p class="service-description">{service.description}</p>}
         {service.price && (
           <p class="service-price">
-            <span class="t-eyebrow">Inversión</span>
+            <span class="t-eyebrow">{texts.investment}</span>
             <span class="service-price-value">{service.price}</span>
           </p>
         )}

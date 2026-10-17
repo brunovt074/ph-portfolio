@@ -1,14 +1,16 @@
 ---
 import type { SequenceScreen } from '@/application/SequenceScreen';
 import type { Series } from '@/domain/Series';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import SequenceFigure from './SequenceFigure.astro';
 
 interface Props {
+  texts: SiteTexts['pages'];
   series: Series;
   screens: SequenceScreen[];
 }
 
-const { series, screens } = Astro.props;
+const { texts, series, screens } = Astro.props;
 ---
 <div data-sequence data-total={series.photos.length} data-number={series.number}>
   {screens.map((screen) => {
@@ -21,6 +23,7 @@ const { series, screens } = Astro.props;
         <section class="screen screen-pair container" data-layout="pair">
           {pairs.map(({ entry, position }) => (
             <SequenceFigure
+              texts={texts}
               series={series}
               entry={entry}
               position={position}
@@ -35,6 +38,7 @@ const { series, screens } = Astro.props;
     return (
       <section class:list={['screen', `screen-${layout}`, { container: layout !== 'bleed' }]} data-layout={layout}>
         <SequenceFigure
+          texts={texts}
           series={series}
           entry={screen.item}
           position={screen.position}

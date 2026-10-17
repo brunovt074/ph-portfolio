@@ -2,22 +2,24 @@
 import ContactForm from './ContactForm.astro';
 import type { HomeContent } from '@/domain/HomeContent';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  texts: SiteTexts;
   home: HomeContent;
   settings: SiteSettings;
 }
 
-const { home, settings } = Astro.props;
+const { texts, home, settings } = Astro.props;
 
 const digits = (value: string) => value.replace(/\D/g, '');
 const isPlaceholder = (value: string) => value.startsWith('[');
 const instagramUrl = (account: string) => `https://instagram.com/${account.replace(/^@/, '')}`;
 
 const channels = [
-  { label: 'Email', entries: [{ text: settings.email, href: isPlaceholder(settings.email) ? undefined : `mailto:${settings.email}` }] },
-  { label: 'WhatsApp', entries: [{ text: settings.whatsapp, href: isPlaceholder(settings.whatsapp) ? undefined : `https://wa.me/${digits(settings.whatsapp)}` }] },
-  { label: 'Instagram', entries: settings.instagram.map((account) => ({ text: account, href: isPlaceholder(account) ? undefined : instagramUrl(account) })) },
+  { label: texts.contact.channelEmail, entries: [{ text: settings.email, href: isPlaceholder(settings.email) ? undefined : `mailto:${settings.email}` }] },
+  { label: texts.contact.channelWhatsapp, entries: [{ text: settings.whatsapp, href: isPlaceholder(settings.whatsapp) ? undefined : `https://wa.me/${digits(settings.whatsapp)}` }] },
+  { label: texts.contact.channelInstagram, entries: settings.instagram.map((account) => ({ text: account, href: isPlaceholder(account) ? undefined : instagramUrl(account) })) },
 ];
 ---
 <section id="contacto" class="contact section" data-theme="surface" aria-labelledby="contacto-title">
@@ -25,7 +27,7 @@ const channels = [
     <h2 id="contacto-title" class="t-display contact-title">{home.contactTitle}</h2>
     <p class="t-lead contact-lead">{home.contactLead}</p>
     <div class="contact-form-area">
-      <ContactForm workTypes={home.workTypes} />
+      <ContactForm texts={texts.contact} workTypes={home.workTypes} />
     </div>
     <dl class="contact-list">
       {channels.map((channel) => (
@@ -40,7 +42,7 @@ const channels = [
               return (
                 <a class="contact-link" href={entry.href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>
                   {entry.text}
-                  {external && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
+                  {external && <span class="sr-only">{texts.a11y.opensInNewTab}</span>}
                 </a>
               );
             })}

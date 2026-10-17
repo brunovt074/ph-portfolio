@@ -87,14 +87,11 @@ test('prints page lists every artwork without inventing prices', async ({ page }
   });
 });
 
-test('sitemap index and robots.txt respond and keep private paths out', async ({ request }) => {
-  const index = await request.get('/sitemap-index.xml');
-  expect(index.status()).toBe(200);
-  expect(await index.text()).toContain('sitemap-0.xml');
-
-  const sitemap = await request.get('/sitemap-0.xml');
+test('sitemap and robots.txt respond and keep private paths out', async ({ request }) => {
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.status()).toBe(200);
   const body = await sitemap.text();
-  expect(body).toContain('/obra/copias/');
+  expect(body).toContain('/obra/copias</loc>');
   expect(body).not.toContain('/contacto');
   expect(body).not.toContain('/admin');
 
@@ -102,7 +99,14 @@ test('sitemap index and robots.txt respond and keep private paths out', async ({
   expect(robots.status()).toBe(200);
   const text = await robots.text();
   expect(text).toContain('Disallow: /admin');
-  expect(text).toContain('Sitemap:');
+  expect(text).toContain('/sitemap.xml');
+});
+
+test('a Spanish page keeps its own canonical and stays indexable', async ({ page }) => {
+  await page.goto('/retratos');
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/retratos$/);
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 });
 
 test('result pages of the form stay out of search results', async ({ page }) => {
