@@ -7,5 +7,5 @@ export const printsQuery = `*[_type == "copia"] | order(orden asc){
   activa,
   tamanos,
   "foto": foto->${photoProjection},
-  "serie": serie->{ numero, "slug": slug.current, titulo }
+  "serie": serie->{ numero, slug, titulo }
 }`;

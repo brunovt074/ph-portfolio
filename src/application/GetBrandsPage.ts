@@ -13,6 +13,6 @@ export class GetBrandsPage {
       this.repository.getSettings(locale),
       this.repository.getTexts(locale),
     ]);
-    return { ...locateFacet(facets, 'marcas', locale, texts.nav.obra), brands, settings };
+    return { ...locateFacet(facets, 'marcas', locale, texts.nav.home, texts.nav.obra), brands, settings };
   }
 }

@@ -14,6 +14,7 @@ import type { SeriesLayout } from '@/domain/SeriesLayout';
 import type { Service } from '@/domain/Service';
 import type { SiteSettings } from '@/domain/SiteSettings';
 import type { SiteTexts } from '@/domain/SiteTexts';
+import type { Translations } from '@/domain/Translations';
 import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
 import type { ContentData } from './data/ContentData';
 import type { ContentDoor } from './data/ContentDoor';
@@ -27,6 +28,8 @@ import { parseRichTitle } from './parseRichTitle';
 import { UnknownPhotoError } from './UnknownPhotoError';
 
 const PORTRAIT_ID = 'retrato-sarah';
+
+const spanishOnly = (): Translations => ({ es: true, en: false, pt: false });
 
 const layouts: Record<SeedSeriesPhoto['layout'], SeriesLayout> = {
   centro: 'center',
@@ -96,6 +99,7 @@ export class SeedContentRepository implements ContentRepository {
       contactTitle: home.contact.title,
       contactLead: home.contact.lead,
       workTypes: home.contact.workTypes,
+      translations: spanishOnly(),
     };
   }
 
@@ -115,6 +119,7 @@ export class SeedContentRepository implements ContentRepository {
         ...(facet.quote !== undefined && { quote: parseRichTitle(facet.quote) }),
         ctaText: facet.ctaText,
         ctaButton: facet.ctaButton,
+        translations: spanishOnly(),
       }));
   }
 
@@ -148,6 +153,7 @@ export class SeedContentRepository implements ContentRepository {
         featured: pack.destacado ?? false,
         order,
       })),
+      translations: spanishOnly(),
     };
   }
 
@@ -175,6 +181,7 @@ export class SeedContentRepository implements ContentRepository {
         title: parseRichTitle(obra.seriesPrintsBand.title),
         cta: obra.seriesPrintsBand.cta,
       },
+      translations: spanishOnly(),
     };
   }
 
@@ -190,6 +197,7 @@ export class SeedContentRepository implements ContentRepository {
       curatorialLine: series.lineaCuratorial,
       curatorialText: this.requiredBySeries(obra.seriesCuratorialTexts, series, 'series curatorial text'),
       photos: series.fotos.map((entry) => ({ photo: this.photo(entry.foto), layout: layouts[entry.layout] })),
+      translations: spanishOnly(),
     }));
   }
 
@@ -219,6 +227,7 @@ export class SeedContentRepository implements ContentRepository {
       cta: prints.cta,
       editionLabel: prints.editionLabel,
       info: prints.info,
+      translations: spanishOnly(),
     };
   }
 

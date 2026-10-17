@@ -1,14 +1,18 @@
 import { describe, expect, it } from 'vitest';
+import { locales } from '@/domain/Locale';
+import { CachedSanityClient } from '@/infrastructure/sanity/CachedSanityClient';
 import type { SanityPhotoDocument } from '@/infrastructure/sanity/documents/SanityPhotoDocument';
+import { homeQuery } from '@/infrastructure/sanity/queries/homeQuery';
 import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
 import { SanityContentRepository } from '@/infrastructure/sanity/SanityContentRepository';
 import { SanityDocumentNotFoundError } from '@/infrastructure/sanity/SanityDocumentNotFoundError';
 import { aBareSanityImage, aSanityPhoto } from '../../fixtures/sanity/aSanityPhoto';
-import { aSanityBeforeAfter, aSanityPackage } from '../../fixtures/sanity/aSanityBrands';
+import { aSanityBeforeAfter, aSanityBrands, aSanityPackage } from '../../fixtures/sanity/aSanityBrands';
 import { aSanityFacet } from '../../fixtures/sanity/aSanityFacet';
 import { aSanityHome } from '../../fixtures/sanity/aSanityHome';
-import { aSanityPrint, aSanityPrintsPage, aSanitySeries } from '../../fixtures/sanity/aSanityObra';
-import { aSettingsWithoutOptionals } from '../../fixtures/sanity/aSanitySettings';
+import { aSanityObra, aSanityPrint, aSanityPrintsPage, aSanitySeries } from '../../fixtures/sanity/aSanityObra';
+import { aSanitySettings, aSettingsWithoutOptionals } from '../../fixtures/sanity/aSanitySettings';
+import { aSanitySiteTexts } from '../../fixtures/sanity/aSanitySiteTexts';
 import { aSanityTitle } from '../../fixtures/sanity/aSanityTitle';
 import { aSanityClient } from '../../fixtures/sanity/aSanityWorld';
 
@@ -71,6 +75,26 @@ describe('SanityContentRepository', () => {
       expect(facet?.gallery.map((photo) => photo.id)).toEqual(['rt01']);
     });
 
+    it('keeps reading a photo alt saved before the migration', async () => {
+      const repository = repositoryWith({ facets: [aSanityFacet({ galeria: [aSanityPhoto({ alt: 'Texto plano' })] })] });
+
+      const [facet] = await repository.getFacets('en');
+
+      expect(facet?.gallery[0]?.alt).toBe('Texto plano');
+    });
+
+    it('localizes photo alt text and title', async () => {
+      const photo = aSanityPhoto({
+        alt: { es: 'Modelo con peluca roja', en: 'Model wearing a red wig' },
+        titulo: { es: 'Bidones', en: 'Jerrycans' },
+      });
+      const repository = repositoryWith({ facets: [aSanityFacet({ galeria: [photo] })] });
+
+      const [facet] = await repository.getFacets('en');
+
+      expect(facet?.gallery[0]).toMatchObject({ alt: 'Model wearing a red wig', title: 'Jerrycans' });
+    });
+
     it('treats a missing gallery as empty', async () => {
       const repository = repositoryWith({ facets: [aSanityFacet({ portada: null, galeria: null })] });
 
@@ -121,6 +145,44 @@ describe('SanityContentRepository', () => {
       expect(facets.map((facet) => facet.slug)).toEqual(['eventos']);
     });
 
+    it('localizes rich titles keeping the italic word', async () => {
+      const titulo = { es: aSanityTitle(['Personas, '], ['sin pose', true]), en: aSanityTitle(['People, '], ['unposed', true]) };
+      const repository = repositoryWith({ facets: [aSanityFacet({ titulo })] });
+
+      const [facet] = await repository.getFacets('en');
+
+      expect(facet?.title).toEqual([
+        { text: 'People, ', italic: false },
+        { text: 'unposed', italic: true },
+      ]);
+    });
+
+    it('localizes the facet texts and its services', async () => {
+      const repository = repositoryWith({
+        facets: [
+          aSanityFacet({
+            nombre: { es: 'Retratos & Estudio', pt: 'Retratos & Estúdio' },
+            ctaButton: { es: 'Reservar sesión', pt: 'Reservar sessão' },
+            servicios: [{ titulo: { es: 'Retrato personal', pt: 'Retrato pessoal' }, descripcion: { es: 'Una sesión para vos.' }, precio: { es: '[PRECIO]' } }],
+          }),
+        ],
+      });
+
+      const [facet] = await repository.getFacets('pt');
+
+      expect(facet).toMatchObject({ name: 'Retratos & Estúdio', ctaButton: 'Reservar sessão' });
+      expect(facet?.services).toEqual([{ title: 'Retrato pessoal', description: 'Una sesión para vos.', price: '[PRECIO]' }]);
+    });
+
+    it('marks a facet as translated only when its title and lead are', async () => {
+      const titulo = { es: aSanityTitle(['Personas']), en: aSanityTitle(['People']), pt: aSanityTitle(['Pessoas']) };
+      const repository = repositoryWith({ facets: [aSanityFacet({ titulo, lead: { es: 'Sesiones.', en: 'Sessions.' } })] });
+
+      const [facet] = await repository.getFacets('es');
+
+      expect(facet?.translations).toEqual({ es: true, en: true, pt: false });
+    });
+
     it('maps the facet texts and omits the optional quote', async () => {
       const repository = repositoryWith({ facets: [aSanityFacet({ quote: null, servicios: null })] });
 
@@ -150,6 +212,39 @@ describe('SanityContentRepository', () => {
       expect(home.contactTitle).toBe('Hablemos.');
     });
 
+    it('points the doors to the English pages and serves the English texts', async () => {
+      const repository = repositoryWith({
+        home: aSanityHome({ bajada: { es: 'Fotografía y video.', en: 'Photography and video.' }, ticker: { es: ['Editorial', 'Obra'], en: ['Editorial', 'Work'] } }),
+      });
+
+      const home = await repository.getHome('en');
+
+      expect(home.encargosDoor.href).toBe('/en/#encargos');
+      expect(home.obraDoor.href).toBe('/en/work');
+      expect(home.lead).toBe('Photography and video.');
+      expect(home.ticker).toEqual(['Editorial', 'Work']);
+      expect(home.contactTitle).toBe('Hablemos.');
+    });
+
+    it('marks the home as translated only when its lead and Encargos door title are', async () => {
+      const repository = repositoryWith({
+        home: aSanityHome({
+          bajada: { es: 'Fotografía y video.', en: 'Photography and video.', pt: 'Fotografia e vídeo.' },
+          puertaEncargosTitulo: { es: aSanityTitle(['Encargos']), pt: aSanityTitle(['Encomendas']) },
+        }),
+      });
+
+      const home = await repository.getHome('pt');
+
+      expect(home.translations).toEqual({ es: true, en: false, pt: true });
+    });
+
+    it('treats a work type list Sarah never filled as empty', async () => {
+      const home = await repositoryWith({ home: aSanityHome({ tiposDeTrabajo: null }) }).getHome('es');
+
+      expect(home.workTypes).toEqual([]);
+    });
+
     it('tolerates a home without brand services', async () => {
       const home = await repositoryWith({ home: aSanityHome({ marcasServicios: null }) }).getHome('es');
 
@@ -172,6 +267,22 @@ describe('SanityContentRepository', () => {
       expect(settings.exhibitions).toEqual([{ title: '[Muestra o publicación]', place: '[Lugar]', year: '[AÑO]' }]);
       expect(settings.printInfo).toEqual([{ title: 'Envío', description: '[Zonas y tiempos de envío]' }]);
       expect(settings.quote).toBe('Cada fotografía es un registro de nuestro paso.');
+    });
+
+    it('localizes the quote, the portrait description and the exhibition titles', async () => {
+      const repository = repositoryWith({
+        settings: aSanitySettings({
+          frase: { es: 'Cada fotografía es un registro.', en: 'Every photograph is a record.' },
+          retratoAlt: { es: 'Sarah con su cámara', en: 'Sarah holding her camera' },
+          muestras: [{ titulo: { es: 'Muestra colectiva', en: 'Group show' }, lugar: 'Rosario', anio: '2024' }],
+        }),
+      });
+
+      const settings = await repository.getSettings('en');
+
+      expect(settings.quote).toBe('Every photograph is a record.');
+      expect(settings.portrait.alt).toBe('Sarah holding her camera');
+      expect(settings.exhibitions).toEqual([{ title: 'Group show', place: 'Rosario', year: '2024' }]);
     });
 
     it('tolerates settings without exhibitions or print info', async () => {
@@ -221,6 +332,32 @@ describe('SanityContentRepository', () => {
       expect(brands.beforeAfter[0]?.provisional).toBe(false);
     });
 
+    it('localizes packages, sectors and before and after descriptions', async () => {
+      const repository = repositoryWith({
+        packages: [aSanityPackage({ nombre: { es: 'Esencial', en: 'Essential' }, items: { es: ['Hasta 10 productos'], en: ['Up to 10 products'] } })],
+        beforeAfter: [aSanityBeforeAfter({ alt: { es: 'Sérum facial sobre agua lila', en: 'Face serum on lilac water' } })],
+        brands: aSanityBrands({
+          rubros: [{ titulo: { es: 'Gastronomía', en: 'Food' }, descripcion: { es: 'Platos y cartas.' }, foto: aSanityPhoto({ facets: ['marcas'] }) }],
+        }),
+      });
+
+      const brands = await repository.getBrands('en');
+
+      expect(brands.packages[0]).toMatchObject({ name: 'Essential', items: ['Up to 10 products'] });
+      expect(brands.beforeAfter[0]).toMatchObject({ alt: 'Face serum on lilac water', before: { alt: 'Face serum on lilac water' } });
+      expect(brands.sectors[0]).toMatchObject({ title: 'Food', description: 'Platos y cartas.' });
+    });
+
+    it('marks the brands page as translated only when its sectors title and before and after lead are', async () => {
+      const repository = repositoryWith({
+        brands: aSanityBrands({ rubrosTitulo: { es: 'Rubros', en: 'Sectors', pt: 'Setores' }, antesDespuesBajada: { es: 'Arrastrá.', en: 'Drag.' } }),
+      });
+
+      const brands = await repository.getBrands('es');
+
+      expect(brands.translations).toEqual({ es: true, en: true, pt: false });
+    });
+
     it('maps sectors, process and titles', async () => {
       const brands = await repositoryWith().getBrands('es');
 
@@ -259,6 +396,46 @@ describe('SanityContentRepository', () => {
         { text: 'Ofi', italic: false },
         { text: 'cios', italic: true },
       ]);
+    });
+
+    it('shows each untranslated field in Spanish on its own', async () => {
+      const series = aSanitySeries({ titulo: { es: 'Oficios', en: 'Trades' }, textoCuratorial: { es: 'Texto largo' } });
+
+      const [result] = await repositoryWith({ series: [series] }).getSeries('en');
+
+      expect(result?.title).toBe('Trades');
+      expect(result?.curatorialText).toBe('Texto largo');
+    });
+
+    it('falls back to the Spanish slug and exposes all slugs', async () => {
+      const series = aSanitySeries({ slug: { es: { current: 'oficios' }, en: { current: 'trades' } } });
+
+      const [result] = await repositoryWith({ series: [series] }).getSeries('pt');
+
+      expect(result?.slug).toBe('oficios');
+      expect(result?.slugs).toEqual({ es: 'oficios', en: 'trades', pt: 'oficios' });
+    });
+
+    it('keeps the slug of a series saved before the migration in every language', async () => {
+      const series = aSanitySeries({ slug: { current: 'oficios' } });
+
+      const [result] = await repositoryWith({ series: [series] }).getSeries('en');
+
+      expect(result?.slugs).toEqual({ es: 'oficios', en: 'oficios', pt: 'oficios' });
+    });
+
+    it('leaves the slug empty while Sarah has not generated it', async () => {
+      const [result] = await repositoryWith({ series: [aSanitySeries({ slug: null })] }).getSeries('es');
+
+      expect(result?.slug).toBe('');
+    });
+
+    it('marks a series as translated only in the languages that have its main fields', async () => {
+      const series = aSanitySeries({ titulo: { es: 'Oficios', en: 'Trades', pt: 'Ofícios' }, textoCuratorial: { es: 'Texto', en: 'Text' } });
+
+      const [result] = await repositoryWith({ series: [series] }).getSeries('es');
+
+      expect(result?.translations).toEqual({ es: true, en: true, pt: false });
     });
 
     it('returns an empty series while Sarah has not added photos yet', async () => {
@@ -315,6 +492,32 @@ describe('SanityContentRepository', () => {
       expect(content.info).toEqual([{ title: 'Impresión', description: '[Papel y técnica de impresión]' }]);
     });
 
+    it('names the series of a print in the visitor language', async () => {
+      const serie = { numero: 'I', slug: { es: { current: 'oficios' }, en: { current: 'trades' } }, titulo: { es: 'Oficios', en: 'Trades' } };
+      const repository = repositoryWith({ prints: [aSanityPrint({ serie })] });
+
+      const [print] = await repository.getPrints('en');
+
+      expect(print?.series).toEqual({ number: 'I', slug: 'trades', title: 'Trades' });
+    });
+
+    it('localizes the prints page and marks it translated by its title and lead', async () => {
+      const repository = repositoryWith({
+        printsPage: aSanityPrintsPage({
+          titulo: { es: aSanityTitle(['Copias '], ['de autor', true]), en: aSanityTitle(['Fine art '], ['prints', true]) },
+          bajada: { es: 'Fotografías en ediciones limitadas.', en: 'Limited edition photographs.' },
+          info: [{ titulo: { es: 'Impresión', en: 'Printing' }, descripcion: { es: '[Papel y técnica de impresión]' } }],
+        }),
+      });
+
+      const content = await repository.getPrintsContent('en');
+
+      expect(content.title[1]).toEqual({ text: 'prints', italic: true });
+      expect(content.lead).toBe('Limited edition photographs.');
+      expect(content.info).toEqual([{ title: 'Printing', description: '[Papel y técnica de impresión]' }]);
+      expect(content.translations).toEqual({ es: true, en: true, pt: false });
+    });
+
     it('tolerates a prints page without info', async () => {
       const content = await repositoryWith({ printsPage: aSanityPrintsPage({ info: null }) }).getPrintsContent('es');
 
@@ -323,8 +526,25 @@ describe('SanityContentRepository', () => {
   });
 
   describe('texts', () => {
-    it('serves the default interface texts of the requested language', async () => {
-      expect(await repositoryWith().getTexts('en')).toBe(defaultSiteTexts.en);
+    it('uses default texts when the site texts document does not exist', async () => {
+      expect(await repositoryWith({ siteTexts: null }).getTexts('en')).toEqual(defaultSiteTexts.en);
+    });
+
+    it('applies Sarah overrides to site texts', async () => {
+      const repository = repositoryWith({ siteTexts: aSanitySiteTexts({ nav: { bookSession: { en: 'Book now' } } }) });
+
+      expect((await repository.getTexts('en')).nav.bookSession).toBe('Book now');
+    });
+  });
+
+  describe('caching', () => {
+    it('fetches each document once for all languages', async () => {
+      const client = aSanityClient();
+      const repository = new SanityContentRepository(new CachedSanityClient(client));
+
+      await Promise.all(locales.map((locale) => repository.getHome(locale)));
+
+      expect(client.requests.filter((query) => query === homeQuery)).toHaveLength(1);
     });
   });
 
@@ -351,6 +571,22 @@ describe('SanityContentRepository', () => {
       expect(obra.quote).toBe('Una bitácora de mi trabajo.');
       expect(obra.seriesPrintsBand.cta).toBe('Ver copias');
       expect(obra.exhibitionsTitle).toBe('Muestras y publicaciones');
+    });
+
+    it('localizes the obra page and marks it translated by its quote and about title', async () => {
+      const repository = repositoryWith({
+        obra: aSanityObra({
+          frase: { es: 'Una bitácora de mi trabajo.', en: 'A logbook of my work.' },
+          sobreTitulo: { es: aSanityTitle(['Sobre la '], ['obra', true]), en: aSanityTitle(['About the '], ['work', true]) },
+        }),
+      });
+
+      const obra = await repository.getObra('en');
+
+      expect(obra.quote).toBe('A logbook of my work.');
+      expect(obra.aboutTitle[1]).toEqual({ text: 'work', italic: true });
+      expect(obra.seriesTitle).toBe('Series');
+      expect(obra.translations).toEqual({ es: true, en: true, pt: false });
     });
 
     it('explains which document is missing when the obra page does not exist', async () => {

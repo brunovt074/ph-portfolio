@@ -250,4 +250,17 @@ describe('SeedContentRepository with the real handoff data', () => {
 
     expect(series?.slugs).toEqual({ es: 'oficios', en: 'oficios', pt: 'oficios' });
   });
+
+  it('marks every seed page as Spanish only', async () => {
+    const spanishOnly = { es: true, en: false, pt: false };
+    const [facet] = await repository().getFacets('en');
+    const [series] = await repository().getSeries('en');
+
+    expect((await repository().getHome('en')).translations).toEqual(spanishOnly);
+    expect(facet?.translations).toEqual(spanishOnly);
+    expect((await repository().getBrands('en')).translations).toEqual(spanishOnly);
+    expect((await repository().getObra('en')).translations).toEqual(spanishOnly);
+    expect(series?.translations).toEqual(spanishOnly);
+    expect((await repository().getPrintsContent('en')).translations).toEqual(spanishOnly);
+  });
 });

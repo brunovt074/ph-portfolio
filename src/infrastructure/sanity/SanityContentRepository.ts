@@ -9,7 +9,7 @@ import type { PrintsContent } from '@/domain/PrintsContent';
 import type { Series } from '@/domain/Series';
 import type { SiteSettings } from '@/domain/SiteSettings';
 import type { SiteTexts } from '@/domain/SiteTexts';
-import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
+import { resolveSiteTexts } from '@/infrastructure/texts/resolveSiteTexts';
 import type { SanityBeforeAfterDocument } from './documents/SanityBeforeAfterDocument';
 import type { SanityBrandPackageDocument } from './documents/SanityBrandPackageDocument';
 import type { SanityBrandsDocument } from './documents/SanityBrandsDocument';
@@ -20,6 +20,7 @@ import type { SanityPrintDocument } from './documents/SanityPrintDocument';
 import type { SanityPrintsPageDocument } from './documents/SanityPrintsPageDocument';
 import type { SanitySeriesDocument } from './documents/SanitySeriesDocument';
 import type { SanitySettingsDocument } from './documents/SanitySettingsDocument';
+import type { SanitySiteTextsDocument } from './documents/SanitySiteTextsDocument';
 import { hasImageAsset } from './mapping/hasImageAsset';
 import { isFacetSlug } from './mapping/isFacetSlug';
 import { toBrands } from './mapping/toBrands';
@@ -40,32 +41,33 @@ import { printsPageQuery } from './queries/printsPageQuery';
 import { printsQuery } from './queries/printsQuery';
 import { seriesQuery } from './queries/seriesQuery';
 import { settingsQuery } from './queries/settingsQuery';
+import { siteTextsQuery } from './queries/siteTextsQuery';
 import type { SanityClientPort } from './SanityClientPort';
 import { SanityDocumentNotFoundError } from './SanityDocumentNotFoundError';
 
 export class SanityContentRepository implements ContentRepository {
   constructor(private readonly client: SanityClientPort) {}
 
-  async getSettings(_locale: Locale): Promise<SiteSettings> {
-    return toSettings(await this.singleton<SanitySettingsDocument>(settingsQuery, 'ajustes'));
+  async getSettings(locale: Locale): Promise<SiteSettings> {
+    return toSettings(await this.singleton<SanitySettingsDocument>(settingsQuery, 'ajustes'), locale);
   }
 
   async getHome(locale: Locale): Promise<HomeContent> {
     return toHome(await this.singleton<SanityHomeDocument>(homeQuery, 'paginaInicio'), locale);
   }
 
-  async getFacets(_locale: Locale): Promise<Facet[]> {
+  async getFacets(locale: Locale): Promise<Facet[]> {
     const documents = await this.client.fetch<SanityFacetDocument[]>(facetsQuery);
-    return documents.filter((document) => isFacetSlug(document.slug)).map(toFacet);
+    return documents.filter((document) => isFacetSlug(document.slug)).map((document) => toFacet(document, locale));
   }
 
-  async getBrands(_locale: Locale): Promise<BrandsContent> {
+  async getBrands(locale: Locale): Promise<BrandsContent> {
     const [page, packages, pairs] = await Promise.all([
       this.singleton<SanityBrandsDocument>(brandsQuery, 'paginaMarcas'),
       this.client.fetch<SanityBrandPackageDocument[]>(brandPackagesQuery),
       this.client.fetch<SanityBeforeAfterDocument[]>(beforeAfterQuery),
     ]);
-    return toBrands(page, packages, pairs);
+    return toBrands(page, packages, pairs, locale);
   }
 
   async getObra(locale: Locale): Promise<ObraContent> {
@@ -73,25 +75,25 @@ export class SanityContentRepository implements ContentRepository {
       this.singleton<SanityObraDocument>(obraQuery, 'paginaObra'),
       this.getPrints(locale),
     ]);
-    return toObra(page, prints);
+    return toObra(page, prints, locale);
   }
 
-  async getSeries(_locale: Locale): Promise<Series[]> {
+  async getSeries(locale: Locale): Promise<Series[]> {
     const documents = await this.client.fetch<SanitySeriesDocument[]>(seriesQuery);
-    return documents.map(toSeries);
+    return documents.map((document) => toSeries(document, locale));
   }
 
-  async getPrints(_locale: Locale): Promise<Print[]> {
+  async getPrints(locale: Locale): Promise<Print[]> {
     const documents = await this.client.fetch<SanityPrintDocument[]>(printsQuery);
-    return documents.filter((document) => hasImageAsset(document.foto)).map(toPrint);
+    return documents.filter((document) => hasImageAsset(document.foto)).map((document) => toPrint(document, locale));
   }
 
-  async getPrintsContent(_locale: Locale): Promise<PrintsContent> {
-    return toPrintsContent(await this.singleton<SanityPrintsPageDocument>(printsPageQuery, 'paginaCopias'));
+  async getPrintsContent(locale: Locale): Promise<PrintsContent> {
+    return toPrintsContent(await this.singleton<SanityPrintsPageDocument>(printsPageQuery, 'paginaCopias'), locale);
   }
 
   async getTexts(locale: Locale): Promise<SiteTexts> {
-    return defaultSiteTexts[locale];
+    return resolveSiteTexts(await this.client.fetch<SanitySiteTextsDocument | null>(siteTextsQuery), locale);
   }
 
   private async singleton<T>(query: string, documentId: string): Promise<T> {
