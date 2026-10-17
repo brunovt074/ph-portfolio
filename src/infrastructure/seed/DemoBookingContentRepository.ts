@@ -3,6 +3,7 @@ import type { BrandsContent } from '@/domain/BrandsContent';
 import type { ContentRepository } from '@/domain/ContentRepository';
 import type { Facet } from '@/domain/Facet';
 import type { HomeContent } from '@/domain/HomeContent';
+import type { Locale } from '@/domain/Locale';
 import type { ObraContent } from '@/domain/ObraContent';
 import type { Print } from '@/domain/Print';
 import type { PrintsContent } from '@/domain/PrintsContent';
@@ -10,6 +11,7 @@ import type { SchedulingSettings } from '@/domain/scheduling/SchedulingSettings'
 import type { WeeklyWindow } from '@/domain/scheduling/WeeklyWindow';
 import type { Series } from '@/domain/Series';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import type { BookingDemoData } from './BookingDemoData';
 
 export class DemoBookingContentRepository implements ContentRepository {
@@ -32,6 +34,10 @@ export class DemoBookingContentRepository implements ContentRepository {
 
   getBrands(): Promise<BrandsContent> {
     return this.inner.getBrands();
+  }
+
+  getTexts(locale: Locale): Promise<SiteTexts> {
+    return this.inner.getTexts(locale);
   }
 
   getObra(): Promise<ObraContent> {

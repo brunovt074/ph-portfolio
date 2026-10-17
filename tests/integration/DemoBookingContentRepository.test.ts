@@ -66,5 +66,6 @@ describe('DemoBookingContentRepository', () => {
     expect(await repository.getSeries()).toBe(await inner.getSeries());
     expect(await repository.getPrints()).toBe(await inner.getPrints());
     expect(await repository.getPrintsContent()).toBe(await inner.getPrintsContent());
+    expect(await repository.getTexts('pt')).toBe(await inner.getTexts('pt'));
   });
 });

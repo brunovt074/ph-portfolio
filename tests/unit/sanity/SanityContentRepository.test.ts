@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { SanityPhotoDocument } from '@/infrastructure/sanity/documents/SanityPhotoDocument';
+import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
 import { SanityContentRepository } from '@/infrastructure/sanity/SanityContentRepository';
 import { SanityDocumentNotFoundError } from '@/infrastructure/sanity/SanityDocumentNotFoundError';
 import { aBareSanityImage, aSanityPhoto } from '../../fixtures/sanity/aSanityPhoto';
@@ -319,6 +320,12 @@ describe('SanityContentRepository', () => {
       const content = await repositoryWith({ printsPage: aSanityPrintsPage({ info: null }) }).getPrintsContent();
 
       expect(content.info).toEqual([]);
+    });
+  });
+
+  describe('texts', () => {
+    it('serves the default interface texts of the requested language', async () => {
+      expect(await repositoryWith().getTexts('en')).toBe(defaultSiteTexts.en);
     });
   });
 
