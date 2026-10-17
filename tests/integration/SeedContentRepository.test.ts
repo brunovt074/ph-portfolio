@@ -1,0 +1,210 @@
+import { describe, expect, it } from 'vitest';
+import content from '../../assets/content.json';
+import seed from '../../assets/seed.json';
+import type { ContentData } from '@/infrastructure/seed/ContentData';
+import type { SeedData } from '@/infrastructure/seed/SeedData';
+import { SeedContentRepository } from '@/infrastructure/seed/SeedContentRepository';
+import { UnknownPhotoError } from '@/infrastructure/seed/UnknownPhotoError';
+
+const realSeed = seed as SeedData;
+const realContent = content as ContentData;
+
+const repository = () => new SeedContentRepository(realSeed, realContent);
+const cloneContent = () => structuredClone(realContent);
+const cloneSeed = () => structuredClone(realSeed);
+
+describe('SeedContentRepository with the real handoff data', () => {
+  it('resolves every photo referenced by the content out of the 65 in the seed', async () => {
+    const facets = await repository().getFacets();
+    const home = await repository().getHome();
+    const brands = await repository().getBrands();
+    const series = await repository().getSeries();
+    const ids = new Set<string>();
+    facets.forEach((facet) => [...facet.cover, ...facet.gallery].forEach((photo) => ids.add(photo.id)));
+    Object.values(home.facetThumbnails).forEach((photos) => photos.forEach((photo) => ids.add(photo.id)));
+    home.editorialStrip.forEach((photo) => ids.add(photo.id));
+    home.brandGrid.forEach((photo) => ids.add(photo.id));
+    home.obraTeaserPhotos.forEach((photo) => ids.add(photo.id));
+    brands.sectors.forEach((sector) => ids.add(sector.photo.id));
+    series.forEach((item) => item.photos.forEach((entry) => ids.add(entry.photo.id)));
+
+    expect(realSeed.fotos).toHaveLength(65);
+    expect(ids.size).toBeGreaterThan(40);
+    expect(home.encargosDoor.photo.id).toBe('ed02');
+    expect(home.obraDoor.photo.id).toBe('au01');
+    expect(home.obraDoor.title).toEqual([{ text: 'Obra', italic: true }]);
+  });
+
+  it('keeps the four facets ordered by number even if the content lists them shuffled', async () => {
+    const shuffled = cloneContent();
+    shuffled.facets.reverse();
+
+    const facets = await new SeedContentRepository(realSeed, shuffled).getFacets();
+
+    expect(facets.map((facet) => facet.slug)).toEqual(['editorial', 'retratos', 'marcas', 'eventos']);
+    expect(facets[0]?.title).toEqual([
+      { text: 'Imagen con ', italic: false },
+      { text: 'actitud', italic: true },
+    ]);
+    expect(facets[1]?.quote).toBeDefined();
+    expect(facets[0]?.quote).toBeUndefined();
+    expect(facets[1]?.services[0]?.price).toBe('[PRECIO]');
+    expect(facets[0]?.services[0]?.price).toBeUndefined();
+    expect(facets[2]?.services).toEqual([]);
+  });
+
+  it('builds the four series with the expected slugs, layouts and display titles', async () => {
+    const series = await repository().getSeries();
+
+    expect(series.map((item) => item.slug)).toEqual(['oficios', 'geometrias', 'lo-que-queda', 'viajes-en-color']);
+    expect(series.map((item) => item.number)).toEqual(['I', 'II', 'III', 'IV']);
+    expect(series[0]?.photos.map((entry) => entry.layout)).toEqual(['center', 'left', 'right', 'bleed']);
+    expect(series[1]?.photos.some((entry) => entry.layout === 'pair')).toBe(true);
+    expect(series[0]?.displayTitle).toEqual([
+      { text: 'Ofi', italic: false },
+      { text: 'cios', italic: true },
+    ]);
+    expect(series[0]?.curatorialText).toBe('[Texto curatorial de la serie]');
+  });
+
+  it('links each of the 6 prints to the series that contains its photo', async () => {
+    const prints = await repository().getPrints();
+    const bySeries = Object.fromEntries(prints.map((print) => [print.id, print.series.slug]));
+
+    expect(prints).toHaveLength(6);
+    expect(bySeries).toEqual({
+      'copia-au03': 'geometrias',
+      'copia-au01': 'oficios',
+      'copia-au14': 'lo-que-queda',
+      'copia-au18': 'lo-que-queda',
+      'copia-au17': 'geometrias',
+      'copia-au08': 'viajes-en-color',
+    });
+    expect(prints.every((print) => print.active && print.available === null)).toBe(true);
+    expect(prints[0]?.sizes[0]).toEqual({ size: '30 × 40 cm', price: '[PRECIO]' });
+  });
+
+  it('keeps the available count of a print that already has a numbered stock', async () => {
+    const withStock = cloneSeed();
+    const first = withStock.copias[0];
+    if (first) {
+      first.disponibles = 7;
+    }
+
+    const prints = await new SeedContentRepository(withStock, realContent).getPrints();
+
+    expect(prints[0]?.available).toBe(7);
+  });
+
+  it('offers 3 brand packages with Identidad as the featured one', async () => {
+    const { packages } = await repository().getBrands();
+
+    expect(packages.map((pack) => pack.name)).toEqual(['Esencial', 'Identidad', 'Mensual']);
+    expect(packages.map((pack) => pack.featured)).toEqual([false, true, false]);
+    expect(packages.map((pack) => pack.order)).toEqual([0, 1, 2]);
+  });
+
+  it('marks the before and after pair as provisional until Sarah uploads the real retouch', async () => {
+    const brands = await repository().getBrands();
+
+    expect(brands.beforeAfter).toHaveLength(1);
+    expect(brands.beforeAfter[0]?.before.id).toBe('mk01');
+    expect(brands.beforeAfter[0]?.provisional).toBe(true);
+    expect(brands.steps).toHaveLength(4);
+    expect(brands.sectors).toHaveLength(4);
+    expect(brands.beforeAfterTitle).toEqual([
+      { text: 'El ', italic: false },
+      { text: 'retoque', italic: true },
+      { text: ' hace la diferencia', italic: false },
+    ]);
+  });
+
+  it('exposes the obra manifesto, opening photo and the first three print photos for the teaser', async () => {
+    const obra = await repository().getObra();
+
+    expect(obra.opening.photo.id).toBe('au05');
+    expect(obra.printsTeaser.photos.map((photo) => photo.id)).toEqual(['au03', 'au01', 'au14']);
+    expect(obra.seriesPrintsBand.cta).toBe('Ver copias');
+    expect(obra.opening.caption[0]).toEqual({ text: 'Sin título', italic: true });
+  });
+
+  it('keeps provisional titles, placeholders and null years on obra photos only', async () => {
+    const series = await repository().getSeries();
+    const bidones = series[0]?.photos[0]?.photo;
+    const home = await repository().getHome();
+
+    expect(bidones?.title).toBe('Bidones');
+    expect(bidones?.provisionalTitle).toBe(true);
+    expect(bidones?.place).toBe('[Ciudad]');
+    expect(bidones?.year).toBeNull();
+    expect(home.facetThumbnails.editorial[0]?.title).toBeUndefined();
+    expect(home.facetThumbnails.editorial[0]?.featured).toBe(true);
+    expect(home.facetThumbnails.retratos[2]?.featured).toBe(false);
+  });
+
+  it('builds the settings with the portrait, exhibitions placeholder and print info', async () => {
+    const settings = await repository().getSettings();
+
+    expect(settings.portrait.id).toBe('retrato-sarah');
+    expect(settings.portrait.alt).toBe('Sarah Moreau con su cámara, en blanco y negro');
+    expect(settings.portrait.facet).toBe('retratos');
+    expect(settings.portrait.featured).toBe(false);
+    expect(settings.quote).toBe('Cada fotografía es un registro de nuestro paso.');
+    expect(settings.instagram).toHaveLength(3);
+    expect(settings.exhibitions).toHaveLength(1);
+    expect(settings.printInfo).toHaveLength(4);
+    expect(settings.email).toBe('[EMAIL]');
+  });
+
+  it('maps the home content and the prints page content', async () => {
+    const home = await repository().getHome();
+    const printsContent = await repository().getPrintsContent();
+
+    expect(home.encargosTitle).toEqual([
+      { text: 'Cuatro ', italic: false },
+      { text: 'miradas', italic: true },
+    ]);
+    expect(home.brandServices[0]).toEqual({ title: 'Producto & e-commerce', price: 'desde [PRECIO]' });
+    expect(home.workTypes).toHaveLength(6);
+    expect(home.ticker).toHaveLength(5);
+    expect(printsContent.title).toEqual([
+      { text: 'Copias ', italic: false },
+      { text: 'de autor', italic: true },
+    ]);
+    expect(printsContent.info).toHaveLength(4);
+  });
+
+  it('falls back to safe defaults when a series has no slug, display title or curatorial text yet', async () => {
+    const incomplete = cloneContent();
+    incomplete.obra.seriesSlugs = {};
+    incomplete.obra.seriesDisplayTitles = {};
+    incomplete.obra.seriesCuratorialTexts = {};
+
+    const series = await new SeedContentRepository(realSeed, incomplete).getSeries();
+
+    expect(series[0]?.slug).toBe('i');
+    expect(series[0]?.displayTitle).toEqual([{ text: 'Oficios', italic: false }]);
+    expect(series[0]?.curatorialText).toBe('');
+  });
+
+  it('fails with UnknownPhotoError when the content references a photo that does not exist', async () => {
+    const broken = cloneContent();
+    const door = broken.home.doors.encargos;
+    door.photo = 'zz99';
+
+    const failure = new SeedContentRepository(realSeed, broken).getHome();
+
+    await expect(failure).rejects.toBeInstanceOf(UnknownPhotoError);
+    await expect(failure).rejects.toThrow('Unknown photo id: zz99');
+  });
+
+  it('fails with UnknownPhotoError when a print points to a photo that belongs to no series', async () => {
+    const broken = cloneSeed();
+    const first = broken.copias[0];
+    if (first) {
+      first.foto = 'ed01';
+    }
+
+    await expect(new SeedContentRepository(broken, realContent).getPrints()).rejects.toBeInstanceOf(UnknownPhotoError);
+  });
+});

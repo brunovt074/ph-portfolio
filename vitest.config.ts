@@ -1,0 +1,18 @@
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  resolve: {
+    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+  },
+  test: {
+    environment: 'node',
+    include: ['tests/unit/**/*.test.ts', 'tests/integration/**/*.test.ts'],
+    coverage: {
+      provider: 'v8',
+      include: ['src/application/**', 'src/infrastructure/seed/**'],
+      exclude: ['src/infrastructure/seed/SeedData.ts', 'src/infrastructure/seed/ContentData.ts'],
+      thresholds: { lines: 100, functions: 100, branches: 100, statements: 100 },
+    },
+  },
+});

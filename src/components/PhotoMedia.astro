@@ -1,0 +1,39 @@
+---
+import { Picture } from 'astro:assets';
+import type { Photo } from '@/domain/Photo';
+import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
+
+interface Props {
+  photo: Photo;
+  sizes: string;
+  loading: 'lazy' | 'eager';
+  priority: boolean;
+  fit: 'cover' | 'contain';
+}
+
+const { photo, sizes, loading, priority, fit } = Astro.props;
+
+const hotspot = photo.asset.hotspot;
+const objectPosition = hotspot ? `${hotspot.x * 100}% ${hotspot.y * 100}%` : '50% 50%';
+const resolved = photo.asset.provider === 'local' ? resolveLocalPhoto(photo.asset.ref) : undefined;
+const widths = resolved
+  ? [...[320, 480, 640, 800, 1080, 1440, 1920].filter((width) => width < resolved.image.width), resolved.image.width]
+  : [];
+const imageStyle = `object-fit: ${fit}; object-position: ${objectPosition}`;
+const imageLoading = priority ? 'eager' : loading;
+---
+{resolved ? (
+  <Picture
+    src={resolved.image}
+    alt={photo.alt}
+    formats={['avif', 'webp']}
+    widths={widths}
+    sizes={sizes}
+    quality={78}
+    loading={imageLoading}
+    fetchpriority={priority ? 'high' : undefined}
+    style={imageStyle}
+  />
+) : (
+  <img src={photo.asset.ref} alt={photo.alt} loading={imageLoading} style={imageStyle} />
+)}

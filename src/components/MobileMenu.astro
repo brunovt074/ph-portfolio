@@ -1,0 +1,174 @@
+---
+import type { NavLink } from '@/domain/NavLink';
+import Button from './Button.astro';
+
+interface Props {
+  links: NavLink[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  current?: string | undefined;
+}
+
+const { links, ctaLabel, ctaHref, current } = Astro.props;
+---
+<div class="mobile-menu" data-mobile-menu>
+  <button type="button" class="t-nav mobile-menu-trigger" aria-expanded="false" aria-controls="mobile-menu-panel" data-menu-open>
+    Menú
+  </button>
+  <div id="mobile-menu-panel" class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Menú principal" hidden data-menu-panel>
+    <div class="mobile-menu-bar container">
+      <button type="button" class="t-nav mobile-menu-close" data-menu-close>Cerrar</button>
+    </div>
+    <nav class="mobile-menu-links container" aria-label="Menú principal">
+      {links.map((link) => (
+        <a class="t-h2" href={link.href} aria-current={current === link.href ? 'page' : undefined} data-menu-link>
+          {link.label}
+        </a>
+      ))}
+      {ctaLabel && ctaHref && <Button href={ctaHref} variant="primary">{ctaLabel}</Button>}
+    </nav>
+  </div>
+</div>
+
+<style>
+  .mobile-menu {
+    display: none;
+  }
+
+  .mobile-menu-trigger,
+  .mobile-menu-close {
+    min-height: var(--tap);
+    min-width: var(--tap);
+    padding-inline: 8px;
+    background: transparent;
+    color: inherit;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .mobile-menu-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    overflow-y: auto;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  .mobile-menu-panel[hidden] {
+    display: none;
+  }
+
+  .mobile-menu-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 72px;
+  }
+
+  .mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-bottom: var(--section-y);
+  }
+
+  .mobile-menu-links a.t-h2 {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .mobile-menu-links a[aria-current='page'] {
+    color: var(--accent-current);
+  }
+
+  .mobile-menu-links :global(.button) {
+    margin-top: 24px;
+  }
+
+  @media (max-width: 899px) {
+    :global(html.js) .mobile-menu {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  const FOCUSABLE = 'a[href], button:not([disabled])';
+
+  const inertOthers = (panel: HTMLElement, value: boolean) => {
+    let node: HTMLElement = panel;
+    while (node !== document.body && node.parentElement) {
+      const parent: HTMLElement = node.parentElement;
+      for (const sibling of Array.from(parent.children)) {
+        if (sibling !== node) {
+          (sibling as HTMLElement).inert = value;
+        }
+      }
+      node = parent;
+    }
+  };
+
+  const bind = (root: HTMLElement) => {
+    if (root.dataset.bound) {
+      return;
+    }
+    root.dataset.bound = 'true';
+    const trigger = root.querySelector<HTMLButtonElement>('[data-menu-open]');
+    const panel = root.querySelector<HTMLElement>('[data-menu-panel]');
+    const closeButton = root.querySelector<HTMLButtonElement>('[data-menu-close]');
+    if (!trigger || !panel || !closeButton) {
+      return;
+    }
+
+    const close = () => {
+      panel.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      inertOthers(panel, false);
+      trigger.focus();
+    };
+
+    const open = () => {
+      panel.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      inertOthers(panel, true);
+      closeButton.focus();
+    };
+
+    trigger.addEventListener('click', open);
+    closeButton.addEventListener('click', close);
+    panel.querySelectorAll('[data-menu-link]').forEach((link) => link.addEventListener('click', close));
+    panel.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        close();
+        return;
+      }
+      if (event.key !== 'Tab') {
+        return;
+      }
+      const items = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE));
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    });
+  };
+
+  const init = () => {
+    document.querySelectorAll<HTMLElement>('[data-mobile-menu]').forEach(bind);
+  };
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

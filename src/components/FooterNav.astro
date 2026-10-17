@@ -1,0 +1,107 @@
+---
+import type { NavLink } from '@/domain/NavLink';
+import type { SiteSettings } from '@/domain/SiteSettings';
+import Logo from './Logo.astro';
+
+interface Props {
+  previous?: NavLink | null;
+  next?: NavLink | null;
+  settings: SiteSettings;
+  logoVariant?: 'default' | 'obra';
+}
+
+const { previous, next, settings, logoVariant = 'default' } = Astro.props;
+const year = new Date().getFullYear();
+const profile = (account: string) => `https://instagram.com/${account.replace(/^@/, '')}`;
+---
+<footer class="site-footer section">
+  <div class="container">
+    {(previous || next) && (
+      <nav class="footer-pager" aria-label="Navegación entre secciones">
+        {previous ? (
+          <a class="footer-link" href={previous.href} rel="prev">
+            <span class="t-eyebrow">Anterior</span>
+            <span class="t-h3">← {previous.label}</span>
+          </a>
+        ) : (
+          <span />
+        )}
+        {next && (
+          <a class="footer-link footer-link-next" href={next.href} rel="next">
+            <span class="t-eyebrow">Siguiente</span>
+            <span class="t-h3">Siguiente: {next.label} →</span>
+          </a>
+        )}
+      </nav>
+    )}
+    <div class="footer-meta">
+      <Logo variant={logoVariant} />
+      <ul class="footer-social">
+        {settings.instagram.map((account) => (
+          <li>
+            <a class="footer-social-link" href={profile(account)} target="_blank" rel="noopener">{account}</a>
+          </li>
+        ))}
+      </ul>
+      <p class="footer-copy">© {year} Sarah Moreau</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+    padding-bottom: var(--section-y);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .footer-link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: var(--tap);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .footer-link-next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    padding-top: 32px;
+  }
+
+  .footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    font-size: var(--text-small);
+    color: var(--fg-soft);
+    text-decoration: none;
+  }
+
+  .footer-copy {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+  }
+</style>

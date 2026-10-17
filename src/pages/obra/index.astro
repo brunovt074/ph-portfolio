@@ -1,0 +1,44 @@
+---
+import FooterNav from '@/components/FooterNav.astro';
+import ObraHeader from '@/components/ObraHeader.astro';
+import RichText from '@/components/RichText.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetObraPage } from '@/application/GetObraPage';
+import { contentRepository } from '@/infrastructure/container';
+
+const { obra, series, settings } = await new GetObraPage(contentRepository).execute();
+---
+<BaseLayout title="Obra" description={obra.quote} theme="obra">
+  <ObraHeader slot="header" />
+  <section class="section">
+    <div class="container">
+      <h1 class="t-display"><em>Obra</em></h1>
+      <p class="t-lead">{obra.quote}</p>
+      <h2 id="series" class="t-h2"><RichText title={[{ text: obra.seriesTitle, italic: false }]} /></h2>
+      <ul class="series-list">
+        {series.map((item) => (
+          <li>
+            <a class="t-h3" href={`/obra/${item.slug}`}>{item.number}. {item.title}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <FooterNav slot="footer" settings={settings} logoVariant="obra" />
+</BaseLayout>
+
+<style>
+  .series-list {
+    list-style: none;
+    margin: 32px 0 0;
+    padding: 0;
+  }
+
+  .series-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: inherit;
+    text-decoration: none;
+  }
+</style>

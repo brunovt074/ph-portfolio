@@ -1,0 +1,96 @@
+[data-theme="ink"] {
+  --bg: var(--ink);
+  --fg: var(--paper);
+  --fg-muted: var(--text-muted-dark);
+  --fg-soft: var(--text-soft-dark);
+  --accent-current: var(--accent);
+  --line: var(--line-dark);
+}
+
+[data-theme="surface"] {
+  --bg: var(--surface-2);
+  --fg: var(--paper);
+  --fg-muted: var(--text-muted-dark);
+  --fg-soft: var(--text-soft-dark);
+  --accent-current: var(--accent);
+  --line: var(--line-dark);
+  --btn-bg: var(--accent);
+  --btn-fg: var(--ink);
+}
+
+[data-theme="paper"] {
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-muted: var(--text-muted-light);
+  --fg-soft: var(--text-soft-light);
+  --accent-current: var(--accent-on-light);
+  --line: var(--line-light);
+}
+
+[data-theme="sand"] {
+  --bg: var(--sand);
+  --fg: var(--ink);
+  --fg-muted: var(--text-muted-light);
+  --fg-soft: var(--text-soft-light);
+  --accent-current: var(--accent-on-light);
+  --line: var(--line-light);
+}
+
+[data-theme="eventos"] {
+  --bg: var(--eventos-bg);
+  --fg: var(--paper);
+  --fg-muted: var(--text-muted-dark);
+  --fg-soft: var(--text-soft-dark);
+  --accent-current: var(--eventos-accent);
+  --line: var(--line-dark);
+}
+
+[data-theme="obra"] {
+  --bg: var(--obra-bg);
+  --fg: var(--obra-ink);
+  --fg-muted: var(--obra-muted);
+  --fg-soft: var(--obra-ink);
+  --accent-current: var(--accent);
+  --line: var(--line-dark);
+}
+
+[data-theme="ivory"] {
+  --bg: var(--obra-ink);
+  --fg: var(--obra-bg);
+  --fg-muted: var(--text-muted-light);
+  --fg-soft: var(--text-soft-light);
+  --accent-current: var(--accent-on-light);
+  --line: var(--line-light);
+}
+
+[data-theme="accent"] {
+  --bg: var(--accent);
+  --fg: var(--ink);
+  --fg-muted: var(--ink);
+  --fg-soft: var(--ink);
+  --accent-current: var(--ink);
+  --line: var(--line-light);
+  --btn-bg: var(--fg);
+  --btn-fg: var(--bg);
+}
+
+[data-theme="lime"] {
+  --bg: var(--eventos-accent);
+  --fg: var(--eventos-bg);
+  --fg-muted: var(--eventos-bg);
+  --fg-soft: var(--eventos-bg);
+  --accent-current: var(--eventos-bg);
+  --line: var(--line-light);
+  --btn-bg: var(--fg);
+  --btn-fg: var(--bg);
+}
+
+[data-theme] {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+[data-theme]:not([data-theme="accent"]):not([data-theme="lime"]):not([data-theme="surface"]) {
+  --btn-bg: var(--accent-current);
+  --btn-fg: var(--bg);
+}
