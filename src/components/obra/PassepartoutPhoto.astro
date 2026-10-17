@@ -17,6 +17,12 @@ const { photo, sizes, priority = false } = Astro.props;
 <style>
   .passepartout {
     background: var(--obra-ink);
-    padding: clamp(16px, 2vw, 28px);
+    padding: clamp(12px, 3vw, 28px);
+  }
+
+  @media (max-width: 599px) {
+    .passepartout :global(.photo) {
+      aspect-ratio: 1 / 1 !important;
+    }
   }
 </style>

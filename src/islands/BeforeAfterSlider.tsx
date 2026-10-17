@@ -51,7 +51,7 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt, width, hei
           value={position}
           onChange={handleChange}
           aria-label="Comparar antes y después del retoque"
-          aria-valuetext={`Mostrando ${position}% de la toma original`}
+          aria-valuetext={`${position}% antes, ${100 - position}% después`}
         />
       </div>
       {provisional && (

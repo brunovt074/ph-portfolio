@@ -32,4 +32,10 @@ const { title, series } = Astro.props;
     display: grid;
     gap: calc(var(--section-y) * 1.5);
   }
+
+  @media (max-width: 599px) {
+    .series-chapters {
+      gap: var(--section-y);
+    }
+  }
 </style>
