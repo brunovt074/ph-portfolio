@@ -23,7 +23,7 @@ const jsonLd = prints.length > 0 ? [await buildPrintsSchema(prints, Astro.site!)
     <p class="t-lead">{content.lead}</p>
   </section>
   <section class="prints-grid container" aria-label="Copias disponibles">
-    {prints.map((print) => <PrintCard print={print} cta={content.cta} editionLabel={content.editionLabel} />)}
+    {prints.map((print, index) => <PrintCard print={print} cta={content.cta} editionLabel={content.editionLabel} priority={index === 0} />)}
   </section>
   <PrintInfoBand items={content.info} />
   <section id="consulta" class="print-inquiry section" aria-labelledby="consulta-title">

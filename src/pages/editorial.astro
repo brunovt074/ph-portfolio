@@ -31,3 +31,12 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
   <Lightbox />
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
 </BaseLayout>
+
+<style>
+  @media (max-width: 899px) {
+    [data-gallery='horizontal'] {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 1800px;
+    }
+  }
+</style>

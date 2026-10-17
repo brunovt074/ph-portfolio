@@ -1,7 +1,12 @@
 export const afterLoad = (loader: () => Promise<unknown>): void => {
+  const start = () => void loader();
   if (document.readyState === 'complete') {
-    void loader();
+    start();
     return;
   }
-  window.addEventListener('load', () => void loader(), { once: true });
+  window.addEventListener(
+    'load',
+    () => requestAnimationFrame(() => requestAnimationFrame(start)),
+    { once: true },
+  );
 };
