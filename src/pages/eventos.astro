@@ -19,6 +19,7 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
   title={facet.name}
   description="Carnaval, comparsas, shows y eventos sociales: cobertura que sigue el movimiento y entrega a tiempo. Fotografía de eventos por Lara Vischi."
   theme="eventos"
+  image={facet.cover[0]}
 >
   <Header slot="header" current="eventos" ctaLabel={facet.ctaButton} ctaHref={contactHref} />
   <FacetIntro facet={facet} />

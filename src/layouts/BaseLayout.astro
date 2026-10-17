@@ -7,21 +7,28 @@ import bodoniLatin from '@fontsource-variable/bodoni-moda/files/bodoni-moda-lati
 import { themeColors } from '@/styles/themeColors';
 import type { ThemeName } from '@/styles/themeColors';
 import { ClientRouter } from 'astro:transitions';
+import JsonLd from '@/components/JsonLd.astro';
+import Seo from '@/components/Seo.astro';
 import SkipLink from '@/components/SkipLink.astro';
+import type { Photo } from '@/domain/Photo';
+import { resolveSeoImage } from '@/seo/resolveSeoImage';
 
 interface Props {
   title: string;
   description: string;
   theme: ThemeName;
-  ogImage?: string;
+  image?: Photo | undefined;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
   home?: boolean;
 }
 
-const { title, description, theme, ogImage, home = false } = Astro.props;
+const { title, description, theme, image, jsonLd = [], noindex = false, home = false } = Astro.props;
 
 const themeColor = themeColors[theme];
 
 const fullTitle = home ? title : `${title} — Lara Vischi`;
+const seoImage = image && Astro.site ? await resolveSeoImage(image, Astro.site) : undefined;
 ---
 <!doctype html>
 <html lang="es-AR">
@@ -33,7 +40,8 @@ const fullTitle = home ? title : `${title} — Lara Vischi`;
     <meta name="theme-color" content={themeColor} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href={bodoniLatin} as="font" type="font/woff2" crossorigin />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <Seo title={fullTitle} description={description} image={seoImage} noindex={noindex} />
+    {jsonLd.map((data) => <JsonLd data={data} />)}
     <ClientRouter />
     <script is:inline>
       {

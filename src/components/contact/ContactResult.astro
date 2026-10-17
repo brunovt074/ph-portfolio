@@ -1,0 +1,50 @@
+---
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import Button from '@/components/Button.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { contentRepository } from '@/infrastructure/container';
+
+interface Props {
+  title: string;
+  lead: string;
+  problems?: string[];
+  backLabel: string;
+  backHref: string;
+}
+
+const { title, lead, problems = [], backLabel, backHref } = Astro.props;
+const settings = await new GetSiteSettings(contentRepository).execute();
+---
+<BaseLayout title={title} description={lead} theme="ink" noindex>
+  <Header slot="header" />
+  <section class="section">
+    <div class="container result">
+      <h1 class="t-display" data-split>{title}</h1>
+      <p class="t-lead">{lead}</p>
+      {problems.length > 0 && (
+        <ul class="result-problems">
+          {problems.map((problem) => <li>{problem}</li>)}
+        </ul>
+      )}
+      <Button href={backHref} variant="primary">{backLabel}</Button>
+    </div>
+  </section>
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+</BaseLayout>
+
+<style>
+  .result {
+    display: grid;
+    justify-items: start;
+    gap: clamp(20px, 3vw, 32px);
+    padding-block: var(--section-y);
+  }
+
+  .result-problems {
+    margin: 0;
+    padding-left: 1.2em;
+    color: var(--fg-soft);
+  }
+</style>

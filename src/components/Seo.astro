@@ -1,0 +1,35 @@
+---
+import type { SeoImage } from '@/seo/SeoImage';
+import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@/seo/resolveSeoImage';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: SeoImage | undefined;
+  noindex?: boolean;
+}
+
+const { title, description, image, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Lara Vischi" />
+<meta property="og:locale" content="es_AR" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{image && (
+  <>
+    <meta property="og:image" content={image.url} />
+    <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
+    <meta property="og:image:alt" content={image.alt} />
+    <meta name="twitter:image" content={image.url} />
+    <meta name="twitter:image:alt" content={image.alt} />
+  </>
+)}
