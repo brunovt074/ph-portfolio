@@ -53,6 +53,21 @@ Antes de instalar, verificá versiones y APIs actuales con el MCP de Context7 (n
 /admin                  Sanity Studio
 ```
 
+Español sin prefijo; inglés bajo `/en` y portugués bajo `/pt`, con segmentos traducidos
+(`src/domain/routing/routeSegments.ts`). La URL define el idioma: no hay redirecciones por
+`Accept-Language`. Las páginas sin traducir salen con `noindex`; `/sitemap.xml` lista solo las indexables.
+
+| Página | es | en | pt |
+|---|---|---|---|
+| Home | `/` | `/en/` | `/pt/` |
+| Editorial | `/editorial` | `/en/editorial` | `/pt/editorial` |
+| Retratos | `/retratos` | `/en/portraits` | `/pt/retratos` |
+| Marcas | `/marcas` | `/en/brands` | `/pt/marcas` |
+| Eventos | `/eventos` | `/en/events` | `/pt/eventos` |
+| Obra | `/obra` | `/en/work` | `/pt/obra` |
+| Copias | `/obra/copias` | `/en/work/prints` | `/pt/obra/copias` |
+| Serie | `/obra/{slug}` | `/en/work/{slug}` | `/pt/obra/{slug}` |
+
 Detalle de cada página, sección por sección: `docs/02-paginas.md`.
 
 ## Reglas de diseño (no negociables)

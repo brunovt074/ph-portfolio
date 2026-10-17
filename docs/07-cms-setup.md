@@ -67,6 +67,23 @@ En el hosting definí `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SITE
 
 Las páginas con textos (Inicio, Marcas, Obra, Copias) se editan en Páginas.
 
+### Traducir una página
+1. Abrí el documento (una faceta, una serie, una página, una foto...).
+2. En cada campo, desplegá "Inglés y portugués".
+3. Completá el inglés y/o el portugués y tocá Publicar.
+4. Lo que quede vacío se ve en español. Una página aparece en Google en inglés o portugués recién cuando están traducidos sus textos principales.
+
+### Cambiar un texto del sitio
+1. Entrá a "Textos del sitio" (primero en la lista).
+2. Abrí el grupo (por ejemplo Formulario de contacto), elegí el idioma y escribí el texto nuevo.
+3. Tocá Publicar. Si lo vaciás, vuelve al texto de ejemplo (el que ves gris dentro del campo).
+4. Mantené las palabras entre llaves, por ejemplo {copy}: el sitio las reemplaza solo.
+
+### Dirección en inglés de una serie
+1. Abrí la serie y buscá el campo Dirección web.
+2. Desplegá "Inglés y portugués" y generá o escribí la dirección en inglés.
+3. No la cambies una vez publicada: cambiar una dirección hace que Google pierda la página anterior.
+
 ## 6. Servidor, formulario de contacto y email
 
 El sitio sigue siendo estático (`output: 'static'`), pero usa el adaptador `@astrojs/node` en modo `standalone` porque el formulario necesita un servidor. Solo son bajo demanda la acción `contact` (`/_actions/contact`), el endpoint `POST /contacto/enviar` (envío sin JavaScript) y `/contacto/error`; el resto se sirve prerenderizado.
