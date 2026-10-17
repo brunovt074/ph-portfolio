@@ -1,0 +1,155 @@
+{
+  "_nota": "Textos de página y selección de fotos del mockup. Se migran al CMS junto con seed.json. Los títulos usan *asteriscos* para marcar la palabra en itálica. Lo que está entre corchetes es un placeholder que completa Lara.",
+  "home": {
+    "lead": "Fotografía y video. Encargos para personas y marcas, y una obra personal que se construye paso a paso.",
+    "doors": {
+      "encargos": { "photo": "ed02", "label": "Puerta 1", "title": "Encargos", "subtitle": "Editorial · Retratos · Marcas · Eventos" },
+      "obra": { "photo": "au01", "label": "Puerta 2", "title": "*Obra*", "subtitle": "Series personales · Copias de autor" }
+    },
+    "ticker": ["Editorial", "Retratos", "Marcas", "Eventos", "Obra"],
+    "about": { "cta": "Trabajemos juntos" },
+    "encargos": { "eyebrow": "Encargos", "title": "Cuatro *miradas*", "thumbnails": { "editorial": ["ed01", "ed03", "ed05"], "retratos": ["rt02", "rt03", "rt08"], "marcas": ["mk01", "mk03", "mk07"], "eventos": ["ev01", "ev02", "ev06"] } },
+    "editorialStrip": ["ed01", "ed03", "ed05", "ed06", "ed07"],
+    "brands": {
+      "eyebrow": "Para marcas",
+      "title": "La fotografía también construye *identidad* de marca.",
+      "services": [
+        { "title": "Producto & e-commerce", "price": "desde [PRECIO]" },
+        { "title": "Gastronomía", "price": "desde [PRECIO]" },
+        { "title": "Joyería & accesorios", "price": "desde [PRECIO]" },
+        { "title": "Contenido mensual para redes", "price": "desde [PRECIO] / mes" }
+      ],
+      "cta": "Ver servicios para marcas",
+      "grid": ["mk01", "mk03", "mk07", "mk09"]
+    },
+    "obraTeaser": { "title": "*Obra*", "lead": "Series personales en blanco y negro, hechas sin encargo y sin apuro.", "photos": ["au01", "au05", "au12", "au14"], "cta": "Entrar a la obra" },
+    "contact": {
+      "title": "Hablemos.",
+      "lead": "Contame qué tenés en mente: una sesión, una campaña, un evento o una copia de autor. Te respondo con disponibilidad y presupuesto.",
+      "workTypes": ["Editorial & moda", "Retrato / sesión", "Marca / producto", "Evento", "Copia de autor", "Otro"]
+    }
+  },
+  "facets": [
+    {
+      "slug": "editorial",
+      "number": 1,
+      "name": "Editorial & Moda",
+      "title": "Imagen con *actitud*",
+      "lead": "Campañas, lookbooks y books con dirección de arte. Producciones pensadas de punta a punta: del concepto y el casting a la última imagen retocada.",
+      "indexDescription": "Campañas, lookbooks y books con dirección de arte.",
+      "cover": ["ed02", "ed01", "ed03"],
+      "gallery": ["ed04", "ed05", "ed06", "ed07", "ed08", "ed09", "ed10", "ed11", "ed12", "ed13", "ed14"],
+      "services": [
+        { "title": "Lookbooks & campañas", "description": "Colecciones y lanzamientos con concepto, casting, estilismo y dirección de arte." },
+        { "title": "Books de modelo", "description": "Material para agencias y castings, en estudio o en locación." },
+        { "title": "Artistas & músicos", "description": "Imagen de prensa, portadas de disco y fotos para la gira." }
+      ],
+      "ctaText": "¿Tenés una producción en mente?",
+      "ctaButton": "Contame tu idea"
+    },
+    {
+      "slug": "retratos",
+      "number": 2,
+      "name": "Retratos & Estudio",
+      "title": "Personas, *sin pose*",
+      "lead": "Sesiones en estudio o en tu espacio, con tiempo para que la cámara deje de ser una cámara. Retratos para guardar, regalar o presentarte.",
+      "indexDescription": "Sesiones personales, maternidad, familias y marca personal.",
+      "cover": ["rt02", "rt03"],
+      "gallery": ["rt01", "rt04", "rt05", "rt06", "rt07", "rt08", "rt09", "rt10"],
+      "services": [
+        { "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "price": "[PRECIO]" },
+        { "title": "Maternidad", "description": "La espera, en clave íntima y sin apuro.", "price": "[PRECIO]" },
+        { "title": "Familias", "description": "Juego, abrazos y lo que pase en el medio.", "price": "[PRECIO]" },
+        { "title": "Marca personal", "description": "Retratos para tu web, tu perfil profesional y tus redes.", "price": "[PRECIO]" }
+      ],
+      "quote": "Creemos que tenemos mucho *tiempo*. Las fotos nos recuerdan que no.",
+      "ctaText": "Reservá tu sesión",
+      "ctaButton": "Reservar sesión"
+    },
+    {
+      "slug": "marcas",
+      "number": 3,
+      "name": "Marcas",
+      "title": "Fotos que *venden*",
+      "lead": "Producto, gastronomía, joyería y espacios. Imágenes pensadas para tu tienda online, tus redes y tu próxima campaña, con la luz y el retoque que tu marca necesita.",
+      "indexDescription": "Producto, gastronomía, joyería y espacios.",
+      "cover": ["mk01", "mk03", "mk07"],
+      "gallery": ["mk02", "mk04", "mk05", "mk06", "mk08", "mk10"],
+      "services": [],
+      "ctaText": "Cotizá tu proyecto",
+      "ctaButton": "Cotizar mi proyecto"
+    },
+    {
+      "slug": "eventos",
+      "number": 4,
+      "name": "Eventos & Carnaval",
+      "title": "Plumas, luces y *ritmo*",
+      "lead": "Carnaval, comparsas, shows y eventos sociales. Cobertura que sigue el movimiento y entrega a tiempo.",
+      "indexDescription": "Carnaval, comparsas, shows y eventos sociales.",
+      "cover": ["ev01", "ev02", "ev06"],
+      "gallery": ["ev01", "ev02", "ev03", "ev04", "ev05", "ev06", "ev07", "ev08", "ev09", "ev10"],
+      "services": [
+        { "title": "Carnaval & comparsas", "description": "Desfiles, ensayos y retratos de comparsa, de la previa al corso." },
+        { "title": "Shows & escenario", "description": "Danza, música y teatro con la luz del escenario." },
+        { "title": "Sociales & deportes", "description": "Cumpleaños, celebraciones y competencias." }
+      ],
+      "ctaText": "¿Cuándo es tu evento?",
+      "ctaButton": "Consultar fecha"
+    }
+  ],
+  "brands": {
+    "headerCta": "Pedir presupuesto",
+    "sectorsTitle": "Rubros",
+    "sectors": [
+      { "title": "Producto & cosmética", "description": "Packshots, texturas y ambientadas.", "photo": "mk01" },
+      { "title": "Gastronomía", "description": "Platos, procesos y cartas que dan hambre.", "photo": "mk03" },
+      { "title": "Joyería & accesorios", "description": "Brillo, detalle y escala.", "photo": "mk07" },
+      { "title": "Espacios & alquileres", "description": "Interiores que se reservan solos.", "photo": "mk09" }
+    ],
+    "moreWorkTitle": "Más trabajos",
+    "beforeAfter": {
+      "title": "El *retoque* hace la diferencia",
+      "lead": "Arrastrá para comparar la toma original con la imagen final.",
+      "pairs": [ { "before": "mk01", "after": "mk01", "alt": "Sérum facial sobre agua lila, antes y después del retoque", "provisional": true } ]
+    },
+    "process": {
+      "title": "Cómo *trabajamos*",
+      "steps": [
+        { "title": "Brief", "description": "Me contás tu marca, tu público y dónde se van a usar las fotos." },
+        { "title": "Concepto", "description": "Propongo estética, fondos, props y una lista de tomas." },
+        { "title": "Producción", "description": "Hacemos la sesión en estudio o en tu espacio." },
+        { "title": "Entrega", "description": "Selección, retoque y archivos listos para web y redes." }
+      ]
+    },
+    "packagesTitle": "Paquetes",
+    "packagesCta": "Elegir este paquete"
+  },
+  "obra": {
+    "opening": { "photo": "au05", "seriesNumber": "I", "seriesTitle": "Oficios", "caption": "*Sin título*, [AÑO]" },
+    "quote": "Una bitácora de mi trabajo, porque cada fotografía es un registro de nuestro paso.",
+    "seriesTitle": "Series",
+    "aboutTitle": "Sobre la *obra*",
+    "exhibitionsTitle": "Muestras y publicaciones",
+    "printsTeaser": { "title": "Copias *de autor*", "lead": "Ediciones limitadas, firmadas y numeradas.", "cta": "Ver copias disponibles" },
+    "seriesSlugs": { "I": "oficios", "II": "geometrias", "III": "lo-que-queda", "IV": "viajes-en-color" },
+    "seriesDisplayTitles": { "I": "Ofi*cios*", "II": "Geo*metrías*", "III": "Lo que *queda*", "IV": "Viajes en *color*" },
+    "seriesCuratorialTexts": { "I": "[Texto curatorial de la serie]", "II": "[Texto curatorial de la serie]", "III": "[Texto curatorial de la serie]", "IV": "[Texto curatorial de la serie]" },
+    "seriesPrintsBand": { "title": "Esta serie está disponible como *copias de autor*", "cta": "Ver copias" }
+  },
+  "prints": {
+    "title": "Copias *de autor*",
+    "lead": "Fotografías de la obra en ediciones limitadas, firmadas y numeradas. Consultá disponibilidad, tamaños y envío.",
+    "cta": "Consultar esta copia",
+    "editionLabel": "Edición de {edicion} · quedan {disponibles}",
+    "info": [
+      { "title": "Impresión", "description": "[Papel y técnica de impresión]" },
+      { "title": "Firma y certificado", "description": "[Detalle de firma y certificado de autenticidad]" },
+      { "title": "Envío", "description": "[Zonas y tiempos de envío]" },
+      { "title": "Enmarcado", "description": "[Opciones de enmarcado]" }
+    ]
+  },
+  "settings": {
+    "exhibitions": [ { "title": "[Muestra o publicación]", "place": "[Lugar]", "year": "[AÑO]" } ],
+    "portraitAlt": "Lara Vischi con su cámara, en blanco y negro"
+  }
+}
