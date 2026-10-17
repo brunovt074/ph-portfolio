@@ -1,0 +1,21 @@
+{
+  "prices": {
+    "retrato-personal": 85000,
+    "maternidad": 95000,
+    "familias": 110000,
+    "marca-personal": 120000
+  },
+  "durations": {
+    "retrato-personal": 90,
+    "maternidad": 90,
+    "familias": 120,
+    "marca-personal": 120
+  },
+  "windows": [
+    { "weekday": 2, "from": "10:00", "to": "13:00" },
+    { "weekday": 2, "from": "15:00", "to": "19:00" },
+    { "weekday": 4, "from": "10:00", "to": "13:00" },
+    { "weekday": 4, "from": "15:00", "to": "19:00" },
+    { "weekday": 6, "from": "09:00", "to": "13:00" }
+  ]
+}

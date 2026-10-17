@@ -195,6 +195,37 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
     bandaCta: obra.seriesPrintsBand.cta,
   };
 
+  const bookingOffers: SeedDocument[] = content.bookingOffers.map((offer) => ({
+    _id: `sesion-${offer.slug}`,
+    _type: 'sesionReservable',
+    titulo: offer.title,
+    slug: { _type: 'slug', current: offer.slug },
+    faceta: reference(`faceta-${offer.facet}`),
+    descripcion: offer.description,
+    ...(offer.duration === null ? {} : { duracionMinutos: offer.duration }),
+    porcentajeSena: offer.depositPercent,
+    activa: true,
+    orden: offer.order,
+  }));
+
+  const schedulingDocument: SeedDocument = {
+    _id: 'agendaReservas',
+    _type: 'agendaReservas',
+    ventanas: content.scheduling.windows.map((window) => ({
+      _key: `${window.weekday}-${window.from}`,
+      _type: 'ventana',
+      dia: window.weekday,
+      desde: window.from,
+      hasta: window.to,
+    })),
+    pasoMinutos: content.scheduling.slotStepMinutes,
+    margenMinutos: content.scheduling.bufferMinutes,
+    anticipacionHoras: content.scheduling.minNoticeHours,
+    horizonteDias: content.scheduling.horizonDays,
+    retencionMinutos: content.scheduling.holdMinutes,
+    zonaHoraria: content.scheduling.timeZone,
+  };
+
   const printsPageDocument: SeedDocument = {
     _id: 'paginaCopias',
     _type: 'paginaCopias',
@@ -216,5 +247,7 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
     ...beforeAfter,
     ...series,
     ...printDocuments,
+    ...bookingOffers,
+    schedulingDocument,
   ];
 };

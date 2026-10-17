@@ -1,10 +1,9 @@
 import type { ErrorReporter } from '@/domain/ErrorReporter';
-import type { MessageDeliveryError } from '@/domain/MessageDeliveryError';
 
 export class FakeErrorReporter implements ErrorReporter {
-  readonly reported: MessageDeliveryError[] = [];
+  readonly reported: Error[] = [];
 
-  report(error: MessageDeliveryError): void {
+  report(error: Error): void {
     this.reported.push(error);
   }
 }

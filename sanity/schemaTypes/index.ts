@@ -1,3 +1,4 @@
+import { agendaReservas } from './agendaReservas';
 import { ajustes } from './ajustes';
 import { antesDespues } from './antesDespues';
 import { copia } from './copia';
@@ -10,6 +11,7 @@ import { paginaMarcas } from './paginaMarcas';
 import { paginaObra } from './paginaObra';
 import { paqueteMarca } from './paqueteMarca';
 import { serie } from './serie';
+import { sesionReservable } from './sesionReservable';
 import { servicio } from './servicio';
 import { tituloConItalica } from './tituloConItalica';
 
@@ -28,4 +30,6 @@ export const schemaTypes = [
   paginaMarcas,
   paginaObra,
   paginaCopias,
+  sesionReservable,
+  agendaReservas,
 ];

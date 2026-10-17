@@ -1,4 +1,5 @@
 import { beforeAfterQuery } from '@/infrastructure/sanity/queries/beforeAfterQuery';
+import { bookingOffersQuery } from '@/infrastructure/sanity/queries/bookingOffersQuery';
 import { brandPackagesQuery } from '@/infrastructure/sanity/queries/brandPackagesQuery';
 import { brandsQuery } from '@/infrastructure/sanity/queries/brandsQuery';
 import { facetsQuery } from '@/infrastructure/sanity/queries/facetsQuery';
@@ -6,9 +7,11 @@ import { homeQuery } from '@/infrastructure/sanity/queries/homeQuery';
 import { obraQuery } from '@/infrastructure/sanity/queries/obraQuery';
 import { printsPageQuery } from '@/infrastructure/sanity/queries/printsPageQuery';
 import { printsQuery } from '@/infrastructure/sanity/queries/printsQuery';
+import { schedulingQuery } from '@/infrastructure/sanity/queries/schedulingQuery';
 import { seriesQuery } from '@/infrastructure/sanity/queries/seriesQuery';
 import { settingsQuery } from '@/infrastructure/sanity/queries/settingsQuery';
 import { FakeSanityClient } from '../../fakes/FakeSanityClient';
+import { aSanityBookingOffer } from './aSanityBookingOffer';
 import { aSanityBeforeAfter, aSanityBrands, aSanityPackage } from './aSanityBrands';
 import { aSanityFacet } from './aSanityFacet';
 import { aSanityHome } from './aSanityHome';
@@ -26,6 +29,8 @@ export interface SanityWorld {
   series: unknown;
   prints: unknown;
   printsPage: unknown;
+  bookingOffers: unknown;
+  scheduling: unknown;
 }
 
 export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityClient => {
@@ -40,6 +45,8 @@ export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityC
     series: [aSanitySeries()],
     prints: [aSanityPrint()],
     printsPage: aSanityPrintsPage(),
+    bookingOffers: [aSanityBookingOffer()],
+    scheduling: null,
     ...overrides,
   };
   return new FakeSanityClient(
@@ -54,6 +61,8 @@ export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityC
       [seriesQuery, world.series],
       [printsQuery, world.prints],
       [printsPageQuery, world.printsPage],
+      [bookingOffersQuery, world.bookingOffers],
+      [schedulingQuery, world.scheduling],
     ]),
   );
 };

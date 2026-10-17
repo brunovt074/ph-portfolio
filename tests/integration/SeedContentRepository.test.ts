@@ -223,4 +223,52 @@ describe('SeedContentRepository with the real handoff data', () => {
 
     await expect(new SeedContentRepository(broken, realContent).getPrints()).rejects.toBeInstanceOf(UnknownPhotoError);
   });
+
+  it('offers the four portrait sessions as bookable without any invented price', async () => {
+    const offers = await repository().getBookingOffers();
+
+    expect(offers.map((offer) => offer.slug)).toEqual(['retrato-personal', 'maternidad', 'familias', 'marca-personal']);
+    expect(
+      offers.every((offer) => offer.priceCents === null && offer.durationMinutes === null && offer.depositPercent === 50 && offer.facet === 'retratos'),
+    ).toBe(true);
+    expect(offers[1]).toMatchObject({ title: 'Maternidad', description: 'La espera, en clave íntima y sin apuro.', order: 2 });
+  });
+
+  it('keeps the booking offers ordered even if the content lists them shuffled and converts pesos to cents', async () => {
+    const shuffled = cloneContent();
+    shuffled.bookingOffers.reverse();
+    const [first] = shuffled.bookingOffers;
+    if (first) {
+      first.price = 1500;
+    }
+
+    const offers = await new SeedContentRepository(realSeed, shuffled).getBookingOffers();
+
+    expect(offers.map((offer) => offer.order)).toEqual([1, 2, 3, 4]);
+    expect(offers[3]?.priceCents).toBe(150_000);
+  });
+
+  it('starts with no weekly windows so every session is booked by a proposed date until Sarah loads her agenda', async () => {
+    expect(await repository().getSchedulingSettings()).toEqual({
+      timeZone: 'America/Argentina/Buenos_Aires',
+      windows: [],
+      slotStepMinutes: 30,
+      bufferMinutes: 30,
+      minNoticeHours: 48,
+      horizonDays: 90,
+      holdMinutes: 30,
+    });
+  });
+
+  it('passes the duration of a session in minutes', async () => {
+    const timed = cloneContent();
+    const [first] = timed.bookingOffers;
+    if (first) {
+      first.duration = 90;
+    }
+
+    const offers = await new SeedContentRepository(realSeed, timed).getBookingOffers();
+
+    expect(offers[0]?.durationMinutes).toBe(90);
+  });
 });

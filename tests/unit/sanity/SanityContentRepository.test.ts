@@ -4,6 +4,7 @@ import { SanityContentRepository } from '@/infrastructure/sanity/SanityContentRe
 import { SanityDocumentNotFoundError } from '@/infrastructure/sanity/SanityDocumentNotFoundError';
 import { aBareSanityImage, aSanityPhoto } from '../../fixtures/sanity/aSanityPhoto';
 import { aSanityBeforeAfter, aSanityPackage } from '../../fixtures/sanity/aSanityBrands';
+import { aSanityBookingOffer } from '../../fixtures/sanity/aSanityBookingOffer';
 import { aSanityFacet } from '../../fixtures/sanity/aSanityFacet';
 import { aSanityHome } from '../../fixtures/sanity/aSanityHome';
 import { aSanityPrint, aSanityPrintsPage, aSanitySeries } from '../../fixtures/sanity/aSanityObra';
@@ -348,6 +349,154 @@ describe('SanityContentRepository', () => {
 
     it('explains which document is missing when the obra page does not exist', async () => {
       await expect(repositoryWith({ obra: null }).getObra()).rejects.toThrow('paginaObra');
+    });
+  });
+
+  describe('booking offers', () => {
+    it('maps a priced session from pesos to cents with its deposit percentage', async () => {
+      const offers = await repositoryWith().getBookingOffers();
+
+      expect(offers).toEqual([
+        {
+          slug: 'maternidad',
+          title: 'Maternidad',
+          description: 'La espera, en clave íntima y sin apuro.',
+          facet: 'retratos',
+          priceCents: 9_500_000,
+          depositPercent: 50,
+          durationMinutes: 90,
+          order: 2,
+        },
+      ]);
+    });
+
+    it('keeps a session without price as not bookable', async () => {
+      const repository = repositoryWith({ bookingOffers: [aSanityBookingOffer({ precio: null })] });
+
+      const [offer] = await repository.getBookingOffers();
+
+      expect(offer?.priceCents).toBeNull();
+    });
+
+    it('treats a missing or zero duration as a session booked by proposed date', async () => {
+      const repository = repositoryWith({
+        bookingOffers: [aSanityBookingOffer({ duracionMinutos: null }), aSanityBookingOffer({ slug: 'cero', duracionMinutos: 0 })],
+      });
+
+      const offers = await repository.getBookingOffers();
+
+      expect(offers.map((offer) => offer.durationMinutes)).toEqual([null, null]);
+    });
+
+    it('treats a price of zero as no price', async () => {
+      const repository = repositoryWith({ bookingOffers: [aSanityBookingOffer({ precio: 0 })] });
+
+      const [offer] = await repository.getBookingOffers();
+
+      expect(offer?.priceCents).toBeNull();
+    });
+
+    it('falls back to a half deposit, empty description and first position when Sarah left them empty', async () => {
+      const repository = repositoryWith({ bookingOffers: [aSanityBookingOffer({ porcentajeSena: null, descripcion: null, orden: null })] });
+
+      const [offer] = await repository.getBookingOffers();
+
+      expect(offer).toMatchObject({ depositPercent: 50, description: '', order: 0 });
+    });
+
+    it('rounds a price with centavos to whole cents', async () => {
+      const repository = repositoryWith({ bookingOffers: [aSanityBookingOffer({ precio: 85000.555 })] });
+
+      const [offer] = await repository.getBookingOffers();
+
+      expect(offer?.priceCents).toBe(8_500_056);
+    });
+
+    it('skips a session whose facet is missing, unknown or deleted', async () => {
+      const repository = repositoryWith({
+        bookingOffers: [
+          aSanityBookingOffer({ slug: 'sin-faceta', faceta: null }),
+          aSanityBookingOffer({ slug: 'faceta-vieja', faceta: 'bodas' }),
+          aSanityBookingOffer({ slug: 'familias' }),
+        ],
+      });
+
+      const offers = await repository.getBookingOffers();
+
+      expect(offers.map((offer) => offer.slug)).toEqual(['familias']);
+    });
+  });
+
+  describe('scheduling settings', () => {
+    it('uses the defaults when Sarah has not opened the agenda document yet', async () => {
+      expect(await repositoryWith().getSchedulingSettings()).toEqual({
+        timeZone: 'America/Argentina/Buenos_Aires',
+        windows: [],
+        slotStepMinutes: 30,
+        bufferMinutes: 30,
+        minNoticeHours: 48,
+        horizonDays: 90,
+        holdMinutes: 30,
+      });
+    });
+
+    it('maps the weekly windows and the numbers Sarah chose', async () => {
+      const repository = repositoryWith({
+        scheduling: {
+          ventanas: [
+            { dia: 2, desde: '10:00', hasta: '13:00' },
+            { dia: 6, desde: '09:00', hasta: '13:00' },
+          ],
+          pasoMinutos: 60,
+          margenMinutos: 15,
+          anticipacionHoras: 24,
+          horizonteDias: 30,
+          retencionMinutos: 20,
+          zonaHoraria: 'America/Argentina/Cordoba',
+        },
+      });
+
+      expect(await repository.getSchedulingSettings()).toEqual({
+        timeZone: 'America/Argentina/Cordoba',
+        windows: [
+          { weekday: 2, from: '10:00', to: '13:00' },
+          { weekday: 6, from: '09:00', to: '13:00' },
+        ],
+        slotStepMinutes: 60,
+        bufferMinutes: 15,
+        minNoticeHours: 24,
+        horizonDays: 30,
+        holdMinutes: 20,
+      });
+    });
+
+    it('falls back to defaults for numbers left empty and ignores a document without windows', async () => {
+      const repository = repositoryWith({
+        scheduling: { ventanas: null, pasoMinutos: null, margenMinutos: null, anticipacionHoras: null, horizonteDias: null, retencionMinutos: null, zonaHoraria: null },
+      });
+
+      expect((await repository.getSchedulingSettings()).windows).toEqual([]);
+      expect((await repository.getSchedulingSettings()).holdMinutes).toBe(30);
+    });
+
+    it('drops incomplete or impossible windows instead of breaking the agenda', async () => {
+      const repository = repositoryWith({
+        scheduling: {
+          ventanas: [
+            { dia: 8, desde: '10:00', hasta: '13:00' },
+            { dia: 0, desde: '10:00', hasta: '13:00' },
+            { dia: 2.5, desde: '10:00', hasta: '13:00' },
+            { dia: null, desde: '10:00', hasta: '13:00' },
+            { dia: 2, desde: null, hasta: '13:00' },
+            { dia: 2, desde: '10:00', hasta: null },
+            { dia: 2, desde: '25:00', hasta: '26:00' },
+            { dia: 2, desde: '13:00', hasta: '10:00' },
+            { dia: 7, desde: '10:00', hasta: '12:00' },
+          ],
+        },
+      });
+
+      expect((await repository.getSchedulingSettings()).windows).toEqual([{ weekday: 7, from: '10:00', to: '12:00' }]);
     });
   });
 });
