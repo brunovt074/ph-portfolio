@@ -1,6 +1,7 @@
 import type { ContentData } from '../../src/infrastructure/seed/data/ContentData';
 import type { ContentService } from '../../src/infrastructure/seed/data/ContentService';
 import type { SeedData } from '../../src/infrastructure/seed/data/SeedData';
+import { localized, localizedSlug } from './localized';
 import { toPortableText } from './portableText';
 import { imageField, reference, referenceList, withKeys } from './references';
 import type { SeedDocument } from './SeedDocument';
@@ -14,7 +15,20 @@ const photoId = (id: string) => `foto-${id}`;
 const photoIds = (ids: string[]) => ids.map(photoId);
 
 const services = (items: ContentService[], prefix: string) =>
-  withKeys(prefix, items.map((item) => ({ ...item })));
+  withKeys(
+    prefix,
+    items.map((item) => ({
+      _type: 'servicio',
+      titulo: localized(item.title),
+      ...(item.description !== undefined && { descripcion: localized(item.description) }),
+      ...(item.price !== undefined && { precio: localized(item.price) }),
+    })),
+  );
+
+const infoItems = (prefix: string, items: { title: string; description: string }[]) =>
+  withKeys(prefix, items.map((item) => ({ _type: 'itemInfo', titulo: localized(item.title), descripcion: localized(item.description) })));
+
+const rich = (marked: string, keyPrefix: string) => localized(toPortableText(marked, keyPrefix));
 
 export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: AssetIdOf): SeedDocument[] => {
   const { home, brands, obra, prints, settings } = content;
@@ -24,8 +38,8 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
     _id: photoId(photo.id),
     _type: 'foto',
     imagen: imageField(assetIdOf(photo.id)),
-    alt: photo.alt,
-    ...(photo.titulo !== undefined && { titulo: photo.titulo }),
+    alt: localized(photo.alt),
+    ...(photo.titulo !== undefined && { titulo: localized(photo.titulo) }),
     ...(photo.titulo_provisorio !== undefined && { tituloProvisorio: photo.titulo_provisorio }),
     ...(photo.lugar !== undefined && { lugar: photo.lugar }),
     ...(photo.anio != null && { anio: photo.anio }),
@@ -36,26 +50,26 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
   const facets: SeedDocument[] = content.facets.map((facet) => ({
     _id: `faceta-${facet.slug}`,
     _type: 'faceta',
-    nombre: facet.name,
+    nombre: localized(facet.name),
     slug: { _type: 'slug', current: facet.slug },
     numero: facet.number,
-    titulo: toPortableText(facet.title, `faceta-${facet.slug}-titulo`),
-    lead: facet.lead,
-    indexDescription: facet.indexDescription,
-    ...(facet.quote !== undefined && { quote: toPortableText(facet.quote, `faceta-${facet.slug}-quote`) }),
+    titulo: rich(facet.title, `faceta-${facet.slug}-titulo`),
+    lead: localized(facet.lead),
+    indexDescription: localized(facet.indexDescription),
+    ...(facet.quote !== undefined && { quote: rich(facet.quote, `faceta-${facet.slug}-quote`) }),
     portada: referenceList('portada', photoIds(facet.cover)),
     galeria: referenceList('galeria', photoIds(facet.gallery)),
-    servicios: services(facet.services, 'servicio').map((service) => ({ _type: 'servicio', ...service })),
-    ctaTexto: facet.ctaText,
-    ctaButton: facet.ctaButton,
+    servicios: services(facet.services, 'servicio'),
+    ctaTexto: localized(facet.ctaText),
+    ctaButton: localized(facet.ctaButton),
   }));
 
   const packages: SeedDocument[] = seed.paquetesMarca.map((pack, index) => ({
     _id: `paquete-${slugify(pack.nombre)}`,
     _type: 'paqueteMarca',
-    nombre: pack.nombre,
-    precio: pack.precio,
-    items: pack.items,
+    nombre: localized(pack.nombre),
+    precio: localized(pack.precio),
+    items: localized(pack.items),
     destacado: pack.destacado ?? false,
     orden: index + 1,
   }));
@@ -65,7 +79,7 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
     _type: 'antesDespues',
     antes: imageField(assetIdOf(pair.before)),
     despues: imageField(assetIdOf(pair.after)),
-    alt: pair.alt,
+    alt: localized(pair.alt),
     provisorio: pair.provisional,
     orden: index + 1,
   }));
@@ -75,12 +89,12 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
     _type: 'serie',
     numero: entry.numero,
     orden: index + 1,
-    titulo: entry.titulo,
-    tituloVisible: toPortableText(obra.seriesDisplayTitles[entry.numero] ?? entry.titulo, `serie-${entry.numero}-titulo`),
-    slug: { _type: 'slug', current: seriesSlug(entry.numero) },
+    titulo: localized(entry.titulo),
+    tituloVisible: rich(obra.seriesDisplayTitles[entry.numero] ?? entry.titulo, `serie-${entry.numero}-titulo`),
+    slug: localizedSlug(seriesSlug(entry.numero)),
     anios: entry.anios,
-    lineaCuratorial: entry.lineaCuratorial,
-    textoCuratorial: obra.seriesCuratorialTexts[entry.numero] ?? '',
+    lineaCuratorial: localized(entry.lineaCuratorial),
+    textoCuratorial: localized(obra.seriesCuratorialTexts[entry.numero] ?? ''),
     fotos: entry.fotos.map((item, position) => ({
       _key: `foto-${position}`,
       _type: 'fotoDeSerie',
@@ -110,102 +124,105 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
     email: seed.ajustes.email,
     whatsapp: seed.ajustes.whatsapp,
     instagram: seed.ajustes.instagram,
-    frase: seed.ajustes.frase,
-    sobreMi: seed.ajustes.sobre_mi,
+    frase: localized(seed.ajustes.frase),
+    sobreMi: localized(seed.ajustes.sobre_mi),
     retrato: imageField(assetIdOf(PORTRAIT_ID)),
-    retratoAlt: settings.portraitAlt,
-    statement: seed.ajustes.statement,
-    muestras: withKeys('muestra', settings.exhibitions.map((show) => ({ _type: 'muestra', titulo: show.title, lugar: show.place, anio: show.year }))),
-    infoCopias: withKeys('info', prints.info.map((item) => ({ _type: 'itemInfo', titulo: item.title, descripcion: item.description }))),
+    retratoAlt: localized(settings.portraitAlt),
+    statement: localized(seed.ajustes.statement),
+    muestras: withKeys('muestra', settings.exhibitions.map((show) => ({ _type: 'muestra', titulo: localized(show.title), lugar: show.place, anio: show.year }))),
+    infoCopias: infoItems('info', prints.info),
   };
 
   const homeDocument: SeedDocument = {
     _id: 'paginaInicio',
     _type: 'paginaInicio',
-    bajada: home.lead,
+    bajada: localized(home.lead),
     puertaEncargosFoto: reference(photoId(home.doors.encargos.photo)),
-    puertaEncargosEtiqueta: home.doors.encargos.label,
-    puertaEncargosTitulo: toPortableText(home.doors.encargos.title, 'home-puerta-encargos'),
-    puertaEncargosSubtitulo: home.doors.encargos.subtitle,
+    puertaEncargosEtiqueta: localized(home.doors.encargos.label),
+    puertaEncargosTitulo: rich(home.doors.encargos.title, 'home-puerta-encargos'),
+    puertaEncargosSubtitulo: localized(home.doors.encargos.subtitle),
     puertaObraFoto: reference(photoId(home.doors.obra.photo)),
-    puertaObraEtiqueta: home.doors.obra.label,
-    puertaObraTitulo: toPortableText(home.doors.obra.title, 'home-puerta-obra'),
-    puertaObraSubtitulo: home.doors.obra.subtitle,
-    ticker: home.ticker,
-    sobreMiCta: home.about.cta,
-    encargosEyebrow: home.encargos.eyebrow,
-    encargosTitulo: toPortableText(home.encargos.title, 'home-encargos'),
+    puertaObraEtiqueta: localized(home.doors.obra.label),
+    puertaObraTitulo: rich(home.doors.obra.title, 'home-puerta-obra'),
+    puertaObraSubtitulo: localized(home.doors.obra.subtitle),
+    ticker: localized(home.ticker),
+    sobreMiCta: localized(home.about.cta),
+    encargosEyebrow: localized(home.encargos.eyebrow),
+    encargosTitulo: rich(home.encargos.title, 'home-encargos'),
     miniaturasEditorial: referenceList('editorial', photoIds(home.encargos.thumbnails.editorial)),
     miniaturasRetratos: referenceList('retratos', photoIds(home.encargos.thumbnails.retratos)),
     miniaturasMarcas: referenceList('marcas', photoIds(home.encargos.thumbnails.marcas)),
     miniaturasEventos: referenceList('eventos', photoIds(home.encargos.thumbnails.eventos)),
     tiraEditorial: referenceList('tira', photoIds(home.editorialStrip)),
-    marcasEyebrow: home.brands.eyebrow,
-    marcasTitulo: toPortableText(home.brands.title, 'home-marcas'),
-    marcasServicios: services(home.brands.services, 'servicio').map((service) => ({ _type: 'servicio', ...service })),
-    marcasCta: home.brands.cta,
+    marcasEyebrow: localized(home.brands.eyebrow),
+    marcasTitulo: rich(home.brands.title, 'home-marcas'),
+    marcasServicios: services(home.brands.services, 'servicio'),
+    marcasCta: localized(home.brands.cta),
     marcasGrilla: referenceList('grilla', photoIds(home.brands.grid)),
-    obraTitulo: toPortableText(home.obraTeaser.title, 'home-obra'),
-    obraBajada: home.obraTeaser.lead,
+    obraTitulo: rich(home.obraTeaser.title, 'home-obra'),
+    obraBajada: localized(home.obraTeaser.lead),
     obraFotos: referenceList('obra', photoIds(home.obraTeaser.photos)),
-    obraCta: home.obraTeaser.cta,
-    contactoTitulo: home.contact.title,
-    contactoBajada: home.contact.lead,
-    tiposDeTrabajo: home.contact.workTypes,
+    obraCta: localized(home.obraTeaser.cta),
+    contactoTitulo: localized(home.contact.title),
+    contactoBajada: localized(home.contact.lead),
+    tiposDeTrabajo: localized(home.contact.workTypes),
   };
 
   const brandsDocument: SeedDocument = {
     _id: 'paginaMarcas',
     _type: 'paginaMarcas',
-    ctaCabecera: brands.headerCta,
-    rubrosTitulo: brands.sectorsTitle,
+    ctaCabecera: localized(brands.headerCta),
+    rubrosTitulo: localized(brands.sectorsTitle),
     rubros: withKeys(
       'rubro',
       brands.sectors.map((sector) => ({
         _type: 'rubro',
-        titulo: sector.title,
-        descripcion: sector.description,
+        titulo: localized(sector.title),
+        descripcion: localized(sector.description),
         foto: reference(photoId(sector.photo)),
       })),
     ),
-    masTrabajosTitulo: brands.moreWorkTitle,
-    antesDespuesTitulo: toPortableText(brands.beforeAfter.title, 'marcas-antes-despues'),
-    antesDespuesBajada: brands.beforeAfter.lead,
-    procesoTitulo: toPortableText(brands.process.title, 'marcas-proceso'),
-    pasos: withKeys('paso', brands.process.steps.map((step) => ({ _type: 'itemInfo', titulo: step.title, descripcion: step.description }))),
-    paquetesTitulo: brands.packagesTitle,
-    paquetesCta: brands.packagesCta,
+    masTrabajosTitulo: localized(brands.moreWorkTitle),
+    antesDespuesTitulo: rich(brands.beforeAfter.title, 'marcas-antes-despues'),
+    antesDespuesBajada: localized(brands.beforeAfter.lead),
+    procesoTitulo: rich(brands.process.title, 'marcas-proceso'),
+    pasos: infoItems('paso', brands.process.steps),
+    paquetesTitulo: localized(brands.packagesTitle),
+    paquetesCta: localized(brands.packagesCta),
   };
 
   const obraDocument: SeedDocument = {
     _id: 'paginaObra',
     _type: 'paginaObra',
     aperturaFoto: reference(photoId(obra.opening.photo)),
-    aperturaSerieNumero: obra.opening.seriesNumber,
-    aperturaSerieTitulo: obra.opening.seriesTitle,
-    aperturaLeyenda: toPortableText(obra.opening.caption, 'obra-apertura'),
-    frase: obra.quote,
-    seriesTitulo: obra.seriesTitle,
-    sobreTitulo: toPortableText(obra.aboutTitle, 'obra-sobre'),
-    muestrasTitulo: obra.exhibitionsTitle,
-    copiasTitulo: toPortableText(obra.printsTeaser.title, 'obra-copias'),
-    copiasBajada: obra.printsTeaser.lead,
-    copiasCta: obra.printsTeaser.cta,
-    bandaTitulo: toPortableText(obra.seriesPrintsBand.title, 'obra-banda'),
-    bandaCta: obra.seriesPrintsBand.cta,
+    aperturaSerieNumero: localized(obra.opening.seriesNumber),
+    aperturaSerieTitulo: localized(obra.opening.seriesTitle),
+    aperturaLeyenda: rich(obra.opening.caption, 'obra-apertura'),
+    frase: localized(obra.quote),
+    seriesTitulo: localized(obra.seriesTitle),
+    sobreTitulo: rich(obra.aboutTitle, 'obra-sobre'),
+    muestrasTitulo: localized(obra.exhibitionsTitle),
+    copiasTitulo: rich(obra.printsTeaser.title, 'obra-copias'),
+    copiasBajada: localized(obra.printsTeaser.lead),
+    copiasCta: localized(obra.printsTeaser.cta),
+    bandaTitulo: rich(obra.seriesPrintsBand.title, 'obra-banda'),
+    bandaCta: localized(obra.seriesPrintsBand.cta),
   };
 
   const printsPageDocument: SeedDocument = {
     _id: 'paginaCopias',
     _type: 'paginaCopias',
-    titulo: toPortableText(prints.title, 'copias-titulo'),
-    bajada: prints.lead,
-    cta: prints.cta,
-    etiquetaEdicion: prints.editionLabel,
+    titulo: rich(prints.title, 'copias-titulo'),
+    bajada: localized(prints.lead),
+    cta: localized(prints.cta),
+    etiquetaEdicion: localized(prints.editionLabel),
   };
+
+  const siteTextsDocument: SeedDocument = { _id: 'textosDelSitio', _type: 'textosDelSitio' };
 
   return [
     settingsDocument,
+    siteTextsDocument,
     homeDocument,
     brandsDocument,
     obraDocument,
