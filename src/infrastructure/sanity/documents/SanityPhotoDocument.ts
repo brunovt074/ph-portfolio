@@ -1,7 +1,9 @@
+import type { SanityLocalized } from './SanityLocalized';
+
 export interface SanityPhotoDocument {
   id: string;
-  alt: string;
-  titulo?: string | null;
+  alt: SanityLocalized<string>;
+  titulo?: SanityLocalized<string> | null;
   tituloProvisorio?: boolean | null;
   lugar?: string | null;
   anio?: number | null;

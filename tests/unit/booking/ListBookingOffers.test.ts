@@ -9,7 +9,9 @@ describe('ListBookingOffers', () => {
   it('shows a priced session with the half deposit the client will pay online', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 9_500_000 })] });
 
-    const [offer] = await new ListBookingOffers(content, null).execute();
+    const {
+      offers: [offer],
+    } = await new ListBookingOffers(content, null).execute('es');
 
     expect(offer).toEqual({
       slug: 'maternidad',
@@ -28,7 +30,9 @@ describe('ListBookingOffers', () => {
   it('rounds the deposit to a whole peso', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 8_500_100, depositPercent: 33 })] });
 
-    const [offer] = await new ListBookingOffers(content, null).execute();
+    const {
+      offers: [offer],
+    } = await new ListBookingOffers(content, null).execute('es');
 
     expect(offer?.depositCents).toBe(2_805_000);
   });
@@ -36,7 +40,9 @@ describe('ListBookingOffers', () => {
   it('shows a session without price as not bookable and without deposit', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: null })] });
 
-    const [offer] = await new ListBookingOffers(content, null).execute();
+    const {
+      offers: [offer],
+    } = await new ListBookingOffers(content, null).execute('es');
 
     expect(offer).toMatchObject({ totalCents: null, depositCents: null, bookable: false });
   });
@@ -44,7 +50,9 @@ describe('ListBookingOffers', () => {
   it('does not allow booking a session priced at zero', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 0 })] });
 
-    const [offer] = await new ListBookingOffers(content, null).execute();
+    const {
+      offers: [offer],
+    } = await new ListBookingOffers(content, null).execute('es');
 
     expect(offer).toMatchObject({ depositCents: null, bookable: false });
   });
@@ -52,7 +60,9 @@ describe('ListBookingOffers', () => {
   it('exposes the duration of a session that can be booked by turn', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ durationMinutes: 90 })] });
 
-    const [offer] = await new ListBookingOffers(content, null).execute();
+    const {
+      offers: [offer],
+    } = await new ListBookingOffers(content, null).execute('es');
 
     expect(offer?.durationMinutes).toBe(90);
   });
@@ -63,7 +73,7 @@ describe('ListBookingOffers', () => {
       scheduling: aSchedulingSettings({ windows: tuesdayAndThursdayWindows() }),
     });
 
-    const offers = await new ListBookingOffers(content, new FakeCalendarProvider()).execute();
+    const { offers } = await new ListBookingOffers(content, new FakeCalendarProvider()).execute('es');
 
     expect(offers.map((offer) => [offer.slug, offer.scheduling])).toEqual([
       ['con-duracion', 'slots'],
@@ -77,8 +87,23 @@ describe('ListBookingOffers', () => {
       scheduling: aSchedulingSettings({ windows: tuesdayAndThursdayWindows() }),
     });
 
-    const [offer] = await new ListBookingOffers(content, null).execute();
+    const {
+      offers: [offer],
+    } = await new ListBookingOffers(content, null).execute('es');
 
     expect(offer?.scheduling).toBe('request');
+  });
+
+  it('reports a language as translated only when every session is translated into it', async () => {
+    const content = new FakeContentRepository({
+      bookingOffers: [
+        aBookingOffer({ slug: 'maternidad', translations: { es: true, en: true, pt: true } }),
+        aBookingOffer({ slug: 'familias', translations: { es: true, en: true, pt: false } }),
+      ],
+    });
+
+    const { translations } = await new ListBookingOffers(content, null).execute('en');
+
+    expect(translations).toEqual({ es: true, en: true, pt: false });
   });
 });

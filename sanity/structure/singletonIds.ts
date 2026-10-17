@@ -1,1 +1,1 @@
-export const singletonIds = ['ajustes', 'paginaInicio', 'paginaMarcas', 'paginaObra', 'paginaCopias'] as const;
+export const singletonIds = ['textosDelSitio', 'ajustes', 'paginaInicio', 'paginaMarcas', 'paginaObra', 'paginaCopias'] as const;

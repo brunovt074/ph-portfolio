@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { requiredSpanishAlt } from './campos';
 
 const imageField = (name: string, title: string, description: string) =>
   defineField({
@@ -20,13 +21,13 @@ export const antesDespues = defineType({
     defineField({
       name: 'alt',
       title: 'Descripción',
-      type: 'string',
+      type: 'textoLocalizado',
       description: 'Qué se ve y qué cambió con el retoque.',
-      validation: (rule) => rule.required().min(10).max(160),
+      validation: (rule) => requiredSpanishAlt(rule),
     }),
     defineField({ name: 'provisorio', title: 'Es un ejemplo provisorio', type: 'boolean', initialValue: false }),
     defineField({ name: 'orden', title: 'Orden', type: 'number', validation: (rule) => rule.required().integer() }),
   ],
   orderings: [{ title: 'Por orden', name: 'orden', by: [{ field: 'orden', direction: 'asc' }] }],
-  preview: { select: { title: 'alt', media: 'despues' } },
+  preview: { select: { title: 'alt.es', media: 'despues' } },
 });

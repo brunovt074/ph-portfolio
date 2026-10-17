@@ -5,6 +5,7 @@ import type { BookingSchedule } from '@/domain/booking/BookingSchedule';
 import type { Clock } from '@/domain/Clock';
 import type { ContentRepository } from '@/domain/ContentRepository';
 import type { ErrorReporter } from '@/domain/ErrorReporter';
+import { defaultLocale } from '@/domain/Locale';
 import type { IdGenerator } from '@/domain/IdGenerator';
 import type { Payment } from '@/domain/payment/Payment';
 import type { PaymentGateway } from '@/domain/payment/PaymentGateway';
@@ -51,7 +52,7 @@ export class CreateBooking {
   ) {}
 
   async execute(input: CreateBookingInput): Promise<Outcome> {
-    const offers = await this.content.getBookingOffers();
+    const offers = await this.content.getBookingOffers(defaultLocale);
     const offer = offers.find((candidate) => candidate.slug === input.offerSlug);
     if (!offer) {
       return fail('offer_not_found');

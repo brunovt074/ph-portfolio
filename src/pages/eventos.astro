@@ -13,7 +13,7 @@ import { contentRepository } from '@/infrastructure/container';
 
 const contactHref = '/?tipo=eventos#contacto';
 const tickerWords = ['Carnaval', 'Comparsas', 'Shows', 'Escenario', 'Sociales'];
-const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('eventos');
+const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('es', 'eventos');
 ---
 <BaseLayout
   title={facet.name}

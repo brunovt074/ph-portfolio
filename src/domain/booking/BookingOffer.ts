@@ -1,4 +1,5 @@
 import type { FacetSlug } from '../FacetSlug';
+import type { Translations } from '../Translations';
 
 export interface BookingOffer {
   slug: string;
@@ -9,4 +10,5 @@ export interface BookingOffer {
   depositPercent: number;
   durationMinutes: number | null;
   order: number;
+  translations: Translations;
 }

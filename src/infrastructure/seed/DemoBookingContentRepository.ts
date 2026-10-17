@@ -20,44 +20,44 @@ export class DemoBookingContentRepository implements ContentRepository {
     private readonly demo: BookingDemoData,
   ) {}
 
-  getSettings(): Promise<SiteSettings> {
-    return this.inner.getSettings();
+  getSettings(locale: Locale): Promise<SiteSettings> {
+    return this.inner.getSettings(locale);
   }
 
-  getHome(): Promise<HomeContent> {
-    return this.inner.getHome();
+  getHome(locale: Locale): Promise<HomeContent> {
+    return this.inner.getHome(locale);
   }
 
-  getFacets(): Promise<Facet[]> {
-    return this.inner.getFacets();
+  getFacets(locale: Locale): Promise<Facet[]> {
+    return this.inner.getFacets(locale);
   }
 
-  getBrands(): Promise<BrandsContent> {
-    return this.inner.getBrands();
+  getBrands(locale: Locale): Promise<BrandsContent> {
+    return this.inner.getBrands(locale);
   }
 
   getTexts(locale: Locale): Promise<SiteTexts> {
     return this.inner.getTexts(locale);
   }
 
-  getObra(): Promise<ObraContent> {
-    return this.inner.getObra();
+  getObra(locale: Locale): Promise<ObraContent> {
+    return this.inner.getObra(locale);
   }
 
-  getSeries(): Promise<Series[]> {
-    return this.inner.getSeries();
+  getSeries(locale: Locale): Promise<Series[]> {
+    return this.inner.getSeries(locale);
   }
 
-  getPrints(): Promise<Print[]> {
-    return this.inner.getPrints();
+  getPrints(locale: Locale): Promise<Print[]> {
+    return this.inner.getPrints(locale);
   }
 
-  getPrintsContent(): Promise<PrintsContent> {
-    return this.inner.getPrintsContent();
+  getPrintsContent(locale: Locale): Promise<PrintsContent> {
+    return this.inner.getPrintsContent(locale);
   }
 
-  async getBookingOffers(): Promise<BookingOffer[]> {
-    const offers = await this.inner.getBookingOffers();
+  async getBookingOffers(locale: Locale): Promise<BookingOffer[]> {
+    const offers = await this.inner.getBookingOffers(locale);
     return offers.map((offer) => {
       const demoPrice = this.demo.prices[offer.slug];
       const demoDuration = this.demo.durations[offer.slug];

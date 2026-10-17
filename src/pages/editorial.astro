@@ -12,7 +12,7 @@ import { GetFacetPage } from '@/application/GetFacetPage';
 import { contentRepository } from '@/infrastructure/container';
 
 const contactHref = '/?tipo=editorial#contacto';
-const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('editorial');
+const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('es', 'editorial');
 ---
 <BaseLayout
   title={`${facet.name}`}

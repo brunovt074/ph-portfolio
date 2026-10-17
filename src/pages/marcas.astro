@@ -11,7 +11,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetBrandsPage } from '@/application/GetBrandsPage';
 import { contentRepository } from '@/infrastructure/container';
 
-const { facet, brands, previous, next, settings } = await new GetBrandsPage(contentRepository).execute();
+const { facet, brands, previous, next, settings } = await new GetBrandsPage(contentRepository).execute('es');
 ---
 <BaseLayout
   title="Fotografía para marcas"

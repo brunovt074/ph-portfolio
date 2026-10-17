@@ -11,7 +11,7 @@ import { contentRepository } from '@/infrastructure/container';
 import { buildPrintsSchema } from '@/seo/structuredData';
 import ContactForm from '@/components/home/ContactForm.astro';
 
-const { prints, content, settings } = await new GetPrintsPage(contentRepository).execute();
+const { prints, content, settings } = await new GetPrintsPage(contentRepository).execute('es');
 const copyTitles = prints.map((print) => print.photo.title ?? 'Sin título');
 const jsonLd = prints.length > 0 ? [await buildPrintsSchema(prints, Astro.site!)] : [];
 ---

@@ -19,7 +19,7 @@ interface Props {
 const { title, lead, problems = [], backLabel, backHref } = Astro.props;
 const richTitle = parseRichTitle(title);
 const plainTitle = richTitle.map((segment) => segment.text).join('');
-const settings = await new GetSiteSettings(contentRepository).execute();
+const settings = await new GetSiteSettings(contentRepository).execute('es');
 ---
 <BaseLayout title={plainTitle} description={lead} theme="ink" noindex>
   <Header slot="header" />

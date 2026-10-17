@@ -26,7 +26,7 @@ if (Astro.request.method === 'POST') {
   await services.processPaymentNotification.execute('simulado', { headers: {}, query: {}, body: { paymentId } });
   return Astro.redirect(`${checkout.returnUrl}?estado=${approved ? 'aprobado' : 'error'}`, 303);
 }
-const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute(), new GetSiteTexts(contentRepository).execute('es')]);
+const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute('es'), new GetSiteTexts(contentRepository).execute('es')]);
 const booking = texts.booking;
 const amount = formatMoney(checkout.amountCents, localeTagOf('es'));
 ---
