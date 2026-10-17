@@ -54,6 +54,12 @@ for (const { path: route, status } of routes) {
       await Promise.race([settled, new Promise((resolve) => setTimeout(resolve, 15000))]);
     });
 
+    await page.waitForFunction(() =>
+      Array.from(document.querySelectorAll<HTMLElement>('[data-caption]'))
+        .filter((caption) => (caption.closest('[data-reveal]') ?? caption).getBoundingClientRect().top < window.innerHeight * 0.84)
+        .every((caption) => getComputedStyle(caption).opacity === '1'),
+    );
+
     const results = await new AxeBuilder({ page }).analyze();
     const blocking = results.violations.filter((violation) => violation.impact === 'serious' || violation.impact === 'critical');
     expect(blocking.map((violation) => `${violation.id}: ${violation.nodes.map((node) => node.target.join(' ')).join(', ')}`)).toEqual([]);

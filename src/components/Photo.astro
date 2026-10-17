@@ -72,6 +72,10 @@ const classes = ['photo', ratio && 'photo-ratio', className];
 </style>
 
 <script>
+  import { afterLoad } from '@/motion/afterLoad';
+  afterLoad(() => import('@/motion/photoReveal'));
+  afterLoad(() => import('@/motion/darkroomReveal'));
+
   const reveal = (image: HTMLImageElement) => {
     const show = () => image.classList.add('is-loaded');
     if (image.complete) {

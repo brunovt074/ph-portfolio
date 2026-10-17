@@ -1,4 +1,5 @@
 ---
+import FilmGrain from '@/components/obra/FilmGrain.astro';
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import RichText from '@/components/RichText.astro';
@@ -12,6 +13,7 @@ const { prints, content, settings } = await new GetPrintsPage(contentRepository)
 ---
 <BaseLayout title="Copias de autor" description={content.lead} theme="obra">
   <Header slot="header" variant="obra" current="copias" />
+  <FilmGrain />
   <section class="prints-intro container">
     <h1 class="t-display" data-split><RichText title={content.title} /></h1>
     <p class="t-lead">{content.lead}</p>

@@ -17,7 +17,7 @@ const { home, facets } = Astro.props;
       <span class="t-eyebrow">{home.encargosEyebrow}</span>
       <h2 id="encargos-title" class="t-h2"><RichText title={home.encargosTitle} /></h2>
     </header>
-    <ol class="encargos-list">
+    <ol class="encargos-list" data-index-list>
       {facets.map((facet) => (
         <IndexRow facet={facet} thumbnails={home.facetThumbnails[facet.slug] ?? []} />
       ))}
@@ -38,4 +38,28 @@ const { home, facets } = Astro.props;
     padding: 0;
     list-style: none;
   }
+
+  :global(.cursor-preview) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 30;
+    width: clamp(200px, 18vw, 300px);
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  :global(.cursor-preview img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 </style>
+
+<script>
+  import { afterLoad } from '@/motion/afterLoad';
+  afterLoad(() => import('@/motion/cursorPreview'));
+</script>

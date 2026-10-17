@@ -1,4 +1,5 @@
 ---
+import Lightbox from '@/components/Lightbox.astro';
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import FacetIntro from '@/components/facet/FacetIntro.astro';
@@ -27,6 +28,7 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
   </section>
   <ServiceColumns title="Sesiones" services={facet.services} numerals="none" />
   {facet.quote && <QuoteBand quote={facet.quote} buttonLabel={facet.ctaButton} href={contactHref} />}
+  <Lightbox />
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
 </BaseLayout>
 

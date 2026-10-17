@@ -20,12 +20,12 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
       <button type="button" class="t-nav mobile-menu-close" data-menu-close>Cerrar</button>
     </div>
     <nav class="mobile-menu-links container" aria-label="Secciones">
-      {links.map((link) => (
-        <a class="t-h2" href={link.href} aria-current={current === link.href ? 'page' : undefined} data-menu-link>
+      {links.map((link, index) => (
+        <a class="t-h2" style={`--i: ${index}`} href={link.href} aria-current={current === link.href ? 'page' : undefined} data-menu-link>
           {link.label}{link.muted && <span aria-hidden="true"> ↗</span>}
         </a>
       ))}
-      {ctaLabel && ctaHref && <Button href={ctaHref} variant="primary">{ctaLabel}</Button>}
+      {ctaLabel && ctaHref && <span class="mobile-menu-cta" style={`--i: ${links.length}`}><Button href={ctaHref} variant="primary">{ctaLabel}</Button></span>}
     </nav>
   </div>
 </div>
@@ -86,13 +86,47 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
     color: var(--accent-current);
   }
 
-  .mobile-menu-links :global(.button) {
+  .mobile-menu-cta {
+    display: inline-flex;
     margin-top: 24px;
   }
 
   @media (max-width: 899px) {
     :global(html.js) .mobile-menu {
       display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-menu-panel:not([hidden]) {
+      animation: menu-panel-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    .mobile-menu-panel:not([hidden]) .mobile-menu-links > * {
+      animation: menu-link-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-delay: calc(0.15s + var(--i, 0) * 60ms);
+    }
+
+    @keyframes menu-panel-in {
+      from {
+        clip-path: inset(0 0 100% 0);
+      }
+
+      to {
+        clip-path: inset(0);
+      }
+    }
+
+    @keyframes menu-link-in {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   }
 </style>
@@ -129,6 +163,7 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
       panel.hidden = true;
       trigger.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
+      window.dispatchEvent(new CustomEvent('lv:unlock-scroll'));
       inertOthers(panel, false);
       trigger.focus();
     };
@@ -137,6 +172,7 @@ const { links, ctaLabel, ctaHref, current } = Astro.props;
       panel.hidden = false;
       trigger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
+      window.dispatchEvent(new CustomEvent('lv:lock-scroll'));
       inertOthers(panel, true);
       closeButton.focus();
     };

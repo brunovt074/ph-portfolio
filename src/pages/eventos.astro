@@ -1,4 +1,5 @@
 ---
+import Lightbox from '@/components/Lightbox.astro';
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import Ticker from '@/components/Ticker.astro';
@@ -29,6 +30,7 @@ const { facet, previous, next, settings } = await new GetFacetPage(contentReposi
   </div>
   <ServiceColumns title="Servicios" services={facet.services} numerals="roman" />
   <CtaBand title={facet.ctaText} buttonLabel={facet.ctaButton} href={contactHref} theme="lime" />
+  <Lightbox />
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
 </BaseLayout>
 
