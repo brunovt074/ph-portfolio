@@ -1,4 +1,5 @@
 ---
+import Arrow from '@/components/Arrow.astro';
 import Photo from '@/components/Photo.astro';
 import RichText from '@/components/RichText.astro';
 import type { HomeDoor } from '@/domain/HomeDoor';
@@ -25,7 +26,7 @@ const doors = [
         </span>
         <span class="home-door-side">
           <span class="t-nav home-door-subtitle">{door.subtitle}</span>
-          <span class="t-h3 home-door-arrow" aria-hidden="true">→</span>
+          <span class="t-h3 home-door-arrow" aria-hidden="true"><Arrow direction="right" /></span>
         </span>
       </span>
     </a>

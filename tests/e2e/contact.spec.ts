@@ -6,6 +6,13 @@ const validInquiry = {
   mensaje: 'Necesito fotos de producto para el lanzamiento de mi tienda online.',
 };
 
+const uniqueAddress = () => `10.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}`;
+
+test.beforeEach(async ({ page }) => {
+  const address = uniqueAddress();
+  await page.setExtraHTTPHeaders({ 'x-forwarded-for': address });
+});
+
 test.describe('contact form with JavaScript', () => {
   test('shows a message under every required field that is empty', async ({ page }) => {
     await page.goto('/#contacto');
@@ -149,6 +156,7 @@ test.describe('contact form without JavaScript', () => {
 
   test('explains which fields to fix when the server rejects the inquiry', async ({ page, request }) => {
     const response = await request.post('/contacto/enviar', {
+      headers: { 'x-forwarded-for': uniqueAddress() },
       form: { nombre: 'S', email: 'roto', mensaje: 'corto' },
       maxRedirects: 0,
     });
@@ -160,5 +168,41 @@ test.describe('contact form without JavaScript', () => {
     await page.goto(location);
     await expect(page.locator('h1')).toHaveText('No se pudo enviar');
     await expect(page.locator('.result-problems li')).toHaveCount(3);
+  });
+
+  test('sends a visitor who writes too many times to the limit page', async ({ page, request }) => {
+    const headers = { 'x-forwarded-for': uniqueAddress() };
+    const send = () => request.post('/contacto/enviar', { headers, form: { nombre: 'S', email: 'roto', mensaje: 'corto' }, maxRedirects: 0 });
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      expect((await send()).status()).toBe(303);
+    }
+    const blocked = await send();
+
+    expect(blocked.status()).toBe(303);
+    expect(blocked.headers().location).toBe('/contacto/error?motivo=limite');
+
+    await page.setExtraHTTPHeaders(headers);
+    await page.goto('/contacto/error?motivo=limite');
+    await expect(page.locator('.t-lead')).toHaveText('Recibimos muchas consultas desde tu conexión. Probá de nuevo en unos minutos.');
+  });
+});
+
+test.describe('contact form rate limit with JavaScript', () => {
+  test('tells the visitor to wait when the connection already sent too many inquiries', async ({ page, request }) => {
+    const headers = { 'x-forwarded-for': uniqueAddress() };
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      await request.post('/contacto/enviar', { headers, form: { nombre: 'S', email: 'roto', mensaje: 'corto' }, maxRedirects: 0 });
+    }
+    await page.setExtraHTTPHeaders(headers);
+    await page.goto('/#contacto');
+    await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
+    await page.locator('#contacto-nombre').fill(validInquiry.nombre);
+    await page.locator('#contacto-email').fill(validInquiry.email);
+    await page.locator('#contacto-mensaje').fill(validInquiry.mensaje);
+
+    await page.getByRole('button', { name: 'Enviar consulta' }).click();
+
+    await expect(page.locator('#contacto [data-form-status]')).toHaveText('Recibimos muchas consultas desde tu conexión. Probá de nuevo en unos minutos.');
   });
 });

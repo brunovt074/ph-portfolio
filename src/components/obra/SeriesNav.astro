@@ -1,4 +1,5 @@
 ---
+import Arrow from '@/components/Arrow.astro';
 import type { NavLink } from '@/domain/NavLink';
 
 interface Props {
@@ -13,7 +14,7 @@ const { previous, next } = Astro.props;
     {previous ? (
       <a class="series-link" href={previous.href} rel="prev">
         <span class="t-eyebrow">Serie anterior</span>
-        <span class="t-h3">← {previous.label}</span>
+        <span class="t-h3"><Arrow direction="left" /> {previous.label}</span>
       </a>
     ) : (
       <span />
@@ -21,7 +22,7 @@ const { previous, next } = Astro.props;
     {next && (
       <a class="series-link series-link-next" href={next.href} rel="next">
         <span class="t-eyebrow">Serie siguiente</span>
-        <span class="t-h3">{next.label} →</span>
+        <span class="t-h3">{next.label} <Arrow direction="right" /></span>
       </a>
     )}
   </nav>

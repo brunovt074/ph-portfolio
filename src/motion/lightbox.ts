@@ -5,8 +5,6 @@ import { NO_PREFERENCE } from './motionQueries';
 const SHARED_NAME = 'lv-photo';
 const LINK_SELECTOR = 'a[data-lightbox]';
 
-
-
 const preload = (href: string) => {
   const image = new Image();
   image.src = href;

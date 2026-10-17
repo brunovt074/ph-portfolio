@@ -10,8 +10,8 @@ onPageReady(() => {
   }
   const mm = gsap.matchMedia();
 
-  mm.add({ motion: NO_PREFERENCE, reduce: '(prefers-reduced-motion: reduce)' }, (context) => {
-    const fadeDuration = context.conditions?.motion ? 0.5 : 0;
+  mm.add('all', () => {
+    const fadeDuration = window.matchMedia(NO_PREFERENCE).matches ? 0.5 : 0;
     const total = sequence.dataset.total ?? '';
     const number = sequence.dataset.number ?? '';
     const label = counter.querySelector<HTMLElement>('[data-counter-label]');

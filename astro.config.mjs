@@ -28,6 +28,7 @@ export default defineConfig({
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_TO_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      TRUST_PROXY: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_DELIVERY_MODE: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },

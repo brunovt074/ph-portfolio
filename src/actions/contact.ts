@@ -6,18 +6,18 @@ import { contactValidationMessages as messages } from './contactValidationMessag
 
 const COPY_INQUIRY_TYPE = 'Copia de autor';
 
-const optionalText = (max: number, message: string) =>
-  z.string().trim().max(max, message).nullish().transform((value) => value ?? '');
+const singleLineText = (max: number, message: string) =>
+  z.string().trim().max(max, message).regex(/^[^\r\n]*$/, message).nullish().transform((value) => value ?? '');
 
 export const contact = defineAction({
   accept: 'form',
   input: z.object({
     nombre: z.string({ error: messages.nombre }).trim().min(2, messages.nombre).max(80, messages.nombre),
     email: z.string({ error: messages.email }).trim().max(200, messages.email).pipe(z.email(messages.email)),
-    tipo: optionalText(80, messages.tipo),
+    tipo: singleLineText(120, messages.tipo),
     mensaje: z.string({ error: messages.mensaje }).trim().min(10, messages.mensaje).max(2000, messages.mensaje),
-    copia: optionalText(120, messages.copia),
-    sitio_web: z.string().nullish().transform((value) => value ?? ''),
+    copia: singleLineText(120, messages.copia),
+    sitio_web: z.string().max(200).nullish().transform((value) => value ?? ''),
   }).refine((input) => input.tipo !== COPY_INQUIRY_TYPE || input.copia !== '', { path: ['copia'], message: messages.copia }),
   handler: async (input) => {
     try {

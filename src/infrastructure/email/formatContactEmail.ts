@@ -3,6 +3,8 @@ import type { FormattedEmail } from './FormattedEmail';
 
 const NO_TYPE_LABEL = 'Consulta general';
 
+const singleLine = (value: string): string => value.replace(/\s+/g, ' ').trim();
+
 export const formatContactEmail = (message: ContactMessage): FormattedEmail => {
   const type = message.type || NO_TYPE_LABEL;
   const lines = [
@@ -13,5 +15,5 @@ export const formatContactEmail = (message: ContactMessage): FormattedEmail => {
     '',
     message.message,
   ];
-  return { subject: `Nueva consulta: ${type} — ${message.name}`, text: lines.join('\n') };
+  return { subject: `Nueva consulta: ${singleLine(type)} — ${singleLine(message.name)}`, text: lines.join('\n') };
 };

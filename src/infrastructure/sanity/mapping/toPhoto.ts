@@ -1,13 +1,12 @@
 import type { FacetSlug } from '@/domain/FacetSlug';
 import type { Photo } from '@/domain/Photo';
 import type { SanityPhotoDocument } from '../documents/SanityPhotoDocument';
+import { hasImageAsset } from './hasImageAsset';
+import { isFacetSlug } from './isFacetSlug';
 import { toPhotoAsset } from './toPhotoAsset';
 
-const facetSlugs: ReadonlySet<string> = new Set<FacetSlug>(['editorial', 'retratos', 'marcas', 'eventos']);
-
 const facetOf = (document: SanityPhotoDocument): FacetSlug | 'obra' => {
-  const slug = (document.facets ?? []).find((candidate) => facetSlugs.has(candidate));
-  return slug === undefined ? 'obra' : (slug as FacetSlug);
+  return (document.facets ?? []).find(isFacetSlug) ?? 'obra';
 };
 
 export const toPhoto = (document: SanityPhotoDocument): Photo => ({
@@ -23,4 +22,4 @@ export const toPhoto = (document: SanityPhotoDocument): Photo => ({
 });
 
 export const toPhotos = (documents: (SanityPhotoDocument | null)[] | null | undefined): Photo[] =>
-  (documents ?? []).filter((document): document is SanityPhotoDocument => document !== null).map(toPhoto);
+  (documents ?? []).filter((document): document is SanityPhotoDocument => document !== null && hasImageAsset(document)).map(toPhoto);

@@ -6,8 +6,8 @@ export const preselectContactForm = (form: HTMLFormElement): void => {
   const typeSelect = form.querySelector<HTMLSelectElement>('select[name="tipo"]');
   const copySelect = form.querySelector<HTMLSelectElement>('select[name="copia"]');
   const message = form.querySelector<HTMLTextAreaElement>('textarea[name="mensaje"]');
-  if (tipo && typeSelect && tipos[tipo]) {
-    typeSelect.value = tipos[tipo];
+  if (tipo && typeSelect && Object.hasOwn(tipos, tipo)) {
+    typeSelect.value = tipos[tipo] ?? '';
   }
   if (copia && copySelect) {
     copySelect.value = copia;

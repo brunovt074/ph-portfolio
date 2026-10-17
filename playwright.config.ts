@@ -11,7 +11,7 @@ export default defineConfig({
   webServer: {
     command: 'npm run build && node dist/server/entry.mjs',
     url: 'http://localhost:4321',
-    env: { HOST: 'localhost', PORT: '4321', CONTACT_DELIVERY_MODE: 'console' },
+    env: { HOST: 'localhost', PORT: '4321', CONTACT_DELIVERY_MODE: 'console', TRUST_PROXY: 'true' },
     reuseExistingServer: true,
     timeout: 180000,
   },

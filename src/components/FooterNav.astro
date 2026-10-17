@@ -1,4 +1,5 @@
 ---
+import Arrow from '@/components/Arrow.astro';
 import type { NavLink } from '@/domain/NavLink';
 import type { SiteSettings } from '@/domain/SiteSettings';
 import Logo from './Logo.astro';
@@ -22,7 +23,7 @@ const profile = (account: string) => `https://instagram.com/${account.replace(/^
         {previous ? (
           <a class="footer-link" href={previous.href} rel="prev">
             <span class="t-eyebrow">Anterior</span>
-            <span class="t-h3">← {previous.label}</span>
+            <span class="t-h3"><Arrow direction="left" /> {previous.label}</span>
           </a>
         ) : (
           <span />
@@ -30,7 +31,7 @@ const profile = (account: string) => `https://instagram.com/${account.replace(/^
         {next && (
           <a class="footer-link footer-link-next" href={next.href} rel="next">
             <span class="t-eyebrow">Siguiente</span>
-            <span class="t-h3">{next.label} →</span>
+            <span class="t-h3">{next.label} <Arrow direction="right" /></span>
           </a>
         )}
       </nav>
