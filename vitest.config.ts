@@ -12,6 +12,8 @@ export default defineConfig({
       provider: 'v8',
       include: [
         'src/application/**',
+        'src/domain/Locale.ts',
+        'src/domain/routing/**',
         'src/infrastructure/seed/**',
         'src/infrastructure/sanity/SanityContentRepository.ts',
         'src/infrastructure/sanity/CachedSanityClient.ts',
