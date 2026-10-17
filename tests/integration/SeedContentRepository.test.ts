@@ -3,6 +3,7 @@ import content from '../../assets/content.json';
 import seed from '../../assets/seed.json';
 import type { ContentData } from '@/infrastructure/seed/data/ContentData';
 import type { SeedData } from '@/infrastructure/seed/data/SeedData';
+import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
 import { SeedContentRepository } from '@/infrastructure/seed/SeedContentRepository';
 import { MissingContentError } from '@/infrastructure/seed/MissingContentError';
 import { UnknownPhotoError } from '@/infrastructure/seed/UnknownPhotoError';
@@ -155,6 +156,12 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(settings.exhibitions).toHaveLength(1);
     expect(settings.printInfo).toHaveLength(4);
     expect(settings.email).toBe('[EMAIL]');
+  });
+
+  it('serves the default interface texts of the requested language', async () => {
+    const texts = await repository().getTexts('pt');
+
+    expect(texts).toBe(defaultSiteTexts.pt);
   });
 
   it('maps the home content and the prints page content', async () => {
