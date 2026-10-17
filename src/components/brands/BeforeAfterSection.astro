@@ -3,18 +3,20 @@ import { getImage } from 'astro:assets';
 import RichText from '@/components/RichText.astro';
 import type { BeforeAfterPair } from '@/domain/BeforeAfterPair';
 import type { RichTitle } from '@/domain/RichTitle';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import type { Photo } from '@/domain/Photo';
 import { sanityPhotoUrl } from '@/infrastructure/sanity/imageUrl';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 import BeforeAfterSlider from '@/islands/BeforeAfterSlider';
 
 interface Props {
+  texts: SiteTexts['pages'];
   title: RichTitle;
   lead: string;
   pairs: BeforeAfterPair[];
 }
 
-const { title, lead, pairs } = Astro.props;
+const { texts, title, lead, pairs } = Astro.props;
 
 const optimize = async (photo: Photo) => {
   if (photo.asset.provider !== 'local') {
@@ -52,7 +54,7 @@ const sliders = await Promise.all(
   <div class="sliders">
     {sliders.map((slider) => (
       <div data-reveal>
-        <BeforeAfterSlider client:visible {...slider} />
+        <BeforeAfterSlider client:visible texts={texts} {...slider} />
       </div>
     ))}
   </div>

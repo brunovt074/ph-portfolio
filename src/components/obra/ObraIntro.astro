@@ -1,12 +1,13 @@
 ---
 interface Props {
+  title: string;
   quote: string;
 }
 
-const { quote } = Astro.props;
+const { title, quote } = Astro.props;
 ---
 <section class="obra-intro container">
-  <h1 class="t-display" data-split><em>Obra</em></h1>
+  <h1 class="t-display" data-split><em>{title}</em></h1>
   <blockquote class="t-quote obra-quote">{quote}</blockquote>
 </section>
 

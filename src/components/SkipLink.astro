@@ -1,1 +1,8 @@
-<a class="skip-link t-nav" href="#contenido">Saltar al contenido</a>
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+<a class="skip-link t-nav" href="#contenido">{label}</a>

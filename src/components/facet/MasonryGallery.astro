@@ -2,15 +2,17 @@
 import LightboxLink from '@/components/LightboxLink.astro';
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import { sanityAspect } from '@/infrastructure/sanity/imageUrl';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
   photos: PhotoModel[];
+  texts: SiteTexts['pages'];
   horizontal?: boolean;
 }
 
-const { photos, horizontal = false } = Astro.props;
+const { photos, horizontal = false, texts } = Astro.props;
 
 const FALLBACK_ASPECT = 1.25;
 
@@ -80,7 +82,7 @@ const layouts = [
   { name: 'narrow', columns: distribute(2), sizes: '(min-width: 600px) 50vw, 50vw' },
 ];
 ---
-<h2 class="sr-only">Galería</h2>
+<h2 class="sr-only">{texts.gallery}</h2>
 <div class="gallery-track" data-lightbox-group>
   {layouts.map((layout) => (
     <div class={`masonry-cols masonry-${layout.name}`}>

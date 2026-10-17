@@ -1,0 +1,57 @@
+---
+import Lightbox from '@/components/Lightbox.astro';
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import Ticker from '@/components/Ticker.astro';
+import CtaBand from '@/components/facet/CtaBand.astro';
+import DenseGallery from '@/components/facet/DenseGallery.astro';
+import FacetIntro from '@/components/facet/FacetIntro.astro';
+import ServiceColumns from '@/components/facet/ServiceColumns.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetFacetPage } from '@/application/GetFacetPage';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import { pathTo } from '@/domain/routing/pathTo';
+import type { Locale } from '@/domain/Locale';
+import { contentRepository } from '@/infrastructure/container';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const alternates = alternatePaths(() => ({ route: 'eventos' }));
+const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'eventos' }, hash: 'contacto' });
+const tickerWords = texts.pages.eventsTicker.split(', ');
+const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute(locale, 'eventos');
+---
+<BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={facet.translations}
+  skipLabel={texts.a11y.skipToContent}
+  title={facet.name}
+  description={texts.seo.eventosDescription}
+  theme="eventos"
+  image={facet.cover[0]}
+>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="eventos" ctaLabel={facet.ctaButton} ctaHref={contactHref} />
+  <FacetIntro facet={facet} />
+  <section class="container">
+    <DenseGallery photos={facet.gallery} texts={texts.pages} />
+  </section>
+  <div class="events-ticker">
+    <Ticker items={tickerWords} label={texts.pages.eventsTicker} />
+  </div>
+  <ServiceColumns title={texts.pages.services} texts={texts.pages} services={facet.services} numerals="roman" />
+  <CtaBand title={facet.ctaText} buttonLabel={facet.ctaButton} href={contactHref} theme="lime" />
+  <Lightbox texts={texts.a11y} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={previous} next={next} settings={settings} />
+</BaseLayout>
+
+<style>
+  .events-ticker {
+    margin-top: var(--section-y);
+  }
+</style>

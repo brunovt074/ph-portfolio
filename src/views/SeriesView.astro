@@ -1,0 +1,67 @@
+---
+import FilmGrain from '@/components/obra/FilmGrain.astro';
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import RichText from '@/components/RichText.astro';
+import SeriesCounter from '@/components/obra/SeriesCounter.astro';
+import SeriesNav from '@/components/obra/SeriesNav.astro';
+import SeriesPrintsBand from '@/components/obra/SeriesPrintsBand.astro';
+import SeriesSequence from '@/components/obra/SeriesSequence.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { BuildSeriesSequence } from '@/application/BuildSeriesSequence';
+import { GetSeriesPage } from '@/application/GetSeriesPage';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { formatText } from '@/domain/formatText';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import type { Locale } from '@/domain/Locale';
+import { contentRepository } from '@/infrastructure/container';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const { series, previous, next, prints, obra } = await new GetSeriesPage(contentRepository).execute(locale, slug);
+const alternates = alternatePaths((target) => ({ route: 'serie', slug: series.slugs[target] }));
+const settings = await contentRepository.getSettings(locale);
+const screens = new BuildSeriesSequence().execute(series.photos);
+---
+<BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={series.translations}
+  skipLabel={texts.a11y.skipToContent}
+  title={series.title}
+  description={series.curatorialLine}
+  theme="obra"
+  image={series.photos[0]?.photo}
+>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} variant="obra" />
+  <FilmGrain />
+  <section class="series-intro container">
+    <p class="t-eyebrow">{formatText(texts.pages.seriesEyebrow, { number: series.number, count: series.photos.length, years: series.years })}</p>
+    <h1 class="t-display" data-split><RichText title={series.displayTitle} /></h1>
+    <p class="t-lead">{series.curatorialText}</p>
+  </section>
+  <SeriesSequence texts={texts.pages} series={series} screens={screens} />
+  <SeriesCounter />
+  {prints.length > 0 && <SeriesPrintsBand locale={locale} band={obra.seriesPrintsBand} />}
+  <SeriesNav label={texts.a11y.seriesNav} previousLabel={texts.nav.previousSeries} nextLabel={texts.nav.nextSeries} previous={previous} next={next} />
+  <FooterNav slot="footer" locale={locale} texts={texts} settings={settings} logoVariant="obra" />
+</BaseLayout>
+
+<style>
+  .series-intro {
+    display: grid;
+    justify-items: center;
+    gap: clamp(24px, 3vw, 40px);
+    padding-block: calc(var(--section-y) * 1.5);
+    text-align: center;
+  }
+
+  .series-intro .t-lead {
+    max-width: 34em;
+  }
+</style>

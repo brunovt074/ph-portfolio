@@ -2,9 +2,11 @@
 import LightboxLink from '@/components/LightboxLink.astro';
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
   photos: PhotoModel[];
+  texts: SiteTexts['pages'];
 }
 
 const OFF_TOPIC_PHOTO_ID = 'ev10';
@@ -12,7 +14,7 @@ const OFF_TOPIC_POSITION = 5;
 const TALL_POSITION = 0;
 const WIDE_POSITION = 3;
 
-const { photos } = Astro.props;
+const { photos, texts } = Astro.props;
 
 const arranged = photos.filter((photo) => photo.id !== OFF_TOPIC_PHOTO_ID);
 const offTopic = photos.find((photo) => photo.id === OFF_TOPIC_PHOTO_ID);
@@ -26,7 +28,7 @@ const shapeOf = (index: number) => {
   return undefined;
 };
 ---
-<h2 class="sr-only">Galería</h2>
+<h2 class="sr-only">{texts.gallery}</h2>
 <div class="dense-gallery" data-lightbox-group>
   {arranged.map((photo, index) => (
     <figure class:list={['dense-item', shapeOf(index)]} data-reveal>

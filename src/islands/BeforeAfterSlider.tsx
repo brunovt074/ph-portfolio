@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import type { ChangeEvent, CSSProperties } from 'react';
+import { formatText } from '@/domain/formatText';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
   beforeSrc: string;
@@ -8,11 +10,12 @@ interface Props {
   width: number;
   height: number;
   provisional: boolean;
+  texts: SiteTexts['pages'];
 }
 
 const INITIAL_POSITION = 50;
 
-export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt, width, height, provisional }: Props) {
+export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt, width, height, provisional, texts }: Props) {
   const [position, setPosition] = useState(INITIAL_POSITION);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => setPosition(Number(event.target.value));
@@ -35,8 +38,8 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt, width, hei
           loading="lazy"
           draggable={false}
         />
-        <span className="t-eyebrow ba-label ba-label-before">Antes</span>
-        <span className="t-eyebrow ba-label ba-label-after">Después</span>
+        <span className="t-eyebrow ba-label ba-label-before">{texts.beforeLabel}</span>
+        <span className="t-eyebrow ba-label ba-label-after">{texts.afterLabel}</span>
         <div className="ba-divider" aria-hidden="true" />
         <div className="ba-knob" aria-hidden="true">
           <span>‹</span>
@@ -50,12 +53,12 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt, width, hei
           step={1}
           value={position}
           onChange={handleChange}
-          aria-label="Comparar antes y después del retoque"
-          aria-valuetext={`${position}% antes, ${100 - position}% después`}
+          aria-label={texts.compareLabel}
+          aria-valuetext={formatText(texts.compareValue, { before: position, after: 100 - position })}
         />
       </div>
       {provisional && (
-        <p className="ba-note">Ejemplo ilustrativo. Los pares reales de antes y después se cargan desde el CMS.</p>
+        <p className="ba-note">{texts.compareProvisionalNote}</p>
       )}
     </figure>
   );
