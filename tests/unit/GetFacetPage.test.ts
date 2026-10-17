@@ -42,6 +42,12 @@ describe('GetFacetPage', () => {
     expect(next).toEqual({ label: 'Work', href: '/en/work' });
   });
 
+  it('labels the home link with the visitor language text', async () => {
+    const { previous } = await new GetFacetPage(new FakeContentRepository()).execute('en', 'editorial');
+
+    expect(previous).toEqual({ label: 'Home', href: '/en/' });
+  });
+
   it('fails with FacetNotFoundError when the facet was removed from the content', async () => {
     const repository = new FakeContentRepository({ facets: [] });
 

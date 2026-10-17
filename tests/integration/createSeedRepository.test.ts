@@ -11,4 +11,8 @@ describe('createSeedRepository', () => {
     expect(facets).toHaveLength(4);
     expect(settings.instagram).toContain('@laravischi.fotografia');
   });
+
+  it('marks seed content as Spanish only', async () => {
+    expect((await createSeedRepository().getHome('en')).translations).toEqual({ es: true, en: false, pt: false });
+  });
 });

@@ -9,4 +9,5 @@ export const anObra = (): ObraContent => ({
   exhibitionsTitle: 'Muestras y publicaciones',
   printsTeaser: { title: [], lead: '', cta: '', photos: [] },
   seriesPrintsBand: { title: [], cta: '' },
+  translations: { es: true, en: false, pt: false },
 });

@@ -14,6 +14,7 @@ export const aSeries = (overrides: Partial<Series> = {}): Series => {
     curatorialLine: `Línea de ${title}`,
     curatorialText: '[Texto curatorial de la serie]',
     photos: [{ photo: aPhoto({ id: 'au01', facet: 'obra' }), layout: 'center' }],
+    translations: { es: true, en: false, pt: false },
     ...overrides,
   };
 };

@@ -13,6 +13,6 @@ export class GetFacetPage {
       this.repository.getSettings(locale),
       this.repository.getTexts(locale),
     ]);
-    return { ...locateFacet(facets, slug, locale, texts.nav.obra), settings };
+    return { ...locateFacet(facets, slug, locale, texts.nav.home, texts.nav.obra), settings };
   }
 }

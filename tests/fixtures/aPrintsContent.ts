@@ -6,4 +6,5 @@ export const aPrintsContent = (): PrintsContent => ({
   cta: 'Consultar esta copia',
   editionLabel: 'Edición de {edicion} · quedan {disponibles}',
   info: [],
+  translations: { es: true, en: false, pt: false },
 });

@@ -8,12 +8,14 @@ import { printsPageQuery } from '@/infrastructure/sanity/queries/printsPageQuery
 import { printsQuery } from '@/infrastructure/sanity/queries/printsQuery';
 import { seriesQuery } from '@/infrastructure/sanity/queries/seriesQuery';
 import { settingsQuery } from '@/infrastructure/sanity/queries/settingsQuery';
+import { siteTextsQuery } from '@/infrastructure/sanity/queries/siteTextsQuery';
 import { FakeSanityClient } from '../../fakes/FakeSanityClient';
 import { aSanityBeforeAfter, aSanityBrands, aSanityPackage } from './aSanityBrands';
 import { aSanityFacet } from './aSanityFacet';
 import { aSanityHome } from './aSanityHome';
 import { aSanityObra, aSanityPrint, aSanityPrintsPage, aSanitySeries } from './aSanityObra';
 import { aSanitySettings } from './aSanitySettings';
+import { aSanitySiteTexts } from './aSanitySiteTexts';
 
 export interface SanityWorld {
   settings: unknown;
@@ -26,6 +28,7 @@ export interface SanityWorld {
   series: unknown;
   prints: unknown;
   printsPage: unknown;
+  siteTexts: unknown;
 }
 
 export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityClient => {
@@ -40,6 +43,7 @@ export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityC
     series: [aSanitySeries()],
     prints: [aSanityPrint()],
     printsPage: aSanityPrintsPage(),
+    siteTexts: aSanitySiteTexts(),
     ...overrides,
   };
   return new FakeSanityClient(
@@ -54,6 +58,7 @@ export const aSanityClient = (overrides: Partial<SanityWorld> = {}): FakeSanityC
       [seriesQuery, world.series],
       [printsQuery, world.prints],
       [printsPageQuery, world.printsPage],
+      [siteTextsQuery, world.siteTexts],
     ]),
   );
 };
