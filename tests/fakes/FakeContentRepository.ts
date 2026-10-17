@@ -3,10 +3,13 @@ import type { ContentRepository } from '@/domain/ContentRepository';
 import type { Facet } from '@/domain/Facet';
 import type { HomeContent } from '@/domain/HomeContent';
 import type { ObraContent } from '@/domain/ObraContent';
+import type { Locale } from '@/domain/Locale';
 import type { Print } from '@/domain/Print';
 import type { PrintsContent } from '@/domain/PrintsContent';
 import type { Series } from '@/domain/Series';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
 import { aBrands } from '../fixtures/aBrands';
 import { allFacets } from '../fixtures/aFacet';
 import { aHome } from '../fixtures/aHome';
@@ -24,6 +27,7 @@ export interface FakeContentData {
   series: Series[];
   prints: Print[];
   printsContent: PrintsContent;
+  texts?: SiteTexts;
 }
 
 export class FakeContentRepository implements ContentRepository {
@@ -73,5 +77,9 @@ export class FakeContentRepository implements ContentRepository {
 
   async getPrintsContent(): Promise<PrintsContent> {
     return this.data.printsContent;
+  }
+
+  async getTexts(locale: Locale): Promise<SiteTexts> {
+    return this.data.texts ?? defaultSiteTexts[locale];
   }
 }

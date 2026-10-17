@@ -5,12 +5,15 @@ import type { HomeContent } from '@/domain/HomeContent';
 import type { HomeDoor } from '@/domain/HomeDoor';
 import type { ObraContent } from '@/domain/ObraContent';
 import type { Photo } from '@/domain/Photo';
+import type { Locale } from '@/domain/Locale';
 import type { Print } from '@/domain/Print';
 import type { PrintsContent } from '@/domain/PrintsContent';
 import type { Series } from '@/domain/Series';
 import type { SeriesLayout } from '@/domain/SeriesLayout';
 import type { Service } from '@/domain/Service';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
 import type { ContentData } from './data/ContentData';
 import type { ContentDoor } from './data/ContentDoor';
 import type { ContentService } from './data/ContentService';
@@ -215,6 +218,10 @@ export class SeedContentRepository implements ContentRepository {
       editionLabel: prints.editionLabel,
       info: prints.info,
     };
+  }
+
+  async getTexts(locale: Locale): Promise<SiteTexts> {
+    return defaultSiteTexts[locale];
   }
 
   private slugOf(series: SeedSeries): string {

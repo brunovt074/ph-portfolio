@@ -3,10 +3,13 @@ import type { ContentRepository } from '@/domain/ContentRepository';
 import type { Facet } from '@/domain/Facet';
 import type { HomeContent } from '@/domain/HomeContent';
 import type { ObraContent } from '@/domain/ObraContent';
+import type { Locale } from '@/domain/Locale';
 import type { Print } from '@/domain/Print';
 import type { PrintsContent } from '@/domain/PrintsContent';
 import type { Series } from '@/domain/Series';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTexts';
 import type { SanityBeforeAfterDocument } from './documents/SanityBeforeAfterDocument';
 import type { SanityBrandPackageDocument } from './documents/SanityBrandPackageDocument';
 import type { SanityBrandsDocument } from './documents/SanityBrandsDocument';
@@ -85,6 +88,10 @@ export class SanityContentRepository implements ContentRepository {
 
   async getPrintsContent(): Promise<PrintsContent> {
     return toPrintsContent(await this.singleton<SanityPrintsPageDocument>(printsPageQuery, 'paginaCopias'));
+  }
+
+  async getTexts(locale: Locale): Promise<SiteTexts> {
+    return defaultSiteTexts[locale];
   }
 
   private async singleton<T>(query: string, documentId: string): Promise<T> {
