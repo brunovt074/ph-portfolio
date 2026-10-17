@@ -12,6 +12,7 @@ const routesWithSplitHeading = [
   '/obra/lo-que-queda',
   '/obra/viajes-en-color',
   '/obra/copias',
+  '/reservas',
   '/ruta-inexistente',
 ];
 

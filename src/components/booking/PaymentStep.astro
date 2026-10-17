@@ -1,0 +1,174 @@
+---
+import { formatText } from '@/domain/formatText';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import Button from '@/components/Button.astro';
+import BookingStep from './BookingStep.astro';
+
+interface Props {
+  texts: SiteTexts['booking'];
+  depositPercent: number;
+  conditionsHref: string;
+}
+
+const { texts, depositPercent, conditionsHref } = Astro.props;
+const plans = [
+  { value: 'deposit', withAmount: texts.planDeposit, withoutAmount: formatText(texts.planDepositNoAmount, { percent: depositPercent }) },
+  { value: 'full', withAmount: texts.planFull, withoutAmount: texts.planFullNoAmount },
+];
+---
+<BookingStep id="reserva-pago" legend={texts.paymentLegend}>
+  <div class="plans" role="radiogroup" aria-labelledby="reserva-pago-legend" aria-describedby="reserva-plan-error" data-field="plan">
+    {plans.map((plan) => (
+      <label class="plan">
+        <input class="plan-input" type="radio" name="plan" value={plan.value} checked={plan.value === 'deposit'} />
+        <span class="plan-label" data-plan-label={plan.value} data-with-amount={plan.withAmount} data-without-amount={plan.withoutAmount}>{plan.withoutAmount}</span>
+      </label>
+    ))}
+  </div>
+  <p class="field-error" id="reserva-plan-error" data-error-for="plan" hidden></p>
+
+  <div class="accept">
+    <label class="accept-label">
+      <input class="accept-input" type="checkbox" name="acepto" required aria-describedby="reserva-acepto-error" data-field="acepto" />
+      <span>{texts.acceptLabel}<span aria-hidden="true"> *</span></span>
+    </label>
+    <a class="accept-link" href={conditionsHref}>{texts.acceptConditionsLink}</a>
+    <p class="field-error" id="reserva-acepto-error" data-error-for="acepto" hidden></p>
+  </div>
+
+  <div class="submit">
+    <p class="summary" aria-live="polite" data-summary>{texts.summaryEmpty}</p>
+    <p class="required-note">{texts.requiredNote}</p>
+    <div>
+      <Button type="submit" variant="primary">{texts.submitIdle}</Button>
+    </div>
+    <p class="secure-note">{texts.securePayment}</p>
+    <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+  </div>
+</BookingStep>
+
+<style>
+  .plans {
+    display: grid;
+    gap: 12px;
+  }
+
+  .plan {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition:
+      border-color 200ms,
+      background-color 200ms;
+  }
+
+  .plan:has(:checked) {
+    border-color: var(--accent-current);
+    outline: 1px solid var(--accent-current);
+    background: color-mix(in srgb, var(--accent-current) 7%, transparent);
+  }
+
+  .plan:has(:focus-visible) {
+    outline: 2px solid var(--accent-current);
+    outline-offset: 3px;
+  }
+
+  .plan-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .plan-label {
+    font-weight: 600;
+  }
+
+  .accept {
+    display: grid;
+    gap: 4px;
+  }
+
+  .accept-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: var(--tap);
+    padding-block: 10px;
+    cursor: pointer;
+  }
+
+  .accept-input {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    accent-color: var(--accent-current);
+  }
+
+  .accept-input[aria-invalid='true'] {
+    outline: 2px solid var(--accent-current);
+    outline-offset: 2px;
+  }
+
+  .accept-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    width: fit-content;
+    color: var(--fg);
+  }
+
+  .plans[aria-invalid='true'] .plan {
+    border-color: var(--accent-current);
+  }
+
+  .submit {
+    display: grid;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .summary {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+  }
+
+  .required-note,
+  .secure-note {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+  }
+
+  .field-error,
+  .form-status {
+    margin: 0;
+    color: var(--accent-current);
+  }
+
+  .form-status:empty {
+    display: none;
+  }
+
+  @media (min-width: 600px) {
+    .plans {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plan {
+      transition: none;
+    }
+  }
+</style>

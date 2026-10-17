@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ListBookingOffers } from '@/application/booking/ListBookingOffers';
+import { aSchedulingSettings, tuesdayAndThursdayWindows } from '../../fixtures/aSchedulingSettings';
+import { FakeCalendarProvider } from '../../fakes/FakeCalendarProvider';
 import { FakeContentRepository } from '../../fakes/FakeContentRepository';
 import { aBookingOffer } from '../../fixtures/aBookingOffer';
 
@@ -7,7 +9,7 @@ describe('ListBookingOffers', () => {
   it('shows a priced session with the half deposit the client will pay online', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 9_500_000 })] });
 
-    const [offer] = await new ListBookingOffers(content).execute();
+    const [offer] = await new ListBookingOffers(content, null).execute();
 
     expect(offer).toEqual({
       slug: 'maternidad',
@@ -18,6 +20,7 @@ describe('ListBookingOffers', () => {
       depositPercent: 50,
       durationMinutes: null,
       fullPaymentAvailable: true,
+      scheduling: 'request',
       bookable: true,
     });
   });
@@ -25,7 +28,7 @@ describe('ListBookingOffers', () => {
   it('rounds the deposit to a whole peso', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 8_500_100, depositPercent: 33 })] });
 
-    const [offer] = await new ListBookingOffers(content).execute();
+    const [offer] = await new ListBookingOffers(content, null).execute();
 
     expect(offer?.depositCents).toBe(2_805_000);
   });
@@ -33,7 +36,7 @@ describe('ListBookingOffers', () => {
   it('shows a session without price as not bookable and without deposit', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: null })] });
 
-    const [offer] = await new ListBookingOffers(content).execute();
+    const [offer] = await new ListBookingOffers(content, null).execute();
 
     expect(offer).toMatchObject({ totalCents: null, depositCents: null, bookable: false });
   });
@@ -41,7 +44,7 @@ describe('ListBookingOffers', () => {
   it('does not allow booking a session priced at zero', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 0 })] });
 
-    const [offer] = await new ListBookingOffers(content).execute();
+    const [offer] = await new ListBookingOffers(content, null).execute();
 
     expect(offer).toMatchObject({ depositCents: null, bookable: false });
   });
@@ -49,8 +52,33 @@ describe('ListBookingOffers', () => {
   it('exposes the duration of a session that can be booked by turn', async () => {
     const content = new FakeContentRepository({ bookingOffers: [aBookingOffer({ durationMinutes: 90 })] });
 
-    const [offer] = await new ListBookingOffers(content).execute();
+    const [offer] = await new ListBookingOffers(content, null).execute();
 
     expect(offer?.durationMinutes).toBe(90);
+  });
+
+  it('offers turns only for a session with duration when the agenda and the weekly windows exist', async () => {
+    const content = new FakeContentRepository({
+      bookingOffers: [aBookingOffer({ slug: 'con-duracion', durationMinutes: 90 }), aBookingOffer({ slug: 'sin-duracion', durationMinutes: null })],
+      scheduling: aSchedulingSettings({ windows: tuesdayAndThursdayWindows() }),
+    });
+
+    const offers = await new ListBookingOffers(content, new FakeCalendarProvider()).execute();
+
+    expect(offers.map((offer) => [offer.slug, offer.scheduling])).toEqual([
+      ['con-duracion', 'slots'],
+      ['sin-duracion', 'request'],
+    ]);
+  });
+
+  it('asks for a proposed date when there is no agenda connected', async () => {
+    const content = new FakeContentRepository({
+      bookingOffers: [aBookingOffer({ durationMinutes: 90 })],
+      scheduling: aSchedulingSettings({ windows: tuesdayAndThursdayWindows() }),
+    });
+
+    const [offer] = await new ListBookingOffers(content, null).execute();
+
+    expect(offer?.scheduling).toBe('request');
   });
 });

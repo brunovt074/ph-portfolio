@@ -4,6 +4,7 @@ const chrome = { channel: 'chrome' as const };
 
 export default defineConfig({
   timeout: 60000,
+  workers: 2,
   testDir: 'tests/e2e',
   outputDir: 'test-results',
   reporter: 'list',
@@ -11,7 +12,17 @@ export default defineConfig({
   webServer: {
     command: 'npm run build && node dist/server/entry.mjs',
     url: 'http://localhost:4321',
-    env: { HOST: 'localhost', PORT: '4321', CONTACT_DELIVERY_MODE: 'console', TRUST_PROXY: 'true' },
+    env: {
+      HOST: 'localhost',
+      PORT: '4321',
+      CONTACT_DELIVERY_MODE: 'console',
+      TRUST_PROXY: 'true',
+      PAYMENT_PROVIDER: 'simulado',
+      CALENDAR_PROVIDER: 'simulado',
+      BOOKING_DEMO: 'true',
+      PGLITE_DIR: 'memory://',
+      SITE_URL: 'http://localhost:4321',
+    },
     reuseExistingServer: true,
     timeout: 180000,
   },

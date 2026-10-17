@@ -1,0 +1,89 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'date';
+  required?: boolean;
+  multiline?: boolean;
+  autocomplete?: string;
+  inputmode?: 'tel' | 'email' | 'text';
+  help?: string;
+  minlength?: number;
+  maxlength?: number;
+}
+
+const { id, name, label, type = 'text', required = false, multiline = false, autocomplete, inputmode, help, minlength, maxlength } = Astro.props;
+const describedBy = [help ? `${id}-help` : '', `${id}-error`].filter(Boolean).join(' ');
+const shared = {
+  id,
+  name,
+  required,
+  autocomplete,
+  minlength,
+  maxlength,
+  'aria-describedby': describedBy,
+  'data-field': name,
+};
+---
+<div class="field">
+  <label class="t-eyebrow" for={id}>{label}{required && <span aria-hidden="true"> *</span>}</label>
+  {multiline ? <textarea rows="4" {...shared}></textarea> : <input type={type} inputmode={inputmode} {...shared} />}
+  {help && <p class="field-help" id={`${id}-help`}>{help}</p>}
+  <p class="field-error" id={`${id}-error`} data-error-for={name} hidden></p>
+</div>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .field-help {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--fg-muted);
+  }
+
+  .field-error {
+    margin: 0;
+    color: var(--accent-current);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    transition: border-color 200ms;
+  }
+
+  input[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-bottom-color: var(--accent-current);
+  }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    border-bottom-color: var(--accent-current);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    input,
+    textarea {
+      transition: none;
+    }
+  }
+</style>

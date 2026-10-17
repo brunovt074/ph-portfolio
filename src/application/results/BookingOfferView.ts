@@ -1,3 +1,5 @@
+import type { SchedulingMode } from './SchedulingMode';
+
 export interface BookingOfferView {
   slug: string;
   title: string;
@@ -7,5 +9,6 @@ export interface BookingOfferView {
   depositPercent: number;
   durationMinutes: number | null;
   fullPaymentAvailable: boolean;
+  scheduling: SchedulingMode;
   bookable: boolean;
 }

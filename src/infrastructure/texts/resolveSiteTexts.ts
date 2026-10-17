@@ -18,6 +18,7 @@ export const resolveSiteTexts = (overrides: SiteTextsOverrides | null, locale: L
     pages: resolveGroup<'pages'>(defaults.pages, overrides?.pages, locale),
     contact: resolveGroup<'contact'>(defaults.contact, overrides?.contact, locale),
     seo: resolveGroup<'seo'>(defaults.seo, overrides?.seo, locale),
+    booking: resolveGroup<'booking'>(defaults.booking, overrides?.booking, locale),
     notFound: resolveGroup<'notFound'>(defaults.notFound, overrides?.notFound, locale),
   };
 };

@@ -1,5 +1,6 @@
 ---
 import Arrow from '@/components/Arrow.astro';
+import { pathTo } from '@/domain/routing/pathTo';
 import Button from './Button.astro';
 import Logo from './Logo.astro';
 import MobileMenu from './MobileMenu.astro';
@@ -17,7 +18,7 @@ const { variant = 'site', current = 'home', ctaLabel, ctaHref } = Astro.props;
 
 const links = navigationLinks(variant);
 const resolvedCtaLabel = ctaLabel ?? (variant === 'site' ? 'Reservar sesión' : undefined);
-const resolvedCtaHref = ctaHref ?? (variant === 'site' ? '/#contacto' : undefined);
+const resolvedCtaHref = ctaHref ?? (variant === 'site' ? pathTo('es', { route: 'reservas' }) : undefined);
 const cta = resolvedCtaLabel && resolvedCtaHref ? { label: resolvedCtaLabel, href: resolvedCtaHref } : undefined;
 const currentHref = links.find((link) => link.key === current)?.href;
 const navLabel = variant === 'obra' ? 'Obra' : 'Principal';

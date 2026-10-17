@@ -1,0 +1,182 @@
+---
+import BookingStep from './BookingStep.astro';
+import type { BookingOfferView } from '@/application/results/BookingOfferView';
+import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import { formatText } from '@/domain/formatText';
+import { formatMoney } from '@/formatting/formatMoney';
+import { localeTagOf } from '@/formatting/localeTag';
+
+interface Props {
+  offers: BookingOfferView[];
+  texts: SiteTexts['booking'];
+  locale: Locale;
+}
+
+const { offers, texts, locale } = Astro.props;
+const localeTag = localeTagOf(locale);
+const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'retratos' }, hash: 'contacto' });
+---
+<BookingStep id="reserva-sesion" legend={texts.sessionLegend}>
+  <div class="cards" role="radiogroup" aria-labelledby="reserva-sesion-legend" aria-describedby="reserva-sesion-error" data-field="sesion">
+    {offers.map((offer) => (
+      <div class:list={['card', !offer.bookable && 'is-unavailable']}>
+        <label class="card-label" for={`reserva-sesion-${offer.slug}`}>
+          <input
+            class="card-input"
+            id={`reserva-sesion-${offer.slug}`}
+            type="radio"
+            name="sesion"
+            value={offer.slug}
+            disabled={!offer.bookable}
+            data-total={offer.totalCents ?? 0}
+            data-deposit={offer.depositCents ?? 0}
+            data-percent={offer.depositPercent}
+            data-scheduling={offer.scheduling}
+          />
+          <span class="card-title t-h3">{offer.title}</span>
+          <span class="card-description">{offer.description}</span>
+          <span class="card-prices">
+            {offer.bookable && offer.totalCents !== null && offer.depositCents !== null ? (
+              <>
+                <span class="card-price">{formatText(texts.priceTotal, { amount: formatMoney(offer.totalCents, localeTag) })}</span>
+                <span class="card-deposit">{formatText(texts.priceDeposit, { amount: formatMoney(offer.depositCents, localeTag) })}</span>
+              </>
+            ) : (
+              <span class="card-price">{texts.pricePending}</span>
+            )}
+          </span>
+        </label>
+        {!offer.bookable && (
+          <p class="card-contact">
+            {texts.unavailable} · <a href={contactHref}>{texts.unavailableLink}</a>
+          </p>
+        )}
+      </div>
+    ))}
+  </div>
+  <p class="field-error" id="reserva-sesion-error" data-error-for="sesion" hidden></p>
+</BookingStep>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  @media (min-width: 600px) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid var(--line);
+    transition:
+      border-color 200ms,
+      background-color 200ms;
+  }
+
+  .card:has(:checked) {
+    border-color: var(--accent-current);
+    outline: 1px solid var(--accent-current);
+    background: color-mix(in srgb, var(--accent-current) 7%, transparent);
+  }
+
+  .card:has(:focus-visible) {
+    outline: 2px solid var(--accent-current);
+    outline-offset: 3px;
+  }
+
+  .card.is-unavailable {
+    color: var(--fg-muted);
+  }
+
+  .card-label {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .card-label::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .is-unavailable .card-label {
+    cursor: default;
+  }
+
+  .card-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .card-description {
+    color: var(--fg-soft);
+  }
+
+  .is-unavailable .card-description {
+    color: var(--fg-muted);
+  }
+
+  .card-prices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .card-price {
+    font-weight: 600;
+  }
+
+  .card-deposit {
+    color: var(--fg-muted);
+  }
+
+  .card-contact {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: var(--text-small);
+  }
+
+  .card-contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: var(--accent-current);
+  }
+
+  .field-error {
+    margin: 0;
+    color: var(--accent-current);
+  }
+
+  .cards[aria-invalid='true'] .card {
+    border-color: var(--accent-current);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+  }
+</style>
