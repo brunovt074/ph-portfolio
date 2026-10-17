@@ -98,6 +98,14 @@ const profile = (account: string) => `https://instagram.com/${account.replace(/^
     list-style: none;
   }
 
+  @media (max-width: 479px) {
+    .footer-social {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+  }
+
   .footer-social-link {
     display: inline-flex;
     align-items: center;

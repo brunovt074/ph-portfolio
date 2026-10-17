@@ -19,10 +19,10 @@ const revealTitle = (title: HTMLElement) => {
       const plain = self.chars.filter((char) => !char.closest('em'));
       const tl = gsap.timeline({ paused: !entered });
       if (plain.length > 0) {
-        tl.from(plain, { yPercent: 110, duration: 0.9, ease: 'expo.out', stagger: 0.03 });
+        tl.from(plain, { yPercent: 45, autoAlpha: 0, duration: 0.9, ease: 'expo.out', stagger: 0.03 });
       }
       if (emphasized.length > 0) {
-        tl.from(emphasized, { yPercent: 110, duration: 0.9, ease: 'expo.out', stagger: 0.03 }, plain.length * 0.03 + 0.1);
+        tl.from(emphasized, { yPercent: 45, autoAlpha: 0, duration: 0.9, ease: 'expo.out', stagger: 0.03 }, plain.length * 0.03 + 0.1);
       }
       timeline = tl;
       releaseHeading();

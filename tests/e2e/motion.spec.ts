@@ -75,11 +75,14 @@ test('before and after slider moves with the keyboard', async ({ page }) => {
 
   const slider = page.locator('input[type="range"]').first();
   await slider.scrollIntoViewIfNeeded();
+  await expect(page.locator('astro-island:has(input[type="range"])').first()).not.toHaveAttribute('ssr', '');
   await slider.focus();
   const before = Number(await slider.inputValue());
   await page.keyboard.press('ArrowRight');
 
-  expect(Number(await slider.inputValue())).toBeGreaterThan(before);
+  const after = before + 1;
+  await expect(slider).toHaveValue(String(after));
+  await expect(slider).toHaveAttribute('aria-valuetext', `${after}% antes, ${100 - after}% después`);
 });
 
 test('editorial gallery pins and moves sideways on wide screens only', async ({ page }, testInfo) => {
@@ -127,6 +130,29 @@ test('lightbox opens from a photo, closes with Escape and returns focus', async 
   await page.keyboard.press('Escape');
   await expect(dialog).not.toHaveAttribute('open', '');
   await expect(link).toBeFocused();
+});
+
+test('lightbox keeps keyboard focus inside the dialog', async ({ page }) => {
+  await page.goto('/retratos');
+  const link = page.locator('a[data-lightbox]').nth(2);
+  await link.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(SETTLE_MS);
+  await link.click();
+
+  const dialog = page.locator('dialog.lightbox');
+  await expect(dialog).toHaveAttribute('open', '');
+  const inside = () => page.evaluate(() => document.activeElement?.closest('dialog.lightbox') !== null);
+  const visited = new Set<string>();
+  for (let step = 0; step < 8; step += 1) {
+    await page.keyboard.press('Tab');
+    expect(await inside()).toBe(true);
+    visited.add(await page.evaluate(() => document.activeElement?.getAttribute('aria-label') ?? ''));
+  }
+  expect(visited.size).toBe(3);
+  for (let step = 0; step < 4; step += 1) {
+    await page.keyboard.press('Shift+Tab');
+    expect(await inside()).toBe(true);
+  }
 });
 
 test('lightbox navigates with the arrow keys', async ({ page }) => {

@@ -139,7 +139,23 @@ const mountLightbox = (dialog: HTMLDialogElement) => {
     enqueue(close);
   };
 
+  const trapFocus = (event: KeyboardEvent) => {
+    const controls = [closeButton, previousButton, nextButton].filter((control) => !control.hidden);
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (!first || !last) return;
+    const active = document.activeElement;
+    if (event.shiftKey && (active === first || !controls.includes(active as HTMLButtonElement))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !controls.includes(active as HTMLButtonElement))) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
   const onKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Tab') trapFocus(event);
     if (event.key === 'ArrowRight') enqueue(() => step(1));
     if (event.key === 'ArrowLeft') enqueue(() => step(-1));
   };
