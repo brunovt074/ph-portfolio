@@ -12,6 +12,7 @@ export default defineConfig({
       provider: 'v8',
       include: [
         'src/application/**',
+        'sanity/validation/reservedSlugs.ts',
         'src/domain/Locale.ts',
         'src/domain/formatText.ts',
         'src/domain/routing/**',

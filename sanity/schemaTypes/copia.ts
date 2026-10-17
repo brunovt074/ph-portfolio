@@ -46,7 +46,7 @@ export const copia = defineType({
   ],
   orderings: [{ title: 'Por orden', name: 'orden', by: [{ field: 'orden', direction: 'asc' }] }],
   preview: {
-    select: { title: 'foto.titulo', alt: 'foto.alt', media: 'foto.imagen', activa: 'activa' },
+    select: { title: 'foto.titulo.es', alt: 'foto.alt.es', media: 'foto.imagen', activa: 'activa' },
     prepare: ({ title, alt, media, activa }) => ({
       title: title ?? alt,
       subtitle: activa ? 'Publicada' : 'Oculta',
