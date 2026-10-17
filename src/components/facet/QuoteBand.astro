@@ -1,0 +1,42 @@
+---
+import Button from '@/components/Button.astro';
+import RichText from '@/components/RichText.astro';
+import type { RichTitle } from '@/domain/RichTitle';
+
+interface Props {
+  quote: RichTitle;
+  buttonLabel: string;
+  href: string;
+}
+
+const { quote, buttonLabel, href } = Astro.props;
+---
+<section data-theme="ink" class="quote-band">
+  <div class="container quote-band-inner">
+    <blockquote class="t-quote quote-band-text"><RichText title={quote} /></blockquote>
+    <Button href={href} variant="primary">{buttonLabel}</Button>
+  </div>
+</section>
+
+<style>
+  .quote-band {
+    padding-block: clamp(72px, 10vw, 160px);
+  }
+
+  .quote-band-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(32px, 4vw, 56px);
+    text-align: center;
+  }
+
+  .quote-band-text {
+    max-width: 22ch;
+    margin: 0;
+  }
+
+  .quote-band-text :global(em) {
+    color: var(--accent-current);
+  }
+</style>

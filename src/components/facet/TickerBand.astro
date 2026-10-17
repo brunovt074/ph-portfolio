@@ -1,0 +1,48 @@
+---
+interface Props {
+  words: string[];
+}
+
+const { words } = Astro.props;
+---
+<div class="ticker-band" data-ticker>
+  <ul class="ticker-band-list">
+    {words.map((word, index) => (
+      <li class="ticker-band-item t-h3">
+        <em>{word}</em>
+        {index < words.length - 1 && <span class="ticker-band-star" aria-hidden="true">✦</span>}
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .ticker-band {
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+    padding-block: 18px;
+  }
+
+  .ticker-band-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px clamp(16px, 2.5vw, 36px);
+    margin: 0;
+    padding: 0 var(--gutter);
+    list-style: none;
+  }
+
+  .ticker-band-item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(16px, 2.5vw, 36px);
+    white-space: nowrap;
+  }
+
+  .ticker-band-star {
+    color: var(--accent-current);
+    font-size: 0.7em;
+  }
+</style>

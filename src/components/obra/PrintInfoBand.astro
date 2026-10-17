@@ -1,0 +1,44 @@
+---
+import type { InfoItem } from '@/domain/InfoItem';
+
+interface Props {
+  items: InfoItem[];
+}
+
+const { items } = Astro.props;
+---
+<section data-theme="ivory" class="info-band" aria-label="Sobre las copias">
+  <div class="container info-grid">
+    {items.map((item) => (
+      <div class="info-item">
+        <h3 class="t-h3">{item.title}</h3>
+        <p>{item.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .info-band {
+    padding-block: calc(var(--section-y) * 1.25);
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: clamp(32px, 4vw, 56px);
+  }
+
+  .info-item {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .info-item p {
+    margin: 0;
+    color: var(--fg-soft);
+  }
+</style>

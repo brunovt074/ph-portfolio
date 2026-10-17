@@ -1,0 +1,112 @@
+---
+import Button from '@/components/Button.astro';
+import Photo from '@/components/Photo.astro';
+import RichText from '@/components/RichText.astro';
+import type { HomeContent } from '@/domain/HomeContent';
+
+interface Props {
+  home: HomeContent;
+}
+
+const { home } = Astro.props;
+const photos = home.brandGrid.slice(0, 4);
+const columns = [photos.slice(0, 2), photos.slice(2, 4)];
+---
+<section class="brands section" data-theme="sand" aria-labelledby="brands-title">
+  <div class="container brands-grid">
+    <div class="brands-text">
+      <span class="t-eyebrow">{home.brandsEyebrow}</span>
+      <h2 id="brands-title" class="t-h2"><RichText title={home.brandsTitle} /></h2>
+      <ul class="brands-services">
+        {home.brandServices.map((service) => (
+          <li class="brands-service">
+            <span class="t-h3">{service.title}</span>
+            <span class="brands-price">{service.price}</span>
+          </li>
+        ))}
+      </ul>
+      <div>
+        <Button href="/marcas" variant="primary">{home.brandsCta}</Button>
+      </div>
+    </div>
+    <div class="brands-photos">
+      {columns.map((column, index) => (
+        <div class:list={['brands-column', index === 1 && 'col-2']}>
+          {column.map((photo) => (
+            <figure class="brands-figure" data-reveal>
+              <Photo photo={photo} ratio="4/5" sizes="(min-width: 900px) 21vw, 46vw" />
+            </figure>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .brands-grid {
+    display: grid;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .brands-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(20px, 2.5vw, 32px);
+    width: 100%;
+  }
+
+  .brands-services {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .brands-service {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 4px 24px;
+    padding-block: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  .brands-service:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brands-price {
+    text-align: right;
+    font-size: 15px;
+    color: var(--fg-muted);
+  }
+
+  .brands-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-photo);
+  }
+
+  .brands-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-photo);
+  }
+
+  .brands-figure {
+    margin: 0;
+  }
+
+  .col-2 {
+    margin-top: clamp(32px, 6vw, 96px);
+  }
+
+  @media (min-width: 900px) {
+    .brands-grid {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    }
+  }
+</style>

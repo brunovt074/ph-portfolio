@@ -1,0 +1,32 @@
+---
+import Button from '@/components/Button.astro';
+
+interface Props {
+  title: string;
+  buttonLabel: string;
+  href: string;
+  theme: 'accent' | 'lime';
+}
+
+const { title, buttonLabel, href, theme } = Astro.props;
+---
+<section data-theme={theme} class="cta-band">
+  <div class="container cta-band-row">
+    <h2 class="t-cta">{title}</h2>
+    <Button href={href} variant="primary">{buttonLabel}</Button>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    padding-block: clamp(48px, 7vw, 96px);
+  }
+
+  .cta-band-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px clamp(24px, 4vw, 64px);
+  }
+</style>

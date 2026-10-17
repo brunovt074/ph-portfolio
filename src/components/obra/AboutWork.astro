@@ -1,0 +1,90 @@
+---
+import RichText from '@/components/RichText.astro';
+import type { ObraContent } from '@/domain/ObraContent';
+import type { SiteSettings } from '@/domain/SiteSettings';
+
+interface Props {
+  title: ObraContent['aboutTitle'];
+  exhibitionsTitle: string;
+  settings: SiteSettings;
+}
+
+const { title, exhibitionsTitle, settings } = Astro.props;
+---
+<section id="sobre" data-theme="ivory" class="about" aria-labelledby="about-title">
+  <div class="container about-grid">
+    <div class="about-statement">
+      <h2 id="about-title" class="t-h2"><RichText title={title} /></h2>
+      <p class="t-lead about-lead">{settings.artistStatement}</p>
+    </div>
+    <div class="about-exhibitions">
+      <h3 class="t-eyebrow">{exhibitionsTitle}</h3>
+      <ul class="exhibitions">
+        {settings.exhibitions.map((exhibition) => (
+          <li class="exhibition">
+            <span class="exhibition-title">{exhibition.title}</span>
+            <span class="exhibition-meta">{exhibition.place}, {exhibition.year}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding-block: calc(var(--section-y) * 1.5);
+    scroll-margin-top: 24px;
+  }
+
+  .about-grid {
+    display: grid;
+    gap: clamp(40px, 6vw, 96px);
+  }
+
+  .about-statement {
+    display: grid;
+    align-content: start;
+    gap: 28px;
+  }
+
+  .about-lead {
+    max-width: 34em;
+    font-size: clamp(18px, 1.6vw, 22px);
+  }
+
+  .about-exhibitions {
+    display: grid;
+    align-content: start;
+    gap: 20px;
+  }
+
+  .exhibitions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .exhibition {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 24px;
+    padding-block: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  .exhibition:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .exhibition-meta {
+    color: var(--fg-muted);
+  }
+
+  @media (min-width: 900px) {
+    .about-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+  }
+</style>

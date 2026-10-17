@@ -1,0 +1,52 @@
+---
+import Button from '@/components/Button.astro';
+import RichText from '@/components/RichText.astro';
+import type { Facet } from '@/domain/Facet';
+
+interface Props {
+  facet: Facet;
+}
+
+const { facet } = Astro.props;
+const eyebrow = `${String(facet.number).padStart(2, '0')} — ${facet.name}`;
+---
+<section class="container section hero">
+  <p class="t-eyebrow">{eyebrow}</p>
+  <div class="hero-grid">
+    <h1 class="t-display" data-split><RichText title={facet.title} /></h1>
+    <div class="hero-side">
+      <p class="t-lead">{facet.lead}</p>
+      <Button href="/?tipo=marcas#contacto">{facet.ctaButton}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-bottom: clamp(40px, 5vw, 72px);
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: clamp(24px, 4vw, 56px);
+    margin-top: clamp(24px, 3vw, 40px);
+    align-items: end;
+  }
+
+  .hero-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  h1 :global(em) {
+    color: var(--accent-current);
+  }
+
+  @media (min-width: 900px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+  }
+</style>

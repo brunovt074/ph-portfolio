@@ -173,13 +173,14 @@ img {
     letter-spacing: var(--tracking-nav);
   }
 
-  .container {
-    padding-inline: var(--gutter);
-    max-width: 1600px;
-    margin-inline: auto;
-  }
-
   .section {
     padding-block: var(--section-y);
   }
+}
+
+.container {
+  width: 100%;
+  max-width: 1600px;
+  padding-inline: var(--gutter);
+  margin-inline: auto;
 }

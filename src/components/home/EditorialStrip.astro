@@ -1,0 +1,49 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  photos: PhotoModel[];
+}
+
+const { photos } = Astro.props;
+---
+<div class="strip" tabindex="0" role="group" aria-label="Tira editorial">
+  {photos.slice(0, 5).map((photo) => (
+    <figure class="strip-item" data-reveal>
+      <Photo photo={photo} ratio="3/4" sizes="(min-width: 768px) 20vw, 72vw" />
+    </figure>
+  ))}
+</div>
+
+<style>
+  .strip {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .strip-item {
+    flex: 0 0 72vw;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 768px) {
+    .strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      overflow: visible;
+    }
+
+    .strip-item {
+      flex: none;
+    }
+  }
+</style>

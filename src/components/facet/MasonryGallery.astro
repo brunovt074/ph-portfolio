@@ -1,0 +1,35 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  photos: PhotoModel[];
+}
+
+const { photos } = Astro.props;
+---
+<h2 class="sr-only">Galería</h2>
+<div class="masonry">
+  {photos.map((photo) => (
+    <figure class="masonry-item" data-reveal>
+      <Photo photo={photo} sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw" />
+    </figure>
+  ))}
+</div>
+
+<style>
+  .masonry {
+    columns: 3 280px;
+    column-gap: var(--gap-photo);
+  }
+
+  .masonry-item {
+    margin: 0 0 var(--gap-photo);
+    break-inside: avoid;
+  }
+
+  .masonry-item :global(img) {
+    width: 100%;
+    height: auto;
+  }
+</style>

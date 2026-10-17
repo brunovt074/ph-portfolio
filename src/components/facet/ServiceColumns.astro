@@ -1,0 +1,76 @@
+---
+import type { Service } from '@/domain/Service';
+
+interface Props {
+  title: string;
+  services: Service[];
+  numerals: 'roman' | 'none';
+}
+
+const { title, services, numerals } = Astro.props;
+const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
+---
+<section class="container section service-columns">
+  <h2 class="t-h2">{title}</h2>
+  <ul class="service-list">
+    {services.map((service, index) => (
+      <li class="service">
+        {numerals === 'roman' && <span class="service-numeral t-h3" aria-hidden="true">{romans[index]}</span>}
+        <h3 class="t-h3">{service.title}</h3>
+        {service.description && <p class="service-description">{service.description}</p>}
+        {service.price && (
+          <p class="service-price">
+            <span class="t-eyebrow">Inversión</span>
+            <span class="service-price-value">{service.price}</span>
+          </p>
+        )}
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .service-columns {
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+  }
+
+  .service-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: clamp(24px, 4vw, 56px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+
+  .service-numeral {
+    font-style: italic;
+    color: var(--accent-current);
+  }
+
+  .service-description {
+    margin: 0;
+    color: var(--fg-soft);
+  }
+
+  .service-price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: auto 0 0;
+    padding-top: 12px;
+  }
+
+  .service-price-value {
+    font-weight: 600;
+  }
+</style>

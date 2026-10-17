@@ -1,0 +1,59 @@
+---
+import RichText from '@/components/RichText.astro';
+import type { ProcessStep } from '@/domain/ProcessStep';
+import type { RichTitle } from '@/domain/RichTitle';
+
+interface Props {
+  title: RichTitle;
+  steps: ProcessStep[];
+}
+
+const { title, steps } = Astro.props;
+---
+<section class="container section process">
+  <h2 class="t-h2"><RichText title={title} /></h2>
+  <ol>
+    {steps.map((step, index) => (
+      <li>
+        <span class="number">{String(index + 1).padStart(2, '0')}</span>
+        <h3 class="t-h3">{step.title}</h3>
+        <p>{step.description}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  h2 :global(em) {
+    color: var(--accent-current);
+  }
+
+  ol {
+    list-style: none;
+    margin: clamp(28px, 4vw, 56px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: clamp(24px, 3vw, 48px);
+  }
+
+  li {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+
+  .number {
+    display: block;
+    margin-bottom: 20px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-h3);
+    line-height: 1;
+    color: var(--accent-current);
+  }
+
+  p {
+    margin: 12px 0 0;
+    color: var(--fg-soft);
+  }
+</style>

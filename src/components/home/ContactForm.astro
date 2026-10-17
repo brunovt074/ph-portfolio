@@ -1,0 +1,114 @@
+---
+import Button from '@/components/Button.astro';
+
+interface Props {
+  workTypes: string[];
+}
+
+const { workTypes } = Astro.props;
+const tipoByQuery: Record<string, string> = {
+  editorial: 'Editorial & moda',
+  retratos: 'Retrato / sesión',
+  marcas: 'Marca / producto',
+  eventos: 'Evento',
+  copia: 'Copia de autor',
+};
+---
+<form class="contact-form" method="post" action="/api/contacto" data-contact-form data-tipos={JSON.stringify(tipoByQuery)}>
+  <div class="field">
+    <label class="t-eyebrow" for="contacto-nombre">Nombre</label>
+    <input id="contacto-nombre" name="nombre" type="text" required autocomplete="name" />
+  </div>
+  <div class="field">
+    <label class="t-eyebrow" for="contacto-email">Email</label>
+    <input id="contacto-email" name="email" type="email" required autocomplete="email" />
+  </div>
+  <div class="field">
+    <label class="t-eyebrow" for="contacto-tipo">Tipo de trabajo</label>
+    <select id="contacto-tipo" name="tipo">
+      <option value="">Elegí una opción</option>
+      {workTypes.map((type) => <option value={type}>{type}</option>)}
+    </select>
+  </div>
+  <div class="field">
+    <label class="t-eyebrow" for="contacto-mensaje">Mensaje</label>
+    <textarea id="contacto-mensaje" name="mensaje" rows="5" required></textarea>
+  </div>
+  <input type="hidden" name="copia" value="" />
+  <div>
+    <Button type="submit" variant="primary">Enviar consulta</Button>
+  </div>
+</form>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(20px, 2.5vw, 32px);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    transition: border-color 200ms;
+  }
+
+  select option {
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    border-bottom-color: var(--accent-current);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    input,
+    select,
+    textarea {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const applyQuery = () => {
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (!form) return;
+    const tipos: Record<string, string> = JSON.parse(form.dataset.tipos ?? '{}');
+    const params = new URLSearchParams(location.search);
+    const tipo = params.get('tipo');
+    const copia = params.get('copia');
+    const select = form.querySelector<HTMLSelectElement>('select[name="tipo"]');
+    const message = form.querySelector<HTMLTextAreaElement>('textarea[name="mensaje"]');
+    const copiaField = form.querySelector<HTMLInputElement>('input[name="copia"]');
+    if (tipo && select && tipos[tipo]) select.value = tipos[tipo];
+    if (copia && copiaField) copiaField.value = copia;
+    if (copia && message && !message.value) message.value = `Hola, me interesa la copia "${copia}".`;
+  };
+
+  applyQuery();
+  document.addEventListener('astro:page-load', applyQuery);
+</script>

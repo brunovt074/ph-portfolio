@@ -1,0 +1,46 @@
+---
+import HomeDoors from './HomeDoors.astro';
+import type { HomeContent } from '@/domain/HomeContent';
+
+interface Props {
+  home: HomeContent;
+}
+
+const { home } = Astro.props;
+---
+<section class="home-hero">
+  <div class="container home-hero-row">
+    <h1 class="t-display" data-split>Sarah <em class="moreau">Moreau</em></h1>
+    <p class="t-lead home-hero-lead">{home.lead}</p>
+  </div>
+  <div class="home-hero-doors">
+    <HomeDoors encargos={home.encargosDoor} obra={home.obraDoor} />
+  </div>
+</section>
+
+<style>
+  .home-hero {
+    padding-top: clamp(24px, 4vw, 56px);
+  }
+
+  .home-hero-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: clamp(16px, 3vw, 48px);
+  }
+
+  .moreau {
+    color: var(--accent-current);
+  }
+
+  .home-hero-lead {
+    max-width: 32ch;
+  }
+
+  .home-hero-doors {
+    margin-top: clamp(32px, 4vw, 56px);
+    width: 100%;
+  }
+</style>

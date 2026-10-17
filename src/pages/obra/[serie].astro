@@ -2,7 +2,11 @@
 import FooterNav from '@/components/FooterNav.astro';
 import ObraHeader from '@/components/ObraHeader.astro';
 import RichText from '@/components/RichText.astro';
+import SeriesNav from '@/components/obra/SeriesNav.astro';
+import SeriesPrintsBand from '@/components/obra/SeriesPrintsBand.astro';
+import SeriesSequence from '@/components/obra/SeriesSequence.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { BuildSeriesSequence } from '@/application/BuildSeriesSequence';
 import { GetSeriesPage } from '@/application/GetSeriesPage';
 import { ListSeriesSlugs } from '@/application/ListSeriesSlugs';
 import { contentRepository } from '@/infrastructure/container';
@@ -13,17 +17,33 @@ export async function getStaticPaths() {
 }
 
 const { serie } = Astro.params;
-const { series, previous, next } = await new GetSeriesPage(contentRepository).execute(serie ?? '');
+const { series, previous, next, prints, obra } = await new GetSeriesPage(contentRepository).execute(serie ?? '');
 const settings = await contentRepository.getSettings();
+const screens = new BuildSeriesSequence().execute(series.photos);
 ---
 <BaseLayout title={series.title} description={series.curatorialLine} theme="obra">
   <ObraHeader slot="header" />
-  <section class="section">
-    <div class="container">
-      <p class="t-eyebrow">Serie {series.number}</p>
-      <h1 class="t-display"><RichText title={series.displayTitle} /></h1>
-      <p class="t-lead">{series.curatorialLine}</p>
-    </div>
+  <section class="series-intro container">
+    <p class="t-eyebrow">Serie {series.number} · {series.photos.length} fotografías · {series.years}</p>
+    <h1 class="t-display" data-split><RichText title={series.displayTitle} /></h1>
+    <p class="t-lead">{series.curatorialText}</p>
   </section>
-  <FooterNav slot="footer" previous={previous} next={next} settings={settings} logoVariant="obra" />
+  <SeriesSequence series={series} screens={screens} />
+  {prints.length > 0 && <SeriesPrintsBand band={obra.seriesPrintsBand} />}
+  <SeriesNav previous={previous} next={next} />
+  <FooterNav slot="footer" settings={settings} logoVariant="obra" />
 </BaseLayout>
+
+<style>
+  .series-intro {
+    display: grid;
+    justify-items: center;
+    gap: clamp(24px, 3vw, 40px);
+    padding-block: calc(var(--section-y) * 1.5);
+    text-align: center;
+  }
+
+  .series-intro .t-lead {
+    max-width: 34em;
+  }
+</style>

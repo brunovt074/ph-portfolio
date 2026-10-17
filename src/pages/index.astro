@@ -1,66 +1,29 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
-import Photo from '@/components/Photo.astro';
-import RichText from '@/components/RichText.astro';
+import AboutSection from '@/components/home/AboutSection.astro';
+import BrandsTeaser from '@/components/home/BrandsTeaser.astro';
+import ContactSection from '@/components/home/ContactSection.astro';
+import EditorialStrip from '@/components/home/EditorialStrip.astro';
+import EncargosIndex from '@/components/home/EncargosIndex.astro';
+import HomeHero from '@/components/home/HomeHero.astro';
+import ObraTeaser from '@/components/home/ObraTeaser.astro';
+import Ticker from '@/components/home/Ticker.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetHomePage } from '@/application/GetHomePage';
 import { contentRepository } from '@/infrastructure/container';
 
-const { home, settings } = await new GetHomePage(contentRepository).execute();
-const doors = [home.encargosDoor, home.obraDoor];
+const { home, facets, settings } = await new GetHomePage(contentRepository).execute();
 ---
 <BaseLayout title="Sarah Moreau — Fotografía y video" description={home.lead} theme="ink" home>
   <Header slot="header" current="home" />
-  <section class="home-hero section">
-    <div class="container">
-      <h1 class="t-display">Sarah <em>Moreau</em></h1>
-      <p class="t-lead">{home.lead}</p>
-      <div class="home-doors">
-        {doors.map((door, index) => (
-          <a class="home-door" href={door.href}>
-            <Photo photo={door.photo} ratio="4/5" sizes="(min-width: 900px) 50vw, 100vw" priority={index === 0} />
-            <span class="home-door-label">
-              <span class="t-eyebrow">{door.label}</span>
-              <span class="t-h3"><RichText title={door.title} /></span>
-              <span>{door.subtitle}</span>
-            </span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-  <FooterNav slot="footer" settings={settings} />
+  <HomeHero home={home} />
+  <Ticker items={home.ticker} />
+  <AboutSection settings={settings} cta={home.aboutCta} />
+  <EncargosIndex home={home} facets={facets} />
+  <EditorialStrip photos={home.editorialStrip} />
+  <BrandsTeaser home={home} />
+  <ObraTeaser home={home} />
+  <ContactSection home={home} settings={settings} />
+  <FooterNav slot="footer" previous={null} next={{ label: 'Editorial', href: '/editorial' }} settings={settings} />
 </BaseLayout>
-
-<style>
-  .home-doors {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-    gap: var(--gap-photo);
-    margin-top: 48px;
-  }
-
-  .home-door {
-    position: relative;
-    display: block;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .home-door-label {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px 20px;
-    background: var(--door-label-bg);
-    color: var(--paper);
-  }
-
-  .home-door-label .t-eyebrow {
-    color: var(--text-muted-dark);
-  }
-</style>

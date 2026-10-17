@@ -1,0 +1,122 @@
+---
+import ContactForm from './ContactForm.astro';
+import type { HomeContent } from '@/domain/HomeContent';
+import type { SiteSettings } from '@/domain/SiteSettings';
+
+interface Props {
+  home: HomeContent;
+  settings: SiteSettings;
+}
+
+const { home, settings } = Astro.props;
+
+const digits = (value: string) => value.replace(/\D/g, '');
+const isPlaceholder = (value: string) => value.startsWith('[');
+const instagramUrl = (account: string) => `https://instagram.com/${account.replace(/^@/, '')}`;
+
+const channels = [
+  { label: 'Email', entries: [{ text: settings.email, href: isPlaceholder(settings.email) ? undefined : `mailto:${settings.email}` }] },
+  { label: 'WhatsApp', entries: [{ text: settings.whatsapp, href: isPlaceholder(settings.whatsapp) ? undefined : `https://wa.me/${digits(settings.whatsapp)}` }] },
+  { label: 'Instagram', entries: settings.instagram.map((account) => ({ text: account, href: isPlaceholder(account) ? undefined : instagramUrl(account) })) },
+];
+---
+<section id="contacto" class="contact section" data-theme="surface" aria-labelledby="contacto-title">
+  <div class="container">
+    <h2 id="contacto-title" class="t-display contact-title">{home.contactTitle}</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="t-lead">{home.contactLead}</p>
+        <dl class="contact-list">
+          {channels.map((channel) => (
+            <div class="contact-row">
+              <dt class="t-eyebrow">{channel.label}</dt>
+              <dd>
+                {channel.entries.map((entry) => (
+                  entry.href ? <a class="contact-link" href={entry.href} target={entry.href.startsWith('http') ? '_blank' : undefined} rel={entry.href.startsWith('http') ? 'noopener' : undefined}>{entry.text}</a> : <span class="contact-text">{entry.text}</span>
+                ))}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <ContactForm workTypes={home.workTypes} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-title {
+    margin-bottom: clamp(32px, 5vw, 72px);
+  }
+
+  .contact-grid {
+    display: grid;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 3vw, 40px);
+  }
+
+  .contact-list {
+    margin: 0;
+  }
+
+  .contact-row {
+    display: grid;
+    grid-template-columns: minmax(96px, 1fr) 3fr;
+    align-items: baseline;
+    gap: 8px 16px;
+    padding-block: 8px;
+    border-top: 1px solid var(--line);
+  }
+
+  .contact-row:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .contact-row dd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+    margin: 0;
+  }
+
+  .contact-link,
+  .contact-text {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .contact-link {
+    transition: color 200ms;
+  }
+
+  .contact-text {
+    color: var(--fg-soft);
+  }
+
+  @media (hover: hover) {
+    .contact-link:hover {
+      color: var(--accent-current);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-link {
+      transition: none;
+    }
+  }
+</style>

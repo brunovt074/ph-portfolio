@@ -1,0 +1,31 @@
+---
+import type { BrandPackage } from '@/domain/BrandPackage';
+import PackageCard from './PackageCard.astro';
+
+interface Props {
+  title: string;
+  cta: string;
+  packages: BrandPackage[];
+}
+
+const { title, cta, packages } = Astro.props;
+const ordered = [...packages].sort((a, b) => a.order - b.order);
+---
+<section data-theme="ink" class="section">
+  <div class="container">
+    <h2 class="t-h2">{title}</h2>
+    <div class="grid">
+      {ordered.map((pack) => <PackageCard pack={pack} cta={cta} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(16px, 2vw, 24px);
+    align-items: stretch;
+    margin-top: clamp(28px, 4vw, 56px);
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import type { SequenceScreen } from '@/application/SequenceScreen';
+import type { Series } from '@/domain/Series';
+import SequenceFigure from './SequenceFigure.astro';
+
+interface Props {
+  series: Series;
+  screens: SequenceScreen[];
+}
+
+const { series, screens } = Astro.props;
+---
+<div data-sequence data-total={series.photos.length} data-number={series.number}>
+  {screens.map((screen) => {
+    if (screen.kind === 'pair') {
+      return (
+        <section class="screen screen-pair container" data-layout="pair">
+          {screen.items.map((entry, index) => (
+            <SequenceFigure
+              series={series}
+              entry={entry}
+              position={screen.positions[index] as number}
+              layout="pair"
+              sizes="(min-width: 768px) 46vw, 100vw"
+            />
+          ))}
+        </section>
+      );
+    }
+    const layout = screen.item.layout;
+    return (
+      <section class:list={['screen', `screen-${layout}`, { container: layout !== 'bleed' }]} data-layout={layout}>
+        <SequenceFigure
+          series={series}
+          entry={screen.item}
+          position={screen.position}
+          layout={layout}
+          sizes={layout === 'bleed' ? '100vw' : '(min-width: 768px) 64vw, 100vw'}
+        />
+      </section>
+    );
+  })}
+</div>
+
+<style>
+  .screen {
+    display: grid;
+    align-content: center;
+    min-height: 100svh;
+    padding-block: clamp(48px, 8vh, 96px);
+  }
+
+  .screen-bleed {
+    min-height: 0;
+    padding-block: clamp(48px, 8vh, 96px) clamp(48px, 8vh, 96px);
+  }
+
+  .screen-pair {
+    gap: clamp(32px, 6vh, 56px) clamp(16px, 3vw, 48px);
+    align-items: end;
+  }
+
+  @media (min-width: 768px) {
+    .screen-pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .screen-pair :global(.sequence-figure:first-child) {
+      justify-self: end;
+    }
+
+    .screen-pair :global(.sequence-figure:last-child) {
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .screen {
+      min-height: 0;
+      padding-block: clamp(32px, 8vh, 64px);
+    }
+
+    .screen-bleed {
+      padding-block: clamp(32px, 8vh, 64px);
+    }
+  }
+</style>

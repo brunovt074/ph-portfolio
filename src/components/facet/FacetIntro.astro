@@ -1,0 +1,58 @@
+---
+import RichText from '@/components/RichText.astro';
+import type { Facet } from '@/domain/Facet';
+
+interface Props {
+  facet: Facet;
+  split?: boolean;
+}
+
+const { facet, split = false } = Astro.props;
+const number = String(facet.number).padStart(2, '0');
+---
+<div class:list={['container', 'section', 'facet-intro', split && 'facet-intro-split']}>
+  <div class="facet-intro-text">
+    <p class="t-eyebrow">{number} — {facet.name}</p>
+    <div class="facet-intro-row">
+      <h1 class="t-display facet-intro-title" data-split><RichText title={facet.title} /></h1>
+      <p class="t-lead facet-intro-lead">{facet.lead}</p>
+    </div>
+  </div>
+  <slot />
+</div>
+
+<style>
+  .facet-intro {
+    display: grid;
+    gap: clamp(24px, 4vw, 56px);
+  }
+
+  .facet-intro-text {
+    display: grid;
+    gap: clamp(24px, 4vw, 56px);
+  }
+
+  @media (min-width: 900px) {
+    .facet-intro-split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(32px, 6vw, 96px);
+    }
+  }
+
+  .facet-intro-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: clamp(24px, 3vw, 48px);
+  }
+
+  .facet-intro-title :global(em) {
+    color: var(--accent-current);
+  }
+
+  .facet-intro-lead {
+    max-width: 36ch;
+  }
+</style>

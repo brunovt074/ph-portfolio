@@ -1,0 +1,31 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  photos: PhotoModel[];
+  ratio: string;
+}
+
+const { photos, ratio } = Astro.props;
+---
+<h2 class="sr-only">Galería</h2>
+<div class="grid-gallery">
+  {photos.map((photo) => (
+    <figure class="grid-gallery-item" data-reveal>
+      <Photo photo={photo} ratio={ratio} sizes="(min-width: 1200px) 25vw, (min-width: 600px) 33vw, 50vw" />
+    </figure>
+  ))}
+</div>
+
+<style>
+  .grid-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: var(--gap-photo);
+  }
+
+  .grid-gallery-item {
+    margin: 0;
+  }
+</style>
