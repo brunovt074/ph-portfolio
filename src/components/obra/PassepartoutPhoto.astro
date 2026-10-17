@@ -1,0 +1,22 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  photo: PhotoModel;
+  sizes: string;
+  priority?: boolean;
+}
+
+const { photo, sizes, priority = false } = Astro.props;
+---
+<div class="passepartout">
+  <Photo photo={photo} ratio="4/5" sizes={sizes} priority={priority} />
+</div>
+
+<style>
+  .passepartout {
+    background: var(--obra-ink);
+    padding: clamp(16px, 2vw, 28px);
+  }
+</style>

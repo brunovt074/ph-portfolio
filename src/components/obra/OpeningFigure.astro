@@ -1,0 +1,43 @@
+---
+import Photo from '@/components/Photo.astro';
+import RichText from '@/components/RichText.astro';
+import type { ObraContent } from '@/domain/ObraContent';
+
+interface Props {
+  opening: ObraContent['opening'];
+}
+
+const { opening } = Astro.props;
+---
+<figure class="opening" data-reveal="darkroom">
+  <Photo photo={opening.photo} sizes="100vw" priority class="opening-photo" />
+  <figcaption class="container opening-caption">
+    {opening.seriesNumber}. {opening.seriesTitle} — <RichText title={opening.caption} />
+  </figcaption>
+</figure>
+
+<style>
+  .opening {
+    margin: 0;
+  }
+
+  .opening :global(.opening-photo) {
+    width: 100%;
+    height: 82svh;
+  }
+
+  .opening :global(.opening-photo img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .opening-caption {
+    margin-top: 16px;
+    font-size: var(--text-eyebrow);
+    color: var(--fg-muted);
+  }
+
+  .opening-caption :global(em) {
+    font-style: italic;
+  }
+</style>

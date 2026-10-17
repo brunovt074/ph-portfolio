@@ -1,0 +1,41 @@
+---
+import IndexRow from './IndexRow.astro';
+import RichText from '@/components/RichText.astro';
+import type { Facet } from '@/domain/Facet';
+import type { HomeContent } from '@/domain/HomeContent';
+
+interface Props {
+  home: HomeContent;
+  facets: Facet[];
+}
+
+const { home, facets } = Astro.props;
+---
+<section id="encargos" class="section" aria-labelledby="encargos-title">
+  <div class="container">
+    <header class="encargos-head">
+      <span class="t-eyebrow">{home.encargosEyebrow}</span>
+      <h2 id="encargos-title" class="t-h2"><RichText title={home.encargosTitle} /></h2>
+    </header>
+    <ol class="encargos-list">
+      {facets.map((facet) => (
+        <IndexRow facet={facet} thumbnails={home.facetThumbnails[facet.slug] ?? []} />
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .encargos-head {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: clamp(32px, 5vw, 72px);
+  }
+
+  .encargos-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

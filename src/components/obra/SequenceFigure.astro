@@ -1,0 +1,96 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Series } from '@/domain/Series';
+import type { SeriesPhoto } from '@/domain/SeriesPhoto';
+import { photoAspect } from './photoAspect';
+
+interface Props {
+  series: Series;
+  entry: SeriesPhoto;
+  position: number;
+  sizes: string;
+  layout: SeriesPhoto['layout'];
+}
+
+const { series, entry, position, sizes, layout } = Astro.props;
+const { photo } = entry;
+const aspect = photoAspect(photo);
+const first = position === 1;
+const bleed = layout === 'bleed';
+---
+<figure class:list={['sequence-figure', `sequence-figure-${layout}`]} style={`--aspect: ${aspect}`} data-reveal="darkroom" data-position={position}>
+  <Photo
+    photo={photo}
+    sizes={sizes}
+    priority={first}
+    class={bleed ? 'sequence-bleed' : undefined}
+    transitionName={first ? `serie-${series.slug}-1` : undefined}
+  />
+  <figcaption class:list={['sequence-caption', { container: bleed }]} data-caption>
+    {series.number}.{position} — <em>{photo.title ?? 'Sin título'}</em>, {photo.place ?? '[Ciudad]'}, {photo.year ?? '[AÑO]'}
+  </figcaption>
+</figure>
+
+<style>
+  .sequence-figure {
+    --span: 100%;
+    width: min(100%, var(--span), calc(82svh * var(--aspect)));
+    margin: 0;
+  }
+
+  .sequence-figure :global(.photo img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .sequence-figure-center {
+    --span: 64vw;
+    justify-self: center;
+  }
+
+  .sequence-figure-left {
+    --span: 52vw;
+    justify-self: start;
+  }
+
+  .sequence-figure-right {
+    --span: 52vw;
+    justify-self: end;
+  }
+
+  .sequence-figure-pair {
+    --span: 100%;
+  }
+
+  .sequence-figure-bleed {
+    width: 100%;
+  }
+
+  .sequence-figure :global(.sequence-bleed) {
+    height: 100svh;
+  }
+
+  .sequence-figure :global(.sequence-bleed img) {
+    height: 100%;
+  }
+
+  .sequence-caption {
+    margin-top: 14px;
+    font-size: var(--text-eyebrow);
+    line-height: 1.5;
+    color: var(--fg-muted);
+  }
+
+  .sequence-caption em {
+    font-style: italic;
+  }
+
+  @media (max-width: 767px) {
+    .sequence-figure-center,
+    .sequence-figure-left,
+    .sequence-figure-right {
+      --span: 100%;
+      justify-self: center;
+    }
+  }
+</style>

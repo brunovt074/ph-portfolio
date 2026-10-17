@@ -1,0 +1,75 @@
+---
+import { getImage } from 'astro:assets';
+import RichText from '@/components/RichText.astro';
+import type { BeforeAfterPair } from '@/domain/BeforeAfterPair';
+import type { RichTitle } from '@/domain/RichTitle';
+import type { Photo } from '@/domain/Photo';
+import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
+import BeforeAfterSlider from '@/islands/BeforeAfterSlider';
+
+interface Props {
+  title: RichTitle;
+  lead: string;
+  pairs: BeforeAfterPair[];
+}
+
+const { title, lead, pairs } = Astro.props;
+
+const optimize = async (photo: Photo) => {
+  if (photo.asset.provider !== 'local') {
+    return { src: photo.asset.ref, width: 1200, height: 1500 };
+  }
+  const optimized = await getImage({ src: resolveLocalPhoto(photo.asset.ref).image, width: 1200, format: 'webp' });
+  return {
+    src: optimized.src,
+    width: Number(optimized.attributes.width),
+    height: Number(optimized.attributes.height),
+  };
+};
+
+const sliders = await Promise.all(
+  pairs.map(async (pair) => {
+    const [before, after] = await Promise.all([optimize(pair.before), optimize(pair.after)]);
+    return {
+      beforeSrc: before.src,
+      afterSrc: after.src,
+      alt: pair.alt,
+      width: after.width,
+      height: after.height,
+      provisional: pair.provisional,
+    };
+  }),
+);
+---
+<section class="container section compare">
+  <div class="intro">
+    <h2 class="t-h2"><RichText title={title} /></h2>
+    <p class="t-lead">{lead}</p>
+  </div>
+  <div class="sliders">
+    {sliders.map((slider) => (
+      <div data-reveal>
+        <BeforeAfterSlider client:visible {...slider} />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .intro {
+    display: grid;
+    gap: 20px;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .intro :global(em) {
+    color: var(--accent-current);
+  }
+
+  .sliders {
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    margin-top: clamp(28px, 4vw, 56px);
+  }
+</style>

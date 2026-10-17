@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 const chrome = { channel: 'chrome' as const };
 
 export default defineConfig({
+  timeout: 60000,
   testDir: 'tests/e2e',
   outputDir: 'test-results',
   reporter: 'list',

@@ -6,11 +6,11 @@ import type { Photo } from '@/domain/Photo';
 interface Props {
   photo: Photo;
   sizes: string;
-  ratio?: string;
+  ratio?: string | undefined;
   loading?: 'lazy' | 'eager';
   priority?: boolean;
-  class?: string;
-  transitionName?: string;
+  class?: string | undefined;
+  transitionName?: string | undefined;
   fit?: 'cover' | 'contain';
 }
 

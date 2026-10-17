@@ -1,0 +1,30 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  photos: PhotoModel[];
+}
+
+const { photos } = Astro.props;
+---
+<div class="staggered-pair">
+  {photos.slice(0, 2).map((photo, index) => (
+    <div class:list={['staggered-item', index === 1 && 'staggered-item-lower']} data-reveal>
+      <Photo photo={photo} ratio="3/4" priority={index === 0} sizes="(min-width: 900px) 25vw, 50vw" />
+    </div>
+  ))}
+</div>
+
+<style>
+  .staggered-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-photo);
+    align-items: start;
+  }
+
+  .staggered-item-lower {
+    margin-top: clamp(40px, 8vw, 140px);
+  }
+</style>

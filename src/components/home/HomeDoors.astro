@@ -1,0 +1,127 @@
+---
+import Photo from '@/components/Photo.astro';
+import RichText from '@/components/RichText.astro';
+import type { HomeDoor } from '@/domain/HomeDoor';
+
+interface Props {
+  encargos: HomeDoor;
+  obra: HomeDoor;
+}
+
+const { encargos, obra } = Astro.props;
+const doors = [
+  { key: 'encargos', door: encargos, sizes: '(min-width: 768px) 60vw, 100vw', priority: true },
+  { key: 'obra', door: obra, sizes: '(min-width: 768px) 40vw, 100vw', priority: false },
+];
+---
+<div class="home-doors">
+  {doors.map(({ key, door, sizes, priority }) => (
+    <a class="home-door" href={door.href} data-door={key}>
+      <Photo class="home-door-photo" photo={door.photo} sizes={sizes} priority={priority} />
+      <span class="home-door-label">
+        <span class="home-door-text">
+          <span class="t-eyebrow">{door.label}</span>
+          <span class="t-h2 home-door-title"><RichText title={door.title} /></span>
+        </span>
+        <span class="home-door-side">
+          <span class="t-nav home-door-subtitle">{door.subtitle}</span>
+          <span class="t-h3 home-door-arrow" aria-hidden="true">→</span>
+        </span>
+      </span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .home-doors {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .home-door {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    height: clamp(380px, 62svh, 560px);
+    color: var(--paper);
+    text-decoration: none;
+  }
+
+  .home-door :global(.home-door-photo) {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .home-door :global(.home-door-photo img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .home-door-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding: 20px clamp(16px, 3vw, 32px);
+    background: var(--door-label-bg);
+  }
+
+  .home-door-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .home-door-text .t-eyebrow {
+    color: var(--text-muted-dark);
+  }
+
+  .home-door-title {
+    display: block;
+  }
+
+  .home-door-side {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .home-door-subtitle {
+    color: var(--text-soft-dark);
+  }
+
+  .home-door-arrow {
+    display: inline-block;
+    transition: transform 200ms;
+  }
+
+  @media (hover: hover) {
+    .home-door:hover .home-door-arrow {
+      transform: translateX(6px);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .home-doors {
+      grid-template-columns: 3fr 2fr;
+      height: clamp(440px, 68vh, 760px);
+    }
+
+    .home-door {
+      height: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-door-arrow {
+      transition: none;
+    }
+  }
+</style>

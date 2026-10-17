@@ -1,0 +1,40 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  title: string;
+  photos: PhotoModel[];
+}
+
+const { title, photos } = Astro.props;
+---
+<section class="container section more">
+  <h2 class="t-h2">{title}</h2>
+  <div class="grid">
+    {photos.map((photo) => (
+      <figure data-reveal>
+        <Photo photo={photo} ratio="1/1" sizes="(min-width: 1024px) 30vw, (min-width: 600px) 45vw, 50vw" />
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(45%, 220px), 1fr));
+    gap: var(--gap-photo);
+    margin-top: clamp(28px, 4vw, 56px);
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

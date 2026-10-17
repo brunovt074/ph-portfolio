@@ -23,12 +23,21 @@ for (const route of routes) {
     expect(overflow).toBe(true);
 
     await page.evaluate(async () => {
-      document.querySelectorAll('img').forEach((image) => image.classList.add('is-loaded'));
-      await Promise.all(
+      document.querySelectorAll('img').forEach((image) => {
+        image.loading = 'eager';
+        image.classList.add('is-loaded');
+      });
+      const settled = Promise.all(
         Array.from(document.images).map((image) =>
-          image.complete ? Promise.resolve() : new Promise((resolve) => image.addEventListener('load', resolve, { once: true })),
+          image.complete
+            ? Promise.resolve()
+            : new Promise((resolve) => {
+                image.addEventListener('load', resolve, { once: true });
+                image.addEventListener('error', resolve, { once: true });
+              }),
         ),
       );
+      await Promise.race([settled, new Promise((resolve) => setTimeout(resolve, 15000))]);
     });
 
     const results = await new AxeBuilder({ page }).analyze();

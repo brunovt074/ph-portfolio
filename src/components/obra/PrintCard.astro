@@ -1,0 +1,80 @@
+---
+import Button from '@/components/Button.astro';
+import type { Print } from '@/domain/Print';
+import PassepartoutPhoto from './PassepartoutPhoto.astro';
+
+interface Props {
+  print: Print;
+  cta: string;
+  editionLabel: string;
+}
+
+const { print, cta, editionLabel } = Astro.props;
+const title = print.photo.title ?? 'Sin título';
+const edition = editionLabel
+  .replace('{edicion}', String(print.edition))
+  .replace('{disponibles}', print.available === null ? '[N]' : String(print.available));
+const inquiryHref = `/?tipo=copia&copia=${encodeURIComponent(title)}#contacto`;
+---
+<article class="print-card" data-reveal="darkroom">
+  <PassepartoutPhoto photo={print.photo} sizes="(min-width: 700px) 340px, 100vw" />
+  <div class="print-body">
+    <h2 class="t-h3"><em>{title}</em></h2>
+    <p class="t-eyebrow">Serie {print.series.number} · {print.series.title}</p>
+    <p class="print-edition">{edition}</p>
+    <dl class="print-sizes">
+      {print.sizes.map((size) => (
+        <div class="print-size">
+          <dt>{size.size}</dt>
+          <dd>{size.price}</dd>
+        </div>
+      ))}
+    </dl>
+    <Button href={inquiryHref} variant="secondary">{cta}<span class="sr-only"> {title}</span></Button>
+  </div>
+</article>
+
+<style>
+  .print-card {
+    display: grid;
+    align-content: start;
+    gap: 28px;
+  }
+
+  .print-body {
+    display: grid;
+    justify-items: start;
+    gap: 14px;
+  }
+
+  .print-edition {
+    margin: 0;
+    color: var(--fg-soft);
+  }
+
+  .print-sizes {
+    width: 100%;
+    margin: 6px 0 14px;
+  }
+
+  .print-size {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .print-size:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .print-size dt,
+  .print-size dd {
+    margin: 0;
+  }
+
+  .print-size dd {
+    color: var(--fg-muted);
+  }
+</style>

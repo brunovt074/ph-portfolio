@@ -1,21 +1,32 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
-import RichText from '@/components/RichText.astro';
+import FacetIntro from '@/components/facet/FacetIntro.astro';
+import GridGallery from '@/components/facet/GridGallery.astro';
+import QuoteBand from '@/components/facet/QuoteBand.astro';
+import ServiceColumns from '@/components/facet/ServiceColumns.astro';
+import StaggeredPair from '@/components/facet/StaggeredPair.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetFacetPage } from '@/application/GetFacetPage';
 import { contentRepository } from '@/infrastructure/container';
 
+const contactHref = '/?tipo=retratos#contacto';
 const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('retratos');
 ---
-<BaseLayout title={facet.name} description={facet.indexDescription} theme="paper">
-  <Header slot="header" current="retratos" ctaLabel={facet.ctaButton} />
-  <section class="section">
-    <div class="container">
-      <p class="t-eyebrow">{String(facet.number).padStart(2, '0')} · {facet.name}</p>
-      <h1 class="t-display"><RichText title={facet.title} /></h1>
-      <p class="t-lead">{facet.lead}</p>
-    </div>
+<BaseLayout
+  title={facet.name}
+  description="Sesiones personales, maternidad, familias y marca personal, en estudio o en tu espacio. Retratos sin pose por Lara Vischi."
+  theme="paper"
+>
+  <Header slot="header" current="retratos" ctaLabel="Reservar sesión" ctaHref={contactHref} />
+  <FacetIntro facet={facet} split>
+    <StaggeredPair photos={facet.cover} />
+  </FacetIntro>
+  <section class="container section">
+    <GridGallery photos={facet.gallery} ratio="3/4" />
   </section>
+  <ServiceColumns title="Sesiones" services={facet.services} numerals="none" />
+  {facet.quote && <QuoteBand quote={facet.quote} buttonLabel={facet.ctaButton} href={contactHref} />}
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
 </BaseLayout>
+

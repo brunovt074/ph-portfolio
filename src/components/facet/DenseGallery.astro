@@ -1,0 +1,54 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  photos: PhotoModel[];
+}
+
+const { photos } = Astro.props;
+---
+<h2 class="sr-only">Galería</h2>
+<div class="dense-gallery">
+  {photos.map((photo, index) => (
+    <figure class="dense-item" data-reveal>
+      <Photo
+        photo={photo}
+        priority={index === 0}
+        sizes={index === 0 ? '(min-width: 768px) 30vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+      />
+    </figure>
+  ))}
+</div>
+
+<style>
+  .dense-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+    grid-auto-rows: clamp(200px, 24vw, 340px);
+    grid-auto-flow: dense;
+    gap: var(--gap-photo);
+  }
+
+  .dense-item {
+    margin: 0;
+    min-height: 0;
+  }
+
+  .dense-item :global(.photo),
+  .dense-item :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .dense-item:first-child {
+    grid-row: span 2;
+  }
+
+  @media (min-width: 768px) {
+    .dense-item:nth-child(4),
+    .dense-item:nth-child(8) {
+      grid-column: span 2;
+    }
+  }
+</style>

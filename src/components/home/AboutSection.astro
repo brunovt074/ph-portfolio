@@ -1,0 +1,51 @@
+---
+import Button from '@/components/Button.astro';
+import Photo from '@/components/Photo.astro';
+import type { SiteSettings } from '@/domain/SiteSettings';
+
+interface Props {
+  settings: SiteSettings;
+  cta: string;
+}
+
+const { settings, cta } = Astro.props;
+---
+<section class="about section" data-theme="paper" aria-labelledby="sobre-mi">
+  <div class="container about-grid">
+    <Photo photo={settings.portrait} ratio="3/4" sizes="(min-width: 900px) 40vw, 100vw" />
+    <div class="about-text">
+      <h2 id="sobre-mi" class="t-eyebrow">Sobre mí</h2>
+      <blockquote class="t-quote about-quote">“{settings.quote}”</blockquote>
+      <p class="t-lead">{settings.about}</p>
+      <div>
+        <Button href="#contacto" variant="primary">{cta}</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .about-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(20px, 2.5vw, 32px);
+  }
+
+  .about-quote {
+    margin: 0;
+    max-width: 18ch;
+  }
+
+  @media (min-width: 900px) {
+    .about-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+  }
+</style>

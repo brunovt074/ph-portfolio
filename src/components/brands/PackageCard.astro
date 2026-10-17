@@ -1,0 +1,70 @@
+---
+import Button from '@/components/Button.astro';
+import type { BrandPackage } from '@/domain/BrandPackage';
+
+interface Props {
+  pack: BrandPackage;
+  cta: string;
+}
+
+const { pack, cta } = Astro.props;
+---
+<article class="card" data-theme={pack.featured ? 'paper' : undefined}>
+  <div class="head">
+    {pack.featured && <span class="t-eyebrow">Más elegido</span>}
+    <h3 class="t-h3">{pack.name}</h3>
+  </div>
+  <p class="price">{pack.price}</p>
+  <ul>
+    {pack.items.map((item) => <li>{item}</li>)}
+  </ul>
+  <Button class="cta" href="/?tipo=marcas#contacto" variant={pack.featured ? 'primary' : 'secondary'}>{cta}</Button>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: clamp(24px, 3vw, 40px);
+    border: 1px solid var(--line);
+  }
+
+  .head {
+    display: grid;
+    gap: 12px;
+  }
+
+  .price {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    line-height: 1;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+    color: var(--fg-soft);
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+  }
+
+  li::before {
+    content: '—';
+    color: var(--fg-muted);
+  }
+
+  .card :global(.cta) {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+</style>

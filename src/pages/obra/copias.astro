@@ -2,19 +2,38 @@
 import FooterNav from '@/components/FooterNav.astro';
 import ObraHeader from '@/components/ObraHeader.astro';
 import RichText from '@/components/RichText.astro';
+import PrintCard from '@/components/obra/PrintCard.astro';
+import PrintInfoBand from '@/components/obra/PrintInfoBand.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetPrintsPage } from '@/application/GetPrintsPage';
 import { contentRepository } from '@/infrastructure/container';
 
-const { content, settings } = await new GetPrintsPage(contentRepository).execute();
+const { prints, content, settings } = await new GetPrintsPage(contentRepository).execute();
 ---
 <BaseLayout title="Copias de autor" description={content.lead} theme="obra">
   <ObraHeader slot="header" current="/obra/copias" />
-  <section class="section">
-    <div class="container">
-      <h1 class="t-display"><RichText title={content.title} /></h1>
-      <p class="t-lead">{content.lead}</p>
-    </div>
+  <section class="prints-intro container">
+    <h1 class="t-display" data-split><RichText title={content.title} /></h1>
+    <p class="t-lead">{content.lead}</p>
   </section>
-  <FooterNav slot="footer" settings={settings} logoVariant="obra" />
+  <section class="prints-grid container" aria-label="Copias disponibles">
+    {prints.map((print) => <PrintCard print={print} cta={content.cta} editionLabel={content.editionLabel} />)}
+  </section>
+  <PrintInfoBand items={content.info} />
+  <FooterNav slot="footer" previous={{ label: 'Obra', href: '/obra' }} next={null} settings={settings} logoVariant="obra" />
 </BaseLayout>
+
+<style>
+  .prints-intro {
+    display: grid;
+    gap: clamp(24px, 3vw, 40px);
+    padding-block: calc(var(--section-y) * 1.25) calc(var(--section-y) * 0.75);
+  }
+
+  .prints-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: clamp(32px, 4vw, 64px);
+    padding-bottom: calc(var(--section-y) * 1.5);
+  }
+</style>

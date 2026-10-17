@@ -1,21 +1,39 @@
 ---
 import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
-import RichText from '@/components/RichText.astro';
+import CtaBand from '@/components/facet/CtaBand.astro';
+import DenseGallery from '@/components/facet/DenseGallery.astro';
+import FacetIntro from '@/components/facet/FacetIntro.astro';
+import ServiceColumns from '@/components/facet/ServiceColumns.astro';
+import TickerBand from '@/components/facet/TickerBand.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetFacetPage } from '@/application/GetFacetPage';
 import { contentRepository } from '@/infrastructure/container';
 
+const contactHref = '/?tipo=eventos#contacto';
+const tickerWords = ['Carnaval', 'Comparsas', 'Shows', 'Escenario', 'Sociales'];
 const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('eventos');
 ---
-<BaseLayout title={facet.name} description={facet.indexDescription} theme="eventos">
-  <Header slot="header" current="eventos" ctaLabel={facet.ctaButton} />
-  <section class="section">
-    <div class="container">
-      <p class="t-eyebrow">{String(facet.number).padStart(2, '0')} · {facet.name}</p>
-      <h1 class="t-display"><RichText title={facet.title} /></h1>
-      <p class="t-lead">{facet.lead}</p>
-    </div>
+<BaseLayout
+  title={facet.name}
+  description="Carnaval, comparsas, shows y eventos sociales: cobertura que sigue el movimiento y entrega a tiempo. Fotografía de eventos por Lara Vischi."
+  theme="eventos"
+>
+  <Header slot="header" current="eventos" ctaLabel={facet.ctaButton} ctaHref={contactHref} />
+  <FacetIntro facet={facet} />
+  <section class="container">
+    <DenseGallery photos={facet.gallery} />
   </section>
+  <div class="events-ticker">
+    <TickerBand words={tickerWords} />
+  </div>
+  <ServiceColumns title="Servicios" services={facet.services} numerals="roman" />
+  <CtaBand title={facet.ctaText} buttonLabel={facet.ctaButton} href={contactHref} theme="lime" />
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />
 </BaseLayout>
+
+<style>
+  .events-ticker {
+    margin-top: var(--section-y);
+  }
+</style>

@@ -1,0 +1,112 @@
+---
+import Photo from '@/components/Photo.astro';
+import type { Facet } from '@/domain/Facet';
+import type { Photo as PhotoModel } from '@/domain/Photo';
+
+interface Props {
+  facet: Facet;
+  thumbnails: PhotoModel[];
+}
+
+const { facet, thumbnails } = Astro.props;
+const number = String(facet.number).padStart(2, '0');
+---
+<li class="index-item">
+  <a class="index-row" href={`/${facet.slug}`} data-index-row data-facet={facet.slug}>
+    <span class="t-h3 index-number">{number}</span>
+    <span class="index-body">
+      <span class="t-list index-title">{facet.name}</span>
+      <span class="index-description">{facet.indexDescription}</span>
+    </span>
+    <span class="index-thumbs" aria-hidden="true">
+      {thumbnails.slice(0, 3).map((photo) => (
+        <Photo class="index-thumb" photo={{ ...photo, alt: '' }} ratio="3/4" sizes="88px" />
+      ))}
+    </span>
+    <span class="t-h3 index-arrow" aria-hidden="true">→</span>
+  </a>
+</li>
+
+<style>
+  .index-item {
+    border-top: 1px solid var(--line);
+  }
+
+  .index-item:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .index-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: clamp(16px, 3vw, 40px);
+    padding-block: clamp(20px, 3vw, 36px);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .index-number {
+    min-width: 2.2em;
+    font-style: italic;
+    color: var(--fg-muted);
+  }
+
+  .index-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .index-title {
+    display: block;
+    transition: color 200ms;
+  }
+
+  .index-description {
+    font-size: 15px;
+    color: var(--fg-soft);
+  }
+
+  .index-thumbs {
+    display: none;
+    gap: 6px;
+  }
+
+  .index-thumbs :global(.index-thumb) {
+    width: clamp(56px, 6vw, 88px);
+  }
+
+  .index-arrow {
+    display: inline-block;
+    transition: transform 200ms;
+  }
+
+  @media (min-width: 640px) {
+    .index-row {
+      grid-template-columns: auto 1fr auto auto;
+    }
+
+    .index-thumbs {
+      display: flex;
+    }
+  }
+
+  @media (hover: hover) {
+    .index-row:hover .index-title {
+      color: var(--accent-current);
+    }
+
+    .index-row:hover .index-arrow {
+      transform: translateX(8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .index-title,
+    .index-arrow {
+      transition: none;
+    }
+  }
+</style>

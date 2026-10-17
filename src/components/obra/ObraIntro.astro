@@ -1,0 +1,25 @@
+---
+interface Props {
+  quote: string;
+}
+
+const { quote } = Astro.props;
+---
+<section class="obra-intro container">
+  <h1 class="t-display" data-split><em>Obra</em></h1>
+  <blockquote class="t-quote obra-quote">{quote}</blockquote>
+</section>
+
+<style>
+  .obra-intro {
+    display: grid;
+    gap: clamp(32px, 5vw, 72px);
+    padding-block: calc(var(--section-y) * 1.5);
+  }
+
+  .obra-quote {
+    max-width: 26ch;
+    margin: 0;
+    color: var(--fg-soft);
+  }
+</style>

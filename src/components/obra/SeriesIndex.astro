@@ -1,0 +1,35 @@
+---
+import type { Series } from '@/domain/Series';
+import SeriesChapter from './SeriesChapter.astro';
+
+interface Props {
+  title: string;
+  series: Series[];
+}
+
+const { title, series } = Astro.props;
+---
+<section id="series" class="series-index container" aria-labelledby="series-title">
+  <h2 id="series-title" class="t-h2 series-heading">{title}</h2>
+  <div class="series-chapters">
+    {series.map((item, index) => <SeriesChapter series={item} index={index} />)}
+  </div>
+</section>
+
+<style>
+  .series-index {
+    padding-bottom: calc(var(--section-y) * 1.5);
+    scroll-margin-top: 24px;
+  }
+
+  .series-heading {
+    padding-top: 24px;
+    margin-bottom: calc(var(--section-y) * 0.75);
+    border-top: 1px solid var(--line);
+  }
+
+  .series-chapters {
+    display: grid;
+    gap: calc(var(--section-y) * 1.5);
+  }
+</style>

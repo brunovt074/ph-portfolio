@@ -1,0 +1,64 @@
+---
+import type { NavLink } from '@/domain/NavLink';
+
+interface Props {
+  previous: NavLink | null;
+  next: NavLink | null;
+}
+
+const { previous, next } = Astro.props;
+---
+{(previous || next) && (
+  <nav class="series-nav container" aria-label="Series">
+    {previous ? (
+      <a class="series-link" href={previous.href} rel="prev">
+        <span class="t-eyebrow">Serie anterior</span>
+        <span class="t-h3">← {previous.label}</span>
+      </a>
+    ) : (
+      <span />
+    )}
+    {next && (
+      <a class="series-link series-link-next" href={next.href} rel="next">
+        <span class="t-eyebrow">Serie siguiente</span>
+        <span class="t-h3">{next.label} →</span>
+      </a>
+    )}
+  </nav>
+)}
+
+<style>
+  .series-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+    padding-block: calc(var(--section-y) * 1.25);
+  }
+
+  .series-link {
+    display: grid;
+    gap: 8px;
+    min-height: var(--tap);
+    color: inherit;
+    text-decoration: none;
+    transition: color 200ms;
+  }
+
+  .series-link-next {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  @media (hover: hover) {
+    .series-link:hover {
+      color: var(--accent-current);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .series-link {
+      transition: none;
+    }
+  }
+</style>

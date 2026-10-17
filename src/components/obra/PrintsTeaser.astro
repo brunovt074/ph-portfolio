@@ -1,0 +1,53 @@
+---
+import Button from '@/components/Button.astro';
+import RichText from '@/components/RichText.astro';
+import type { ObraContent } from '@/domain/ObraContent';
+import PassepartoutPhoto from './PassepartoutPhoto.astro';
+
+interface Props {
+  teaser: ObraContent['printsTeaser'];
+}
+
+const { teaser } = Astro.props;
+---
+<section class="prints-teaser container" aria-labelledby="prints-teaser-title">
+  <div class="teaser-head">
+    <h2 id="prints-teaser-title" class="t-h2"><RichText title={teaser.title} /></h2>
+    <p class="t-lead">{teaser.lead}</p>
+  </div>
+  <div class="teaser-photos">
+    {teaser.photos.map((photo) => (
+      <div data-reveal="darkroom">
+        <PassepartoutPhoto photo={photo} sizes="(min-width: 768px) 30vw, 100vw" />
+      </div>
+    ))}
+  </div>
+  <Button href="/obra/copias" variant="secondary">{teaser.cta}</Button>
+</section>
+
+<style>
+  .prints-teaser {
+    display: grid;
+    justify-items: start;
+    gap: clamp(32px, 5vw, 64px);
+    padding-block: calc(var(--section-y) * 1.5);
+  }
+
+  .teaser-head {
+    display: grid;
+    gap: 20px;
+  }
+
+  .teaser-photos {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(16px, 2.5vw, 40px);
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .teaser-photos {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
