@@ -1,3 +1,4 @@
+import type { BookingOffer } from '@/domain/booking/BookingOffer';
 import type { BrandsContent } from '@/domain/BrandsContent';
 import type { ContentRepository } from '@/domain/ContentRepository';
 import type { Facet } from '@/domain/Facet';
@@ -7,6 +8,7 @@ import type { ObraContent } from '@/domain/ObraContent';
 import type { Photo } from '@/domain/Photo';
 import type { Print } from '@/domain/Print';
 import type { PrintsContent } from '@/domain/PrintsContent';
+import type { SchedulingSettings } from '@/domain/scheduling/SchedulingSettings';
 import type { Series } from '@/domain/Series';
 import type { SeriesLayout } from '@/domain/SeriesLayout';
 import type { Service } from '@/domain/Service';
@@ -215,6 +217,25 @@ export class SeedContentRepository implements ContentRepository {
       editionLabel: prints.editionLabel,
       info: prints.info,
     };
+  }
+
+  async getBookingOffers(): Promise<BookingOffer[]> {
+    return [...this.content.bookingOffers]
+      .sort((first, second) => first.order - second.order)
+      .map((offer) => ({
+        slug: offer.slug,
+        title: offer.title,
+        description: offer.description,
+        facet: offer.facet,
+        priceCents: offer.price === null ? null : offer.price * 100,
+        depositPercent: offer.depositPercent,
+        durationMinutes: offer.duration,
+        order: offer.order,
+      }));
+  }
+
+  async getSchedulingSettings(): Promise<SchedulingSettings> {
+    return { ...this.content.scheduling, windows: [...this.content.scheduling.windows] };
   }
 
   private slugOf(series: SeedSeries): string {

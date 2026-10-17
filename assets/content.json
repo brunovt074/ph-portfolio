@@ -151,5 +151,12 @@
   "settings": {
     "exhibitions": [ { "title": "[Muestra o publicación]", "place": "[Lugar]", "year": "[AÑO]" } ],
     "portraitAlt": "Lara Vischi con su cámara, en blanco y negro"
-  }
+  },
+  "bookingOffers": [
+    { "slug": "retrato-personal", "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 1 },
+    { "slug": "maternidad", "title": "Maternidad", "description": "La espera, en clave íntima y sin apuro.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 2 },
+    { "slug": "familias", "title": "Familias", "description": "Juego, abrazos y lo que pase en el medio.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 3 },
+    { "slug": "marca-personal", "title": "Marca personal", "description": "Retratos para tu web, tu perfil profesional y tus redes.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 4 }
+  ],
+  "scheduling": { "timeZone": "America/Argentina/Buenos_Aires", "windows": [], "slotStepMinutes": 30, "bufferMinutes": 30, "minNoticeHours": 48, "horizonDays": 90, "holdMinutes": 30 }
 }

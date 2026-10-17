@@ -1,3 +1,4 @@
+import type { BookingOffer } from '@/domain/booking/BookingOffer';
 import type { BrandsContent } from '@/domain/BrandsContent';
 import type { ContentRepository } from '@/domain/ContentRepository';
 import type { Facet } from '@/domain/Facet';
@@ -5,14 +6,17 @@ import type { HomeContent } from '@/domain/HomeContent';
 import type { ObraContent } from '@/domain/ObraContent';
 import type { Print } from '@/domain/Print';
 import type { PrintsContent } from '@/domain/PrintsContent';
+import type { SchedulingSettings } from '@/domain/scheduling/SchedulingSettings';
 import type { Series } from '@/domain/Series';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import { aBookingOffer } from '../fixtures/aBookingOffer';
 import { aBrands } from '../fixtures/aBrands';
 import { allFacets } from '../fixtures/aFacet';
 import { aHome } from '../fixtures/aHome';
 import { anObra } from '../fixtures/anObra';
 import { aPrintsContent } from '../fixtures/aPrintsContent';
 import { allSeries } from '../fixtures/aSeries';
+import { aSchedulingSettings } from '../fixtures/aSchedulingSettings';
 import { aSettings } from '../fixtures/aSettings';
 
 export interface FakeContentData {
@@ -24,6 +28,8 @@ export interface FakeContentData {
   series: Series[];
   prints: Print[];
   printsContent: PrintsContent;
+  bookingOffers: BookingOffer[];
+  scheduling: SchedulingSettings;
 }
 
 export class FakeContentRepository implements ContentRepository {
@@ -39,6 +45,8 @@ export class FakeContentRepository implements ContentRepository {
       series: allSeries(),
       prints: [],
       printsContent: aPrintsContent(),
+      bookingOffers: [aBookingOffer()],
+      scheduling: aSchedulingSettings(),
       ...overrides,
     };
   }
@@ -73,5 +81,13 @@ export class FakeContentRepository implements ContentRepository {
 
   async getPrintsContent(): Promise<PrintsContent> {
     return this.data.printsContent;
+  }
+
+  async getBookingOffers(): Promise<BookingOffer[]> {
+    return this.data.bookingOffers;
+  }
+
+  async getSchedulingSettings(): Promise<SchedulingSettings> {
+    return this.data.scheduling;
   }
 }

@@ -12,4 +12,12 @@ describe('ConsoleErrorReporter', () => {
 
     expect(spy).toHaveBeenCalledWith('[contact] delivery failed', 'Contact message could not be delivered: provider down');
   });
+
+  it('writes any other error with its name and message', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    new ConsoleErrorReporter().report(new TypeError('mp down'));
+
+    expect(spy).toHaveBeenCalledWith('[error] TypeError', 'mp down');
+  });
 });

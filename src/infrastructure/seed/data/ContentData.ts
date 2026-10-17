@@ -1,3 +1,5 @@
+import type { SchedulingSettings } from '@/domain/scheduling/SchedulingSettings';
+import type { ContentBookingOffer } from './ContentBookingOffer';
 import type { ContentBrands } from './ContentBrands';
 import type { ContentFacet } from './ContentFacet';
 import type { ContentHome } from './ContentHome';
@@ -12,4 +14,6 @@ export interface ContentData {
   obra: ContentObra;
   prints: ContentPrints;
   settings: ContentSettings;
+  bookingOffers: ContentBookingOffer[];
+  scheduling: SchedulingSettings;
 }

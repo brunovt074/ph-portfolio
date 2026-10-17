@@ -1,8 +1,12 @@
 import type { ErrorReporter } from '@/domain/ErrorReporter';
-import type { MessageDeliveryError } from '@/domain/MessageDeliveryError';
+import { MessageDeliveryError } from '@/domain/MessageDeliveryError';
 
 export class ConsoleErrorReporter implements ErrorReporter {
-  report(error: MessageDeliveryError): void {
-    console.error('[contact] delivery failed', error.message);
+  report(error: Error): void {
+    if (error instanceof MessageDeliveryError) {
+      console.error('[contact] delivery failed', error.message);
+      return;
+    }
+    console.error(`[error] ${error.name}`, error.message);
   }
 }

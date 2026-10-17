@@ -61,4 +61,14 @@ export const deskStructure: StructureResolver = (S) =>
               S.listItem().title('Antes y después').child(S.documentTypeList('antesDespues').title('Antes y después')),
             ]),
         ),
+      S.listItem()
+        .title('Reservas')
+        .child(
+          S.list()
+            .title('Reservas')
+            .items([
+              S.listItem().title('Sesiones reservables').child(S.documentTypeList('sesionReservable').title('Sesiones reservables')),
+              singletonItem(S, 'agendaReservas', 'Agenda de reservas'),
+            ]),
+        ),
     ]);

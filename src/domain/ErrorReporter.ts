@@ -1,5 +1,3 @@
-import type { MessageDeliveryError } from './MessageDeliveryError';
-
 export interface ErrorReporter {
-  report(error: MessageDeliveryError): void;
+  report(error: Error): void;
 }
