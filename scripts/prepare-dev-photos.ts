@@ -47,11 +47,13 @@ const resolveSources = (): Source[] => {
   return [...photos, portrait];
 };
 
-const highCrop = (width: number, height: number) => {
+const bottomCropOverrides: Record<string, number> = { rt02: 0.14 };
+
+const highCrop = (id: string, width: number, height: number) => {
   const left = Math.round(width * 0.04);
   const top = Math.round(height * 0.03);
   const right = Math.round(width * 0.06);
-  const bottom = Math.round(height * 0.06);
+  const bottom = Math.round(height * (bottomCropOverrides[id] ?? 0.06));
   return { left, top, width: width - left - right, height: height - top - bottom };
 };
 
@@ -78,7 +80,7 @@ const processSource = async (source: Source): Promise<void> => {
     pipeline = pipeline.extract(source.crop);
   } else if (source.kind === 'alta') {
     const { width, height } = await sharp(source.path).metadata();
-    pipeline = pipeline.extract(highCrop(width ?? 0, height ?? 0));
+    pipeline = pipeline.extract(highCrop(source.id, width ?? 0, height ?? 0));
   }
   await pipeline.toColourspace('srgb').jpeg({ quality: 90, mozjpeg: true }).toFile(target);
 };
