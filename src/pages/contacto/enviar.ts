@@ -9,8 +9,8 @@ export const POST: APIRoute = async (context) => {
   const idioma = parseLocale(String(formData.get('idioma') ?? ''));
   const result = await context.callAction(actions.contact, formData);
   if (!result.error) {
-    return context.redirect(`/contacto/enviado?idioma=${idioma}`, 303);
+    return context.redirect(`/${idioma}/contacto/enviado`, 303);
   }
   const reason = isInputError(result.error) ? `campos=${Object.keys(result.error.fields).join(',')}` : 'motivo=envio';
-  return context.redirect(`/contacto/error?${reason}&idioma=${idioma}`, 303);
+  return context.redirect(`/${idioma}/contacto/error?${reason}`, 303);
 };

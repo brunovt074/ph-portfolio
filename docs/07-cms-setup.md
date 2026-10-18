@@ -86,10 +86,10 @@ Las páginas con textos (Inicio, Marcas, Obra, Copias) se editan en Páginas.
 
 ## 6. Servidor, formulario de contacto y email
 
-El sitio sigue siendo estático (`output: 'static'`), pero usa el adaptador `@astrojs/node` en modo `standalone` porque el formulario necesita un servidor. Solo son bajo demanda la acción `contact` (`/_actions/contact`), el endpoint `POST /contacto/enviar` (envío sin JavaScript) y `/contacto/error`; el resto se sirve prerenderizado.
+El sitio sigue siendo estático (`output: 'static'`), pero usa el adaptador `@astrojs/node` en modo `standalone` porque el formulario necesita un servidor. Solo son bajo demanda la acción `contact` (`/_actions/contact`), el endpoint `POST /contacto/enviar` (envío sin JavaScript) y las páginas de resultado `/{idioma}/contacto/enviado` y `/{idioma}/contacto/error`; el resto se sirve prerenderizado.
 
 - `npm run build` genera `dist/client` (estático) y `dist/server/entry.mjs`. Se levanta con `HOST=0.0.0.0 PORT=4321 node dist/server/entry.mjs`.
-- Con JavaScript, el formulario llama a la acción y muestra el resultado en la misma página. Sin JavaScript, envía a `/contacto/enviar` y redirige a `/contacto/enviado` o `/contacto/error`.
+- Con JavaScript, el formulario llama a la acción y muestra el resultado en la misma página. Sin JavaScript, envía a `/contacto/enviar` y redirige a `/{idioma}/contacto/enviado` o `/{idioma}/contacto/error`.
 - Sin `RESEND_API_KEY`: en desarrollo (`npm run dev`) las consultas se loguean en la terminal; en producción el visitante ve un mensaje para escribir por email o WhatsApp. Para probar el build localmente sin Resend usá `CONTACT_DELIVERY_MODE=console`.
 
 ### Configurar Resend
@@ -111,8 +111,8 @@ En ambos casos retirá `@astrojs/node` y revisá la guía oficial del adaptador 
 ## 7. SEO
 
 - Cada página define título y descripción propios; la imagen para redes (1200 x 630) sale de la foto principal de la página. Con fotos en baja resolución la imagen generada es más chica; con las definitivas queda en 1200 x 630.
-- `sitemap-index.xml` y `robots.txt` se generan solos a partir de `SITE_URL`; `/admin` y `/contacto/*` quedan afuera.
-- La home publica datos estructurados `Person` y `ProfessionalService`; `/obra/copias` publica un `ItemList` de `VisualArtwork`. Se omiten los valores que todavía son placeholders (email, teléfono, precios). Cuando Sarah cargue dirección o teléfono reales se pueden sumar a `src/seo/structuredData.ts`.
+- `sitemap.xml` y `robots.txt` se generan a partir de `SITE_URL`; `/admin` y las rutas de contacto (`/contacto/*` y `/*/contacto/*`) quedan afuera.
+- La home publica datos estructurados `Person` y `ProfessionalService`; `/es/obra/copias` publica un `ItemList` de `VisualArtwork`. Se omiten los valores que todavía son placeholders (email, teléfono, precios). Cuando Sarah cargue dirección o teléfono reales se pueden sumar a `src/seo/structuredData.ts`.
 
 ## 8. Analítica (recomendación, aún no instalada)
 

@@ -6,8 +6,8 @@ describe('localeFromReferer', () => {
     expect(localeFromReferer('https://sarahmoreau.example/en/work/prints')).toBe('en');
   });
 
-  it('answers in Spanish when the form was sent from an unprefixed page', () => {
-    expect(localeFromReferer('https://sarahmoreau.example/marcas')).toBe('es');
+  it('answers in Spanish when the form was sent from a Spanish page', () => {
+    expect(localeFromReferer('https://sarahmoreau.example/es/marcas')).toBe('es');
   });
 
   it('answers in Spanish when the browser sends no referer', () => {
