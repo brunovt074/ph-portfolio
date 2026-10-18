@@ -6,6 +6,7 @@ import '@/styles/global.css';
 import bodoniLatin from '@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url';
 import { themeColors } from '@/styles/themeColors';
 import type { ThemeName } from '@/styles/themeColors';
+import { BLOCK_INDEXING } from 'astro:env/server';
 import { ClientRouter } from 'astro:transitions';
 import HreflangLinks from '@/components/HreflangLinks.astro';
 import JsonLd from '@/components/JsonLd.astro';
@@ -32,6 +33,7 @@ interface Props {
 }
 
 const { title, description, theme, image, jsonLd = [], noindex = false, home = false, locale, alternates, translations = { es: true, en: true, pt: true }, skipLabel } = Astro.props;
+const hidden = noindex || BLOCK_INDEXING === 'true';
 
 const themeColor = themeColors[theme];
 
@@ -48,8 +50,8 @@ const seoImage = image && Astro.site ? await resolveSeoImage(image, Astro.site) 
     <meta name="theme-color" content={themeColor} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href={bodoniLatin} as="font" type="font/woff2" crossorigin />
-    <Seo title={fullTitle} description={description} image={seoImage} noindex={noindex} locale={locale} alternates={alternates} translations={translations} />
-    {translations[locale] && !noindex && Astro.site && <HreflangLinks alternates={alternates} translations={translations} site={Astro.site} />}
+    <Seo title={fullTitle} description={description} image={seoImage} noindex={hidden} locale={locale} alternates={alternates} translations={translations} />
+    {translations[locale] && !hidden && Astro.site && <HreflangLinks alternates={alternates} translations={translations} site={Astro.site} />}
     {jsonLd.map((data) => <JsonLd data={data} />)}
     <ClientRouter />
     <script is:inline>
