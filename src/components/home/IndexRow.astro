@@ -4,18 +4,18 @@ import { getImage } from 'astro:assets';
 import Photo from '@/components/Photo.astro';
 import type { Facet } from '@/domain/Facet';
 import type { Locale } from '@/domain/Locale';
-import type { Photo as PhotoModel } from '@/domain/Photo';
 import { pathTo } from '@/domain/routing/pathTo';
+import type { Photo as PhotoModel } from '@/domain/Photo';
 import { sanityPhotoUrl } from '@/infrastructure/sanity/imageUrl';
 import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
+  locale: Locale;
   facet: Facet;
   thumbnails: PhotoModel[];
-  locale: Locale;
 }
 
-const { facet, thumbnails, locale } = Astro.props;
+const { locale, facet, thumbnails } = Astro.props;
 const first = thumbnails[0];
 const previewSource = first
   ? first.asset.provider === 'local'

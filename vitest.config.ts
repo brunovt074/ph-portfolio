@@ -12,6 +12,7 @@ export default defineConfig({
       provider: 'v8',
       include: [
         'src/application/**',
+        'migrations/localize-fields/localizeFieldPatches.ts',
         'sanity/validation/reservedSlugs.ts',
         'sanity/validation/seriesSlugTakenQuery.ts',
         'src/domain/Locale.ts',

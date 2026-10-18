@@ -33,7 +33,7 @@ En el hosting definí `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SITE
 1. `npm run seed -- --dry-run` muestra el plan sin tocar la red.
 2. `npm run seed` sube las imágenes (usa `assets/fotos-dev/`, que sale de `fotos-alta/` si existe y si no de `fotos-baja/`) y crea los documentos con ids fijos (`foto-ed01`, `faceta-editorial`, `serie-oficios`, `copia-au03`, `paquete-esencial`, `ajustes`, `paginaInicio`...). Es repetible: reemplaza lo que tenga el mismo id, así que no lo corras después de que Lara editó contenido.
 3. Para reemplazar una foto provisoria por la definitiva, Lara cambia solo la imagen del documento `foto`.
-4. Si el dataset ya tenía contenidos creados antes del soporte de idiomas, corré una vez la migración `localize-fields` (desde el directorio `migrations/localize-fields`: `npx sanity migration run localize-fields` con las variables de Sanity del proyecto) antes de abrir el Studio. Envuelve los textos planos en `{ es: … }` y es idempotente: volver a correrla no produce cambios.
+4. Si el dataset ya tenía contenidos antes del soporte de idiomas, corré la migración `localize-fields` una vez antes de abrir el Studio: `npx sanity migration run localize-fields` muestra los cambios (modo prueba) y `npx sanity migration run localize-fields --no-dry-run` los aplica. Mueve cada texto existente al campo Español y se puede repetir sin efectos. El seed ya crea los documentos con este formato, y también `textosDelSitio` (vacío: el Studio muestra los textos de ejemplo como placeholder).
 
 ## 4. Studio
 
@@ -67,12 +67,29 @@ En el hosting definí `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SITE
 
 Las páginas con textos (Inicio, Marcas, Obra, Copias) se editan en Páginas.
 
+### Traducir una página
+1. Abrí el documento (una faceta, una serie, una página, una foto...).
+2. En cada campo, desplegá "Inglés y portugués".
+3. Completá el inglés y/o el portugués y tocá Publicar.
+4. Lo que quede vacío se ve en español. Una página aparece en Google en inglés o portugués recién cuando están traducidos sus textos principales.
+
+### Cambiar un texto del sitio
+1. Entrá a "Textos del sitio" (primero en la lista).
+2. Abrí el grupo (por ejemplo Formulario de contacto), elegí el idioma y escribí el texto nuevo.
+3. Tocá Publicar. Si lo vaciás, vuelve al texto de ejemplo (el que ves gris dentro del campo).
+4. Mantené las palabras entre llaves, por ejemplo {copy}: el sitio las reemplaza solo.
+
+### Dirección en inglés de una serie
+1. Abrí la serie y buscá el campo Dirección web.
+2. Desplegá "Inglés y portugués" y generá o escribí la dirección en inglés.
+3. No la cambies una vez publicada: cambiar una dirección hace que Google pierda la página anterior.
+
 ## 6. Servidor, formulario de contacto y email
 
-El sitio sigue siendo estático (`output: 'static'`), pero usa el adaptador `@astrojs/node` en modo `standalone` porque el formulario necesita un servidor. Solo son bajo demanda la acción `contact` (`/_actions/contact`), el endpoint `POST /contacto/enviar` (envío sin JavaScript) y `/contacto/error`; el resto se sirve prerenderizado.
+El sitio sigue siendo estático (`output: 'static'`), pero usa el adaptador `@astrojs/node` en modo `standalone` porque el formulario necesita un servidor. Solo son bajo demanda la acción `contact` (`/_actions/contact`), el endpoint `POST /contacto/enviar` (envío sin JavaScript) y las páginas de resultado `/{idioma}/contacto/enviado` y `/{idioma}/contacto/error`; el resto se sirve prerenderizado.
 
 - `npm run build` genera `dist/client` (estático) y `dist/server/entry.mjs`. Se levanta con `HOST=0.0.0.0 PORT=4321 node dist/server/entry.mjs`.
-- Con JavaScript, el formulario llama a la acción y muestra el resultado en la misma página. Sin JavaScript, envía a `/contacto/enviar` y redirige a `/contacto/enviado` o `/contacto/error`.
+- Con JavaScript, el formulario llama a la acción y muestra el resultado en la misma página. Sin JavaScript, envía a `/contacto/enviar` y redirige a `/{idioma}/contacto/enviado` o `/{idioma}/contacto/error`.
 - Sin `RESEND_API_KEY`: en desarrollo (`npm run dev`) las consultas se loguean en la terminal; en producción el visitante ve un mensaje para escribir por email o WhatsApp. Para probar el build localmente sin Resend usá `CONTACT_DELIVERY_MODE=console`.
 
 ### Configurar Resend
@@ -94,8 +111,8 @@ En ambos casos retirá `@astrojs/node` y revisá la guía oficial del adaptador 
 ## 7. SEO
 
 - Cada página define título y descripción propios; la imagen para redes (1200 x 630) sale de la foto principal de la página. Con fotos en baja resolución la imagen generada es más chica; con las definitivas queda en 1200 x 630.
-- `sitemap-index.xml` y `robots.txt` se generan solos a partir de `SITE_URL`; `/admin` y `/contacto/*` quedan afuera.
-- La home publica datos estructurados `Person` y `ProfessionalService`; `/obra/copias` publica un `ItemList` de `VisualArtwork`. Se omiten los valores que todavía son placeholders (email, teléfono, precios). Cuando Lara cargue dirección o teléfono reales se pueden sumar a `src/seo/structuredData.ts`.
+- `sitemap.xml` y `robots.txt` se generan a partir de `SITE_URL`; `/admin` y las rutas de contacto (`/contacto/*` y `/*/contacto/*`) quedan afuera.
+- La home publica datos estructurados `Person` y `ProfessionalService`; `/es/obra/copias` publica un `ItemList` de `VisualArtwork`. Se omiten los valores que todavía son placeholders (email, teléfono, precios). Cuando Lara cargue dirección o teléfono reales se pueden sumar a `src/seo/structuredData.ts`.
 
 ## 8. Analítica (recomendación, aún no instalada)
 

@@ -24,34 +24,37 @@ interface Props {
 const { locale } = Astro.props;
 const texts = await new GetSiteTexts(contentRepository).execute(locale);
 const { home, facets, settings } = await new GetHomePage(contentRepository).execute(locale);
-const heroPhoto = home.encargosDoor.photo;
-const jsonLd = [buildPersonSchema(settings, Astro.site!, texts, locale), await buildProfessionalServiceSchema(settings, Astro.site!, heroPhoto, locale)];
 const alternates = alternatePaths(() => ({ route: 'home' }));
+const heroPhoto = home.encargosDoor.photo;
+const jsonLd = [
+  buildPersonSchema(settings, Astro.site!, texts, locale),
+  await buildProfessionalServiceSchema(settings, Astro.site!, locale, heroPhoto),
+];
 ---
 <BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={home.translations}
+  skipLabel={texts.a11y.skipToContent}
   title={texts.seo.homeTitle}
   description={home.lead}
   theme="ink"
   image={heroPhoto}
   jsonLd={jsonLd}
   home
-  locale={locale}
-  translations={home.translations}
-  alternates={alternates}
-  skipLabel={texts.a11y.skipToContent}
 >
   <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="home" />
   <HomeHero home={home} />
   <Ticker items={home.ticker} label={home.ticker.join(', ')} />
   <div class="home-below">
-    <AboutSection settings={settings} cta={home.aboutCta} aboutLabel={texts.pages.aboutMe} />
-    <EncargosIndex home={home} facets={facets} locale={locale} />
-    <EditorialStrip photos={home.editorialStrip} label={texts.a11y.editorialStrip} />
-    <BrandsTeaser home={home} locale={locale} />
-    <ObraTeaser home={home} locale={locale} />
-    <ContactSection home={home} settings={settings} texts={texts.contact} a11y={texts.a11y} locale={locale} />
+    <AboutSection texts={texts.pages} settings={settings} cta={home.aboutCta} />
+    <EncargosIndex locale={locale} home={home} facets={facets} />
+    <EditorialStrip texts={texts.a11y} photos={home.editorialStrip} />
+    <BrandsTeaser locale={locale} home={home} />
+    <ObraTeaser locale={locale} home={home} />
+    <ContactSection locale={locale} texts={texts} home={home} settings={settings} />
   </div>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale={locale} texts={texts} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={null} next={null} settings={settings} />
 </BaseLayout>
 
 <style>

@@ -2,20 +2,21 @@
 import Button from '@/components/Button.astro';
 import Photo from '@/components/Photo.astro';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  texts: SiteTexts['pages'];
   settings: SiteSettings;
   cta: string;
-  aboutLabel: string;
 }
 
-const { settings, cta, aboutLabel } = Astro.props;
+const { texts, settings, cta } = Astro.props;
 ---
 <section class="about section" data-theme="paper" aria-labelledby="sobre-mi">
   <div class="container about-grid">
     <Photo photo={settings.portrait} ratio="3/4" sizes="(min-width: 900px) 40vw, 100vw" />
     <div class="about-text">
-      <h2 id="sobre-mi" class="t-eyebrow">{aboutLabel}</h2>
+      <h2 id="sobre-mi" class="t-eyebrow">{texts.aboutMe}</h2>
       <blockquote class="t-quote about-quote">“{settings.quote}”</blockquote>
       <p class="t-lead">{settings.about}</p>
       <div>

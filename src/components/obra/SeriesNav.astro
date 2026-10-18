@@ -1,21 +1,22 @@
 ---
 import Arrow from '@/components/Arrow.astro';
 import type { NavLink } from '@/domain/NavLink';
-import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  label: string;
+  previousLabel: string;
+  nextLabel: string;
   previous: NavLink | null;
   next: NavLink | null;
-  texts: SiteTexts;
 }
 
-const { previous, next, texts } = Astro.props;
+const { label, previousLabel, nextLabel, previous, next } = Astro.props;
 ---
 {(previous || next) && (
-  <nav class="series-nav container" aria-label={texts.a11y.seriesNav}>
+  <nav class="series-nav container" aria-label={label}>
     {previous ? (
       <a class="series-link" href={previous.href} rel="prev">
-        <span class="t-eyebrow">{texts.nav.previousSeries}</span>
+        <span class="t-eyebrow">{previousLabel}</span>
         <span class="t-h3"><Arrow direction="left" /> {previous.label}</span>
       </a>
     ) : (
@@ -23,7 +24,7 @@ const { previous, next, texts } = Astro.props;
     )}
     {next && (
       <a class="series-link series-link-next" href={next.href} rel="next">
-        <span class="t-eyebrow">{texts.nav.nextSeries}</span>
+        <span class="t-eyebrow">{nextLabel}</span>
         <span class="t-h3">{next.label} <Arrow direction="right" /></span>
       </a>
     )}

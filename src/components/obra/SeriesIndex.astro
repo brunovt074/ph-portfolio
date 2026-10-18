@@ -5,18 +5,19 @@ import type { SiteTexts } from '@/domain/SiteTexts';
 import SeriesChapter from './SeriesChapter.astro';
 
 interface Props {
+  locale: Locale;
+  texts: SiteTexts['pages'];
+  viewSeries: string;
   title: string;
   series: Series[];
-  locale: Locale;
-  texts: SiteTexts;
 }
 
-const { title, series, locale, texts } = Astro.props;
+const { locale, texts, viewSeries, title, series } = Astro.props;
 ---
 <section id="series" class="series-index container" aria-labelledby="series-title">
   <h2 id="series-title" class="t-h2 series-heading">{title}</h2>
   <div class="series-chapters">
-    {series.map((item, index) => <SeriesChapter series={item} index={index} locale={locale} texts={texts} />)}
+    {series.map((item, index) => <SeriesChapter locale={locale} texts={texts} viewSeries={viewSeries} series={item} index={index} />)}
   </div>
 </section>
 

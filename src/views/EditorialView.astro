@@ -10,9 +10,9 @@ import ServiceColumns from '@/components/facet/ServiceColumns.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetFacetPage } from '@/application/GetFacetPage';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
-import type { Locale } from '@/domain/Locale';
 import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { pathTo } from '@/domain/routing/pathTo';
+import type { Locale } from '@/domain/Locale';
 import { contentRepository } from '@/infrastructure/container';
 
 interface Props {
@@ -21,30 +21,30 @@ interface Props {
 
 const { locale } = Astro.props;
 const texts = await new GetSiteTexts(contentRepository).execute(locale);
-const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute(locale, 'editorial');
-const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'editorial' }, hash: 'contacto' });
 const alternates = alternatePaths(() => ({ route: 'editorial' }));
+const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'editorial' }, hash: 'contacto' });
+const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute(locale, 'editorial');
 ---
 <BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={facet.translations}
+  skipLabel={texts.a11y.skipToContent}
   title={facet.name}
   description={texts.seo.editorialDescription}
   theme="ink"
   image={facet.cover[1] ?? facet.cover[0]}
-  locale={locale}
-  translations={facet.translations}
-  alternates={alternates}
-  skipLabel={texts.a11y.skipToContent}
 >
   <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="editorial" ctaLabel={texts.nav.bookSession} ctaHref={contactHref} />
   <FacetIntro facet={facet} />
   <CoverTriptych photos={facet.cover} />
   <section class="container section" data-gallery="horizontal">
-    <MasonryGallery photos={facet.gallery} horizontal />
+    <MasonryGallery photos={facet.gallery} texts={texts.pages} horizontal />
   </section>
-  <ServiceColumns title={texts.pages.services} services={facet.services} numerals="roman" investmentLabel={texts.pages.investment} />
+  <ServiceColumns title={texts.pages.services} texts={texts.pages} services={facet.services} numerals="roman" />
   <CtaBand title={facet.ctaText} buttonLabel={facet.ctaButton} href={contactHref} theme="accent" />
   <Lightbox texts={texts.a11y} />
-  <FooterNav slot="footer" previous={previous} next={next} settings={settings} locale={locale} texts={texts} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={previous} next={next} settings={settings} />
 </BaseLayout>
 
 <style>

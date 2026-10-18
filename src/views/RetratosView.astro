@@ -10,9 +10,9 @@ import StaggeredPair from '@/components/facet/StaggeredPair.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetFacetPage } from '@/application/GetFacetPage';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
-import type { Locale } from '@/domain/Locale';
 import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { pathTo } from '@/domain/routing/pathTo';
+import type { Locale } from '@/domain/Locale';
 import { getBookingCatalog } from '@/infrastructure/getBookingCatalog';
 import { contentRepository } from '@/infrastructure/container';
 
@@ -22,35 +22,36 @@ interface Props {
 
 const { locale } = Astro.props;
 const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const alternates = alternatePaths(() => ({ route: 'retratos' }));
+const bookingHref = pathTo(locale, { route: 'reservas' });
 const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute(locale, 'retratos');
 const { offers } = await getBookingCatalog().listBookingOffers.execute(locale);
-const bookingHref = pathTo(locale, { route: 'reservas' });
 const bookingLinks = Object.fromEntries(
   offers
     .filter((offer) => offer.bookable)
     .map((offer) => [offer.title, pathTo(locale, { route: 'reservas', query: { sesion: offer.slug }, hash: 'reserva' })]),
 );
-const alternates = alternatePaths(() => ({ route: 'retratos' }));
 ---
 <BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={facet.translations}
+  skipLabel={texts.a11y.skipToContent}
   title={facet.name}
   description={texts.seo.retratosDescription}
   theme="paper"
   image={facet.cover[0]}
-  locale={locale}
-  translations={facet.translations}
-  alternates={alternates}
-  skipLabel={texts.a11y.skipToContent}
 >
   <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="retratos" ctaLabel={texts.nav.bookSession} ctaHref={bookingHref} />
   <FacetIntro facet={facet} split>
     <StaggeredPair photos={facet.cover} />
   </FacetIntro>
   <section class="container section">
-    <GridGallery photos={facet.gallery} ratio="3/4" />
+    <GridGallery photos={facet.gallery} texts={texts.pages} ratio="3/4" />
   </section>
-  <ServiceColumns title={texts.pages.sessions} services={facet.services} numerals="none" bookingLinks={bookingLinks} bookingLabel={texts.booking.serviceBookLabel} investmentLabel={texts.pages.investment} />
+  <ServiceColumns title={texts.pages.sessions} texts={texts.pages} services={facet.services} numerals="none" bookingLinks={bookingLinks} bookingLabel={texts.booking.serviceBookLabel} />
   {facet.quote && <QuoteBand quote={facet.quote} buttonLabel={facet.ctaButton} href={bookingHref} />}
   <Lightbox texts={texts.a11y} />
-  <FooterNav slot="footer" previous={previous} next={next} settings={settings} locale={locale} texts={texts} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={previous} next={next} settings={settings} />
 </BaseLayout>
+

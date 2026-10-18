@@ -12,8 +12,8 @@ const aDoor = (href: string): HomeDoor => ({
 
 export const aHome = (): HomeContent => ({
   lead: 'Fotografía y video.',
-  encargosDoor: aDoor('/#encargos'),
-  obraDoor: aDoor('/obra'),
+  encargosDoor: aDoor('/es/#encargos'),
+  obraDoor: aDoor('/es/obra'),
   ticker: ['Editorial'],
   aboutCta: 'Trabajemos juntos',
   encargosEyebrow: 'Encargos',

@@ -8,9 +8,9 @@ import PrintInfoBand from '@/components/obra/PrintInfoBand.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetPrintsPage } from '@/application/GetPrintsPage';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
-import type { Locale } from '@/domain/Locale';
 import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { pathTo } from '@/domain/routing/pathTo';
+import type { Locale } from '@/domain/Locale';
 import { contentRepository } from '@/infrastructure/container';
 import { buildPrintsSchema } from '@/seo/structuredData';
 import ContactForm from '@/components/home/ContactForm.astro';
@@ -21,39 +21,39 @@ interface Props {
 
 const { locale } = Astro.props;
 const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const alternates = alternatePaths(() => ({ route: 'copias' }));
 const { prints, content, settings } = await new GetPrintsPage(contentRepository).execute(locale);
 const copyTitles = prints.map((print) => print.photo.title ?? texts.pages.untitled);
 const jsonLd = prints.length > 0 ? [await buildPrintsSchema(prints, Astro.site!, texts, locale)] : [];
-const alternates = alternatePaths(() => ({ route: 'copias' }));
 ---
 <BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={content.translations}
+  skipLabel={texts.a11y.skipToContent}
   title={texts.seo.copiasTitle}
   description={content.lead}
   theme="obra"
   image={prints[2]?.photo ?? prints[0]?.photo}
   jsonLd={jsonLd}
-  locale={locale}
-  translations={content.translations}
-  alternates={alternates}
-  skipLabel={texts.a11y.skipToContent}
 >
-  <Header slot="header" variant="obra" current="copias" locale={locale} texts={texts} alternates={alternates} />
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} variant="obra" current="copias" />
   <FilmGrain />
   <section class="prints-intro container">
     <h1 class="t-display" data-split><RichText title={content.title} /></h1>
     <p class="t-lead">{content.lead}</p>
   </section>
   <section class="prints-grid container" aria-label={texts.a11y.availablePrints}>
-    {prints.map((print, index) => <PrintCard print={print} cta={content.cta} editionLabel={content.editionLabel} priority={index === 0} untitledLabel={texts.pages.untitled} serieNumberLabel={texts.pages.serieNumber} />)}
+    {prints.map((print, index) => <PrintCard locale={locale} texts={texts.pages} print={print} cta={content.cta} editionLabel={content.editionLabel} priority={index === 0} />)}
   </section>
-  <PrintInfoBand items={content.info} aboutLabel={texts.a11y.aboutPrints} />
+  <PrintInfoBand items={content.info} label={texts.a11y.aboutPrints} />
   <section id="consulta" class="print-inquiry section" aria-labelledby="consulta-title">
     <div class="container print-inquiry-grid">
       <h2 id="consulta-title" class="t-display">{texts.pages.printsInquiryTitle}</h2>
-      <ContactForm variant="copia" copies={copyTitles} idPrefix="consulta" submitLabel={texts.contact.submit} locale={locale} texts={texts.contact} />
+      <ContactForm locale={locale} texts={texts.contact} variant="copia" copies={copyTitles} idPrefix="consulta" submitLabel={texts.pages.printsInquirySubmit} />
     </div>
   </section>
-  <FooterNav slot="footer" previous={{ label: texts.nav.obra, href: pathTo(locale, { route: 'obra' }) }} next={null} settings={settings} locale={locale} texts={texts} logoVariant="obra" />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={{ label: texts.nav.obra, href: pathTo(locale, { route: 'obra' }) }} next={null} settings={settings} logoVariant="obra" />
 </BaseLayout>
 
 <style>

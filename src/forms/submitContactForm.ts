@@ -1,20 +1,10 @@
 import { actions, isInputError } from 'astro:actions';
 import type { SiteTexts } from '@/domain/SiteTexts';
 import { clearFieldErrors, focusFirstInvalid, showFieldError } from './fieldErrors';
+import { fieldErrorKeys } from './fieldErrorKeys';
 import type { FieldName } from './FieldName';
 import { preselectContactForm } from './preselectContactForm';
-
-type ContactTexts = SiteTexts['contact'];
-
-const errorKeyOf: Record<FieldName, keyof ContactTexts> = {
-  nombre: 'errorNombre',
-  email: 'errorEmail',
-  tipo: 'errorTipo',
-  mensaje: 'errorMensaje',
-  copia: 'errorCopia',
-};
-
-const readMessages = (form: HTMLFormElement): ContactTexts => JSON.parse(form.dataset.messages ?? '{}') as ContactTexts;
+import { readFormMessages } from './readFormMessages';
 
 const setStatus = (form: HTMLFormElement, state: 'success' | 'error', message: string): void => {
   const status = form.querySelector<HTMLElement>('[data-form-status]');
@@ -25,56 +15,53 @@ const setStatus = (form: HTMLFormElement, state: 'success' | 'error', message: s
   status.textContent = message;
 };
 
-const showInputErrors = (form: HTMLFormElement, fields: Record<string, string[] | undefined>): void => {
-  const messages = readMessages(form);
-  Object.entries(fields).forEach(([name]) => {
-    const key = errorKeyOf[name as FieldName];
-    showFieldError(form, name as FieldName, key ? messages[key] : messages.genericError);
+const showInputErrors = (form: HTMLFormElement, texts: SiteTexts['contact'], fields: Record<string, string[] | undefined>): void => {
+  Object.keys(fields).forEach((name) => {
+    showFieldError(form, name as FieldName, texts[fieldErrorKeys[name as FieldName]]);
   });
-  setStatus(form, 'error', messages.fieldErrors);
+  setStatus(form, 'error', texts.fieldErrors);
   focusFirstInvalid(form);
 };
 
-const messageFor = (messages: ContactTexts, error: { code: string; message: string }): string => {
+const messageFor = (texts: SiteTexts['contact'], error: { code: string }): string => {
   if (error.code === 'SERVICE_UNAVAILABLE') {
-    return messages.unavailable;
+    return texts.unavailable;
   }
   if (error.code === 'TOO_MANY_REQUESTS') {
-    return messages.rateLimited;
+    return texts.rateLimited;
   }
-  return messages.genericError;
+  return texts.genericError;
 };
 
-const deliver = async (form: HTMLFormElement): Promise<void> => {
-  const messages = readMessages(form);
+const deliver = async (form: HTMLFormElement, texts: SiteTexts['contact']): Promise<void> => {
   const { error } = await actions.contact(new FormData(form));
   if (!error) {
     form.reset();
     preselectContactForm(form);
-    setStatus(form, 'success', messages.success);
+    setStatus(form, 'success', texts.success);
     return;
   }
   if (isInputError(error)) {
-    showInputErrors(form, error.fields);
+    showInputErrors(form, texts, error.fields);
     return;
   }
-  setStatus(form, 'error', messageFor(messages, error));
+  setStatus(form, 'error', messageFor(texts, error));
 };
 
 export const submitContactForm = async (form: HTMLFormElement): Promise<void> => {
-  const messages = readMessages(form);
   const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const texts = readFormMessages(form);
   const label = button?.textContent ?? '';
   clearFieldErrors(form);
   setStatus(form, 'success', '');
   if (button) {
     button.disabled = true;
-    button.textContent = messages.sending;
+    button.textContent = texts.sending;
   }
   try {
-    await deliver(form);
+    await deliver(form, texts);
   } catch {
-    setStatus(form, 'error', messages.genericError);
+    setStatus(form, 'error', texts.genericError);
   } finally {
     if (button) {
       button.disabled = false;

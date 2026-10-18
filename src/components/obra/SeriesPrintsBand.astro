@@ -6,11 +6,11 @@ import type { ObraContent } from '@/domain/ObraContent';
 import { pathTo } from '@/domain/routing/pathTo';
 
 interface Props {
-  band: ObraContent['seriesPrintsBand'];
   locale: Locale;
+  band: ObraContent['seriesPrintsBand'];
 }
 
-const { band, locale } = Astro.props;
+const { locale, band } = Astro.props;
 ---
 <section data-theme="ivory" class="prints-band">
   <div class="container prints-band-row">

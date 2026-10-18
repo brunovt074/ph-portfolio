@@ -9,20 +9,21 @@ import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { pathTo } from '@/domain/routing/pathTo';
 import { contentRepository } from '@/infrastructure/container';
 
-const settings = await new GetSiteSettings(contentRepository).execute('es');
-const texts = await new GetSiteTexts(contentRepository).execute('es');
+const locale = 'es';
+const [settings, texts] = await Promise.all([
+  new GetSiteSettings(contentRepository).execute(locale),
+  new GetSiteTexts(contentRepository).execute(locale),
+]);
 const alternates = alternatePaths(() => ({ route: 'home' }));
 const exits = [
-  { label: texts.nav.home, href: pathTo('es', { route: 'home' }) },
-  { label: texts.nav.editorial, href: pathTo('es', { route: 'editorial' }) },
-  { label: texts.nav.retratos, href: pathTo('es', { route: 'retratos' }) },
-  { label: texts.nav.marcas, href: pathTo('es', { route: 'marcas' }) },
-  { label: texts.nav.eventos, href: pathTo('es', { route: 'eventos' }) },
-  { label: texts.nav.obra, href: pathTo('es', { route: 'obra' }) },
-];
-const languages = [
-  { label: 'English', href: '/en/' },
-  { label: 'Português', href: '/pt/' },
+  { label: texts.nav.home, href: pathTo(locale, { route: 'home' }) },
+  { label: texts.nav.editorial, href: pathTo(locale, { route: 'editorial' }) },
+  { label: texts.nav.retratos, href: pathTo(locale, { route: 'retratos' }) },
+  { label: texts.nav.marcas, href: pathTo(locale, { route: 'marcas' }) },
+  { label: texts.nav.eventos, href: pathTo(locale, { route: 'eventos' }) },
+  { label: texts.nav.obra, href: pathTo(locale, { route: 'obra' }) },
+  { label: 'English', href: alternates.en, lang: 'en' },
+  { label: 'Português', href: alternates.pt, lang: 'pt' },
 ];
 ---
 <BaseLayout
@@ -30,12 +31,11 @@ const languages = [
   description={texts.seo.notFoundDescription}
   theme="ink"
   noindex
-  locale="es"
-  translations={{ es: true, en: false, pt: false }}
+  locale={locale}
   alternates={alternates}
   skipLabel={texts.a11y.skipToContent}
 >
-  <Header slot="header" locale="es" texts={texts} alternates={alternates} />
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} />
   <section class="section">
     <div class="container not-found">
       <h1 class="t-display" data-split>{texts.notFound.title}</h1>
@@ -43,21 +43,16 @@ const languages = [
       <nav aria-label={texts.a11y.exits}>
         <ul class="not-found-exits">
           {exits.map((exit) => (
-            <li><a class="t-h3 not-found-exit" href={exit.href}>{exit.label}</a></li>
+            <li><a class="t-h3 not-found-exit" href={exit.href} lang={exit.lang} hreflang={exit.lang}>{exit.label}</a></li>
           ))}
         </ul>
       </nav>
       <div>
-        <Button href={pathTo('es', { route: 'home' })} variant="secondary">{texts.nav.backHome}</Button>
-      </div>
-      <div class="not-found-langs">
-        {languages.map((language) => (
-          <a class="t-nav not-found-exit" href={language.href}>{language.label}</a>
-        ))}
+        <Button href={alternates.es} variant="secondary">{texts.nav.backHome}</Button>
       </div>
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale="es" texts={texts} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={null} next={null} settings={settings} />
 </BaseLayout>
 
 <style>
@@ -84,12 +79,6 @@ const languages = [
     color: inherit;
     text-decoration: none;
     border-bottom: 1px solid var(--line);
-  }
-
-  .not-found-langs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px clamp(20px, 3vw, 40px);
   }
 
   @media (hover: hover) {

@@ -7,11 +7,11 @@ import { pathTo } from '@/domain/routing/pathTo';
 import PassepartoutPhoto from './PassepartoutPhoto.astro';
 
 interface Props {
-  teaser: ObraContent['printsTeaser'];
   locale: Locale;
+  teaser: ObraContent['printsTeaser'];
 }
 
-const { teaser, locale } = Astro.props;
+const { locale, teaser } = Astro.props;
 ---
 <section class="prints-teaser container" aria-labelledby="prints-teaser-title">
   <div class="teaser-head">

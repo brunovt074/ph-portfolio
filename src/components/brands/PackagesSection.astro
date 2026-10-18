@@ -1,23 +1,25 @@
 ---
 import type { BrandPackage } from '@/domain/BrandPackage';
+import type { Locale } from '@/domain/Locale';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import PackageCard from './PackageCard.astro';
 
 interface Props {
+  locale: Locale;
+  texts: SiteTexts['pages'];
   title: string;
   cta: string;
   packages: BrandPackage[];
-  href: string;
-  featuredLabel: string;
 }
 
-const { title, cta, packages, href, featuredLabel } = Astro.props;
+const { locale, texts, title, cta, packages } = Astro.props;
 const ordered = [...packages].sort((a, b) => a.order - b.order);
 ---
 <section data-theme="ink" class="section">
   <div class="container">
     <h2 class="t-h2">{title}</h2>
     <div class="grid">
-      {ordered.map((pack) => <PackageCard pack={pack} cta={cta} href={href} featuredLabel={featuredLabel} />)}
+      {ordered.map((pack) => <PackageCard locale={locale} texts={texts} pack={pack} cta={cta} />)}
     </div>
   </div>
 </section>

@@ -1,6 +1,5 @@
 ---
-import { locales } from '@/domain/Locale';
-import type { Locale } from '@/domain/Locale';
+import { locales, type Locale } from '@/domain/Locale';
 
 interface Props {
   locale: Locale;
@@ -9,47 +8,41 @@ interface Props {
 }
 
 const { locale, alternates, label } = Astro.props;
-const codes: Record<Locale, string> = { es: 'ES', en: 'EN', pt: 'PT' };
 ---
-<nav class="lang-switcher" aria-label={label}>
-  {locales.map((candidate) => (
-    <a
-      class:list={['t-nav', 'lang-switcher-link', candidate === locale && 'is-current']}
-      href={alternates[candidate]}
-      hreflang={candidate}
-      lang={candidate}
-      aria-current={candidate === locale ? 'true' : undefined}
-    >
-      {codes[candidate]}
-    </a>
+<nav class="language-switcher" aria-label={label}>
+  {locales.map((code, index) => (
+    <>
+      {index > 0 && <span aria-hidden="true">·</span>}
+      <a
+        class="t-nav language-switcher-link"
+        href={alternates[code]}
+        hreflang={code}
+        lang={code}
+        aria-current={code === locale ? 'true' : undefined}
+      >{code.toUpperCase()}</a>
+    </>
   ))}
 </nav>
 
 <style>
-  .lang-switcher {
+  .language-switcher {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
+    color: var(--fg-muted);
   }
 
-  .lang-switcher-link {
+  .language-switcher-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: var(--tap);
     min-height: var(--tap);
-    padding-inline: 8px;
-    color: var(--fg-muted);
+    min-width: var(--tap);
+    color: inherit;
     text-decoration: none;
   }
 
-  .lang-switcher-link.is-current {
+  .language-switcher-link[aria-current='true'] {
     color: var(--accent-current);
-  }
-
-  @media (hover: hover) {
-    .lang-switcher-link:hover {
-      color: var(--fg);
-    }
   }
 </style>

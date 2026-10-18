@@ -7,13 +7,14 @@ import { contentRepository } from '@/infrastructure/container';
 
 export const prerender = false;
 
-const idioma = parseLocale(Astro.url.searchParams.get('idioma'));
-const texts = await new GetSiteTexts(contentRepository).execute(idioma);
+const locale = parseLocale(Astro.params.locale);
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
 ---
 <ContactResult
+  locale={locale}
+  texts={texts}
   title={texts.contact.sentTitle}
   lead={texts.contact.sentLead}
   backLabel={texts.nav.backHome}
-  backHref={pathTo(idioma, { route: 'home' })}
-  locale={idioma}
+  backHref={pathTo(locale, { route: 'home' })}
 />

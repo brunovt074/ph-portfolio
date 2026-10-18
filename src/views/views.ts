@@ -1,4 +1,3 @@
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import type { RouteKey } from '@/domain/routing/RouteKey';
 import EditorialView from './EditorialView.astro';
 import EventosView from './EventosView.astro';
@@ -10,14 +9,14 @@ import ReservasView from './ReservasView.astro';
 import RetratosView from './RetratosView.astro';
 import SeriesView from './SeriesView.astro';
 
-export const views: Record<RouteKey, AstroComponentFactory> = {
+export const views: Record<RouteKey, typeof HomeView | typeof SeriesView> = {
   home: HomeView,
   editorial: EditorialView,
   retratos: RetratosView,
   marcas: MarcasView,
   eventos: EventosView,
   obra: ObraView,
-  serie: SeriesView,
   copias: PrintsView,
   reservas: ReservasView,
+  serie: SeriesView,
 };
