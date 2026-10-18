@@ -26,7 +26,8 @@
       "archivo": "fotos-baja/editorial/ed02.jpg",
       "faceta": "editorial",
       "alt": "Modelo de cabello rojo enrulado sobre fondo verde",
-      "destacada": true
+      "destacada": true,
+      "hotspot": { "x": 0.5, "y": 0.25, "width": 0.5, "height": 0.35 }
     },
     {
       "id": "ed03",
