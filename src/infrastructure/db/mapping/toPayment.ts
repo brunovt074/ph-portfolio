@@ -1,5 +1,5 @@
 import type { Payment } from '@/domain/payment/Payment';
-import type { PaymentRow } from '../schema';
+import type { PaymentRow } from '../PaymentRow';
 
 export const toPayment = (row: PaymentRow): Payment => ({
   id: row.id,

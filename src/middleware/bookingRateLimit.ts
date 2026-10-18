@@ -1,12 +1,13 @@
 import { ActionError } from 'astro:actions';
 import { defineMiddleware } from 'astro:middleware';
 import { TRUST_PROXY } from 'astro:env/server';
+import { invokedAction } from './invokedAction';
 import { esTexts } from '@/infrastructure/texts/defaults/esTexts';
 import { bookingRateLimiter } from '@/infrastructure/rateLimit/bookingRateLimiter';
 import { resolveClientKey } from '@/infrastructure/rateLimit/resolveClientKey';
 
 const FORM_PATHS = ['/reservas/iniciar', '/reservas/reintentar'];
-const ACTION_PATH_PREFIX = '/_actions/booking';
+const ACTION_NAME = 'booking';
 const LIMIT_REDIRECT = '/reservas/error?motivo=limite';
 
 const withoutTrailingSlash = (pathname: string) => pathname.replace(/\/+$/, '');
@@ -20,10 +21,13 @@ const rateLimitedAction = () => {
 };
 
 export const bookingRateLimit = defineMiddleware((context, next) => {
-  const pathname = withoutTrailingSlash(context.url.pathname);
-  const isForm = FORM_PATHS.includes(pathname);
-  const isAction = pathname.startsWith(ACTION_PATH_PREFIX);
-  if (context.request.method !== 'POST' || (!isForm && !isAction)) {
+  if (context.request.method !== 'POST') {
+    return next();
+  }
+  const action = invokedAction(context);
+  const isAction = action?.name === ACTION_NAME;
+  const isForm = FORM_PATHS.includes(withoutTrailingSlash(context.url.pathname)) || (isAction && action.fromForm);
+  if (!isForm && !isAction) {
     return next();
   }
   const key = resolveClientKey(context.request.headers.get('x-forwarded-for'), context.clientAddress, TRUST_PROXY === 'true');

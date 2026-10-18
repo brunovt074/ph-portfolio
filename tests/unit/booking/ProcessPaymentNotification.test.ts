@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { aBookingWorld, aSlotWorld, THURSDAY_MORNING_SLOT } from '../../fixtures/aBookingWorld';
 import { aBooking, aSlotBooking } from '../../fixtures/aBooking';
 import { aCreateBookingInput } from '../../fixtures/aCreateBookingInput';
@@ -324,6 +324,86 @@ describe('ProcessPaymentNotification', () => {
     expect(world.notifier.duplicates).toEqual([]);
   });
 
+  it('Postgres fails right after the payment was stored as approved and the webhook retry still confirms the booking', async () => {
+    const world = await worldWithPendingDeposit();
+    world.gateway.hasRemotePayment(aGatewayPayment());
+    vi.spyOn(world.bookings, 'transition').mockRejectedValueOnce(new Error('db down'));
+
+    await expect(world.processNotification.execute('fake', notification('ext-1'))).rejects.toThrow('db down');
+    expect((await world.payments.findById('payment-1'))?.status).toBe('approved');
+    const retry = await world.processNotification.execute('fake', notification('ext-1'));
+
+    expect(retry).toEqual({ ok: true, value: { outcome: 'updated' } });
+    expect((await world.bookings.findById('booking-1'))?.status).toBe('confirmed');
+    expect(world.notifier.confirmed).toHaveLength(1);
+  });
+
+  it('two instances receive the same approved webhook without a shared lock and the client gets one email', async () => {
+    const world = await worldWithPendingDeposit();
+    world.gateway.hasRemotePayment(aGatewayPayment());
+    const release = world.gateway.holdsFetchesUntilReleased();
+
+    const both = Promise.all([world.processNotification.execute('fake', notification('ext-1')), world.processNotification.execute('fake', notification('ext-1'))]);
+    release();
+    const results = await both;
+
+    expect(results.map((result) => (result.ok ? result.value.outcome : result.error)).sort()).toEqual(['unchanged', 'updated']);
+    expect(world.notifier.confirmed).toHaveLength(1);
+    expect(world.notifier.duplicates).toEqual([]);
+  });
+
+  it('a late notice about a failed attempt does not overwrite the approved payment', async () => {
+    const world = await worldWithPendingDeposit();
+    world.gateway.hasRemotePayment(aGatewayPayment({ externalPaymentId: 'ext-2' }));
+    await world.processNotification.execute('fake', notification('ext-2'));
+    world.gateway.hasRemotePayment(aGatewayPayment({ externalPaymentId: 'ext-1', status: 'rejected' }));
+    world.gateway.hasRemotePayment(aGatewayPayment({ externalPaymentId: 'ext-3', status: 'pending' }));
+    world.gateway.hasRemotePayment(aGatewayPayment({ externalPaymentId: 'ext-4', status: 'refunded' }));
+
+    const results = await Promise.all(['ext-1', 'ext-3', 'ext-4'].map((id) => world.processNotification.execute('fake', notification(id))));
+
+    expect(results.map((result) => (result.ok ? result.value.outcome : result.error))).toEqual(['unchanged', 'unchanged', 'unchanged']);
+    expect(await world.payments.findById('payment-1')).toMatchObject({ status: 'approved', externalPaymentId: 'ext-2' });
+    expect(world.notifier.duplicates).toEqual([]);
+    expect(world.notifier.refunds).toEqual([]);
+  });
+
+  it('an approved payment can still be refunded under the same external id', async () => {
+    const world = await worldWithPendingDeposit();
+    world.gateway.hasRemotePayment(aGatewayPayment());
+    await world.processNotification.execute('fake', notification('ext-1'));
+    world.gateway.hasRemotePayment(aGatewayPayment({ status: 'pending' }));
+
+    const stale = await world.processNotification.execute('fake', notification('ext-1'));
+
+    expect(stale).toEqual({ ok: true, value: { outcome: 'unchanged' } });
+    expect((await world.payments.findById('payment-1'))?.status).toBe('approved');
+  });
+
+  it('a notification that is not about a payment is acknowledged without fetching anything', async () => {
+    const world = await worldWithPendingDeposit();
+
+    const result = await world.processNotification.execute('fake', { headers: {}, query: {}, body: { ignore: true } });
+
+    expect(result).toEqual({ ok: true, value: { outcome: 'ignored' } });
+    expect(world.reporter.reported).toEqual([]);
+  });
+
+  it('a notification with a rejected signature is refused and logged without personal data', async () => {
+    const world = await worldWithPendingDeposit();
+
+    const result = await world.processNotification.execute('fake', notification());
+
+    expect(result).toEqual({ ok: false, error: 'invalid_notification' });
+    expect(world.reporter.reported.map((error) => error.message)).toEqual(['[payments] rejected webhook signature']);
+  });
+
+  it('a notification for an unknown provider is refused', async () => {
+    const world = await worldWithPendingDeposit();
+
+    expect(await world.processNotification.execute('pix', notification('ext-1'))).toEqual({ ok: false, error: 'unknown_provider' });
+  });
+
   describe('turns', () => {
     const slotInput = () => aCreateBookingInput({ slotStart: THURSDAY_MORNING_SLOT });
 
@@ -458,6 +538,46 @@ describe('ProcessPaymentNotification', () => {
 
       expect((await world.bookings.findById(bookingId))?.status).toBe('needs_rescheduling');
       expect(world.reporter.reported.map((error) => error.message)).toEqual(['resend down']);
+    });
+
+    it('Sanity fails right after the turn payment was stored and the webhook retry confirms the booking with its event', async () => {
+      const world = aSlotWorld();
+      const { bookingId, notify } = await bookAndPay(world);
+      vi.spyOn(world.content, 'getSchedulingSettings').mockRejectedValueOnce(new Error('sanity down'));
+
+      await expect(notify()).rejects.toThrow('sanity down');
+      await notify();
+
+      expect(await world.bookings.findById(bookingId)).toMatchObject({ status: 'confirmed', calendarEventId: 'event-1' });
+      expect(world.notifier.confirmed).toHaveLength(1);
+      expect(world.calendar?.events).toHaveLength(1);
+    });
+
+    it('a late payment with Google down cannot take a turn that another client already paid for', async () => {
+      const world = aSlotWorld();
+      const late = await bookAndPay(world);
+      world.clock.advanceHours(1);
+      const winner = await bookAndPay(world, aCreateBookingInput({ slotStart: THURSDAY_MORNING_SLOT, name: 'Julieta Paz', email: 'julieta@example.com' }));
+      await winner.notify();
+      world.calendar?.goesDown();
+
+      await late.notify();
+
+      expect(await world.bookings.findById(late.bookingId)).toMatchObject({ status: 'needs_rescheduling', calendarEventId: null });
+      expect(world.notifier.conflicts.map((booking) => booking.id)).toEqual([late.bookingId]);
+      expect(world.notifier.confirmed).toHaveLength(1);
+    });
+
+    it('if the event id cannot be saved the client is still told and the failure is reported', async () => {
+      const world = aSlotWorld();
+      const { bookingId, notify } = await bookAndPay(world);
+      vi.spyOn(world.bookings, 'update').mockRejectedValueOnce(new Error('db down'));
+
+      await notify();
+
+      expect((await world.bookings.findById(bookingId))?.status).toBe('confirmed');
+      expect(world.notifier.confirmed).toHaveLength(1);
+      expect(world.reporter.reported.map((error) => error.message)).toEqual(['db down']);
     });
 
     it('a session booked by proposed date never touches the calendar', async () => {

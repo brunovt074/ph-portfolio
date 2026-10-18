@@ -4,6 +4,7 @@ import type { Checkout } from '@/domain/payment/Checkout';
 import type { CheckoutRequest } from '@/domain/payment/CheckoutRequest';
 import type { GatewayPayment } from '@/domain/payment/GatewayPayment';
 import type { IncomingNotification } from '@/domain/payment/IncomingNotification';
+import type { ParsedNotification } from '@/domain/payment/ParsedNotification';
 import type { PaymentGateway } from '@/domain/payment/PaymentGateway';
 import { SystemClock } from '../../SystemClock';
 import type { MercadoPagoApi } from './MercadoPagoApi';
@@ -53,6 +54,9 @@ export class MercadoPagoGateway implements PaymentGateway {
   }
 
   async fetchPayment(externalPaymentId: string): Promise<GatewayPayment> {
+    if (!/^\d+$/.test(externalPaymentId)) {
+      throw new Error('Invalid Mercado Pago payment id');
+    }
     const response = await this.api.getPayment(externalPaymentId);
     return {
       externalPaymentId: String(response.id),
@@ -64,24 +68,25 @@ export class MercadoPagoGateway implements PaymentGateway {
     };
   }
 
-  parseNotification(notification: IncomingNotification): string | null {
+  parseNotification(notification: IncomingNotification): ParsedNotification {
     const body = (notification.body ?? {}) as { type?: unknown; data?: { id?: unknown } };
     const type = notification.query.type ?? notification.query.topic ?? body.type;
-    if (type !== 'payment') {
-      return null;
-    }
     const rawDataId = notification.query['data.id'] ?? body.data?.id;
-    if (rawDataId === undefined || rawDataId === null || rawDataId === '') {
-      return null;
+    if (type !== 'payment' || rawDataId === undefined || rawDataId === null || rawDataId === '') {
+      return { kind: 'ignored' };
     }
     const dataId = String(rawDataId);
+    return this.hasValidSignature(notification, dataId) ? { kind: 'payment', externalPaymentId: dataId } : { kind: 'invalid' };
+  }
+
+  private hasValidSignature(notification: IncomingNotification, dataId: string): boolean {
     if (!this.webhookSecret) {
-      return null;
+      return false;
     }
     const signature = notification.headers['x-signature'];
     const requestId = notification.headers['x-request-id'];
     if (!signature || !requestId) {
-      return null;
+      return false;
     }
     const parts = Object.fromEntries(
       signature.split(',').map((part) => {
@@ -92,15 +97,12 @@ export class MercadoPagoGateway implements PaymentGateway {
     const timestamp = parts.ts;
     const received = parts.v1;
     if (!timestamp || !received) {
-      return null;
+      return false;
     }
     const manifest = `id:${dataId.toLowerCase()};request-id:${requestId};ts:${timestamp};`;
     const expected = createHmac('sha256', this.webhookSecret).update(manifest).digest('hex');
     const receivedBuffer = Buffer.from(received);
     const expectedBuffer = Buffer.from(expected);
-    if (receivedBuffer.length !== expectedBuffer.length) {
-      return null;
-    }
-    return timingSafeEqual(receivedBuffer, expectedBuffer) ? dataId : null;
+    return receivedBuffer.length === expectedBuffer.length && timingSafeEqual(receivedBuffer, expectedBuffer);
   }
 }

@@ -77,7 +77,18 @@ export class CreateBooking {
     }
     const schedule: BookingSchedule = { kind: 'request', preferredDate, timeSlot: input.timeSlot ?? 'any' };
     const expiresAt = new Date(now.getTime() + this.config.holdHours * HOUR_IN_MILLISECONDS);
-    return this.checkoutAndPersist(this.buildBooking(offer, totalCents, input, schedule, expiresAt, now));
+    const gateway = this.defaultGateway();
+    if (!gateway) {
+      return fail('gateway_unavailable');
+    }
+    const booking = this.buildBooking(offer, totalCents, input, schedule, expiresAt, now);
+    const payment = await this.openPayment(gateway, booking);
+    if (!payment) {
+      return fail('gateway_unavailable');
+    }
+    await this.bookings.create(booking);
+    await this.payments.create(payment);
+    return ok({ bookingId: booking.id, checkoutUrl: payment.checkoutUrl });
   }
 
   private async bookSlot(
@@ -94,7 +105,11 @@ export class CreateBooking {
     if (Number.isNaN(start.getTime())) {
       return fail('slot_taken');
     }
-    return this.lock.runExclusive(async () => {
+    const gateway = this.defaultGateway();
+    if (!gateway) {
+      return fail('gateway_unavailable');
+    }
+    const held = await this.lock.runExclusive(async (): Promise<Result<Booking, CreateBookingError>> => {
       const now = this.clock.now();
       const date = localDateOf(start, settings.timeZone);
       let days: DaySlots[];
@@ -112,8 +127,21 @@ export class CreateBooking {
         return fail('slot_taken');
       }
       const expiresAt = new Date(now.getTime() + settings.holdMinutes * MINUTE_IN_MILLISECONDS);
-      return this.checkoutAndPersist(this.buildBooking(offer, totalCents, input, { kind: 'slot', start: slot.start, end: slot.end }, expiresAt, now));
+      const booking = this.buildBooking(offer, totalCents, input, { kind: 'slot', start: slot.start, end: slot.end }, expiresAt, now);
+      await this.bookings.create(booking);
+      return ok(booking);
     });
+    if (!held.ok) {
+      return held;
+    }
+    const booking = held.value;
+    const payment = await this.openPayment(gateway, booking);
+    if (!payment) {
+      await this.bookings.transition({ ...booking, status: 'cancelled' }, 'awaiting_payment');
+      return fail('gateway_unavailable');
+    }
+    await this.payments.create(payment);
+    return ok({ bookingId: booking.id, checkoutUrl: payment.checkoutUrl });
   }
 
   private buildBooking(
@@ -143,20 +171,16 @@ export class CreateBooking {
     };
   }
 
-  private async checkoutAndPersist(booking: Booking): Promise<Outcome> {
-    const gateway: PaymentGateway | undefined = this.gateways.find(this.gateways.defaultProvider);
-    if (!gateway) {
-      return fail('gateway_unavailable');
-    }
-    let payment: Payment;
+  private defaultGateway(): PaymentGateway | undefined {
+    return this.gateways.find(this.gateways.defaultProvider);
+  }
+
+  private async openPayment(gateway: PaymentGateway, booking: Booking): Promise<Payment | null> {
     try {
-      payment = await openCheckout(gateway, this.config, booking, this.ids.next(), booking.createdAt);
+      return await openCheckout(gateway, this.config, booking, this.ids.next(), booking.createdAt);
     } catch (error) {
       this.reporter.report(toError(error));
-      return fail('gateway_unavailable');
+      return null;
     }
-    await this.bookings.create(booking);
-    await this.payments.create(payment);
-    return ok({ bookingId: booking.id, checkoutUrl: payment.checkoutUrl });
   }
 }

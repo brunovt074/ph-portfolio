@@ -69,6 +69,22 @@ describe('DrizzleBookingRepository', () => {
     expect(await repository.findById(BOOKING_ID)).toMatchObject({ status: 'needs_rescheduling', calendarEventId: 'event-1' });
   });
 
+  it('confirms a booking only while it is still waiting for payment, so two webhooks cannot both win', async () => {
+    const booking = aSlotBooking({ id: BOOKING_ID });
+    await repository.create(booking);
+
+    const first = await repository.transition({ ...booking, status: 'confirmed', calendarEventId: 'event-1' }, 'awaiting_payment');
+    const second = await repository.transition({ ...booking, status: 'needs_rescheduling' }, 'awaiting_payment');
+
+    expect(first).toBe(true);
+    expect(second).toBe(false);
+    expect(await repository.findById(BOOKING_ID)).toMatchObject({ status: 'confirmed', calendarEventId: 'event-1' });
+  });
+
+  it('does not transition a booking that does not exist', async () => {
+    expect(await repository.transition(aBooking({ id: BOOKING_ID, status: 'confirmed' }), 'awaiting_payment')).toBe(false);
+  });
+
   describe('turns that block the agenda', () => {
     const day = { start: new Date('2026-10-22T03:00:00Z'), end: new Date('2026-10-23T03:00:00Z') };
     const now = new Date('2026-10-17T15:00:00Z');

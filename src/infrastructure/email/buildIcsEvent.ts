@@ -4,7 +4,7 @@ const MAX_LINE_OCTETS = 75;
 
 const toUtcStamp = (instant: Date): string => instant.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
-const escapeText = (value: string): string => value.replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+const escapeText = (value: string): string => value.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
 
 const fold = (line: string): string => {
   const chunks: string[] = [];

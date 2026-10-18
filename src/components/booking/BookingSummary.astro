@@ -1,10 +1,7 @@
 ---
 import type { BookingStatusView } from '@/application/results/BookingStatusView';
 import type { SiteTexts } from '@/domain/SiteTexts';
-import { formatInstantDay } from '@/formatting/formatInstantDay';
-import { formatInstantTime } from '@/formatting/formatInstantTime';
-import { formatDay } from '@/formatting/formatDay';
-import { formatMoney } from '@/formatting/formatMoney';
+import { buildSummaryRows } from './buildSummaryRows';
 
 interface Props {
   view: BookingStatusView;
@@ -14,22 +11,7 @@ interface Props {
 }
 
 const { view, texts, localeTag, timeZone } = Astro.props;
-const frameLabels = { morning: texts.frameMorning, afternoon: texts.frameAfternoon, any: texts.frameAny };
-const rows: { label: string; value: string }[] = [{ label: texts.summarySession, value: view.offerTitle }];
-if (view.schedule.kind === 'slot') {
-  rows.push({ label: texts.summaryDate, value: formatInstantDay(view.schedule.start, localeTag, timeZone) });
-  rows.push({ label: texts.summaryTime, value: formatInstantTime(view.schedule.start, localeTag, timeZone) });
-} else {
-  rows.push({ label: texts.summaryProposedDate, value: formatDay(view.schedule.preferredDate, localeTag) });
-  rows.push({ label: texts.summaryFrame, value: frameLabels[view.schedule.timeSlot] });
-}
-rows.push({ label: texts.summaryTotal, value: formatMoney(view.totalCents, localeTag) });
-if (view.paidCents > 0) {
-  rows.push({ label: texts.summaryPaid, value: formatMoney(view.paidCents, localeTag) });
-}
-if (view.paidCents > 0 && view.balanceCents > 0) {
-  rows.push({ label: texts.summaryBalance, value: formatMoney(view.balanceCents, localeTag) });
-}
+const rows = buildSummaryRows(view, texts, localeTag, timeZone);
 ---
 <dl class="summary" aria-label={texts.summaryLabel}>
   {rows.map((row) => (

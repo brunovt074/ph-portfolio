@@ -24,4 +24,17 @@ describe('CachedSanityClient', () => {
 
     expect(inner.requests).toHaveLength(3);
   });
+
+  it('does not remember a failed request, so the next visitor gets the content once Sanity is back', async () => {
+    const responses = new Map<string, unknown>();
+    const inner = new FakeSanityClient(responses);
+    const client = new CachedSanityClient(inner);
+
+    await expect(client.fetch('a')).rejects.toThrow('Unexpected query: a');
+    responses.set('a', 1);
+
+    expect(await client.fetch('a')).toBe(1);
+    expect(await client.fetch('a')).toBe(1);
+    expect(inner.requests).toHaveLength(2);
+  });
 });

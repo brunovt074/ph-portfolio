@@ -17,7 +17,11 @@ const setStatus = (form: HTMLFormElement, message: string): void => {
 
 const showInputErrors = (controller: BookingFormController, fields: Record<string, string[] | undefined>): void => {
   const messages = bookingFieldMessages(controller.texts);
-  Object.keys(fields).forEach((name) => showBookingFieldError(controller.form, name, messages[name] ?? controller.texts.errorGeneric));
+  const slotMode = controller.form.dataset['scheduleMode'] === 'slots';
+  Object.keys(fields).forEach((name) => {
+    const target = slotMode && name === 'fecha' ? 'slot' : name;
+    showBookingFieldError(controller.form, target, messages[target] ?? controller.texts.errorGeneric);
+  });
   setStatus(controller.form, controller.texts.fieldErrors);
   focusFirstInvalidField(controller.form);
 };
@@ -34,7 +38,8 @@ const reject = (controller: BookingFormController, problem: BookingProblem): voi
       focusFirstInvalidField(form);
     },
     slot_required: () => {
-      showBookingFieldError(form, 'slot', texts.errorSlot);
+      const field = form.dataset['scheduleMode'] === 'slots' ? 'slot' : 'fecha';
+      showBookingFieldError(form, field, field === 'slot' ? texts.errorSlot : texts.errorDate);
       focusFirstInvalidField(form);
     },
     slot_taken: () => {

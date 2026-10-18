@@ -13,6 +13,7 @@ export class CachedSanityClient implements SanityClientPort {
     }
     const pending = this.inner.fetch<T>(query, params);
     this.cache.set(key, pending);
+    pending.catch(() => this.cache.delete(key));
     return pending;
   }
 }

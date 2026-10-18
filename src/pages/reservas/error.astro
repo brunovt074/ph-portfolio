@@ -1,6 +1,7 @@
 ---
 import ContactResult from '@/components/contact/ContactResult.astro';
-import { bookingFieldNames, bookingValidationMessages } from '@/actions/bookingValidationMessages';
+import { bookingFieldNames } from '@/actions/bookingValidationMessages';
+import { bookingFieldMessages } from '@/forms/booking/bookingFieldMessages';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
 import { pathTo } from '@/domain/routing/pathTo';
 import { contentRepository } from '@/infrastructure/container';
@@ -19,7 +20,8 @@ const reasons: Record<string, string> = {
 };
 
 const fields = (Astro.url.searchParams.get('campos') ?? '').split(',');
-const problems = bookingFieldNames.filter((name) => fields.includes(name)).map((name) => bookingValidationMessages[name]);
+const messages = bookingFieldMessages(booking);
+const problems = bookingFieldNames.filter((name) => fields.includes(name)).map((name) => messages[name] ?? booking.errorGeneric);
 const reason = Astro.url.searchParams.get('motivo') ?? '';
 const lead = Object.hasOwn(reasons, reason) ? (reasons[reason] as string) : booking.errorPageLead;
 ---

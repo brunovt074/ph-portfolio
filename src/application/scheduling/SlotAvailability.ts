@@ -23,19 +23,27 @@ export class SlotAvailability {
 
   async freeSlots({ settings, durationMinutes, from, to, now }: FreeSlotsQuery): Promise<DaySlots[]> {
     const range = widen(daysRange(from, to, settings.timeZone), settings.bufferMinutes);
-    const busy = await this.busyIn(range, now, null);
+    const busy = [...(await this.externalBusy(range)), ...(await this.siteBusy(range, now, null))];
     return generateSlots({ settings, durationMinutes, busy, now, from, to });
   }
 
   async isFree({ settings, range, now, excludeBookingId }: SlotFreeQuery): Promise<boolean> {
-    const busy = await this.busyIn(widen(range, settings.bufferMinutes), now, excludeBookingId);
+    const wide = widen(range, settings.bufferMinutes);
+    const busy = [...(await this.externalBusy(wide)), ...(await this.siteBusy(wide, now, excludeBookingId))];
     return !busy.some((occupied) => overlapsWithBuffer(range, occupied, settings.bufferMinutes));
   }
 
-  private async busyIn(range: TimeRange, now: Date, excludeBookingId: string | null): Promise<TimeRange[]> {
-    const external = this.calendar ? await this.calendar.busy(range) : [];
+  async isFreeOfSiteBookings({ settings, range, now, excludeBookingId }: SlotFreeQuery): Promise<boolean> {
+    const busy = await this.siteBusy(widen(range, settings.bufferMinutes), now, excludeBookingId);
+    return !busy.some((occupied) => overlapsWithBuffer(range, occupied, settings.bufferMinutes));
+  }
+
+  private async externalBusy(range: TimeRange): Promise<TimeRange[]> {
+    return this.calendar ? this.calendar.busy(range) : [];
+  }
+
+  private async siteBusy(range: TimeRange, now: Date, excludeBookingId: string | null): Promise<TimeRange[]> {
     const held = await this.bookings.findBlocking(range, now);
-    const own = held.flatMap((booking) => (booking.id !== excludeBookingId && booking.schedule.kind === 'slot' ? [booking.schedule] : []));
-    return [...external, ...own];
+    return held.flatMap((booking) => (booking.id !== excludeBookingId && booking.schedule.kind === 'slot' ? [booking.schedule] : []));
   }
 }

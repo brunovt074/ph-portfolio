@@ -3,13 +3,15 @@ import type { MercadoPagoApi } from './MercadoPagoApi';
 import type { MercadoPagoPaymentResponse } from './MercadoPagoPaymentResponse';
 import type { MercadoPagoPreferenceResponse } from './MercadoPagoPreferenceResponse';
 
+const REQUEST_TIMEOUT_MS = 8000;
+
 type PreferenceBody = Parameters<Preference['create']>[0]['body'];
 
 export class MercadoPagoSdkApi implements MercadoPagoApi {
   private readonly config: MercadoPagoConfig;
 
   constructor(accessToken: string) {
-    this.config = new MercadoPagoConfig({ accessToken });
+    this.config = new MercadoPagoConfig({ accessToken, options: { timeout: REQUEST_TIMEOUT_MS } });
   }
 
   createPreference(body: Record<string, unknown>): Promise<MercadoPagoPreferenceResponse> {

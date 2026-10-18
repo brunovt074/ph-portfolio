@@ -15,6 +15,7 @@ export class SlotPicker {
   private readonly days: HTMLElement;
   private readonly grid: HTMLElement;
   private readonly status: HTMLElement;
+  private readonly caption: HTMLElement;
   private readonly previous: HTMLButtonElement;
   private readonly next: HTMLButtonElement;
   private readonly dayTemplate: HTMLTemplateElement;
@@ -27,6 +28,7 @@ export class SlotPicker {
     this.days = this.part('[data-slot-days]');
     this.grid = this.part('[data-slot-grid]');
     this.status = this.part('[data-slot-status]');
+    this.caption = this.part('[data-days-caption]');
     this.previous = this.part('[data-days-previous]');
     this.next = this.part('[data-days-next]');
     this.dayTemplate = this.part('[data-day-template]');
@@ -89,15 +91,14 @@ export class SlotPicker {
         return;
       }
       if (body.mode === 'request') {
-        this.options.onFallback();
+        this.options.onFallback('');
         return;
       }
       this.slotsByDay = new Map(body.days.filter((day) => day.slots.length > 0).map((day) => [day.date, day.slots]));
       this.show(from);
     } catch {
       if (token === this.requestToken) {
-        this.status.textContent = this.options.texts.slotsError;
-        this.options.onFallback();
+        this.options.onFallback(this.options.texts.slotsError);
       }
     } finally {
       if (token === this.requestToken) {
@@ -108,7 +109,8 @@ export class SlotPicker {
 
   private show(from: string): void {
     const firstFree = Array.from({ length: WINDOW_DAYS }, (_, index) => addDays(from, index)).find((date) => this.slotsByDay.has(date));
-    this.status.textContent = firstFree ? '' : this.options.texts.slotsEmpty;
+    const emptyText = this.beyondHorizon() ? this.options.texts.slotsBeyondHorizon : this.options.texts.slotsEmpty;
+    this.status.textContent = firstFree ? '' : emptyText;
     this.selectedDay = firstFree ?? '';
     this.renderDays(from);
     this.renderSlots();
@@ -116,7 +118,9 @@ export class SlotPicker {
 
   private renderDays(from: string): void {
     const labelFormat = new Intl.DateTimeFormat(this.options.localeTag, { weekday: 'short', timeZone: 'UTC' });
-    const fullFormat = new Intl.DateTimeFormat(this.options.localeTag, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+    const monthFormat = new Intl.DateTimeFormat(this.options.localeTag, { day: 'numeric', month: 'long', timeZone: 'UTC' });
+    const rangeFormat = new Intl.DateTimeFormat(this.options.localeTag, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    this.caption.textContent = rangeFormat.formatRange(new Date(`${from}T12:00:00Z`), new Date(`${addDays(from, WINDOW_DAYS - 1)}T12:00:00Z`));
     this.days.replaceChildren(
       ...Array.from({ length: WINDOW_DAYS }, (_, index) => {
         const date = addDays(from, index);
@@ -125,15 +129,20 @@ export class SlotPicker {
         const button = fragment.querySelector<HTMLButtonElement>('[data-day]');
         const weekday = fragment.querySelector<HTMLElement>('[data-weekday]');
         const number = fragment.querySelector<HTMLElement>('[data-number]');
-        if (!button || !weekday || !number) {
+        const before = fragment.querySelector<HTMLElement>('[data-month-before]');
+        const after = fragment.querySelector<HTMLElement>('[data-month-after]');
+        if (!button || !weekday || !number || !before || !after) {
           return fragment;
         }
+        const parts = monthFormat.formatToParts(instant);
+        const dayIndex = parts.findIndex((part) => part.type === 'day');
         button.dataset['day'] = date;
         button.disabled = !this.slotsByDay.has(date);
-        button.setAttribute('aria-label', fullFormat.format(instant));
         button.setAttribute('aria-pressed', date === this.selectedDay ? 'true' : 'false');
         weekday.textContent = labelFormat.format(instant);
         number.textContent = String(Number(date.slice(8, 10)));
+        before.textContent = parts.slice(0, dayIndex).map((part) => part.value).join('');
+        after.textContent = parts.slice(dayIndex + 1).map((part) => part.value).join('');
         return fragment;
       }),
     );
@@ -171,5 +180,11 @@ export class SlotPicker {
 
   private updateArrows(): void {
     this.previous.disabled = this.windowStart <= todayIn(this.options.timeZone);
+    this.next.disabled = this.beyondHorizon();
+  }
+
+  private beyondHorizon(): boolean {
+    const lastDay = addDays(todayIn(this.options.timeZone), this.options.horizonDays);
+    return addDays(this.windowStart, WINDOW_DAYS) > lastDay;
   }
 }

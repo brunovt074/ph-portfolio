@@ -120,6 +120,8 @@ export interface SiteTexts {
     pricePending: string;
     unavailable: string;
     unavailableLink: string;
+    noOffersLead: string;
+    serviceBookLabel: string;
     scheduleChooseFirst: string;
     dateLabel: string;
     dateHelp: string;
@@ -133,6 +135,7 @@ export interface SiteTexts {
     slotTimesLabel: string;
     slotsLoading: string;
     slotsEmpty: string;
+    slotsBeyondHorizon: string;
     slotsError: string;
     slotsNoScript: string;
     timeZoneNote: string;
@@ -196,6 +199,8 @@ export interface SiteTexts {
     pendingRefresh: string;
     failedTitle: string;
     failedLead: string;
+    awaitingTitle: string;
+    awaitingLead: string;
     slotHold: string;
     retryButton: string;
     expiredTitle: string;

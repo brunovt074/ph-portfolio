@@ -9,6 +9,7 @@ import ServiceColumns from '@/components/facet/ServiceColumns.astro';
 import StaggeredPair from '@/components/facet/StaggeredPair.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetFacetPage } from '@/application/GetFacetPage';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
 import { pathTo } from '@/domain/routing/pathTo';
 import { getBookingCatalog } from '@/infrastructure/getBookingCatalog';
 import { contentRepository } from '@/infrastructure/container';
@@ -16,6 +17,7 @@ import { contentRepository } from '@/infrastructure/container';
 const bookingHref = pathTo('es', { route: 'reservas' });
 const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute('es', 'retratos');
 const { offers } = await getBookingCatalog().listBookingOffers.execute('es');
+const texts = await new GetSiteTexts(contentRepository).execute('es');
 const bookingLinks = Object.fromEntries(
   offers
     .filter((offer) => offer.bookable)
@@ -35,7 +37,7 @@ const bookingLinks = Object.fromEntries(
   <section class="container section">
     <GridGallery photos={facet.gallery} ratio="3/4" />
   </section>
-  <ServiceColumns title="Sesiones" services={facet.services} numerals="none" bookingLinks={bookingLinks} bookingLabel="Reservar" />
+  <ServiceColumns title="Sesiones" services={facet.services} numerals="none" bookingLinks={bookingLinks} bookingLabel={texts.booking.serviceBookLabel} />
   {facet.quote && <QuoteBand quote={facet.quote} buttonLabel={facet.ctaButton} href={bookingHref} />}
   <Lightbox />
   <FooterNav slot="footer" previous={previous} next={next} settings={settings} />

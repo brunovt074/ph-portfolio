@@ -1,5 +1,6 @@
 import type { Booking } from '@/domain/booking/Booking';
 import type { BookingRepository } from '@/domain/booking/BookingRepository';
+import type { BookingStatus } from '@/domain/booking/BookingStatus';
 import type { TimeRange } from '@/domain/scheduling/TimeRange';
 
 export class InMemoryBookingRepository implements BookingRepository {
@@ -26,6 +27,14 @@ export class InMemoryBookingRepository implements BookingRepository {
 
   async update(booking: Booking): Promise<void> {
     this.stored.set(booking.id, booking);
+  }
+
+  async transition(booking: Booking, expectedStatus: BookingStatus): Promise<boolean> {
+    if (this.stored.get(booking.id)?.status !== expectedStatus) {
+      return false;
+    }
+    this.stored.set(booking.id, booking);
+    return true;
   }
 
   all(): Booking[] {

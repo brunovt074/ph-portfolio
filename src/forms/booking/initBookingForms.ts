@@ -1,3 +1,4 @@
+import { clearBookingFieldError } from './bookingFieldErrors';
 import { BookingFormController } from './BookingFormController';
 import { preselectBookingForm } from './preselectBookingForm';
 import { setDateBounds } from './setDateBounds';
@@ -13,12 +14,15 @@ const startForm = (form: HTMLFormElement): void => {
   setDateBounds(form, form.dataset['timeZone'] ?? 'UTC');
   preselectBookingForm(form);
   controller.refresh();
-  form.addEventListener('change', (event) => {
+  const onEdit = (event: Event): void => {
     const name = (event.target as HTMLInputElement).name;
-    if (name === 'sesion' || name === 'plan') {
+    clearBookingFieldError(form, name);
+    if (event.type === 'change' && (name === 'sesion' || name === 'plan')) {
       controller.refresh();
     }
-  });
+  };
+  form.addEventListener('change', onEdit);
+  form.addEventListener('input', onEdit);
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     void submitBookingForm(controller);

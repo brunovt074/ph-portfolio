@@ -54,6 +54,14 @@ describe('describeBooking', () => {
     const retry = describeBooking(view({ state: 'payment_rejected', schedule: slot }), texts, 'es-AR', zone);
     expect(retry.action).toBe('retry');
     expect(retry.note).toBe('Tu turno queda retenido hasta las 14:30.');
-    expect(describeBooking(view({ state: 'awaiting_payment' }), texts, 'es-AR', zone).note).toBe('');
+  });
+
+  it('does not say nothing was charged while the payment confirmation is still pending', () => {
+    const awaiting = describeBooking(view({ state: 'awaiting_payment' }), texts, 'es-AR', zone);
+    expect(awaiting.title).toBe(texts.awaitingTitle);
+    expect(awaiting.lead).toContain('Todavía no recibí la confirmación del pago');
+    expect(awaiting.lead).not.toContain('No se cobró nada');
+    expect(awaiting.note).toBe('');
+    expect(awaiting.action).toBe('refresh_retry');
   });
 });

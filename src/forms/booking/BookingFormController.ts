@@ -19,12 +19,24 @@ export class BookingFormController {
           endpoint: form.dataset['slotsEndpoint'] ?? '',
           timeZone: form.dataset['timeZone'] ?? 'UTC',
           localeTag: this.localeTag,
-          onFallback: () => applyScheduleMode(form, 'request'),
+          horizonDays: Number(form.dataset['horizonDays'] ?? 90),
+          onFallback: (message) => {
+            applyScheduleMode(form, 'request');
+            this.showNotice(message);
+          },
         })
       : null;
   }
 
+  private showNotice(message: string): void {
+    const notice = this.form.querySelector<HTMLElement>('[data-request-notice]');
+    if (notice) {
+      notice.textContent = message;
+    }
+  }
+
   refresh(): void {
+    this.showNotice('');
     updateAmounts(this.form, this.texts, this.localeTag);
     const offer = findSelectedOffer(this.form);
     if (!offer) {

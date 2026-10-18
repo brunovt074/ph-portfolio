@@ -5,6 +5,7 @@ import type { GoogleFreeBusyResponse } from './GoogleFreeBusyResponse';
 import type { GoogleInsertedEvent } from './GoogleInsertedEvent';
 
 const BASE_URL = 'https://www.googleapis.com/calendar/v3';
+const REQUEST_TIMEOUT_MS = 8000;
 
 export class FetchGoogleCalendarApi implements GoogleCalendarApi {
   constructor(
@@ -32,6 +33,7 @@ export class FetchGoogleCalendarApi implements GoogleCalendarApi {
       }
       const response = await this.request(`${BASE_URL}${path}`, {
         method,
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         ...(body ? { body: JSON.stringify(body) } : {}),
       });

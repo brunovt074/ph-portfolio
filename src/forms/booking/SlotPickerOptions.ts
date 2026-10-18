@@ -5,5 +5,6 @@ export interface SlotPickerOptions {
   endpoint: string;
   timeZone: string;
   localeTag: string;
-  onFallback: () => void;
+  horizonDays: number;
+  onFallback: (message: string) => void;
 }

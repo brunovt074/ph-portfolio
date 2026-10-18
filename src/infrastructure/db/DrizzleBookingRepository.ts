@@ -1,6 +1,7 @@
 import { and, eq, gt, inArray, lt, or } from 'drizzle-orm';
 import type { Booking } from '@/domain/booking/Booking';
 import type { BookingRepository } from '@/domain/booking/BookingRepository';
+import type { BookingStatus } from '@/domain/booking/BookingStatus';
 import type { TimeRange } from '@/domain/scheduling/TimeRange';
 import type { Database } from './Database';
 import { isUuid } from './isUuid';
@@ -42,15 +43,25 @@ export class DrizzleBookingRepository implements BookingRepository {
   }
 
   async update(booking: Booking): Promise<void> {
-    await this.db
+    await this.db.update(bookings).set(this.changesOf(booking)).where(eq(bookings.id, booking.id));
+  }
+
+  async transition(booking: Booking, expectedStatus: BookingStatus): Promise<boolean> {
+    const rows = await this.db
       .update(bookings)
-      .set({
-        status: booking.status,
-        notes: booking.notes,
-        expiresAt: booking.expiresAt,
-        calendarEventId: booking.calendarEventId,
-        updatedAt: new Date(),
-      })
-      .where(eq(bookings.id, booking.id));
+      .set(this.changesOf(booking))
+      .where(and(eq(bookings.id, booking.id), eq(bookings.status, expectedStatus)))
+      .returning({ id: bookings.id });
+    return rows.length > 0;
+  }
+
+  private changesOf(booking: Booking) {
+    return {
+      status: booking.status,
+      notes: booking.notes,
+      expiresAt: booking.expiresAt,
+      calendarEventId: booking.calendarEventId,
+      updatedAt: new Date(),
+    };
   }
 }

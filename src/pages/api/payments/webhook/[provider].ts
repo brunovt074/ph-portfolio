@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getBookingServices } from '@/infrastructure/bookingContainer';
+import { readLimitedBody } from '@/infrastructure/http/readLimitedBody';
 import { ConsoleErrorReporter } from '@/infrastructure/reporting/ConsoleErrorReporter';
 
 export const prerender = false;
@@ -24,8 +25,8 @@ export const POST: APIRoute = async ({ request, params, url }) => {
   if (declaredLength > MAX_BODY_BYTES) {
     return respond({ ok: false }, 413);
   }
-  const text = await request.text();
-  if (text.length > MAX_BODY_BYTES) {
+  const text = await readLimitedBody(request, MAX_BODY_BYTES);
+  if (text === null) {
     return respond({ ok: false }, 413);
   }
   const provider = params['provider'] ?? '';

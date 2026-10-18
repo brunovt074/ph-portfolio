@@ -31,7 +31,7 @@ export const booking = defineAction({
     notas: optionalText(1000, messages.notas),
     acepto: z.string({ error: messages.acepto }).refine((value) => value === 'on', messages.acepto),
     sitio_web: z.string().max(200).nullish().transform((value) => value ?? ''),
-  }),
+  }).refine((value) => Boolean(value.slot || value.fecha), { path: ['fecha'], error: messages.fecha, when: () => true }),
   handler: async (input): Promise<BookingActionResult> => {
     if (input.sitio_web) {
       return { status: 'created', checkoutUrl: pathTo('es', { route: 'reservas' }) };

@@ -46,6 +46,11 @@ const settings = await new GetSiteSettings(contentRepository).execute('es');
     padding-block: var(--section-y);
   }
 
+  .result h1 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
   .result-problems {
     margin: 0;
     padding-left: 1.2em;
