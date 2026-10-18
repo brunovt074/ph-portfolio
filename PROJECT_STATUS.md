@@ -7,7 +7,7 @@ Tailwind CSS v4, despliegue estático. Detalle en `CLAUDE.md` y `docs/`.
 
 | Rama | Estado | Notas |
 |---|---|---|
-| `feature/i18n-editable-texts-2` | Completa (9/9 tareas) | i18n es/en/pt + textos editables. |
+| `feature/i18n-editable-texts-2` | Completa (9/9 tareas + prefijo `/es`) | i18n es/en/pt con URLs prefijadas + textos editables. |
 | `feature/bookings-payments` | En curso | Backend de reservas (seña/total, agenda). Pendiente UI y revisión. |
 
 ## Integración pendiente
