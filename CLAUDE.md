@@ -19,7 +19,7 @@ La home abre con dos entradas grandes:
 
 1. **Encargos** — trabajo comercial, en cuatro facetas, cada una con su propia página y paleta:
    Editorial & Moda · Retratos & Estudio · Marcas · Eventos & Carnaval.
-2. **Obra** — mini-sitio artístico dentro del mismo dominio (`/obra`), con lenguaje propio:
+2. **Obra** — mini-sitio artístico dentro del mismo dominio (`/es/obra`), con lenguaje propio:
    más silencio, más lento, imágenes a pantalla completa, series y copias de autor a la venta.
 
 Mismo logotipo, misma tipografía y mismo rojo de acento en todo el sitio; lo que cambia por
@@ -42,31 +42,32 @@ Antes de instalar, verificá versiones y APIs actuales con el MCP de Context7 (n
 ## Mapa del sitio
 
 ```
-/                       Home: dos puertas + resumen de encargos + teaser de Obra + contacto
-/editorial              Encargos 01
-/retratos               Encargos 02
-/marcas                 Encargos 03 (la página que más vende: paquetes, proceso, antes/después)
-/eventos                Encargos 04
-/obra                   Obra: inicio (manifiesto + índice de series)
-/obra/[serie]           Página de serie (secuencia tipo fotolibro)
-/obra/copias            Tienda de copias de autor (consulta, sin checkout en v1)
+/es/                    Home: dos puertas + resumen de encargos + teaser de Obra + contacto
+/es/editorial           Encargos 01
+/es/retratos            Encargos 02
+/es/marcas              Encargos 03 (la página que más vende: paquetes, proceso, antes/después)
+/es/eventos             Encargos 04
+/es/obra                Obra: inicio (manifiesto + índice de series)
+/es/obra/[serie]        Página de serie (secuencia tipo fotolibro)
+/es/obra/copias         Tienda de copias de autor (consulta, sin checkout en v1)
 /admin                  Sanity Studio
 ```
 
-Español sin prefijo; inglés bajo `/en` y portugués bajo `/pt`, con segmentos traducidos
+Cada idioma bajo su prefijo — `/es`, `/en`, `/pt` — con segmentos traducidos
 (`src/domain/routing/routeSegments.ts`). La URL define el idioma: no hay redirecciones por
-`Accept-Language`. Las páginas sin traducir salen con `noindex`; `/sitemap.xml` lista solo las indexables.
+`Accept-Language`. La raíz `/` redirige a `/es/`. Las páginas sin traducir salen con `noindex`;
+`/sitemap.xml` lista solo las indexables.
 
 | Página | es | en | pt |
 |---|---|---|---|
-| Home | `/` | `/en/` | `/pt/` |
-| Editorial | `/editorial` | `/en/editorial` | `/pt/editorial` |
-| Retratos | `/retratos` | `/en/portraits` | `/pt/retratos` |
-| Marcas | `/marcas` | `/en/brands` | `/pt/marcas` |
-| Eventos | `/eventos` | `/en/events` | `/pt/eventos` |
-| Obra | `/obra` | `/en/work` | `/pt/obra` |
-| Copias | `/obra/copias` | `/en/work/prints` | `/pt/obra/copias` |
-| Serie | `/obra/{slug}` | `/en/work/{slug}` | `/pt/obra/{slug}` |
+| Home | `/es/` | `/en/` | `/pt/` |
+| Editorial | `/es/editorial` | `/en/editorial` | `/pt/editorial` |
+| Retratos | `/es/retratos` | `/en/portraits` | `/pt/retratos` |
+| Marcas | `/es/marcas` | `/en/brands` | `/pt/marcas` |
+| Eventos | `/es/eventos` | `/en/events` | `/pt/eventos` |
+| Obra | `/es/obra` | `/en/work` | `/pt/obra` |
+| Copias | `/es/obra/copias` | `/en/work/prints` | `/pt/obra/copias` |
+| Serie | `/es/obra/{slug}` | `/en/work/{slug}` | `/pt/obra/{slug}` |
 
 Detalle de cada página, sección por sección: `docs/02-paginas.md`.
 

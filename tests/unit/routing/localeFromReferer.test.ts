@@ -6,8 +6,8 @@ describe('localeFromReferer', () => {
     expect(localeFromReferer('https://laravischi.com/en/work/prints')).toBe('en');
   });
 
-  it('answers in Spanish when the form was sent from an unprefixed page', () => {
-    expect(localeFromReferer('https://laravischi.com/marcas')).toBe('es');
+  it('answers in Spanish when the form was sent from a Spanish page', () => {
+    expect(localeFromReferer('https://laravischi.com/es/marcas')).toBe('es');
   });
 
   it('answers in Spanish when the browser sends no referer', () => {

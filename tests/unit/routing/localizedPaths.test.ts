@@ -9,6 +9,12 @@ describe('localizedPaths', () => {
     ]);
   });
 
+  it('lists every Spanish page with its prefix', () => {
+    expect(localizedPaths('es', ['oficios']).map((entry) => entry.path)).toEqual([
+      '/es/', '/es/editorial', '/es/retratos', '/es/marcas', '/es/eventos', '/es/obra', '/es/obra/copias', '/es/reservas', '/es/obra/oficios',
+    ]);
+  });
+
   it('describes series entries with their route and slug', () => {
     expect(localizedPaths('pt', ['oficios']).at(-1)).toEqual({ locale: 'pt', path: '/pt/obra/oficios', route: 'serie', slug: 'oficios' });
   });

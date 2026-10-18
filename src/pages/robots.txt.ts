@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = ({ site }) => {
   const sitemap = new URL('/sitemap.xml', site).href;
-  return new Response(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /contacto/\n\nSitemap: ${sitemap}\n`, {
+  return new Response(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /contacto/\nDisallow: /es/contacto/\nDisallow: /en/contacto/\nDisallow: /pt/contacto/\n\nSitemap: ${sitemap}\n`, {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   });
 };

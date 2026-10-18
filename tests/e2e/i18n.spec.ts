@@ -2,6 +2,14 @@ import { expect, test } from '@playwright/test';
 import { defaultSiteTexts } from '../../src/infrastructure/texts/defaults/defaultSiteTexts';
 
 const localizedRoutes = [
+  '/es/',
+  '/es/editorial',
+  '/es/retratos',
+  '/es/marcas',
+  '/es/eventos',
+  '/es/obra',
+  '/es/obra/copias',
+  '/es/obra/oficios',
   '/en/',
   '/en/portraits',
   '/en/brands',
@@ -20,7 +28,8 @@ test('every translated route answers 200 with one h1 and its html lang', async (
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
     await expect(page.locator('h1'), route).toHaveCount(1);
-    await expect(page.locator('html'), route).toHaveAttribute('lang', route.startsWith('/en') ? 'en' : 'pt-BR');
+    const lang = route.startsWith('/es') ? 'es-AR' : route.startsWith('/en') ? 'en' : 'pt-BR';
+    await expect(page.locator('html'), route).toHaveAttribute('lang', lang);
   }
 });
 
@@ -28,24 +37,30 @@ test('an untranslated English page is not indexed and points to the Spanish one'
   await page.goto('/en/portraits');
 
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/retratos$/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/es\/retratos$/);
   await expect(page.locator('link[hreflang]')).toHaveCount(0);
 });
 
 test('the sitemap lists only Spanish pages while nothing is translated', async ({ request }) => {
   const body = await (await request.get('/sitemap.xml')).text();
 
-  expect(body).toContain('/retratos</loc>');
+  expect(body).toContain('/es/retratos</loc>');
   expect(body).not.toContain('/en/');
   expect(body).not.toContain('/pt/');
 });
 
 test('language switcher keeps the visitor on the same page', async ({ page, viewport }) => {
-  await page.goto('/retratos');
+  await page.goto('/es/retratos');
   if (viewport && viewport.width < 900) await page.getByRole('button', { name: 'Menú' }).click();
   await page.getByRole('link', { name: 'EN', exact: true }).filter({ visible: true }).click();
 
   await expect(page).toHaveURL(/\/en\/portraits$/);
+});
+
+test('root permanently redirects to the Spanish home', async ({ request }) => {
+  const response = await request.get('/', { maxRedirects: 0 });
+  expect(response.status()).toBe(301);
+  expect(response.headers().location).toBe('/es/');
 });
 
 test('internal links never leave the visitor language', async ({ page }) => {

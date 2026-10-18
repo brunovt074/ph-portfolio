@@ -9,7 +9,7 @@ import { contentRepository } from '@/infrastructure/container';
 
 export const prerender = false;
 
-const locale = parseLocale(Astro.url.searchParams.get('idioma'));
+const locale = parseLocale(Astro.params.locale);
 const texts = await new GetSiteTexts(contentRepository).execute(locale);
 const fields = (Astro.url.searchParams.get('campos') ?? '').split(',');
 const problems = (Object.keys(fieldErrorKeys) as FieldName[])
