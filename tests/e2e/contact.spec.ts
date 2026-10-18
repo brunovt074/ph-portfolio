@@ -16,7 +16,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('contact form with JavaScript', () => {
   test('shows a message under every required field that is empty', async ({ page }) => {
-    await page.goto('/#contacto');
+    await page.goto('/es/#contacto');
     await page.locator('#contacto-nombre').waitFor();
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
 
@@ -31,7 +31,7 @@ test.describe('contact form with JavaScript', () => {
   });
 
   test('flags an invalid email without losing what was typed', async ({ page }) => {
-    await page.goto('/#contacto');
+    await page.goto('/es/#contacto');
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
     await page.locator('#contacto-nombre').fill(validInquiry.nombre);
     await page.locator('#contacto-email').fill('no-es-un-email');
@@ -45,7 +45,7 @@ test.describe('contact form with JavaScript', () => {
   });
 
   test('confirms a valid inquiry inline and clears the form', async ({ page }) => {
-    await page.goto('/#contacto');
+    await page.goto('/es/#contacto');
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
     await page.locator('#contacto-nombre').fill(validInquiry.nombre);
     await page.locator('#contacto-email').fill(validInquiry.email);
@@ -60,7 +60,7 @@ test.describe('contact form with JavaScript', () => {
   });
 
   test('pretends success to a bot that fills the hidden field', async ({ page }) => {
-    await page.goto('/#contacto');
+    await page.goto('/es/#contacto');
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
     await page.locator('#contacto-nombre').fill(validInquiry.nombre);
     await page.locator('#contacto-email').fill(validInquiry.email);
@@ -75,7 +75,7 @@ test.describe('contact form with JavaScript', () => {
   });
 
   test('keeps the honeypot out of the tab order and away from screen readers', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/es/');
 
     const trap = page.locator('.trap input[name="sitio_web"]');
 
@@ -85,14 +85,14 @@ test.describe('contact form with JavaScript', () => {
   });
 
   test('preselects the work type coming from a page about brands', async ({ page }) => {
-    await page.goto('/?tipo=marcas#contacto');
+    await page.goto('/es/?tipo=marcas#contacto');
 
     await expect(page.locator('#contacto-tipo')).toHaveValue('Marca / producto');
   });
 
   test('preselects the work type when arriving from another page', async ({ page }) => {
-    await page.goto('/marcas');
-    await page.locator('a[href="/?tipo=marcas#contacto"]:visible').first().click();
+    await page.goto('/es/marcas');
+    await page.locator('a[href="/es/?tipo=marcas#contacto"]:visible').first().click();
 
     await expect(page).toHaveURL(/tipo=marcas/);
     await expect(page.locator('#contacto-tipo')).toHaveValue('Marca / producto');
@@ -101,13 +101,13 @@ test.describe('contact form with JavaScript', () => {
 
 test.describe('print inquiry in Obra', () => {
   test('lets a collector ask about a print without leaving Obra', async ({ page }) => {
-    await page.goto('/obra/copias');
+    await page.goto('/es/obra/copias');
     const firstCard = page.locator('.print-card').first();
     const title = (await firstCard.locator('h2').innerText()).trim();
 
     await firstCard.getByRole('link').click();
 
-    await expect(page).toHaveURL(/\/obra\/copias\/?\?copia=.*#consulta/);
+    await expect(page).toHaveURL(/\/es\/obra\/copias\/?\?copia=.*#consulta/);
     await expect(page.locator('#consulta-copia')).toHaveValue(title);
     await expect(page.locator('#consulta-mensaje')).toHaveValue(`Hola, me interesa la copia "${title}".`);
     await expect(page.locator('#consulta select[name="tipo"]')).toHaveCount(0);
@@ -115,7 +115,7 @@ test.describe('print inquiry in Obra', () => {
   });
 
   test('sends the print inquiry and confirms it', async ({ page }) => {
-    await page.goto('/obra/copias?copia=Sin%20t%C3%ADtulo#consulta');
+    await page.goto('/es/obra/copias?copia=Sin%20t%C3%ADtulo#consulta');
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('#consulta [data-contact-form]')?.dataset.ready === 'true');
     await page.locator('#consulta-nombre').fill(validInquiry.nombre);
     await page.locator('#consulta-email').fill(validInquiry.email);
@@ -128,7 +128,7 @@ test.describe('print inquiry in Obra', () => {
   });
 
   test('asks to pick a print when none is chosen', async ({ page }) => {
-    await page.goto('/obra/copias#consulta');
+    await page.goto('/es/obra/copias#consulta');
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('#consulta [data-contact-form]')?.dataset.ready === 'true');
     await page.locator('#consulta-nombre').fill(validInquiry.nombre);
     await page.locator('#consulta-email').fill(validInquiry.email);
@@ -144,14 +144,14 @@ test.describe('contact form without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
   test('sends the inquiry and lands on the thank-you page', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/es/');
     await page.locator('#contacto-nombre').fill(validInquiry.nombre);
     await page.locator('#contacto-email').fill(validInquiry.email);
     await page.locator('#contacto-mensaje').fill(validInquiry.mensaje);
 
     await page.getByRole('button', { name: 'Enviar consulta' }).click();
 
-    await expect(page).toHaveURL(/\/contacto\/enviado/);
+    await expect(page).toHaveURL(/\/es\/contacto\/enviado$/);
     await expect(page.locator('h1')).toHaveText('¡Gracias por escribir!');
   });
 
@@ -164,7 +164,7 @@ test.describe('contact form without JavaScript', () => {
 
     expect(response.status()).toBe(303);
     const location = response.headers().location ?? '';
-    expect(location).toBe('/contacto/error?campos=nombre,email,mensaje&idioma=es');
+    expect(location).toBe('/es/contacto/error?campos=nombre,email,mensaje');
 
     await page.goto(location);
     await expect(page.locator('h1')).toHaveText('No se pudo enviar');
@@ -181,10 +181,10 @@ test.describe('contact form without JavaScript', () => {
     const blocked = await send();
 
     expect(blocked.status()).toBe(303);
-    expect(blocked.headers().location).toBe('/contacto/error?motivo=limite&idioma=es');
+    expect(blocked.headers().location).toBe('/es/contacto/error?motivo=limite');
 
     await page.setExtraHTTPHeaders(headers);
-    await page.goto('/contacto/error?motivo=limite&idioma=es');
+    await page.goto('/es/contacto/error?motivo=limite');
     await expect(page.locator('.t-lead')).toHaveText('Recibimos muchas consultas desde tu conexión. Probá de nuevo en unos minutos.');
   });
 });
@@ -196,7 +196,7 @@ test.describe('contact form rate limit with JavaScript', () => {
       await request.post('/contacto/enviar', { headers, form: { nombre: 'S', email: 'roto', mensaje: 'corto' }, maxRedirects: 0 });
     }
     await page.setExtraHTTPHeaders(headers);
-    await page.goto('/#contacto');
+    await page.goto('/es/#contacto');
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');
     await page.locator('#contacto-nombre').fill(validInquiry.nombre);
     await page.locator('#contacto-email').fill(validInquiry.email);
@@ -246,7 +246,7 @@ test.describe('contact form in English and Portuguese', () => {
 
       await page.getByRole('button', { name: defaultSiteTexts.pt.contact.submit }).click();
 
-      await expect(page).toHaveURL(/\/contacto\/enviado\?idioma=pt$/);
+      await expect(page).toHaveURL(/\/pt\/contacto\/enviado$/);
       await expect(page.locator('h1')).toHaveText(defaultSiteTexts.pt.contact.sentTitle);
       await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
     });
@@ -259,9 +259,9 @@ test.describe('contact form in English and Portuguese', () => {
       }
       const blocked = await send();
 
-      expect(blocked.headers().location).toBe('/contacto/error?motivo=limite&idioma=en');
+      expect(blocked.headers().location).toBe('/en/contacto/error?motivo=limite');
 
-      await page.goto('/contacto/error?motivo=limite&idioma=en');
+      await page.goto('/en/contacto/error?motivo=limite');
       await expect(page.locator('.t-lead')).toHaveText(defaultSiteTexts.en.contact.rateLimited);
     });
   });

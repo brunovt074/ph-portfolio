@@ -16,21 +16,21 @@ describe('GetSeriesPage', () => {
 
     expect(page.series.title).toBe('Oficios');
     expect(page.previous).toBeNull();
-    expect(page.next).toEqual({ label: 'II. Geometrías', href: '/obra/geometrias' });
+    expect(page.next).toEqual({ label: 'II. Geometrías', href: '/es/obra/geometrias' });
     expect(page.obra.seriesTitle).toBe('Series');
   });
 
   it('opens a middle series with both neighbours', async () => {
     const page = await new GetSeriesPage(repositoryWithPrints()).execute('es', 'geometrias');
 
-    expect(page.previous).toEqual({ label: 'I. Oficios', href: '/obra/oficios' });
-    expect(page.next).toEqual({ label: 'III. Lo que queda', href: '/obra/lo-que-queda' });
+    expect(page.previous).toEqual({ label: 'I. Oficios', href: '/es/obra/oficios' });
+    expect(page.next).toEqual({ label: 'III. Lo que queda', href: '/es/obra/lo-que-queda' });
   });
 
   it('opens the last series without a next link', async () => {
     const page = await new GetSeriesPage(repositoryWithPrints()).execute('es', 'viajes-en-color');
 
-    expect(page.previous?.href).toBe('/obra/lo-que-queda');
+    expect(page.previous?.href).toBe('/es/obra/lo-que-queda');
     expect(page.next).toBeNull();
   });
 

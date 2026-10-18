@@ -4,6 +4,8 @@ import { localeFromPath } from '@/domain/routing/localeFromPath';
 
 describe('localeFromPath', () => {
   it('detects the language from the first path segment', () => {
+    expect(localeFromPath('/es/editorial')).toBe('es');
+    expect(localeFromPath('/es/')).toBe('es');
     expect(localeFromPath('/en/portraits')).toBe('en');
     expect(localeFromPath('/pt/')).toBe('pt');
     expect(localeFromPath('/pt')).toBe('pt');

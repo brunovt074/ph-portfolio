@@ -4,7 +4,7 @@
 
 **Goal:** El sitio se publica en español, inglés y portugués con URLs traducidas, y Lara puede editar desde `/admin` tanto el contenido de cada idioma como todos los textos fijos de la interfaz.
 
-**Architecture:** El idioma (`Locale`) y el mapa de rutas traducidas viven en `src/domain` como funciones puras. `ContentRepository` recibe el idioma en cada método y devuelve contenido ya resuelto (los tipos de dominio siguen siendo `string`); la resolución por idioma con fallback a español ocurre en los mappers de Sanity con `localize()`. Los textos de interfaz son un tipo `SiteTexts` (dos niveles, hojas `string`) con valores por defecto en código para es/en/pt y un singleton `textosDelSitio` en Sanity que los pisa campo por campo. Las páginas se mueven a vistas (`src/views/*View.astro`) que reciben `locale`; las páginas en español siguen en su lugar y una sola ruta dinámica `src/pages/[locale]/[...path].astro` genera en/pt.
+**Architecture:** El idioma (`Locale`) y el mapa de rutas traducidas viven en `src/domain` como funciones puras. `ContentRepository` recibe el idioma en cada método y devuelve contenido ya resuelto (los tipos de dominio siguen siendo `string`); la resolución por idioma con fallback a español ocurre en los mappers de Sanity con `localize()`. Los textos de interfaz son un tipo `SiteTexts` (dos niveles, hojas `string`) con valores por defecto en código para es/en/pt y un singleton `textosDelSitio` en Sanity que los pisa campo por campo. Las páginas se mueven a vistas (`src/views/*View.astro`) que reciben `locale`; una sola ruta dinámica `src/pages/[locale]/[...path].astro` genera es/en/pt.
 
 **Tech Stack:** Astro 7.4 (estático + `@astrojs/node`), Sanity 6 (Studio en `/admin`), Vitest 5 con cobertura v8, Playwright.
 
@@ -19,7 +19,7 @@
 | Tema | Decisión |
 |---|---|
 | Idiomas | `es` (por defecto), `en`, `pt`. Etiquetas HTML: `es-AR`, `en`, `pt-BR`. `og:locale`: `es_AR`, `en_US`, `pt_BR`. |
-| URLs | Español sin prefijo (las URLs actuales no cambian). en/pt con prefijo y segmentos traducidos (tabla abajo). Mejor SEO que repetir los slugs en español. |
+| URLs | es/en/pt con prefijo y segmentos traducidos (tabla abajo); `/` redirige a `/es/`. Mejor SEO que repetir los slugs en español. |
 | Slugs de series | Campo localizado en Sanity (`es` obligatorio, `en`/`pt` opcionales, fallback al de `es`). |
 | Segmentos de página | Fijos en código (`routeSegments`). Cambiar una URL rompe SEO; no se edita desde el admin. |
 | Contenido del CMS | Traducible por campo (`{ es, en, pt }`) en los mismos documentos. Fotos, precios numéricos, órdenes y referencias se comparten entre idiomas. Sin plugin de document-internationalization: no duplica documentos ni fotos. |
@@ -41,15 +41,15 @@
 
 | `RouteKey` | es | en | pt |
 |---|---|---|---|
-| `home` | `/` | `/en/` | `/pt/` |
-| `editorial` | `/editorial` | `/en/editorial` | `/pt/editorial` |
-| `retratos` | `/retratos` | `/en/portraits` | `/pt/retratos` |
-| `marcas` | `/marcas` | `/en/brands` | `/pt/marcas` |
-| `eventos` | `/eventos` | `/en/events` | `/pt/eventos` |
-| `obra` | `/obra` | `/en/work` | `/pt/obra` |
-| `copias` | `/obra/copias` | `/en/work/prints` | `/pt/obra/copias` |
-| `serie` | `/obra/{slug}` | `/en/work/{slug}` | `/pt/obra/{slug}` |
-| `reservas` | `/reservas` | `/en/bookings` | `/pt/reservas` |
+| `home` | `/es/` | `/en/` | `/pt/` |
+| `editorial` | `/es/editorial` | `/en/editorial` | `/pt/editorial` |
+| `retratos` | `/es/retratos` | `/en/portraits` | `/pt/retratos` |
+| `marcas` | `/es/marcas` | `/en/brands` | `/pt/marcas` |
+| `eventos` | `/es/eventos` | `/en/events` | `/pt/eventos` |
+| `obra` | `/es/obra` | `/en/work` | `/pt/obra` |
+| `copias` | `/es/obra/copias` | `/en/work/prints` | `/pt/obra/copias` |
+| `serie` | `/es/obra/{slug}` | `/en/work/{slug}` | `/pt/obra/{slug}` |
+| `reservas` | `/es/reservas` | `/en/bookings` | `/pt/reservas` |
 
 La página y la vista de `reservas` las crea `feature/bookings-payments` (ver "Coordinación"). Esta rama solo agrega la clave y sus segmentos.
 

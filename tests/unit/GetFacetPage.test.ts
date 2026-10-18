@@ -10,22 +10,22 @@ describe('GetFacetPage', () => {
     const page = await useCase().execute('es', 'editorial');
 
     expect(page.facet.name).toBe('Editorial & Moda');
-    expect(page.previous).toEqual({ label: 'Inicio', href: '/' });
-    expect(page.next).toEqual({ label: 'Retratos & Estudio', href: '/retratos' });
+    expect(page.previous).toEqual({ label: 'Inicio', href: '/es/' });
+    expect(page.next).toEqual({ label: 'Retratos & Estudio', href: '/es/retratos' });
   });
 
   it('lets a visitor of Retratos go back to Editorial and continue to Marcas', async () => {
     const page = await useCase().execute('es', 'retratos');
 
-    expect(page.previous).toEqual({ label: 'Editorial & Moda', href: '/editorial' });
-    expect(page.next).toEqual({ label: 'Marcas', href: '/marcas' });
+    expect(page.previous).toEqual({ label: 'Editorial & Moda', href: '/es/editorial' });
+    expect(page.next).toEqual({ label: 'Marcas', href: '/es/marcas' });
   });
 
   it('lets a visitor of Eventos go back to Marcas and continue to Obra', async () => {
     const page = await useCase().execute('es', 'eventos');
 
-    expect(page.previous).toEqual({ label: 'Marcas', href: '/marcas' });
-    expect(page.next).toEqual({ label: 'Obra', href: '/obra' });
+    expect(page.previous).toEqual({ label: 'Marcas', href: '/es/marcas' });
+    expect(page.next).toEqual({ label: 'Obra', href: '/es/obra' });
     expect(page.settings.instagram).toHaveLength(1);
   });
 

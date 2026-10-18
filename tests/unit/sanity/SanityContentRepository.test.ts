@@ -197,8 +197,8 @@ describe('SanityContentRepository', () => {
     it('maps both doors with their destinations', async () => {
       const home = await repositoryWith().getHome('es');
 
-      expect(home.encargosDoor).toMatchObject({ href: '/#encargos', label: 'Puerta 1', subtitle: 'Editorial · Retratos · Marcas · Eventos' });
-      expect(home.obraDoor).toMatchObject({ href: '/obra', title: [{ text: 'Obra', italic: true }] });
+      expect(home.encargosDoor).toMatchObject({ href: '/es/#encargos', label: 'Puerta 1', subtitle: 'Editorial · Retratos · Marcas · Eventos' });
+      expect(home.obraDoor).toMatchObject({ href: '/es/obra', title: [{ text: 'Obra', italic: true }] });
     });
 
     it('maps thumbnails, strips, services and contact texts', async () => {
