@@ -5,6 +5,9 @@ import Button from '@/components/Button.astro';
 import RichText from '@/components/RichText.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import type { Locale } from '@/domain/Locale';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { contentRepository } from '@/infrastructure/container';
 import { parseRichTitle } from '@/infrastructure/seed/parseRichTitle';
 
@@ -14,15 +17,26 @@ interface Props {
   problems?: string[];
   backLabel: string;
   backHref: string;
+  locale: Locale;
 }
 
-const { title, lead, problems = [], backLabel, backHref } = Astro.props;
+const { title, lead, problems = [], backLabel, backHref, locale } = Astro.props;
 const richTitle = parseRichTitle(title);
 const plainTitle = richTitle.map((segment) => segment.text).join('');
-const settings = await new GetSiteSettings(contentRepository).execute('es');
+const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute(locale), new GetSiteTexts(contentRepository).execute(locale)]);
+const alternates = alternatePaths(() => ({ route: 'home' }));
 ---
-<BaseLayout title={plainTitle} description={lead} theme="ink" noindex>
-  <Header slot="header" />
+<BaseLayout
+  title={plainTitle}
+  description={lead}
+  theme="ink"
+  noindex
+  locale={locale}
+  translations={{ es: true, en: false, pt: false }}
+  alternates={alternates}
+  skipLabel={texts.a11y.skipToContent}
+>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} />
   <section class="section">
     <div class="container result">
       <h1 class="t-display" data-split><RichText title={richTitle} /></h1>
@@ -35,7 +49,7 @@ const settings = await new GetSiteSettings(contentRepository).execute('es');
       <Button href={backHref} variant="primary">{backLabel}</Button>
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale={locale} texts={texts} />
 </BaseLayout>
 
 <style>

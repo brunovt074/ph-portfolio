@@ -6,16 +6,18 @@ interface Props {
   title: string;
   cta: string;
   packages: BrandPackage[];
+  href: string;
+  featuredLabel: string;
 }
 
-const { title, cta, packages } = Astro.props;
+const { title, cta, packages, href, featuredLabel } = Astro.props;
 const ordered = [...packages].sort((a, b) => a.order - b.order);
 ---
 <section data-theme="ink" class="section">
   <div class="container">
     <h2 class="t-h2">{title}</h2>
     <div class="grid">
-      {ordered.map((pack) => <PackageCard pack={pack} cta={cta} />)}
+      {ordered.map((pack) => <PackageCard pack={pack} cta={cta} href={href} featuredLabel={featuredLabel} />)}
     </div>
   </div>
 </section>

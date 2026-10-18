@@ -7,6 +7,7 @@ import Header from '@/components/Header.astro';
 import RichText from '@/components/RichText.astro';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { pathTo } from '@/domain/routing/pathTo';
 import { localeTagOf } from '@/formatting/localeTag';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -32,6 +33,7 @@ if (!status.ok) {
 }
 const view = status.value;
 const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute('es'), new GetSiteTexts(contentRepository).execute('es')]);
+const alternates = alternatePaths(() => ({ route: 'reservas' }));
 const booking = texts.booking;
 const localeTag = localeTagOf('es');
 const description = describeBooking(view, booking, localeTag, services.timeZone);
@@ -41,8 +43,8 @@ const newBookingHref = pathTo('es', { route: 'reservas', query: { sesion: view.o
 const contactHref = pathTo('es', { route: 'home', query: { tipo: 'retratos' }, hash: 'contacto' });
 Astro.response.headers.set('Cache-Control', 'no-store');
 ---
-<BaseLayout title={plainTitle} description={description.lead} theme="paper" noindex>
-  <Header slot="header" current="reservas" />
+<BaseLayout title={plainTitle} description={description.lead} theme="paper" noindex locale="es" translations={{ es: true, en: false, pt: false }} alternates={alternates} skipLabel={texts.a11y.skipToContent}>
+  <Header slot="header" locale="es" texts={texts} alternates={alternates} current="reservas" />
   <section class="section">
     <div class="container result">
       <p class="t-eyebrow">{booking.resultEyebrow}</p>
@@ -61,7 +63,7 @@ Astro.response.headers.set('Cache-Control', 'no-store');
       {description.action === 'contact' && <Button href={contactHref} variant="primary">{booking.cancelledButton}</Button>}
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale="es" texts={texts} />
 </BaseLayout>
 
 <style>

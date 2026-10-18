@@ -53,6 +53,8 @@ export const ptTexts: SiteTexts = {
     untitled: 'Sem título',
     obraEyebrow: 'Obra',
     seriesEyebrow: 'Série {number} · {count} fotografias · {years}',
+    seriesChapter: '{count} fotografias · {years}',
+    serieNumber: 'Série {number}',
     printsInquiryTitle: 'Consulte uma cópia',
     eventsTicker: 'Carnaval, Comparsas, Shows, Palco, Sociais',
   },

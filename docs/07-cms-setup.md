@@ -33,6 +33,7 @@ En el hosting definí `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SITE
 1. `npm run seed -- --dry-run` muestra el plan sin tocar la red.
 2. `npm run seed` sube las imágenes (usa `assets/fotos-dev/`, que sale de `fotos-alta/` si existe y si no de `fotos-baja/`) y crea los documentos con ids fijos (`foto-ed01`, `faceta-editorial`, `serie-oficios`, `copia-au03`, `paquete-esencial`, `ajustes`, `paginaInicio`...). Es repetible: reemplaza lo que tenga el mismo id, así que no lo corras después de que Sarah editó contenido.
 3. Para reemplazar una foto provisoria por la definitiva, Sarah cambia solo la imagen del documento `foto`.
+4. Si el dataset ya tenía contenidos creados antes del soporte de idiomas, corré una vez la migración `localize-fields` (desde el directorio `migrations/localize-fields`: `npx sanity migration run localize-fields` con las variables de Sanity del proyecto) antes de abrir el Studio. Envuelve los textos planos en `{ es: … }` y es idempotente: volver a correrla no produce cambios.
 
 ## 4. Studio
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { formatContactEmail } from '@/infrastructure/email/formatContactEmail';
 
-const base = { name: 'Sofía Paredes', email: 'sofia@marca.com', type: 'Marca / producto', message: 'Hola Sarah, quiero un presupuesto.', copy: '' };
+const base = { name: 'Sofía Paredes', email: 'sofia@marca.com', type: 'Marca / producto', message: 'Hola Sarah, quiero un presupuesto.', copy: '', locale: 'es' as const };
 
 describe('formatContactEmail', () => {
   it('builds the subject Sarah sees in her inbox', () => {
@@ -10,8 +10,13 @@ describe('formatContactEmail', () => {
 
   it('writes every field in a plain text body', () => {
     expect(formatContactEmail(base).text).toBe(
-      'Nombre: Sofía Paredes\nEmail: sofia@marca.com\nTipo de trabajo: Marca / producto\n\nHola Sarah, quiero un presupuesto.',
+      'Nombre: Sofía Paredes\nEmail: sofia@marca.com\nTipo de trabajo: Marca / producto\nIdioma: Español\n\nHola Sarah, quiero un presupuesto.',
     );
+  });
+
+  it('names the visitor language in the email', () => {
+    expect(formatContactEmail({ ...base, locale: 'pt' }).text).toContain('Idioma: Portugués');
+    expect(formatContactEmail({ ...base, locale: 'en' }).text).toContain('Idioma: Inglés');
   });
 
   it('labels an inquiry without a work type as general', () => {

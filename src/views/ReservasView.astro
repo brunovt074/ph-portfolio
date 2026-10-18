@@ -8,6 +8,7 @@ import { GetFacetPage } from '@/application/GetFacetPage';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
 import type { Locale } from '@/domain/Locale';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getBookingCatalog } from '@/infrastructure/getBookingCatalog';
 import { contentRepository } from '@/infrastructure/container';
@@ -19,16 +20,17 @@ interface Props {
 
 const { locale } = Astro.props;
 const catalog = getBookingCatalog();
-const [settings, texts, { offers }, retratos] = await Promise.all([
+const [settings, texts, { offers, translations }, retratos] = await Promise.all([
   new GetSiteSettings(contentRepository).execute(locale),
   new GetSiteTexts(contentRepository).execute(locale),
   catalog.listBookingOffers.execute(locale),
   new GetFacetPage(contentRepository).execute(locale, 'retratos'),
 ]);
 const booking = texts.booking;
+const alternates = alternatePaths(() => ({ route: 'reservas' }));
 ---
-<BaseLayout title={booking.metaTitle} description={booking.metaDescription} theme="paper" image={retratos.facet.gallery[0]}>
-  <Header slot="header" current="reservas" ctaLabel={texts.nav.bookSession} ctaHref="#reserva" />
+<BaseLayout title={booking.metaTitle} description={booking.metaDescription} theme="paper" image={retratos.facet.gallery[0]} locale={locale} translations={translations} alternates={alternates} skipLabel={texts.a11y.skipToContent}>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="reservas" ctaLabel={texts.nav.bookSession} ctaHref="#reserva" />
   <section class="section">
     <div class="container booking">
       <header class="booking-intro">
@@ -43,7 +45,7 @@ const booking = texts.booking;
       </div>
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale={locale} texts={texts} />
 </BaseLayout>
 
 <style>

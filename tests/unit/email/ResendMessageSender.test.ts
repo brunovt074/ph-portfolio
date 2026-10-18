@@ -3,7 +3,7 @@ import { MessageDeliveryError } from '@/domain/MessageDeliveryError';
 import { ResendMessageSender } from '@/infrastructure/email/ResendMessageSender';
 import type { ResendEmailClient, ResendEmailPayload } from '@/infrastructure/email/ResendEmailClient';
 
-const message = { name: 'Sofía Paredes', email: 'sofia@marca.com', type: 'Evento', message: 'Necesito cobertura para una comparsa.', copy: '' };
+const message = { name: 'Sofía Paredes', email: 'sofia@marca.com', type: 'Evento', message: 'Necesito cobertura para una comparsa.', copy: '', locale: 'es' as const };
 
 const clientReturning = (error: { message: string } | null) => {
   const payloads: ResendEmailPayload[] = [];
@@ -30,7 +30,7 @@ describe('ResendMessageSender', () => {
         to: 'sarah@example.com',
         replyTo: 'sofia@marca.com',
         subject: 'Nueva consulta: Evento — Sofía Paredes',
-        text: 'Nombre: Sofía Paredes\nEmail: sofia@marca.com\nTipo de trabajo: Evento\n\nNecesito cobertura para una comparsa.',
+        text: 'Nombre: Sofía Paredes\nEmail: sofia@marca.com\nTipo de trabajo: Evento\nIdioma: Español\n\nNecesito cobertura para una comparsa.',
       },
     ]);
   });

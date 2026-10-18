@@ -5,9 +5,10 @@ import type { Facet } from '@/domain/Facet';
 
 interface Props {
   facet: Facet;
+  href: string;
 }
 
-const { facet } = Astro.props;
+const { facet, href } = Astro.props;
 const eyebrow = `${String(facet.number).padStart(2, '0')} — ${facet.name}`;
 ---
 <section class="container section hero">
@@ -16,7 +17,7 @@ const eyebrow = `${String(facet.number).padStart(2, '0')} — ${facet.name}`;
     <h1 class="t-display" data-split><RichText title={facet.title} /></h1>
     <div class="hero-side">
       <p class="t-lead">{facet.lead}</p>
-      <Button href="/?tipo=marcas#contacto">{facet.ctaButton}</Button>
+      <Button href={href}>{facet.ctaButton}</Button>
     </div>
   </div>
 </section>

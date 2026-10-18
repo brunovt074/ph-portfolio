@@ -3,11 +3,12 @@ import type { InfoItem } from '@/domain/InfoItem';
 
 interface Props {
   items: InfoItem[];
+  aboutLabel: string;
 }
 
-const { items } = Astro.props;
+const { items, aboutLabel } = Astro.props;
 ---
-<section data-theme="ivory" class="info-band" aria-label="Sobre las copias">
+<section data-theme="ivory" class="info-band" aria-label={aboutLabel}>
   <div class="container info-grid">
     {items.map((item) => (
       <div class="info-item">

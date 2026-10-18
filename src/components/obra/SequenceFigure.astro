@@ -10,9 +10,10 @@ interface Props {
   position: number;
   sizes: string;
   layout: SeriesPhoto['layout'];
+  untitledLabel: string;
 }
 
-const { series, entry, position, sizes, layout } = Astro.props;
+const { series, entry, position, sizes, layout, untitledLabel } = Astro.props;
 const { photo } = entry;
 const aspect = photoAspect(photo);
 const first = position === 1;
@@ -27,7 +28,7 @@ const bleed = layout === 'bleed';
     transitionName={first ? `serie-${series.slug}-1` : undefined}
   />
   <figcaption class:list={['sequence-caption', { container: bleed }]} data-caption>
-    {series.number}.{position} — <em>{photo.title ?? 'Sin título'}</em>, {photo.place ?? '[Ciudad]'}, {photo.year ?? '[AÑO]'}
+    {series.number}.{position} — <em>{photo.title ?? untitledLabel}</em>, {photo.place ?? '[Ciudad]'}, {photo.year ?? '[AÑO]'}
   </figcaption>
 </figure>
 

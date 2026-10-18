@@ -35,7 +35,7 @@ const printPlan = (documents: ReturnType<typeof buildDocuments>) => {
     .forEach((source) => console.log(`  missing image file for ${source.id}`));
   console.log(`Documents to createOrReplace: ${documents.length}`);
   countByType.forEach((count, type) => console.log(`  ${type}: ${count}`));
-  console.log('Singletons: ajustes, paginaInicio, paginaMarcas, paginaObra, paginaCopias, agendaReservas');
+  console.log('Singletons: ajustes, paginaInicio, paginaMarcas, paginaObra, paginaCopias, textosDelSitio, agendaReservas');
   console.log(`Sample ids: ${documents.slice(0, 12).map((document) => document._id).join(', ')}`);
 };
 

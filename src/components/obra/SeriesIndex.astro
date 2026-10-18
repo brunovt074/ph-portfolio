@@ -1,18 +1,22 @@
 ---
+import type { Locale } from '@/domain/Locale';
 import type { Series } from '@/domain/Series';
+import type { SiteTexts } from '@/domain/SiteTexts';
 import SeriesChapter from './SeriesChapter.astro';
 
 interface Props {
   title: string;
   series: Series[];
+  locale: Locale;
+  texts: SiteTexts;
 }
 
-const { title, series } = Astro.props;
+const { title, series, locale, texts } = Astro.props;
 ---
 <section id="series" class="series-index container" aria-labelledby="series-title">
   <h2 id="series-title" class="t-h2 series-heading">{title}</h2>
   <div class="series-chapters">
-    {series.map((item, index) => <SeriesChapter series={item} index={index} />)}
+    {series.map((item, index) => <SeriesChapter series={item} index={index} locale={locale} texts={texts} />)}
   </div>
 </section>
 

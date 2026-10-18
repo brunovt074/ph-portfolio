@@ -1,6 +1,7 @@
 ---
 import Button from '@/components/Button.astro';
 import type { Print } from '@/domain/Print';
+import { formatText } from '@/domain/formatText';
 import PassepartoutPhoto from './PassepartoutPhoto.astro';
 
 interface Props {
@@ -8,10 +9,12 @@ interface Props {
   cta: string;
   editionLabel: string;
   priority?: boolean;
+  untitledLabel: string;
+  serieNumberLabel: string;
 }
 
-const { print, cta, editionLabel, priority = false } = Astro.props;
-const title = print.photo.title ?? 'Sin título';
+const { print, cta, editionLabel, priority = false, untitledLabel, serieNumberLabel } = Astro.props;
+const title = print.photo.title ?? untitledLabel;
 const edition = editionLabel
   .replace('{edicion}', String(print.edition))
   .replace('{disponibles}', print.available === null ? '[N]' : String(print.available));
@@ -21,7 +24,7 @@ const inquiryHref = `?copia=${encodeURIComponent(title)}#consulta`;
   <PassepartoutPhoto photo={print.photo} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" priority={priority} />
   <div class="print-body">
     <h2 class="t-h3"><em>{title}</em></h2>
-    <p class="t-eyebrow">Serie {print.series.number} · {print.series.title}</p>
+    <p class="t-eyebrow">{formatText(serieNumberLabel, { number: print.series.number })} · {print.series.title}</p>
     <p class="print-edition">{edition}</p>
     <dl class="print-sizes">
       {print.sizes.map((size) => (

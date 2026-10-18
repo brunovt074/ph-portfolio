@@ -1,13 +1,20 @@
 ---
 import Arrow from '@/components/Arrow.astro';
+import type { SiteTexts } from '@/domain/SiteTexts';
+
+interface Props {
+  texts: SiteTexts['a11y'];
+}
+
+const { texts } = Astro.props;
 ---
-<dialog class="lightbox" aria-label="Foto ampliada" data-lightbox-dialog>
+<dialog class="lightbox" aria-label={texts.lightbox} data-lightbox-dialog>
   <div class="lightbox-stage" data-lightbox-stage>
     <img class="lightbox-image" alt="" data-lightbox-image />
   </div>
-  <button type="button" class="t-nav lightbox-button lightbox-close" data-lightbox-close>Cerrar</button>
-  <button type="button" class="t-nav lightbox-button lightbox-previous" data-lightbox-previous aria-label="Foto anterior"><Arrow direction="left" /></button>
-  <button type="button" class="t-nav lightbox-button lightbox-next" data-lightbox-next aria-label="Foto siguiente"><Arrow direction="right" /></button>
+  <button type="button" class="t-nav lightbox-button lightbox-close" data-lightbox-close>{texts.lightboxClose}</button>
+  <button type="button" class="t-nav lightbox-button lightbox-previous" data-lightbox-previous aria-label={texts.lightboxPrevious}><Arrow direction="left" /></button>
+  <button type="button" class="t-nav lightbox-button lightbox-next" data-lightbox-next aria-label={texts.lightboxNext}><Arrow direction="right" /></button>
 </dialog>
 
 <style is:global>

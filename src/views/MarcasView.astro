@@ -1,0 +1,46 @@
+---
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import BeforeAfterSection from '@/components/brands/BeforeAfterSection.astro';
+import BrandsHero from '@/components/brands/BrandsHero.astro';
+import MoreWork from '@/components/brands/MoreWork.astro';
+import PackagesSection from '@/components/brands/PackagesSection.astro';
+import ProcessSteps from '@/components/brands/ProcessSteps.astro';
+import SectorCards from '@/components/brands/SectorCards.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetBrandsPage } from '@/application/GetBrandsPage';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import type { Locale } from '@/domain/Locale';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import { pathTo } from '@/domain/routing/pathTo';
+import { contentRepository } from '@/infrastructure/container';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const { facet, brands, previous, next, settings } = await new GetBrandsPage(contentRepository).execute(locale);
+const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'marcas' }, hash: 'contacto' });
+const alternates = alternatePaths(() => ({ route: 'marcas' }));
+---
+<BaseLayout
+  title={texts.seo.marcasTitle}
+  description={texts.seo.marcasDescription}
+  theme="sand"
+  image={facet.cover[0]}
+  locale={locale}
+  translations={brands.translations}
+  alternates={alternates}
+  skipLabel={texts.a11y.skipToContent}
+>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="marcas" ctaLabel={brands.headerCta} ctaHref={contactHref} />
+  <BrandsHero facet={facet} href={contactHref} />
+  <SectorCards title={brands.sectorsTitle} sectors={brands.sectors} />
+  <MoreWork title={brands.moreWorkTitle} photos={facet.gallery} />
+  <BeforeAfterSection title={brands.beforeAfterTitle} lead={brands.beforeAfterLead} pairs={brands.beforeAfter} />
+  <ProcessSteps title={brands.processTitle} steps={brands.steps} />
+  <PackagesSection title={brands.packagesTitle} cta={brands.packagesCta} packages={brands.packages} href={contactHref} featuredLabel={texts.pages.featuredPackage} />
+  <FooterNav slot="footer" previous={previous} next={next} settings={settings} locale={locale} texts={texts} />
+</BaseLayout>

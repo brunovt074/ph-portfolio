@@ -3,12 +3,15 @@ import Button from '@/components/Button.astro';
 import Photo from '@/components/Photo.astro';
 import RichText from '@/components/RichText.astro';
 import type { HomeContent } from '@/domain/HomeContent';
+import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
 
 interface Props {
   home: HomeContent;
+  locale: Locale;
 }
 
-const { home } = Astro.props;
+const { home, locale } = Astro.props;
 const photos = home.brandGrid.slice(0, 4);
 const columns = [photos.slice(0, 2), photos.slice(2, 4)];
 ---
@@ -26,7 +29,7 @@ const columns = [photos.slice(0, 2), photos.slice(2, 4)];
         ))}
       </ul>
       <div>
-        <Button href="/marcas" variant="primary">{home.brandsCta}</Button>
+        <Button href={pathTo(locale, { route: 'marcas' })} variant="primary">{home.brandsCta}</Button>
       </div>
     </div>
     <div class="brands-photos">

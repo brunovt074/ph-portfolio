@@ -7,9 +7,10 @@ interface Props {
   numerals: 'roman' | 'none';
   bookingLinks?: Record<string, string>;
   bookingLabel?: string;
+  investmentLabel?: string;
 }
 
-const { title, services, numerals, bookingLinks = {}, bookingLabel = '' } = Astro.props;
+const { title, services, numerals, bookingLinks = {}, bookingLabel = '', investmentLabel = 'Inversión' } = Astro.props;
 const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
 ---
 <section class="container section service-columns">
@@ -22,7 +23,7 @@ const romans = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
         {service.description && <p class="service-description">{service.description}</p>}
         {service.price && (
           <p class="service-price">
-            <span class="t-eyebrow">Inversión</span>
+            <span class="t-eyebrow">{investmentLabel}</span>
             <span class="service-price-value">{service.price}</span>
           </p>
         )}

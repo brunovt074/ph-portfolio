@@ -1,5 +1,7 @@
 ---
 import Button from '@/components/Button.astro';
+import type { Locale } from '@/domain/Locale';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
   workTypes?: string[];
@@ -7,15 +9,17 @@ interface Props {
   copies?: string[];
   idPrefix?: string;
   submitLabel?: string;
+  locale: Locale;
+  texts: SiteTexts['contact'];
 }
 
-const { workTypes = [], variant = 'general', copies = [], idPrefix = 'contacto', submitLabel = 'Enviar consulta' } = Astro.props;
+const { workTypes = [], variant = 'general', copies = [], idPrefix = 'contacto', submitLabel, locale, texts } = Astro.props;
 const isCopyInquiry = variant === 'copia';
 const tipoByQuery: Record<string, string> = {
-  editorial: 'Editorial & moda',
-  retratos: 'Retrato / sesión',
-  marcas: 'Marca / producto',
-  eventos: 'Evento',
+  editorial: texts.workTypeEditorial,
+  retratos: texts.workTypeRetratos,
+  marcas: texts.workTypeMarcas,
+  eventos: texts.workTypeEventos,
 };
 ---
 <form
@@ -25,14 +29,16 @@ const tipoByQuery: Record<string, string> = {
   data-contact-form
   data-variant={variant}
   data-tipos={JSON.stringify(tipoByQuery)}
+  data-messages={JSON.stringify(texts)}
 >
+  <input type="hidden" name="idioma" value={locale} />
   <div class="field">
-    <label class="t-eyebrow" for={`${idPrefix}-nombre`}>Nombre<span aria-hidden="true"> *</span></label>
+    <label class="t-eyebrow" for={`${idPrefix}-nombre`}>{texts.name}<span aria-hidden="true"> *</span></label>
     <input id={`${idPrefix}-nombre`} name="nombre" type="text" required minlength="2" maxlength="80" autocomplete="name" aria-describedby={`${idPrefix}-nombre-error`} />
     <p class="field-error" id={`${idPrefix}-nombre-error`} data-error-for="nombre" hidden></p>
   </div>
   <div class="field">
-    <label class="t-eyebrow" for={`${idPrefix}-email`}>Email<span aria-hidden="true"> *</span></label>
+    <label class="t-eyebrow" for={`${idPrefix}-email`}>{texts.email}<span aria-hidden="true"> *</span></label>
     <input id={`${idPrefix}-email`} name="email" type="email" required autocomplete="email" aria-describedby={`${idPrefix}-email-error`} />
     <p class="field-error" id={`${idPrefix}-email-error`} data-error-for="email" hidden></p>
   </div>
@@ -40,9 +46,9 @@ const tipoByQuery: Record<string, string> = {
     <>
       <input type="hidden" name="tipo" value="Copia de autor" />
       <div class="field">
-        <label class="t-eyebrow" for={`${idPrefix}-copia`}>Copia que te interesa<span aria-hidden="true"> *</span></label>
+        <label class="t-eyebrow" for={`${idPrefix}-copia`}>{texts.copy}<span aria-hidden="true"> *</span></label>
         <select id={`${idPrefix}-copia`} name="copia" required aria-describedby={`${idPrefix}-copia-error`}>
-          <option value="">Elegí una copia</option>
+          <option value="">{texts.chooseCopy}</option>
           {copies.map((copy) => <option value={copy}>{copy}</option>)}
         </select>
         <p class="field-error" id={`${idPrefix}-copia-error`} data-error-for="copia" hidden></p>
@@ -50,16 +56,16 @@ const tipoByQuery: Record<string, string> = {
     </>
   ) : (
     <div class="field">
-      <label class="t-eyebrow" for={`${idPrefix}-tipo`}>Tipo de trabajo</label>
+      <label class="t-eyebrow" for={`${idPrefix}-tipo`}>{texts.workType}</label>
       <select id={`${idPrefix}-tipo`} name="tipo" aria-describedby={`${idPrefix}-tipo-error`}>
-        <option value="">Elegí una opción</option>
+        <option value="">{texts.chooseOption}</option>
         {workTypes.map((type) => <option value={type}>{type}</option>)}
       </select>
       <p class="field-error" id={`${idPrefix}-tipo-error`} data-error-for="tipo" hidden></p>
     </div>
   )}
   <div class="field">
-    <label class="t-eyebrow" for={`${idPrefix}-mensaje`}>Mensaje<span aria-hidden="true"> *</span></label>
+    <label class="t-eyebrow" for={`${idPrefix}-mensaje`}>{texts.message}<span aria-hidden="true"> *</span></label>
     <textarea id={`${idPrefix}-mensaje`} name="mensaje" rows="5" required minlength="10" maxlength="2000" aria-describedby={`${idPrefix}-mensaje-error`}></textarea>
     <p class="field-error" id={`${idPrefix}-mensaje-error`} data-error-for="mensaje" hidden></p>
   </div>
@@ -68,8 +74,8 @@ const tipoByQuery: Record<string, string> = {
     <input id={`${idPrefix}-sitio-web`} name="sitio_web" type="text" tabindex="-1" autocomplete="off" />
   </div>
   <div>
-    <p class="required-note">* Campos obligatorios</p>
-    <Button type="submit" variant="primary">{submitLabel}</Button>
+    <p class="required-note">{texts.requiredNote}</p>
+    <Button type="submit" variant="primary">{submitLabel ?? texts.submit}</Button>
     <p class="form-status" role="status" aria-live="polite" data-form-status></p>
   </div>
 </form>

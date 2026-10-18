@@ -65,6 +65,8 @@ export const siteTextLabels: SiteTextLabels = {
       untitled: 'Foto sin título',
       obraEyebrow: 'Rótulo de la página de Obra',
       seriesEyebrow: 'Rótulo de cada serie',
+      seriesChapter: 'Conteo de fotos de cada serie',
+      serieNumber: 'Etiqueta de serie de cada copia',
       printsInquiryTitle: 'Título de la consulta por una copia',
       eventsTicker: 'Cinta de palabras de Eventos',
     },

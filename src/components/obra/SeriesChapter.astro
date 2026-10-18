@@ -2,14 +2,20 @@
 import Arrow from '@/components/Arrow.astro';
 import Photo from '@/components/Photo.astro';
 import RichText from '@/components/RichText.astro';
+import type { Locale } from '@/domain/Locale';
 import type { Series } from '@/domain/Series';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import { formatText } from '@/domain/formatText';
+import { pathTo } from '@/domain/routing/pathTo';
 
 interface Props {
   series: Series;
   index: number;
+  locale: Locale;
+  texts: SiteTexts;
 }
 
-const { series, index } = Astro.props;
+const { series, index, locale, texts } = Astro.props;
 const ratios = ['3/4', '1/1', '4/5', '3/4'];
 const previewPhotos = series.photos.slice(0, 4);
 const reversed = index % 2 === 1;
@@ -18,10 +24,10 @@ const reversed = index % 2 === 1;
   <div class="chapter-text">
     <span class="chapter-numeral">{series.number}.</span>
     <h3 class="t-h2 chapter-title"><RichText title={series.displayTitle} /></h3>
-    <p class="t-eyebrow">{series.photos.length} fotografías · {series.years}</p>
+    <p class="t-eyebrow">{formatText(texts.pages.seriesChapter, { count: series.photos.length, years: series.years })}</p>
     <p class="t-lead">{series.curatorialLine}</p>
-    <a class="t-nav chapter-link" href={`/obra/${series.slug}`}>
-      <span>Ver serie<span class="sr-only"> {series.title}</span></span>
+    <a class="t-nav chapter-link" href={pathTo(locale, { route: 'serie', slug: series.slug })}>
+      <span>{texts.nav.viewSeries}<span class="sr-only"> {series.title}</span></span>
       <span class="chapter-arrow" aria-hidden="true"><Arrow direction="right" /></span>
     </a>
   </div>

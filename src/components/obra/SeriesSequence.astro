@@ -6,9 +6,10 @@ import SequenceFigure from './SequenceFigure.astro';
 interface Props {
   series: Series;
   screens: SequenceScreen[];
+  untitledLabel: string;
 }
 
-const { series, screens } = Astro.props;
+const { series, screens, untitledLabel } = Astro.props;
 ---
 <div data-sequence data-total={series.photos.length} data-number={series.number}>
   {screens.map((screen) => {
@@ -26,6 +27,7 @@ const { series, screens } = Astro.props;
               position={position}
               layout="pair"
               sizes="(min-width: 768px) 46vw, 100vw"
+              untitledLabel={untitledLabel}
             />
           ))}
         </section>
@@ -40,6 +42,7 @@ const { series, screens } = Astro.props;
           position={screen.position}
           layout={layout}
           sizes={layout === 'bleed' ? '100vw' : '(min-width: 768px) 64vw, 100vw'}
+          untitledLabel={untitledLabel}
         />
       </section>
     );

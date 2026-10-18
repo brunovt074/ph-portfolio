@@ -1,0 +1,55 @@
+---
+import { locales } from '@/domain/Locale';
+import type { Locale } from '@/domain/Locale';
+
+interface Props {
+  locale: Locale;
+  alternates: Record<Locale, string>;
+  label: string;
+}
+
+const { locale, alternates, label } = Astro.props;
+const codes: Record<Locale, string> = { es: 'ES', en: 'EN', pt: 'PT' };
+---
+<nav class="lang-switcher" aria-label={label}>
+  {locales.map((candidate) => (
+    <a
+      class:list={['t-nav', 'lang-switcher-link', candidate === locale && 'is-current']}
+      href={alternates[candidate]}
+      hreflang={candidate}
+      lang={candidate}
+      aria-current={candidate === locale ? 'true' : undefined}
+    >
+      {codes[candidate]}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .lang-switcher-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--tap);
+    min-height: var(--tap);
+    padding-inline: 8px;
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  .lang-switcher-link.is-current {
+    color: var(--accent-current);
+  }
+
+  @media (hover: hover) {
+    .lang-switcher-link:hover {
+      color: var(--fg);
+    }
+  }
+</style>

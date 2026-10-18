@@ -1,6 +1,5 @@
 import node from '@astrojs/node';
 import react from '@astrojs/react';
-import sitemap from '@astrojs/sitemap';
 import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
@@ -20,7 +19,6 @@ export default defineConfig({
   adapter: node({ mode: 'standalone', bodySizeLimit: 1_048_576 }),
   integrations: [
     react(),
-    sitemap({ filter: (page) => !/\/(admin|contacto|api)(\/|$)|\/reservas\/.+/.test(new URL(page).pathname) }),
     ...sanityIntegrations,
   ],
   env: {

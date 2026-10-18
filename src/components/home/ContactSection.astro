@@ -1,23 +1,28 @@
 ---
 import ContactForm from './ContactForm.astro';
 import type { HomeContent } from '@/domain/HomeContent';
+import type { Locale } from '@/domain/Locale';
 import type { SiteSettings } from '@/domain/SiteSettings';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
   home: HomeContent;
   settings: SiteSettings;
+  texts: SiteTexts['contact'];
+  a11y: SiteTexts['a11y'];
+  locale: Locale;
 }
 
-const { home, settings } = Astro.props;
+const { home, settings, texts, a11y, locale } = Astro.props;
 
 const digits = (value: string) => value.replace(/\D/g, '');
 const isPlaceholder = (value: string) => value.startsWith('[');
 const instagramUrl = (account: string) => `https://instagram.com/${account.replace(/^@/, '')}`;
 
 const channels = [
-  { label: 'Email', entries: [{ text: settings.email, href: isPlaceholder(settings.email) ? undefined : `mailto:${settings.email}` }] },
-  { label: 'WhatsApp', entries: [{ text: settings.whatsapp, href: isPlaceholder(settings.whatsapp) ? undefined : `https://wa.me/${digits(settings.whatsapp)}` }] },
-  { label: 'Instagram', entries: settings.instagram.map((account) => ({ text: account, href: isPlaceholder(account) ? undefined : instagramUrl(account) })) },
+  { label: texts.channelEmail, entries: [{ text: settings.email, href: isPlaceholder(settings.email) ? undefined : `mailto:${settings.email}` }] },
+  { label: texts.channelWhatsapp, entries: [{ text: settings.whatsapp, href: isPlaceholder(settings.whatsapp) ? undefined : `https://wa.me/${digits(settings.whatsapp)}` }] },
+  { label: texts.channelInstagram, entries: settings.instagram.map((account) => ({ text: account, href: isPlaceholder(account) ? undefined : instagramUrl(account) })) },
 ];
 ---
 <section id="contacto" class="contact section" data-theme="surface" aria-labelledby="contacto-title">
@@ -25,7 +30,7 @@ const channels = [
     <h2 id="contacto-title" class="t-display contact-title">{home.contactTitle}</h2>
     <p class="t-lead contact-lead">{home.contactLead}</p>
     <div class="contact-form-area">
-      <ContactForm workTypes={home.workTypes} />
+      <ContactForm workTypes={home.workTypes} locale={locale} texts={texts} />
     </div>
     <dl class="contact-list">
       {channels.map((channel) => (
@@ -40,7 +45,7 @@ const channels = [
               return (
                 <a class="contact-link" href={entry.href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>
                   {entry.text}
-                  {external && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
+                  {external && <span class="sr-only"> {a11y.opensInNewTab}</span>}
                 </a>
               );
             })}

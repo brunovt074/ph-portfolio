@@ -1,0 +1,68 @@
+---
+import FilmGrain from '@/components/obra/FilmGrain.astro';
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import RichText from '@/components/RichText.astro';
+import SeriesCounter from '@/components/obra/SeriesCounter.astro';
+import SeriesNav from '@/components/obra/SeriesNav.astro';
+import SeriesPrintsBand from '@/components/obra/SeriesPrintsBand.astro';
+import SeriesSequence from '@/components/obra/SeriesSequence.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { BuildSeriesSequence } from '@/application/BuildSeriesSequence';
+import { GetSeriesPage } from '@/application/GetSeriesPage';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import type { Locale } from '@/domain/Locale';
+import { formatText } from '@/domain/formatText';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import { contentRepository } from '@/infrastructure/container';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const { series, previous, next, prints, obra } = await new GetSeriesPage(contentRepository).execute(locale, slug);
+const settings = await contentRepository.getSettings(locale);
+const screens = new BuildSeriesSequence().execute(series.photos);
+const eyebrow = formatText(texts.pages.seriesEyebrow, { number: series.number, count: series.photos.length, years: series.years });
+const alternates = alternatePaths((targetLocale) => ({ route: 'serie', slug: series.slugs[targetLocale] }));
+---
+<BaseLayout
+  title={series.title}
+  description={series.curatorialLine}
+  theme="obra"
+  image={series.photos[0]?.photo}
+  locale={locale}
+  translations={series.translations}
+  alternates={alternates}
+  skipLabel={texts.a11y.skipToContent}
+>
+  <Header slot="header" variant="obra" locale={locale} texts={texts} alternates={alternates} />
+  <FilmGrain />
+  <section class="series-intro container">
+    <p class="t-eyebrow">{eyebrow}</p>
+    <h1 class="t-display" data-split><RichText title={series.displayTitle} /></h1>
+    <p class="t-lead">{series.curatorialText}</p>
+  </section>
+  <SeriesSequence series={series} screens={screens} untitledLabel={texts.pages.untitled} />
+  <SeriesCounter />
+  {prints.length > 0 && <SeriesPrintsBand band={obra.seriesPrintsBand} locale={locale} />}
+  <SeriesNav previous={previous} next={next} texts={texts} />
+  <FooterNav slot="footer" settings={settings} locale={locale} texts={texts} logoVariant="obra" />
+</BaseLayout>
+
+<style>
+  .series-intro {
+    display: grid;
+    justify-items: center;
+    gap: clamp(24px, 3vw, 40px);
+    padding-block: calc(var(--section-y) * 1.5);
+    text-align: center;
+  }
+
+  .series-intro .t-lead {
+    max-width: 34em;
+  }
+</style>

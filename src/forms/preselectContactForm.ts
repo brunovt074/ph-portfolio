@@ -1,6 +1,10 @@
+import { formatText } from '@/domain/formatText';
+import type { SiteTexts } from '@/domain/SiteTexts';
+
 export const preselectContactForm = (form: HTMLFormElement): void => {
   const params = new URLSearchParams(location.search);
   const tipos: Record<string, string> = JSON.parse(form.dataset.tipos ?? '{}');
+  const messages = JSON.parse(form.dataset.messages ?? '{}') as SiteTexts['contact'];
   const tipo = params.get('tipo');
   const copia = params.get('copia');
   const typeSelect = form.querySelector<HTMLSelectElement>('select[name="tipo"]');
@@ -12,7 +16,7 @@ export const preselectContactForm = (form: HTMLFormElement): void => {
   if (copia && copySelect) {
     copySelect.value = copia;
     if (copySelect.value === copia && message && !message.value) {
-      message.value = `Hola, me interesa la copia "${copia}".`;
+      message.value = formatText(messages.copyMessage, { copy: copia });
     }
   }
 };
