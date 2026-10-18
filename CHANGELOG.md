@@ -20,6 +20,7 @@ proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 
 ### Cambiado
 - Los casos de uso y el repositorio de contenido reciben el idioma (`locale`).
+- Las URLs en español llevan prefijo `/es` (antes sin prefijo); `/` redirige a `/es/`. Las páginas de resultado del formulario quedan bajo `/{idioma}/contacto/…`.
 
 ### Corregido
 - Unicidad de slug de serie por idioma y reserva de slugs fijos (`copias`, `prints`).
