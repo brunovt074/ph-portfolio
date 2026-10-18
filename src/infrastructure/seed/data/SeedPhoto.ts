@@ -8,4 +8,5 @@ export interface SeedPhoto {
   titulo_provisorio?: boolean;
   lugar?: string;
   anio?: number | null;
+  hotspot?: { x: number; y: number; width: number; height: number };
 }

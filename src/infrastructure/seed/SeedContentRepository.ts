@@ -299,7 +299,7 @@ export class SeedContentRepository implements ContentRepository {
   private toPhoto(photo: SeedPhoto): Photo {
     return {
       id: photo.id,
-      asset: { provider: 'local', ref: photo.id },
+      asset: { provider: 'local', ref: photo.id, ...(photo.hotspot !== undefined && { hotspot: { x: photo.hotspot.x, y: photo.hotspot.y } }) },
       alt: photo.alt,
       facet: photo.faceta,
       featured: photo.destacada ?? false,

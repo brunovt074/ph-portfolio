@@ -37,7 +37,7 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
   const photos: SeedDocument[] = seed.fotos.map((photo) => ({
     _id: photoId(photo.id),
     _type: 'foto',
-    imagen: imageField(assetIdOf(photo.id)),
+    imagen: imageField(assetIdOf(photo.id), photo.hotspot),
     alt: localized(photo.alt),
     ...(photo.titulo !== undefined && { titulo: localized(photo.titulo) }),
     ...(photo.titulo_provisorio !== undefined && { tituloProvisorio: photo.titulo_provisorio }),

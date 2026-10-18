@@ -37,6 +37,13 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(home.obraDoor.title).toEqual([{ text: 'Obra', italic: true }]);
   });
 
+  it('keeps the landing hero photo framed on the face so the Encargos label never hides it', async () => {
+    const home = await repository().getHome('es');
+
+    expect(home.encargosDoor.photo.asset.hotspot).toEqual({ x: 0.5, y: 0.25 });
+    expect(home.obraDoor.photo.asset.hotspot).toBeUndefined();
+  });
+
   it('keeps the four facets ordered by number even if the content lists them shuffled', async () => {
     const shuffled = cloneContent();
     shuffled.facets.reverse();
