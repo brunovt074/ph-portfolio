@@ -1,6 +1,6 @@
 # 09 · Deploy en el VPS (Docker + Traefik)
 
-El sitio corre en un contenedor (`Dockerfile` en la raíz) detrás del Traefik de Easypanel. Mientras no haya dominio se usa `https://72-60-247-32.sslip.io` (sslip.io resuelve a la IP del VPS y Traefik pide el certificado a Let's Encrypt).
+El sitio corre en un contenedor (`Dockerfile` en la raíz) detrás del Traefik de Easypanel. Mientras no haya dominio se usa `https://laramoreauph.l6pr0s.easypanel.host`: el dominio comodín `*.l6pr0s.easypanel.host` resuelve a la IP del VPS y Traefik ya tiene su certificado.
 
 ## Piezas en el VPS (`/opt/sarah-moreau`)
 
