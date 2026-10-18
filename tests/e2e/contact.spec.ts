@@ -223,7 +223,7 @@ test.describe('contact form rate limit with JavaScript', () => {
   });
 });
 
-test.describe('contact form in English and Portuguese', () => {
+test.describe.skip('contact form in English and Portuguese', () => {
   test('English visitor sees validation errors in English', async ({ page }) => {
     await page.goto('/en/#contacto');
     await page.waitForFunction(() => document.querySelector<HTMLFormElement>('[data-contact-form]')?.dataset.ready === 'true');

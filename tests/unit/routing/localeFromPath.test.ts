@@ -6,9 +6,11 @@ describe('localeFromPath', () => {
   it('detects the language from the first path segment', () => {
     expect(localeFromPath('/es/editorial')).toBe('es');
     expect(localeFromPath('/es/')).toBe('es');
-    expect(localeFromPath('/en/portraits')).toBe('en');
-    expect(localeFromPath('/pt/')).toBe('pt');
-    expect(localeFromPath('/pt')).toBe('pt');
+  });
+
+  it('falls back to Spanish for disabled languages', () => {
+    expect(localeFromPath('/en/portraits')).toBe('es');
+    expect(localeFromPath('/pt/')).toBe('es');
   });
 
   it('falls back to Spanish for unprefixed paths', () => {
@@ -24,13 +26,15 @@ describe('Locale', () => {
   });
 
   it('recognises supported languages only', () => {
-    expect(isLocale('en')).toBe(true);
+    expect(isLocale('es')).toBe(true);
+    expect(isLocale('en')).toBe(false);
     expect(isLocale('fr')).toBe(false);
     expect(isLocale(undefined)).toBe(false);
   });
 
   it('parses a stored preference and falls back to Spanish', () => {
-    expect(parseLocale('pt')).toBe('pt');
+    expect(parseLocale('es')).toBe('es');
+    expect(parseLocale('pt')).toBe('es');
     expect(parseLocale('fr')).toBe('es');
     expect(parseLocale(null)).toBe('es');
     expect(parseLocale(undefined)).toBe('es');

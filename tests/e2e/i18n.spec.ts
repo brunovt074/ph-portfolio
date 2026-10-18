@@ -23,7 +23,7 @@ const localizedRoutes = [
   '/pt/obra/copias',
 ];
 
-test('every translated route answers 200 with one h1 and its html lang', async ({ page }) => {
+test.skip('every translated route answers 200 with one h1 and its html lang', async ({ page }) => {
   for (const route of localizedRoutes) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
@@ -33,7 +33,7 @@ test('every translated route answers 200 with one h1 and its html lang', async (
   }
 });
 
-test('an untranslated English page is not indexed and points to the Spanish one', async ({ page }) => {
+test.skip('an untranslated English page is not indexed and points to the Spanish one', async ({ page }) => {
   await page.goto('/en/portraits');
 
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
@@ -49,7 +49,7 @@ test('the sitemap lists only Spanish pages while nothing is translated', async (
   expect(body).not.toContain('/pt/');
 });
 
-test('language switcher keeps the visitor on the same page', async ({ page, viewport }) => {
+test.skip('language switcher keeps the visitor on the same page', async ({ page, viewport }) => {
   await page.goto('/es/retratos');
   if (viewport && viewport.width < 900) await page.getByRole('button', { name: 'Menú' }).click();
   await page.getByRole('link', { name: 'EN', exact: true }).filter({ visible: true }).click();
@@ -63,7 +63,7 @@ test('root permanently redirects to the Spanish home', async ({ request }) => {
   expect(response.headers().location).toBe('/es/');
 });
 
-test('internal links never leave the visitor language', async ({ page }) => {
+test.skip('internal links never leave the visitor language', async ({ page }) => {
   for (const route of localizedRoutes) {
     await page.goto(route);
     const prefix = route.slice(0, 4);
@@ -76,7 +76,7 @@ test('internal links never leave the visitor language', async ({ page }) => {
 
 const copyShownFromCms = new Set(['pages.printsInquirySubmit', 'nav.copias', 'seo.copiasTitle', 'booking.unavailable']);
 
-test('interface copy is not left in Spanish on English pages', async ({ page }) => {
+test.skip('interface copy is not left in Spanish on English pages', async ({ page }) => {
   const spanish = defaultSiteTexts.es;
   const english = defaultSiteTexts.en;
   const leftovers: string[] = [];

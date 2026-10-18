@@ -1,6 +1,6 @@
 import type { BookingOffer } from '@/domain/booking/BookingOffer';
 import type { ContentRepository } from '@/domain/ContentRepository';
-import { locales, type Locale } from '@/domain/Locale';
+import { enabledLocales, type Locale } from '@/domain/Locale';
 import { pathTo } from '@/domain/routing/pathTo';
 import type { RouteTarget } from '@/domain/routing/RouteTarget';
 import type { Translations } from '@/domain/Translations';
@@ -12,9 +12,9 @@ interface SitemapPage {
 }
 
 const entriesOf = ({ targetFor, translations }: SitemapPage): SitemapEntry[] => {
-  const translated = locales.filter((locale) => translations[locale]);
+  const translated = enabledLocales.filter((locale) => translations[locale]);
   const pathOf = (locale: Locale) => pathTo(locale, targetFor(locale));
-  const defaultLocale: Locale = translations.en ? 'en' : 'es';
+  const defaultLocale: Locale = 'es';
   const alternates: SitemapEntry['alternates'] = {
     ...Object.fromEntries(translated.map((locale) => [locale, pathOf(locale)])),
     'x-default': pathOf(defaultLocale),
@@ -24,7 +24,7 @@ const entriesOf = ({ targetFor, translations }: SitemapPage): SitemapEntry[] => 
 
 const bookingTranslations = (offers: BookingOffer[]): Translations =>
   Object.fromEntries(
-    locales.map((locale) => [locale, locale === 'es' || (offers.length > 0 && offers.every((offer) => offer.translations[locale]))]),
+    enabledLocales.map((locale) => [locale, locale === 'es' || (offers.length > 0 && offers.every((offer) => offer.translations[locale]))]),
   ) as Translations;
 
 export class ListSitemapEntries {

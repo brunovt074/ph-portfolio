@@ -98,7 +98,7 @@ img {
   .t-list,
   .t-numeral {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 500;
     font-optical-sizing: auto;
     margin: 0;
   }
@@ -125,12 +125,16 @@ img {
     font-size: var(--text-display);
     line-height: var(--leading-display);
     letter-spacing: var(--tracking-display);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 11;
   }
 
   .t-h2 {
     font-size: var(--text-h2);
     line-height: var(--leading-heading);
     letter-spacing: var(--tracking-heading);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 11;
   }
 
   .t-cta {
@@ -138,7 +142,7 @@ img {
     line-height: var(--leading-heading);
     letter-spacing: var(--tracking-heading);
     font-optical-sizing: none;
-    font-variation-settings: "opsz" 28;
+    font-variation-settings: "opsz" 11;
   }
 
   .t-quote {
@@ -146,7 +150,7 @@ img {
     line-height: 1.15;
     letter-spacing: var(--tracking-heading);
     font-optical-sizing: none;
-    font-variation-settings: "opsz" 28;
+    font-variation-settings: "opsz" 11;
   }
 
   .t-h3 {
