@@ -4,12 +4,15 @@ import Button from '@/components/Button.astro';
 import Photo from '@/components/Photo.astro';
 import RichText from '@/components/RichText.astro';
 import type { HomeContent } from '@/domain/HomeContent';
+import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
 
 interface Props {
   home: HomeContent;
+  locale: Locale;
 }
 
-const { home } = Astro.props;
+const { home, locale } = Astro.props;
 const ratios = ['3/4', '4/5', '1/1', '3/4'];
 ---
 <section class="obra-teaser section" data-theme="obra" aria-labelledby="obra-title">
@@ -18,7 +21,7 @@ const ratios = ['3/4', '4/5', '1/1', '3/4'];
       <h2 id="obra-title" class="t-display"><RichText title={home.obraTeaserTitle} /></h2>
       <div class="obra-side">
         <p class="t-lead">{home.obraTeaserLead}</p>
-        <Button href="/obra" variant="secondary">{home.obraTeaserCta}&nbsp;<Arrow direction="right" /></Button>
+        <Button href={pathTo(locale, { route: 'obra' })} variant="secondary">{home.obraTeaserCta}&nbsp;<Arrow direction="right" /></Button>
       </div>
     </div>
     <div class="obra-grid" data-reveal="darkroom">

@@ -1,0 +1,26 @@
+---
+import { ListSeriesSlugs } from '@/application/ListSeriesSlugs';
+import { localizedPaths } from '@/domain/routing/localizedPaths';
+import { contentRepository } from '@/infrastructure/container';
+import { views } from '@/views/views';
+
+export async function getStaticPaths() {
+  const paths: { params: { locale: string; path?: string }; props: { route: string; slug?: string } }[] = [];
+  for (const locale of ['en', 'pt'] as const) {
+    const slugs = await new ListSeriesSlugs(contentRepository).execute(locale);
+    for (const entry of localizedPaths(locale, slugs)) {
+      const path = entry.path.slice(`/${locale}/`.length) || undefined;
+      paths.push({
+        params: { locale, ...(path ? { path } : {}) },
+        props: { route: entry.route, ...(entry.slug ? { slug: entry.slug } : {}) },
+      });
+    }
+  }
+  return paths;
+}
+
+const { locale } = Astro.params;
+const { route, slug } = Astro.props;
+const View = views[route as keyof typeof views];
+---
+<View locale={locale} slug={slug} />

@@ -51,6 +51,8 @@ export interface SiteTexts {
     untitled: string;
     obraEyebrow: string;
     seriesEyebrow: string;
+    seriesChapter: string;
+    serieNumber: string;
     printsInquiryTitle: string;
     eventsTicker: string;
   };

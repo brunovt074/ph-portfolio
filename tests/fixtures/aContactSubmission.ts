@@ -7,5 +7,6 @@ export const aContactSubmission = (overrides: Partial<ContactSubmission> = {}): 
   message: 'Necesito fotos de producto para el lanzamiento de mi tienda online.',
   copy: '',
   website: '',
+  locale: 'es',
   ...overrides,
 });

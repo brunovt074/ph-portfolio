@@ -53,6 +53,8 @@ export const esTexts: SiteTexts = {
     untitled: 'Sin título',
     obraEyebrow: 'Obra',
     seriesEyebrow: 'Serie {number} · {count} fotografías · {years}',
+    seriesChapter: '{count} fotografías · {years}',
+    serieNumber: 'Serie {number}',
     printsInquiryTitle: 'Consultá una copia',
     eventsTicker: 'Carnaval, Comparsas, Shows, Escenario, Sociales',
   },

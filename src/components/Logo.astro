@@ -1,15 +1,21 @@
 ---
+import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import type { SiteTexts } from '@/domain/SiteTexts';
+
 interface Props {
   variant?: 'default' | 'obra';
   href?: string;
+  locale: Locale;
+  texts: SiteTexts;
 }
 
-const { variant = 'default', href } = Astro.props;
-const target = href ?? (variant === 'obra' ? '/obra' : '/');
-const label = variant === 'obra' ? 'Lara Vischi — obra' : 'Lara Vischi — inicio';
+const { variant = 'default', href, locale, texts } = Astro.props;
+const target = href ?? (variant === 'obra' ? pathTo(locale, { route: 'obra' }) : pathTo(locale, { route: 'home' }));
+const label = variant === 'obra' ? texts.nav.logoObra : texts.nav.logoHome;
 ---
 <a class="logo" href={target} aria-label={label}>
-  Lara <em>Vischi</em>{variant === 'obra' && <span class="logo-suffix"> / obra</span>}
+  Lara <em>Vischi</em>{variant === 'obra' && <span class="logo-suffix"> / {texts.nav.obra}</span>}
 </a>
 
 <style>

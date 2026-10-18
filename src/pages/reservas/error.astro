@@ -25,4 +25,4 @@ const problems = bookingFieldNames.filter((name) => fields.includes(name)).map((
 const reason = Astro.url.searchParams.get('motivo') ?? '';
 const lead = Object.hasOwn(reasons, reason) ? (reasons[reason] as string) : booking.errorPageLead;
 ---
-<ContactResult title={booking.errorPageTitle} lead={lead} problems={problems} backLabel={booking.errorPageBack} backHref={pathTo('es', { route: 'reservas', hash: 'reserva' })} />
+<ContactResult title={booking.errorPageTitle} lead={lead} problems={problems} backLabel={booking.errorPageBack} backHref={pathTo('es', { route: 'reservas', hash: 'reserva' })} locale="es" />

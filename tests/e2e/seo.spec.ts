@@ -88,15 +88,12 @@ test('prints page lists every artwork without inventing prices', async ({ page }
   });
 });
 
-test('sitemap index and robots.txt respond and keep private paths out', async ({ request }) => {
-  const index = await request.get('/sitemap-index.xml');
-  expect(index.status()).toBe(200);
-  expect(await index.text()).toContain('sitemap-0.xml');
-
-  const sitemap = await request.get('/sitemap-0.xml');
+test('sitemap and robots.txt respond and keep private paths out', async ({ request }) => {
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.status()).toBe(200);
   const body = await sitemap.text();
-  expect(body).toContain('/obra/copias/');
-  expect(body).toContain('/reservas/');
+  expect(body).toContain('/obra/copias</loc>');
+  expect(body).toContain('/reservas</loc>');
   expect(body).not.toMatch(/\/reservas\/[^<]+</);
   expect(body).not.toContain('/api/');
   expect(body).not.toContain('/contacto');

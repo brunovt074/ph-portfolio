@@ -1,0 +1,62 @@
+---
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import Ticker from '@/components/Ticker.astro';
+import AboutSection from '@/components/home/AboutSection.astro';
+import BrandsTeaser from '@/components/home/BrandsTeaser.astro';
+import ContactSection from '@/components/home/ContactSection.astro';
+import EditorialStrip from '@/components/home/EditorialStrip.astro';
+import EncargosIndex from '@/components/home/EncargosIndex.astro';
+import HomeHero from '@/components/home/HomeHero.astro';
+import ObraTeaser from '@/components/home/ObraTeaser.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetHomePage } from '@/application/GetHomePage';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import type { Locale } from '@/domain/Locale';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import { contentRepository } from '@/infrastructure/container';
+import { buildPersonSchema, buildProfessionalServiceSchema } from '@/seo/structuredData';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const { home, facets, settings } = await new GetHomePage(contentRepository).execute(locale);
+const heroPhoto = home.encargosDoor.photo;
+const jsonLd = [buildPersonSchema(settings, Astro.site!, texts, locale), await buildProfessionalServiceSchema(settings, Astro.site!, heroPhoto, locale)];
+const alternates = alternatePaths(() => ({ route: 'home' }));
+---
+<BaseLayout
+  title={texts.seo.homeTitle}
+  description={home.lead}
+  theme="ink"
+  image={heroPhoto}
+  jsonLd={jsonLd}
+  home
+  locale={locale}
+  translations={home.translations}
+  alternates={alternates}
+  skipLabel={texts.a11y.skipToContent}
+>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="home" />
+  <HomeHero home={home} />
+  <Ticker items={home.ticker} label={home.ticker.join(', ')} />
+  <div class="home-below">
+    <AboutSection settings={settings} cta={home.aboutCta} aboutLabel={texts.pages.aboutMe} />
+    <EncargosIndex home={home} facets={facets} locale={locale} />
+    <EditorialStrip photos={home.editorialStrip} label={texts.a11y.editorialStrip} />
+    <BrandsTeaser home={home} locale={locale} />
+    <ObraTeaser home={home} locale={locale} />
+    <ContactSection home={home} settings={settings} texts={texts.contact} a11y={texts.a11y} locale={locale} />
+  </div>
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale={locale} texts={texts} />
+</BaseLayout>
+
+<style>
+  .home-below > :global(*) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
+</style>

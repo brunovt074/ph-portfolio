@@ -4,25 +4,43 @@ import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import { pathTo } from '@/domain/routing/pathTo';
 import { contentRepository } from '@/infrastructure/container';
 
 const settings = await new GetSiteSettings(contentRepository).execute('es');
+const texts = await new GetSiteTexts(contentRepository).execute('es');
+const alternates = alternatePaths(() => ({ route: 'home' }));
 const exits = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Editorial', href: '/editorial' },
-  { label: 'Retratos', href: '/retratos' },
-  { label: 'Marcas', href: '/marcas' },
-  { label: 'Eventos', href: '/eventos' },
-  { label: 'Obra', href: '/obra' },
+  { label: texts.nav.home, href: pathTo('es', { route: 'home' }) },
+  { label: texts.nav.editorial, href: pathTo('es', { route: 'editorial' }) },
+  { label: texts.nav.retratos, href: pathTo('es', { route: 'retratos' }) },
+  { label: texts.nav.marcas, href: pathTo('es', { route: 'marcas' }) },
+  { label: texts.nav.eventos, href: pathTo('es', { route: 'eventos' }) },
+  { label: texts.nav.obra, href: pathTo('es', { route: 'obra' }) },
+];
+const languages = [
+  { label: 'English', href: '/en/' },
+  { label: 'Português', href: '/pt/' },
 ];
 ---
-<BaseLayout title="Página no encontrada" description="Esta página no existe." theme="ink" noindex>
-  <Header slot="header" />
+<BaseLayout
+  title={texts.seo.notFoundTitle}
+  description={texts.seo.notFoundDescription}
+  theme="ink"
+  noindex
+  locale="es"
+  translations={{ es: true, en: false, pt: false }}
+  alternates={alternates}
+  skipLabel={texts.a11y.skipToContent}
+>
+  <Header slot="header" locale="es" texts={texts} alternates={alternates} />
   <section class="section">
     <div class="container not-found">
-      <h1 class="t-display" data-split>Esta página no existe</h1>
-      <p class="t-lead">Puede que el enlace haya cambiado. Volvé al inicio y seguí desde ahí.</p>
-      <nav aria-label="Salidas">
+      <h1 class="t-display" data-split>{texts.notFound.title}</h1>
+      <p class="t-lead">{texts.notFound.lead}</p>
+      <nav aria-label={texts.a11y.exits}>
         <ul class="not-found-exits">
           {exits.map((exit) => (
             <li><a class="t-h3 not-found-exit" href={exit.href}>{exit.label}</a></li>
@@ -30,11 +48,16 @@ const exits = [
         </ul>
       </nav>
       <div>
-        <Button href="/" variant="secondary">Volver al inicio</Button>
+        <Button href={pathTo('es', { route: 'home' })} variant="secondary">{texts.nav.backHome}</Button>
+      </div>
+      <div class="not-found-langs">
+        {languages.map((language) => (
+          <a class="t-nav not-found-exit" href={language.href}>{language.label}</a>
+        ))}
       </div>
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale="es" texts={texts} />
 </BaseLayout>
 
 <style>
@@ -61,6 +84,12 @@ const exits = [
     color: inherit;
     text-decoration: none;
     border-bottom: 1px solid var(--line);
+  }
+
+  .not-found-langs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px clamp(20px, 3vw, 40px);
   }
 
   @media (hover: hover) {

@@ -1,0 +1,57 @@
+---
+import Lightbox from '@/components/Lightbox.astro';
+import FooterNav from '@/components/FooterNav.astro';
+import Header from '@/components/Header.astro';
+import CoverTriptych from '@/components/facet/CoverTriptych.astro';
+import CtaBand from '@/components/facet/CtaBand.astro';
+import FacetIntro from '@/components/facet/FacetIntro.astro';
+import MasonryGallery from '@/components/facet/MasonryGallery.astro';
+import ServiceColumns from '@/components/facet/ServiceColumns.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { GetFacetPage } from '@/application/GetFacetPage';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import type { Locale } from '@/domain/Locale';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
+import { pathTo } from '@/domain/routing/pathTo';
+import { contentRepository } from '@/infrastructure/container';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const { facet, previous, next, settings } = await new GetFacetPage(contentRepository).execute(locale, 'editorial');
+const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'editorial' }, hash: 'contacto' });
+const alternates = alternatePaths(() => ({ route: 'editorial' }));
+---
+<BaseLayout
+  title={facet.name}
+  description={texts.seo.editorialDescription}
+  theme="ink"
+  image={facet.cover[1] ?? facet.cover[0]}
+  locale={locale}
+  translations={facet.translations}
+  alternates={alternates}
+  skipLabel={texts.a11y.skipToContent}
+>
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="editorial" ctaLabel={texts.nav.bookSession} ctaHref={contactHref} />
+  <FacetIntro facet={facet} />
+  <CoverTriptych photos={facet.cover} />
+  <section class="container section" data-gallery="horizontal">
+    <MasonryGallery photos={facet.gallery} horizontal />
+  </section>
+  <ServiceColumns title={texts.pages.services} services={facet.services} numerals="roman" investmentLabel={texts.pages.investment} />
+  <CtaBand title={facet.ctaText} buttonLabel={facet.ctaButton} href={contactHref} theme="accent" />
+  <Lightbox texts={texts.a11y} />
+  <FooterNav slot="footer" previous={previous} next={next} settings={settings} locale={locale} texts={texts} />
+</BaseLayout>
+
+<style>
+  @media (max-width: 899px) {
+    [data-gallery='horizontal'] {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 1800px;
+    }
+  }
+</style>

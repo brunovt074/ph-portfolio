@@ -5,18 +5,19 @@ import type { BrandPackage } from '@/domain/BrandPackage';
 interface Props {
   pack: BrandPackage;
   cta: string;
+  href: string;
+  featuredLabel: string;
 }
 
-const { pack, cta } = Astro.props;
-const FEATURED_LABEL = 'Más elegido';
+const { pack, cta, href, featuredLabel } = Astro.props;
 const [amount = pack.price, ...suffixParts] = pack.price.split(' / ');
 const suffix = suffixParts.join(' / ');
 ---
 <article class="card" data-theme={pack.featured ? 'paper' : undefined}>
   {pack.featured ? (
-    <span class="t-eyebrow">{FEATURED_LABEL}</span>
+    <span class="t-eyebrow">{featuredLabel}</span>
   ) : (
-    <span class="t-eyebrow eyebrow-spacer" aria-hidden="true">{FEATURED_LABEL}</span>
+    <span class="t-eyebrow eyebrow-spacer" aria-hidden="true">{featuredLabel}</span>
   )}
   <h3 class="t-h3">{pack.name}</h3>
   <p class="price">
@@ -26,7 +27,7 @@ const suffix = suffixParts.join(' / ');
   <ul>
     {pack.items.map((item) => <li>{item}</li>)}
   </ul>
-  <Button class="cta" href="/?tipo=marcas#contacto" variant={pack.featured ? 'primary' : 'secondary'}>{cta}</Button>
+  <Button class="cta" href={href} variant={pack.featured ? 'primary' : 'secondary'}>{cta}</Button>
 </article>
 
 <style>

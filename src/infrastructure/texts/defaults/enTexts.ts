@@ -53,6 +53,8 @@ export const enTexts: SiteTexts = {
     untitled: 'Untitled',
     obraEyebrow: 'Work',
     seriesEyebrow: 'Series {number} · {count} photographs · {years}',
+    seriesChapter: '{count} photographs · {years}',
+    serieNumber: 'Series {number}',
     printsInquiryTitle: 'Inquire about a print',
     eventsTicker: 'Carnival, Comparsas, Shows, Stage, Social',
   },

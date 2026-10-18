@@ -14,6 +14,17 @@ const routes = [
   { path: '/obra/viajes-en-color', status: 200 },
   { path: '/obra/copias', status: 200 },
   { path: '/reservas', status: 200 },
+  { path: '/en/', status: 200 },
+  { path: '/en/portraits', status: 200 },
+  { path: '/en/brands', status: 200 },
+  { path: '/en/events', status: 200 },
+  { path: '/en/work', status: 200 },
+  { path: '/en/work/prints', status: 200 },
+  { path: '/en/work/oficios', status: 200 },
+  { path: '/pt/', status: 200 },
+  { path: '/pt/retratos', status: 200 },
+  { path: '/pt/obra', status: 200 },
+  { path: '/pt/obra/copias', status: 200 },
   { path: '/ruta-inexistente', status: 404 },
 ];
 

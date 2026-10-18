@@ -3,13 +3,15 @@ import IndexRow from './IndexRow.astro';
 import RichText from '@/components/RichText.astro';
 import type { Facet } from '@/domain/Facet';
 import type { HomeContent } from '@/domain/HomeContent';
+import type { Locale } from '@/domain/Locale';
 
 interface Props {
   home: HomeContent;
   facets: Facet[];
+  locale: Locale;
 }
 
-const { home, facets } = Astro.props;
+const { home, facets, locale } = Astro.props;
 ---
 <section id="encargos" class="section" aria-labelledby="encargos-title">
   <div class="container">
@@ -19,7 +21,7 @@ const { home, facets } = Astro.props;
     </header>
     <ol class="encargos-list" data-index-list>
       {facets.map((facet) => (
-        <IndexRow facet={facet} thumbnails={home.facetThumbnails[facet.slug] ?? []} />
+        <IndexRow facet={facet} thumbnails={home.facetThumbnails[facet.slug] ?? []} locale={locale} />
       ))}
     </ol>
   </div>

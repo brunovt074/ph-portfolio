@@ -4,6 +4,7 @@ import FooterNav from '@/components/FooterNav.astro';
 import Header from '@/components/Header.astro';
 import { GetSiteSettings } from '@/application/GetSiteSettings';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { formatText } from '@/domain/formatText';
 import { formatMoney } from '@/formatting/formatMoney';
 import { localeTagOf } from '@/formatting/localeTag';
@@ -27,11 +28,12 @@ if (Astro.request.method === 'POST') {
   return Astro.redirect(`${checkout.returnUrl}?estado=${approved ? 'aprobado' : 'error'}`, 303);
 }
 const [settings, texts] = await Promise.all([new GetSiteSettings(contentRepository).execute('es'), new GetSiteTexts(contentRepository).execute('es')]);
+const alternates = alternatePaths(() => ({ route: 'reservas' }));
 const booking = texts.booking;
 const amount = formatMoney(checkout.amountCents, localeTagOf('es'));
 ---
-<BaseLayout title={booking.simulatorTitle} description={booking.simulatorBanner} theme="ink" noindex>
-  <Header slot="header" current="reservas" />
+<BaseLayout title={booking.simulatorTitle} description={booking.simulatorBanner} theme="ink" noindex locale="es" translations={{ es: true, en: false, pt: false }} alternates={alternates} skipLabel={texts.a11y.skipToContent}>
+  <Header slot="header" locale="es" texts={texts} alternates={alternates} current="reservas" />
   <p class="simulator-banner" role="note">{booking.simulatorBanner}</p>
   <section class="section">
     <div class="container simulator">
@@ -50,7 +52,7 @@ const amount = formatMoney(checkout.amountCents, localeTagOf('es'));
       </div>
     </div>
   </section>
-  <FooterNav slot="footer" previous={null} next={null} settings={settings} />
+  <FooterNav slot="footer" previous={null} next={null} settings={settings} locale="es" texts={texts} />
 </BaseLayout>
 
 <style>
