@@ -6,12 +6,12 @@ import type { HomeContent } from '@/domain/HomeContent';
 import type { Locale } from '@/domain/Locale';
 
 interface Props {
+  locale: Locale;
   home: HomeContent;
   facets: Facet[];
-  locale: Locale;
 }
 
-const { home, facets, locale } = Astro.props;
+const { locale, home, facets } = Astro.props;
 ---
 <section id="encargos" class="section" aria-labelledby="encargos-title">
   <div class="container">
@@ -21,7 +21,7 @@ const { home, facets, locale } = Astro.props;
     </header>
     <ol class="encargos-list" data-index-list>
       {facets.map((facet) => (
-        <IndexRow facet={facet} thumbnails={home.facetThumbnails[facet.slug] ?? []} locale={locale} />
+        <IndexRow locale={locale} facet={facet} thumbnails={home.facetThumbnails[facet.slug] ?? []} />
       ))}
     </ol>
   </div>

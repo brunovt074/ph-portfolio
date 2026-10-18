@@ -59,7 +59,7 @@ const fillCustomer = async (page: Page) => {
 
 const submit = (page: Page) => page.locator('[data-booking-form] button[type="submit"]').click();
 
-const openForm = async (page: Page, path = '/reservas') => {
+const openForm = async (page: Page, path = '/es/reservas') => {
   await page.goto(path);
   await waitForForm(page);
 };
@@ -112,7 +112,7 @@ test.describe('booking page', () => {
   });
 
   test('preselects the session coming from the link in the query', async ({ page }) => {
-    await openForm(page, '/reservas?sesion=familias');
+    await openForm(page, '/es/reservas?sesion=familias');
 
     await expect(page.locator('#reserva-sesion-familias')).toBeChecked();
     await expect(page.locator('[data-summary]')).toContainText('55.000');
@@ -372,7 +372,7 @@ test.describe('booking without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
   test('proposes a date, pays in the simulator and lands on the confirmation', async ({ page }) => {
-    await page.goto('/reservas');
+    await page.goto('/es/reservas');
     await expect(page.locator('.no-js-note')).toBeVisible();
     await page.locator('label[for="reserva-sesion-maternidad"]').click();
     await page.locator('#reserva-fecha').fill(dateInDays(10));

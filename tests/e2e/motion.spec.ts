@@ -13,7 +13,7 @@ test.describe('reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 
   test('home heading is readable immediately and photos carry no transform', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/es/', { waitUntil: 'domcontentloaded' });
 
     const heading = page.locator('h1[data-split]');
     await expect(heading).toBeVisible();
@@ -31,7 +31,7 @@ test.describe('reduced motion', () => {
   });
 
   test('series counter still follows the reader without animation', async ({ page }) => {
-    await page.goto('/obra/geometrias');
+    await page.goto('/es/obra/geometrias');
     await page.evaluate(() => window.scrollTo(0, 1200));
 
     await expect(page.locator('[data-series-counter]')).toHaveCSS('opacity', '1');
@@ -40,7 +40,7 @@ test.describe('reduced motion', () => {
 });
 
 test('photos in the viewport finish their reveal', async ({ page }) => {
-  await page.goto('/retratos');
+  await page.goto('/es/retratos');
   await page.waitForTimeout(SETTLE_MS);
 
   const states = await page.evaluate(() =>
@@ -63,7 +63,7 @@ test('photos in the viewport finish their reveal', async ({ page }) => {
 });
 
 test('heading splits into masked characters and keeps its accessible name', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/es/');
 
   await expect(page.locator('h1 .split-char').first()).toBeAttached();
   await expect(page.locator('h1[data-split]')).toHaveAttribute('aria-label', 'Sarah Moreau');
@@ -71,7 +71,7 @@ test('heading splits into masked characters and keeps its accessible name', asyn
 });
 
 test('before and after slider moves with the keyboard', async ({ page }) => {
-  await page.goto('/marcas');
+  await page.goto('/es/marcas');
 
   const slider = page.locator('input[type="range"]').first();
   await slider.scrollIntoViewIfNeeded();
@@ -90,7 +90,7 @@ test('editorial gallery pins and moves sideways on wide screens only', async ({ 
   const narrow = testInfo.project.name === 'mobile-375';
   test.skip(!wide && !narrow, 'pin is verified at 1440 and 375');
 
-  await page.goto('/editorial');
+  await page.goto('/es/editorial');
   const section = page.locator('[data-gallery="horizontal"]');
   const pinned = page.locator('.pin-spacer > [data-gallery="horizontal"]');
 
@@ -117,7 +117,7 @@ test('editorial gallery pins and moves sideways on wide screens only', async ({ 
 });
 
 test('lightbox opens from a photo, closes with Escape and returns focus', async ({ page }) => {
-  await page.goto('/retratos');
+  await page.goto('/es/retratos');
   const link = page.locator('a[data-lightbox]').nth(2);
   await link.scrollIntoViewIfNeeded();
   await page.waitForTimeout(SETTLE_MS);
@@ -133,7 +133,7 @@ test('lightbox opens from a photo, closes with Escape and returns focus', async 
 });
 
 test('lightbox keeps keyboard focus inside the dialog', async ({ page }) => {
-  await page.goto('/retratos');
+  await page.goto('/es/retratos');
   const link = page.locator('a[data-lightbox]').nth(2);
   await link.scrollIntoViewIfNeeded();
   await page.waitForTimeout(SETTLE_MS);
@@ -156,7 +156,7 @@ test('lightbox keeps keyboard focus inside the dialog', async ({ page }) => {
 });
 
 test('lightbox navigates with the arrow keys', async ({ page }) => {
-  await page.goto('/retratos');
+  await page.goto('/es/retratos');
   const links = page.locator('a[data-lightbox]');
   await links.nth(2).scrollIntoViewIfNeeded();
   await page.waitForTimeout(SETTLE_MS);
@@ -170,7 +170,7 @@ test('lightbox navigates with the arrow keys', async ({ page }) => {
 });
 
 test('series page shows a counter that follows the scroll', async ({ page }) => {
-  await page.goto('/obra/geometrias');
+  await page.goto('/es/obra/geometrias');
   await page.waitForTimeout(800);
   await page.evaluate(() => window.scrollTo(0, 1100));
   const counter = page.locator('[data-series-counter]');
@@ -190,16 +190,16 @@ test('client router navigates between obra pages without console errors', async 
   });
   page.on('pageerror', (error) => problems.push(error.message));
 
-  await page.goto('/obra');
+  await page.goto('/es/obra');
   await page.evaluate(() => {
     (window as unknown as { __kept: boolean }).__kept = true;
   });
   await page.locator('a.chapter-link').nth(1).click();
-  await expect(page).toHaveURL(/\/obra\/geometrias$/);
+  await expect(page).toHaveURL(/\/es\/obra\/geometrias$/);
   await expect(page.locator('h1')).toBeVisible();
   await page.waitForTimeout(1000);
   await page.goBack();
-  await expect(page).toHaveURL(/\/obra$/);
+  await expect(page).toHaveURL(/\/es\/obra$/);
   await expect(page.locator('[data-reveal="darkroom"]').first()).toBeAttached();
 
   expect(await page.evaluate(() => (window as unknown as { __kept?: boolean }).__kept)).toBe(true);
@@ -207,7 +207,7 @@ test('client router navigates between obra pages without console errors', async 
 });
 
 test('ticker keeps drifting while it is on screen', async ({ page }) => {
-  await page.goto('/eventos');
+  await page.goto('/es/eventos');
   await page.locator('[data-ticker]').scrollIntoViewIfNeeded();
   await page.waitForTimeout(600);
   const read = () => page.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector('.ticker-track') as Element).transform).m41);

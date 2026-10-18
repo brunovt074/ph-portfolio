@@ -1,8 +1,8 @@
-import { defaultLocale, type Locale } from '../Locale';
+import type { Locale } from '../Locale';
 import type { RouteTarget } from './RouteTarget';
 import { routeSegments } from './routeSegments';
 
-const prefixOf = (locale: Locale): string => (locale === defaultLocale ? '' : `/${locale}`);
+const prefixOf = (locale: Locale): string => `/${locale}`;
 
 const basePath = (locale: Locale, target: RouteTarget): string => {
   const prefix = prefixOf(locale);

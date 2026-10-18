@@ -1,15 +1,16 @@
 ---
 import Photo from '@/components/Photo.astro';
 import type { Photo as PhotoModel } from '@/domain/Photo';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  texts: SiteTexts['a11y'];
   photos: PhotoModel[];
-  label: string;
 }
 
-const { photos, label } = Astro.props;
+const { texts, photos } = Astro.props;
 ---
-<div class="strip" tabindex="0" role="group" aria-label={label}>
+<div class="strip" tabindex="0" role="group" aria-label={texts.editorialStrip}>
   {photos.slice(0, 5).map((photo) => (
     <figure class="strip-item" data-reveal>
       <Photo photo={photo} ratio="3/4" sizes="(min-width: 768px) 20vw, 72vw" />

@@ -6,13 +6,11 @@ export const prerender = false;
 
 export const POST: APIRoute = async (context) => {
   const formData = await context.request.formData();
-  const idioma = parseLocale(formData.get('idioma')?.toString());
+  const idioma = parseLocale(String(formData.get('idioma') ?? ''));
   const result = await context.callAction(actions.contact, formData);
   if (!result.error) {
-    return context.redirect(`/contacto/enviado?idioma=${idioma}`, 303);
+    return context.redirect(`/${idioma}/contacto/enviado`, 303);
   }
-  const query = isInputError(result.error)
-    ? `campos=${Object.keys(result.error.fields).join(',')}&idioma=${idioma}`
-    : `motivo=envio&idioma=${idioma}`;
-  return context.redirect(`/contacto/error?${query}`, 303);
+  const reason = isInputError(result.error) ? `campos=${Object.keys(result.error.fields).join(',')}` : 'motivo=envio';
+  return context.redirect(`/${idioma}/contacto/error?${reason}`, 303);
 };

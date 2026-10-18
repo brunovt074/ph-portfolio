@@ -4,16 +4,16 @@ import type { Locale } from '@/domain/Locale';
 import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  locale: Locale;
+  texts: SiteTexts['contact'];
   workTypes?: string[];
   variant?: 'general' | 'copia';
   copies?: string[];
   idPrefix?: string;
   submitLabel?: string;
-  locale: Locale;
-  texts: SiteTexts['contact'];
 }
 
-const { workTypes = [], variant = 'general', copies = [], idPrefix = 'contacto', submitLabel, locale, texts } = Astro.props;
+const { locale, texts, workTypes = [], variant = 'general', copies = [], idPrefix = 'contacto', submitLabel = texts.submit } = Astro.props;
 const isCopyInquiry = variant === 'copia';
 const tipoByQuery: Record<string, string> = {
   editorial: texts.workTypeEditorial,
@@ -75,7 +75,7 @@ const tipoByQuery: Record<string, string> = {
   </div>
   <div>
     <p class="required-note">{texts.requiredNote}</p>
-    <Button type="submit" variant="primary">{submitLabel ?? texts.submit}</Button>
+    <Button type="submit" variant="primary">{submitLabel}</Button>
     <p class="form-status" role="status" aria-live="polite" data-form-status></p>
   </div>
 </form>

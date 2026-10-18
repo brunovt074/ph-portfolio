@@ -5,17 +5,16 @@ import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
   variant?: 'default' | 'obra';
-  href?: string;
   locale: Locale;
-  texts: SiteTexts;
+  texts: SiteTexts['nav'];
 }
 
-const { variant = 'default', href, locale, texts } = Astro.props;
-const target = href ?? (variant === 'obra' ? pathTo(locale, { route: 'obra' }) : pathTo(locale, { route: 'home' }));
-const label = variant === 'obra' ? texts.nav.logoObra : texts.nav.logoHome;
+const { variant = 'default', locale, texts } = Astro.props;
+const target = pathTo(locale, { route: variant === 'obra' ? 'obra' : 'home' });
+const label = variant === 'obra' ? texts.logoObra : texts.logoHome;
 ---
 <a class="logo" href={target} aria-label={label}>
-  Sarah <em>Moreau</em>{variant === 'obra' && <span class="logo-suffix"> / {texts.nav.obra}</span>}
+  Sarah <em>Moreau</em>{variant === 'obra' && <span class="logo-suffix"> / {texts.obra.toLowerCase()}</span>}
 </a>
 
 <style>

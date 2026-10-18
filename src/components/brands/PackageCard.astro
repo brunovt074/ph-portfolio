@@ -1,23 +1,26 @@
 ---
 import Button from '@/components/Button.astro';
 import type { BrandPackage } from '@/domain/BrandPackage';
+import type { Locale } from '@/domain/Locale';
+import type { SiteTexts } from '@/domain/SiteTexts';
+import { pathTo } from '@/domain/routing/pathTo';
 
 interface Props {
+  locale: Locale;
+  texts: SiteTexts['pages'];
   pack: BrandPackage;
   cta: string;
-  href: string;
-  featuredLabel: string;
 }
 
-const { pack, cta, href, featuredLabel } = Astro.props;
+const { locale, texts, pack, cta } = Astro.props;
 const [amount = pack.price, ...suffixParts] = pack.price.split(' / ');
 const suffix = suffixParts.join(' / ');
 ---
 <article class="card" data-theme={pack.featured ? 'paper' : undefined}>
   {pack.featured ? (
-    <span class="t-eyebrow">{featuredLabel}</span>
+    <span class="t-eyebrow">{texts.featuredPackage}</span>
   ) : (
-    <span class="t-eyebrow eyebrow-spacer" aria-hidden="true">{featuredLabel}</span>
+    <span class="t-eyebrow eyebrow-spacer" aria-hidden="true">{texts.featuredPackage}</span>
   )}
   <h3 class="t-h3">{pack.name}</h3>
   <p class="price">
@@ -27,7 +30,7 @@ const suffix = suffixParts.join(' / ');
   <ul>
     {pack.items.map((item) => <li>{item}</li>)}
   </ul>
-  <Button class="cta" href={href} variant={pack.featured ? 'primary' : 'secondary'}>{cta}</Button>
+  <Button class="cta" href={pathTo(locale, { route: 'home', query: { tipo: 'marcas' }, hash: 'contacto' })} variant={pack.featured ? 'primary' : 'secondary'}>{cta}</Button>
 </article>
 
 <style>

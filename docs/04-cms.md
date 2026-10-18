@@ -52,6 +52,26 @@ una copia o una serie nueva. Todo lo demás (estructura, diseño) queda fijo en 
 Email, WhatsApp, cuentas de Instagram, texto "Sobre mí", retrato de Sarah, statement artístico,
 muestras y publicaciones (array `{titulo, lugar, anio}`), info de impresión/envío/enmarcado de copias.
 
+## Idiomas y textos del sitio
+
+El sitio se publica en español (`es`, sin prefijo), inglés (`en`) y portugués (`pt`).
+
+- **Campos con idioma.** Todo texto en lenguaje natural (alt, títulos, descripciones, precios como
+  texto, listas, slugs de series) usa los tipos `textoLocalizado`, `parrafoLocalizado`,
+  `tituloLocalizado`, `listaLocalizada` y `slugLocalizado`: un campo `es` (obligatorio) y un grupo
+  colapsable "Inglés y portugués" con `en` y `pt`. Las fotos, los números, los órdenes, las
+  referencias y los datos de contacto se comparten entre idiomas.
+- **Fallback.** Un campo vacío en `en` o `pt` se ve en español, campo por campo. Una página sin su
+  contenido principal traducido se genera igual pero con `noindex`, canonical al español y fuera del
+  sitemap y de los `hreflang`.
+- **`textosDelSitio` (singleton).** Los textos fijos de la interfaz (menú, botones, formulario,
+  mensajes de error, etiquetas de accesibilidad). Un grupo por sección y un campo por texto con
+  `es`/`en`/`pt` opcionales; el texto de ejemplo en código aparece como placeholder y se usa cuando el
+  campo queda vacío. Las palabras entre llaves (`{copy}`) se reemplazan al mostrar el texto.
+- **Slugs de series.** El slug de una serie es por idioma; `copias` queda reservado en español y
+  portugués y `prints` en inglés. Dos series no pueden compartir slug dentro de un idioma.
+- **Migración.** Si el dataset ya tenía contenido antes de esto: `npx sanity migration run localize-fields`.
+
 ## Seed
 
 `assets/seed.json` contiene las 65 fotos del mockup (más el retrato provisorio de Sarah) con faceta, alt, y para Obra la serie, título

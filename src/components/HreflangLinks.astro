@@ -1,6 +1,5 @@
 ---
-import { locales } from '@/domain/Locale';
-import type { Locale } from '@/domain/Locale';
+import { locales, type Locale } from '@/domain/Locale';
 import type { Translations } from '@/domain/Translations';
 
 interface Props {
@@ -10,8 +9,10 @@ interface Props {
 }
 
 const { alternates, translations, site } = Astro.props;
+
 const absolute = (path: string) => new URL(path, site).href;
-const xDefault = translations.en ? alternates.en : alternates.es;
+const translated = locales.filter((locale) => translations[locale]);
+const defaultVersion = translations.en ? alternates.en : alternates.es;
 ---
-{locales.filter((locale) => translations[locale]).map((locale) => <link rel="alternate" hreflang={locale} href={absolute(alternates[locale])} />)}
-<link rel="alternate" hreflang="x-default" href={absolute(xDefault)} />
+{translated.map((locale) => <link rel="alternate" hreflang={locale} href={absolute(alternates[locale])} />)}
+<link rel="alternate" hreflang="x-default" href={absolute(defaultVersion)} />

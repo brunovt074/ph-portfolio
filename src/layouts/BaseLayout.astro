@@ -14,6 +14,7 @@ import SkipLink from '@/components/SkipLink.astro';
 import type { Locale } from '@/domain/Locale';
 import type { Photo } from '@/domain/Photo';
 import type { Translations } from '@/domain/Translations';
+import { htmlLanguages } from '@/seo/htmlLanguages';
 import { resolveSeoImage } from '@/seo/resolveSeoImage';
 
 interface Props {
@@ -25,23 +26,20 @@ interface Props {
   noindex?: boolean;
   home?: boolean;
   locale: Locale;
-  translations: Translations;
   alternates: Record<Locale, string>;
+  translations?: Translations;
   skipLabel: string;
 }
 
-const { title, description, theme, image, jsonLd = [], noindex = false, home = false, locale, translations, alternates, skipLabel } = Astro.props;
+const { title, description, theme, image, jsonLd = [], noindex = false, home = false, locale, alternates, translations = { es: true, en: true, pt: true }, skipLabel } = Astro.props;
 
-const htmlLang: Record<Locale, string> = { es: 'es-AR', en: 'en', pt: 'pt-BR' };
 const themeColor = themeColors[theme];
+
 const fullTitle = home ? title : `${title} — Sarah Moreau`;
 const seoImage = image && Astro.site ? await resolveSeoImage(image, Astro.site) : undefined;
-const translated = translations[locale];
-const canonicalOverride = translated ? undefined : new URL(alternates.es, Astro.site).href;
-const canonical = canonicalOverride ?? new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!doctype html>
-<html lang={htmlLang[locale]}>
+<html lang={htmlLanguages[locale]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,8 +48,8 @@ const canonical = canonicalOverride ?? new URL(Astro.url.pathname, Astro.site).h
     <meta name="theme-color" content={themeColor} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href={bodoniLatin} as="font" type="font/woff2" crossorigin />
-    <Seo title={fullTitle} description={description} image={seoImage} noindex={noindex || !translated} locale={locale} translations={translations} canonical={canonical} />
-    {translated && !noindex && <HreflangLinks alternates={alternates} translations={translations} site={Astro.site!} />}
+    <Seo title={fullTitle} description={description} image={seoImage} noindex={noindex} locale={locale} alternates={alternates} translations={translations} />
+    {translations[locale] && !noindex && Astro.site && <HreflangLinks alternates={alternates} translations={translations} site={Astro.site} />}
     {jsonLd.map((data) => <JsonLd data={data} />)}
     <ClientRouter />
     <script is:inline>

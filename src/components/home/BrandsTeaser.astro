@@ -7,11 +7,11 @@ import type { Locale } from '@/domain/Locale';
 import { pathTo } from '@/domain/routing/pathTo';
 
 interface Props {
-  home: HomeContent;
   locale: Locale;
+  home: HomeContent;
 }
 
-const { home, locale } = Astro.props;
+const { locale, home } = Astro.props;
 const photos = home.brandGrid.slice(0, 4);
 const columns = [photos.slice(0, 2), photos.slice(2, 4)];
 ---

@@ -1,10 +1,10 @@
 # i18n y textos editables — Plan de implementación
 
-> **Para agentes:** SUB-SKILL REQUERIDA: usar superpowers:subagent-driven-development (recomendado) o superpowers:executing-plans para ejecutar este plan tarea por tarea. Los pasos usan checkboxes (`- [ ]`).
+> **Para agentes:** SUB-SKILL REQUERIDA: usar superpowers:subagent-driven-development (recomendado) o superpowers:executing-plans para ejecutar este plan tarea por tarea. Los pasos usan checkboxes (`- [x]`).
 
 **Goal:** El sitio se publica en español, inglés y portugués con URLs traducidas, y Sarah puede editar desde `/admin` tanto el contenido de cada idioma como todos los textos fijos de la interfaz.
 
-**Architecture:** El idioma (`Locale`) y el mapa de rutas traducidas viven en `src/domain` como funciones puras. `ContentRepository` recibe el idioma en cada método y devuelve contenido ya resuelto (los tipos de dominio siguen siendo `string`); la resolución por idioma con fallback a español ocurre en los mappers de Sanity con `localize()`. Los textos de interfaz son un tipo `SiteTexts` (dos niveles, hojas `string`) con valores por defecto en código para es/en/pt y un singleton `textosDelSitio` en Sanity que los pisa campo por campo. Las páginas se mueven a vistas (`src/views/*View.astro`) que reciben `locale`; las páginas en español siguen en su lugar y una sola ruta dinámica `src/pages/[locale]/[...path].astro` genera en/pt.
+**Architecture:** El idioma (`Locale`) y el mapa de rutas traducidas viven en `src/domain` como funciones puras. `ContentRepository` recibe el idioma en cada método y devuelve contenido ya resuelto (los tipos de dominio siguen siendo `string`); la resolución por idioma con fallback a español ocurre en los mappers de Sanity con `localize()`. Los textos de interfaz son un tipo `SiteTexts` (dos niveles, hojas `string`) con valores por defecto en código para es/en/pt y un singleton `textosDelSitio` en Sanity que los pisa campo por campo. Las páginas se mueven a vistas (`src/views/*View.astro`) que reciben `locale`; una sola ruta dinámica `src/pages/[locale]/[...path].astro` genera es/en/pt.
 
 **Tech Stack:** Astro 7.4 (estático + `@astrojs/node`), Sanity 6 (Studio en `/admin`), Vitest 5 con cobertura v8, Playwright.
 
@@ -19,7 +19,7 @@
 | Tema | Decisión |
 |---|---|
 | Idiomas | `es` (por defecto), `en`, `pt`. Etiquetas HTML: `es-AR`, `en`, `pt-BR`. `og:locale`: `es_AR`, `en_US`, `pt_BR`. |
-| URLs | Español sin prefijo (las URLs actuales no cambian). en/pt con prefijo y segmentos traducidos (tabla abajo). Mejor SEO que repetir los slugs en español. |
+| URLs | es/en/pt con prefijo y segmentos traducidos (tabla abajo); `/` redirige a `/es/`. Mejor SEO que repetir los slugs en español. |
 | Slugs de series | Campo localizado en Sanity (`es` obligatorio, `en`/`pt` opcionales, fallback al de `es`). |
 | Segmentos de página | Fijos en código (`routeSegments`). Cambiar una URL rompe SEO; no se edita desde el admin. |
 | Contenido del CMS | Traducible por campo (`{ es, en, pt }`) en los mismos documentos. Fotos, precios numéricos, órdenes y referencias se comparten entre idiomas. Sin plugin de document-internationalization: no duplica documentos ni fotos. |
@@ -41,15 +41,15 @@
 
 | `RouteKey` | es | en | pt |
 |---|---|---|---|
-| `home` | `/` | `/en/` | `/pt/` |
-| `editorial` | `/editorial` | `/en/editorial` | `/pt/editorial` |
-| `retratos` | `/retratos` | `/en/portraits` | `/pt/retratos` |
-| `marcas` | `/marcas` | `/en/brands` | `/pt/marcas` |
-| `eventos` | `/eventos` | `/en/events` | `/pt/eventos` |
-| `obra` | `/obra` | `/en/work` | `/pt/obra` |
-| `copias` | `/obra/copias` | `/en/work/prints` | `/pt/obra/copias` |
-| `serie` | `/obra/{slug}` | `/en/work/{slug}` | `/pt/obra/{slug}` |
-| `reservas` | `/reservas` | `/en/bookings` | `/pt/reservas` |
+| `home` | `/es/` | `/en/` | `/pt/` |
+| `editorial` | `/es/editorial` | `/en/editorial` | `/pt/editorial` |
+| `retratos` | `/es/retratos` | `/en/portraits` | `/pt/retratos` |
+| `marcas` | `/es/marcas` | `/en/brands` | `/pt/marcas` |
+| `eventos` | `/es/eventos` | `/en/events` | `/pt/eventos` |
+| `obra` | `/es/obra` | `/en/work` | `/pt/obra` |
+| `copias` | `/es/obra/copias` | `/en/work/prints` | `/pt/obra/copias` |
+| `serie` | `/es/obra/{slug}` | `/en/work/{slug}` | `/pt/obra/{slug}` |
+| `reservas` | `/es/reservas` | `/en/bookings` | `/pt/reservas` |
 
 La página y la vista de `reservas` las crea `feature/bookings-payments` (ver "Coordinación"). Esta rama solo agrega la clave y sus segmentos.
 
@@ -121,8 +121,8 @@ La página y la vista de `reservas` las crea `feature/bookings-payments` (ver "C
 
 ### Task 0: Preparar el worktree
 
-- [ ] `npm install` en el worktree (no comparte `node_modules` con el checkout principal).
-- [ ] Baseline: `npm run check && npm test` → todo verde. Si algo falla, reportar antes de seguir.
+- [x] `npm install` en el worktree (no comparte `node_modules` con el checkout principal).
+- [x] Baseline: `npm run check && npm test` → todo verde. Si algo falla, reportar antes de seguir.
 
 ---
 
@@ -156,7 +156,7 @@ export const localizedPaths: (locale: Locale, seriesSlugs: readonly string[]) =>
 export class DuplicateRouteError extends Error { constructor(readonly path: string) }
 ```
 
-- [ ] **Step 1: Tests que fallan**
+- [x] **Step 1: Tests que fallan**
 
 ```ts
 expect(pathTo('es', { route: 'home' })).toBe('/');
@@ -190,10 +190,10 @@ expect(() => localizedPaths('en', ['prints'])).toThrow(new DuplicateRouteError('
 expect(() => localizedPaths('pt', ['oficios', 'oficios'])).toThrow(DuplicateRouteError);
 ```
 
-- [ ] **Step 2:** `npx vitest run tests/unit/routing` → FAIL (módulos inexistentes).
-- [ ] **Step 3:** Implementar. `pathTo` arma `prefix + segment` (`prefix` = `''` para es, `/${locale}` para el resto; home es `prefix + '/'`), luego `?` con `URLSearchParams` y `#hash`. `DuplicateRouteError` con mensaje `Ruta duplicada: ${path}. Cambiá el slug de la serie.`
-- [ ] **Step 4:** `npx vitest run tests/unit/routing` → PASS; `npm test` → cobertura 100 %.
-- [ ] **Step 5: Handoff** — `feat: add locale model and translated route map`
+- [x] **Step 2:** `npx vitest run tests/unit/routing` → FAIL (módulos inexistentes).
+- [x] **Step 3:** Implementar. `pathTo` arma `prefix + segment` (`prefix` = `''` para es, `/${locale}` para el resto; home es `prefix + '/'`), luego `?` con `URLSearchParams` y `#hash`. `DuplicateRouteError` con mensaje `Ruta duplicada: ${path}. Cambiá el slug de la serie.`
+- [x] **Step 4:** `npx vitest run tests/unit/routing` → PASS; `npm test` → cobertura 100 %.
+- [x] **Step 5: Handoff** — `feat: add locale model and translated route map`
 
 ---
 
@@ -236,7 +236,7 @@ Reglas de contenido de los defaults:
 - Plantillas: `seriesEyebrow = 'Serie {number} · {count} fotografías · {years}'`, `copyMessage = 'Hola, me interesa la copia "{copy}".'`. `eventsTicker = 'Carnaval, Comparsas, Shows, Escenario, Sociales'` (la vista lo separa por `,`).
 - `enTexts`/`ptTexts`: traducción natural, voseo → tratamiento neutro. Ej.: `nav.bookSession` en `'Book a session'`, pt `'Agendar sessão'`.
 
-- [ ] **Step 1: Tests que fallan**
+- [x] **Step 1: Tests que fallan**
 
 ```ts
 it('uses Sarah override for the requested language', () => {
@@ -278,10 +278,10 @@ it('GetSiteTexts returns the texts of the requested language', async () => {
 ```
 (`placeholdersOf` es un helper del test: extrae `{x}` ordenados.)
 
-- [ ] **Step 2:** `npx vitest run tests/unit/texts` → FAIL.
-- [ ] **Step 3:** Implementar. `resolveSiteTexts` recorre `defaultSiteTexts[locale]` por grupo y clave; toma `overrides?.[g]?.[k]?.[locale]?.trim()` si no es vacío. `formatText` reemplaza `/\{(\w+)\}/g` solo si la clave existe. `GetSiteTexts` delega en `repository.getTexts(locale)`.
-- [ ] **Step 4:** `npm test` → PASS, cobertura 100 %.
-- [ ] **Step 5: Handoff** — `feat: add site texts with per-language defaults and overrides`
+- [x] **Step 2:** `npx vitest run tests/unit/texts` → FAIL.
+- [x] **Step 3:** Implementar. `resolveSiteTexts` recorre `defaultSiteTexts[locale]` por grupo y clave; toma `overrides?.[g]?.[k]?.[locale]?.trim()` si no es vacío. `formatText` reemplaza `/\{(\w+)\}/g` solo si la clave existe. `GetSiteTexts` delega en `repository.getTexts(locale)`.
+- [x] **Step 4:** `npm test` → PASS, cobertura 100 %.
+- [x] **Step 5: Handoff** — `feat: add site texts with per-language defaults and overrides`
 
 ---
 
@@ -319,7 +319,7 @@ Qué se localiza (todo texto en lenguaje natural): `foto.alt`, `foto.titulo`; `f
 
 Validación de slugs de serie: `seriesSlugProblem` devuelve `'Esa dirección está reservada para la tienda de copias.'` si el slug está en `reservedSeriesSlugs[locale]`. Unicidad por idioma: `rule.custom` con un `getClient` que busca `count(*[_type == "serie" && slug[$locale].current == $slug && _id != $id])`.
 
-- [ ] **Step 1: Test que falla**
+- [x] **Step 1: Test que falla**
 
 ```ts
 expect(seriesSlugProblem('copias', 'es')).toBe('Esa dirección está reservada para la tienda de copias.');
@@ -327,10 +327,10 @@ expect(seriesSlugProblem('prints', 'en')).toBe('Esa dirección está reservada p
 expect(seriesSlugProblem('prints', 'es')).toBe(true);
 expect(seriesSlugProblem(undefined, 'en')).toBe(true);
 ```
-- [ ] **Step 2:** `npx vitest run tests/unit/sanity/reservedSlugs.test.ts` → FAIL.
-- [ ] **Step 3:** Implementar esquemas. `siteTextLabels` tipado contra `SiteTexts`: si falta una clave, `npm run check` falla.
-- [ ] **Step 4:** `npm run check && npm test` → PASS. Con `PUBLIC_SANITY_PROJECT_ID` configurado, `npm run dev` y abrir `/admin`: "Textos del sitio" muestra los grupos con los defaults como placeholder; una faceta muestra Español abierto y "Inglés y portugués" colapsado. Sin proyecto Sanity, dejar anotado que esta verificación queda pendiente.
-- [ ] **Step 5: Handoff** — `feat: localize Sanity schemas and add editable site texts singleton`
+- [x] **Step 2:** `npx vitest run tests/unit/sanity/reservedSlugs.test.ts` → FAIL.
+- [x] **Step 3:** Implementar esquemas. `siteTextLabels` tipado contra `SiteTexts`: si falta una clave, `npm run check` falla.
+- [x] **Step 4:** `npm run check && npm test` → PASS. Con `PUBLIC_SANITY_PROJECT_ID` configurado, `npm run dev` y abrir `/admin`: "Textos del sitio" muestra los grupos con los defaults como placeholder; una faceta muestra Español abierto y "Inglés y portugués" colapsado. Sin proyecto Sanity, dejar anotado que esta verificación queda pendiente.
+- [x] **Step 5: Handoff** — `feat: localize Sanity schemas and add editable site texts singleton`
 
 ---
 
@@ -360,7 +360,7 @@ export interface Series { /* actual */ ; slugs: Record<Locale, string> } // slug
 // locateFacet(facets, slug, locale, obraLabel: string): previous/next con href = pathTo(locale, { route: slug }); link a Obra = { label: obraLabel, href: pathTo(locale, { route: 'obra' }) }
 ```
 
-- [ ] **Step 1: Tests que fallan** (agregar a los existentes)
+- [x] **Step 1: Tests que fallan** (agregar a los existentes)
 
 ```ts
 it('links neighbour facets inside the visitor language', async () => {
@@ -388,10 +388,10 @@ it('gives every seed series the same slug in all languages', async () => {
   expect(series?.slugs).toEqual({ es: 'oficios', en: 'oficios', pt: 'oficios' });
 });
 ```
-- [ ] **Step 2:** `npm test` → FAIL.
-- [ ] **Step 3:** Implementar. El link "Obra" de `locateFacet` toma su label de los textos: `GetFacetPage` y `GetBrandsPage` piden `getTexts(locale)` y pasan `texts.nav.obra` a `locateFacet`. `GetSeriesPage.toLink` usa `pathTo(locale, { route: 'serie', slug })`.
-- [ ] **Step 4:** `npm run check && npm test` → PASS, 100 %. (`npm run check` va a marcar las páginas `.astro` que llaman sin `locale`: pasarles `'es'` provisoriamente; la Tarea 7 las reemplaza.)
-- [ ] **Step 5: Handoff** — `refactor: pass locale through content repository and use cases`
+- [x] **Step 2:** `npm test` → FAIL.
+- [x] **Step 3:** Implementar. El link "Obra" de `locateFacet` toma su label de los textos: `GetFacetPage` y `GetBrandsPage` piden `getTexts(locale)` y pasan `texts.nav.obra` a `locateFacet`. `GetSeriesPage.toLink` usa `pathTo(locale, { route: 'serie', slug })`.
+- [x] **Step 4:** `npm run check && npm test` → PASS, 100 %. (`npm run check` va a marcar las páginas `.astro` que llaman sin `locale`: pasarles `'es'` provisoriamente; la Tarea 7 las reemplaza.)
+- [x] **Step 5: Handoff** — `refactor: pass locale through content repository and use cases`
 
 ---
 
@@ -419,7 +419,7 @@ export const translationsOf: (...values: SanityLocalized<unknown>[]) => Translat
 Campos principales que deciden `translations`: home `bajada` + `puertaEncargosTitulo`; faceta `titulo` + `lead`; página Marcas su título y bajada principales; página Obra `cita` + `tituloSobre` (los equivalentes de `quote`/`aboutTitle`); serie `titulo` + `textoCuratorial`; página Copias `titulo` + `bajada`. El repositorio semilla devuelve `{ es: true, en: false, pt: false }`.
 Las queries **no** cambian de forma (siguen sin parámetros de idioma), así `CachedSanityClient` reutiliza un solo fetch para los tres idiomas del build.
 
-- [ ] **Step 1: Tests que fallan**
+- [x] **Step 1: Tests que fallan**
 
 ```ts
 expect(localize({ es: 'Retratos', en: 'Portraits' }, 'en')).toBe('Portraits');
@@ -469,10 +469,10 @@ it('fetches each document once for all languages', async () => {
   expect(client.requests.filter((query) => query === homeQuery)).toHaveLength(1);
 });
 ```
-- [ ] **Step 2:** `npx vitest run tests/unit/sanity tests/unit/localize.test.ts` → FAIL.
-- [ ] **Step 3:** Implementar. Los tipos `Sanity*Document` cambian `string` → `SanityLocalized<string>` (y `SanityRichTitle`, `string[]`) solo en los campos listados en la Tarea 3. `aSanityWorld` agrega la respuesta de `siteTextsQuery`.
-- [ ] **Step 4:** `npm run check && npm test` → PASS, 100 %.
-- [ ] **Step 5: Handoff** — `feat: resolve Sanity content per language with Spanish fallback`
+- [x] **Step 2:** `npx vitest run tests/unit/sanity tests/unit/localize.test.ts` → FAIL.
+- [x] **Step 3:** Implementar. Los tipos `Sanity*Document` cambian `string` → `SanityLocalized<string>` (y `SanityRichTitle`, `string[]`) solo en los campos listados en la Tarea 3. `aSanityWorld` agrega la respuesta de `siteTextsQuery`.
+- [x] **Step 4:** `npm run check && npm test` → PASS, 100 %.
+- [x] **Step 5: Handoff** — `feat: resolve Sanity content per language with Spanish fallback`
 
 ---
 
@@ -483,12 +483,12 @@ it('fetches each document once for all languages', async () => {
 - Create: `migrations/localize-fields/index.ts`
 - Modify: `docs/07-cms-setup.md` (sección 3)
 
-- [ ] **Step 1:** En `buildDocuments`, envolver cada campo localizado de la Tarea 3 como `{ es: valor }` (slugs: `{ es: { _type: 'slug', current } }`). Documento nuevo `textosDelSitio` con `_id: 'textosDelSitio'` vacío (solo `_type`), así aparece en el Studio con los placeholders.
-- [ ] **Step 2:** `npm run seed -- --dry-run` → el plan muestra los documentos con campos `{ es: … }` y el documento `textosDelSitio`.
-- [ ] **Step 3:** Migración con `defineMigration` de `sanity/migrate` (verificar la API instalada en `node_modules/sanity/lib/migrate` o con Context7). Para cada tipo y campo de la Tarea 3: si el valor es `string`, array de strings, array de bloques o slug plano, reemplazarlo por `{ es: valor }`; si ya es objeto con `es`, no tocarlo (idempotente).
-- [ ] **Step 4:** Con un dataset de prueba: `npx sanity migration run localize-fields` (dry run por defecto) muestra los cambios; con `--no-dry-run` los aplica; correrla dos veces no produce cambios la segunda.
-- [ ] **Step 5:** Documentar en `docs/07-cms-setup.md`: "Si el dataset ya tenía contenidos antes del soporte de idiomas, corré la migración `localize-fields` una vez antes de abrir el Studio."
-- [ ] **Step 6: Handoff** — `feat: seed localized fields and add migration for existing content`
+- [x] **Step 1:** En `buildDocuments`, envolver cada campo localizado de la Tarea 3 como `{ es: valor }` (slugs: `{ es: { _type: 'slug', current } }`). Documento nuevo `textosDelSitio` con `_id: 'textosDelSitio'` vacío (solo `_type`), así aparece en el Studio con los placeholders.
+- [x] **Step 2:** `npm run seed -- --dry-run` → el plan muestra los documentos con campos `{ es: … }` y el documento `textosDelSitio`.
+- [x] **Step 3:** Migración con `defineMigration` de `sanity/migrate` (verificar la API instalada en `node_modules/sanity/lib/migrate` o con Context7). Para cada tipo y campo de la Tarea 3: si el valor es `string`, array de strings, array de bloques o slug plano, reemplazarlo por `{ es: valor }`; si ya es objeto con `es`, no tocarlo (idempotente).
+- [x] **Step 4:** Con un dataset de prueba: `npx sanity migration run localize-fields` (dry run por defecto) muestra los cambios; con `--no-dry-run` los aplica; correrla dos veces no produce cambios la segunda.
+- [x] **Step 5:** Documentar en `docs/07-cms-setup.md`: "Si el dataset ya tenía contenidos antes del soporte de idiomas, corré la migración `localize-fields` una vez antes de abrir el Studio."
+- [x] **Step 6: Handoff** — `feat: seed localized fields and add migration for existing content`
 
 ---
 
@@ -532,7 +532,7 @@ export class ListSitemapEntries { constructor(repository: ContentRepository); ex
 - `LanguageSwitcher`: en el header (desktop) y dentro de `MobileMenu`. Tres enlaces `ES · EN · PT` con `hreflang`, `lang`, `aria-current="true"` en el actual, `aria-label` = `texts.a11y.languageSwitcher`; cada enlace lleva a la página equivalente (`alternates`). `min-height: var(--tap)`.
 - 404: textos de `defaultSiteTexts.es` resueltos con `GetSiteTexts('es')`, más enlaces "English" → `/en/` y "Português" → `/pt/`.
 
-- [ ] **Step 1: e2e que fallan** — `tests/e2e/i18n.spec.ts`
+- [x] **Step 1: e2e que fallan** — `tests/e2e/i18n.spec.ts`
 
 ```ts
 const localizedRoutes = ['/en/', '/en/portraits', '/en/brands', '/en/events', '/en/work', '/en/work/prints', '/en/work/oficios',
@@ -597,11 +597,11 @@ it('announces only translated languages and English as x-default', async () => {
 ```
 Agregar `src/application/ListSitemapEntries.ts` a la cobertura (ya entra por `src/application/**`).
 
-- [ ] **Step 2:** `npm test` y `npm run test:e2e -- i18n` → FAIL (404 en `/en/…`, módulos inexistentes).
-- [ ] **Step 3:** Implementar vistas, ruta dinámica, layout, switcher y reemplazo de textos/`href`.
-- [ ] **Step 4:** Agregar a `smoke.spec.ts` las rutas de `localizedRoutes` (status 200, axe sin violaciones, sin overflow a 375 px). Actualizar `seo.spec.ts`: lo que hoy chequea `sitemap-index.xml` pasa a `/sitemap.xml`; `/retratos` mantiene su canonical propio y no tiene `noindex`.
-- [ ] **Step 5:** `npm run check && npm test && npm run build && npm run test:e2e` → todo verde. Screenshots de `/en/` y `/pt/obra` a 375 y 1280 px revisados a ojo (textos largos en inglés/portugués no rompen el header ni los botones).
-- [ ] **Step 6: Handoff** — `feat: serve English and Portuguese pages with translated URLs and language switcher`
+- [x] **Step 2:** `npm test` y `npm run test:e2e -- i18n` → FAIL (404 en `/en/…`, módulos inexistentes).
+- [x] **Step 3:** Implementar vistas, ruta dinámica, layout, switcher y reemplazo de textos/`href`.
+- [x] **Step 4:** Agregar a `smoke.spec.ts` las rutas de `localizedRoutes` (status 200, axe sin violaciones, sin overflow a 375 px). Actualizar `seo.spec.ts`: lo que hoy chequea `sitemap-index.xml` pasa a `/sitemap.xml`; `/retratos` mantiene su canonical propio y no tiene `noindex`.
+- [x] **Step 5:** `npm run check && npm test && npm run build && npm run test:e2e` → todo verde. Screenshots de `/en/` y `/pt/obra` a 375 y 1280 px revisados a ojo (textos largos en inglés/portugués no rompen el header ni los botones).
+- [x] **Step 6: Handoff** — `feat: serve English and Portuguese pages with translated URLs and language switcher`
 
 ---
 
@@ -627,7 +627,7 @@ export interface ContactMessage { name; email; type; message; copy: string; loca
 ```
 El valor oculto `tipo = 'Copia de autor'` de las consultas de copias no se traduce: es lo que lee Sarah en el mail.
 
-- [ ] **Step 1: Tests que fallan**
+- [x] **Step 1: Tests que fallan**
 
 ```ts
 expect(formatContactEmail(aContactMessage({ locale: 'pt' })).text).toContain('Idioma: Portugués');
@@ -646,10 +646,10 @@ test('Portuguese visitor without JavaScript lands on the Portuguese result page'
 });
 test('rate limited English visitor sees the English message', ...); // 6 envíos sin JS desde /en/ → /contacto/error?motivo=limite&idioma=en
 ```
-- [ ] **Step 2:** `npm test` y `npm run test:e2e -- contact` → FAIL.
-- [ ] **Step 3:** Implementar.
-- [ ] **Step 4:** `npm run check && npm test && npm run build && npm run test:e2e` → verde.
-- [ ] **Step 5: Handoff** — `feat: localize contact form, result pages and inquiry email`
+- [x] **Step 2:** `npm test` y `npm run test:e2e -- contact` → FAIL.
+- [x] **Step 3:** Implementar.
+- [x] **Step 4:** `npm run check && npm test && npm run build && npm run test:e2e` → verde.
+- [x] **Step 5: Handoff** — `feat: localize contact form, result pages and inquiry email`
 
 ---
 
@@ -658,7 +658,7 @@ test('rate limited English visitor sees the English message', ...); // 6 envíos
 **Files:**
 - Modify: `docs/04-cms.md` (tipos localizados, `textosDelSitio`), `docs/07-cms-setup.md` ("Guía para Sarah"), `CLAUDE.md` (mapa del sitio con rutas en/pt)
 
-- [ ] **Step 1:** Guía para Sarah, en español y paso a paso: "Traducir una página" (abrir el documento → "Inglés y portugués" → completar → Publicar; lo que quede vacío se ve en español), "Cambiar un texto del sitio" (Textos del sitio → grupo → idioma → Publicar; vaciarlo vuelve al texto de ejemplo; mantener las palabras entre llaves), "Dirección en inglés de una serie" (campo Dirección web → Inglés; no cambiarla una vez publicada).
-- [ ] **Step 2:** Actualizar el mapa del sitio en `CLAUDE.md` con la tabla de segmentos.
-- [ ] **Step 3:** Verificación final completa: `npm run check && npm test && npm run build && npm run test:e2e`; levantar `HOST=localhost PORT=4321 node dist/server/entry.mjs` y recorrer `/`, `/en/`, `/pt/obra/copias` a mano.
-- [ ] **Step 4: Handoff** — `chore: document translations and site texts for the editor`
+- [x] **Step 1:** Guía para Sarah, en español y paso a paso: "Traducir una página" (abrir el documento → "Inglés y portugués" → completar → Publicar; lo que quede vacío se ve en español), "Cambiar un texto del sitio" (Textos del sitio → grupo → idioma → Publicar; vaciarlo vuelve al texto de ejemplo; mantener las palabras entre llaves), "Dirección en inglés de una serie" (campo Dirección web → Inglés; no cambiarla una vez publicada).
+- [x] **Step 2:** Actualizar el mapa del sitio en `CLAUDE.md` con la tabla de segmentos.
+- [x] **Step 3:** Verificación final completa: `npm run check && npm test && npm run build && npm run test:e2e`; levantar `HOST=localhost PORT=4321 node dist/server/entry.mjs` y recorrer `/`, `/en/`, `/pt/obra/copias` a mano.
+- [x] **Step 4: Handoff** — `chore: document translations and site texts for the editor`

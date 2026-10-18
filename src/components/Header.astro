@@ -1,26 +1,26 @@
 ---
 import Arrow from '@/components/Arrow.astro';
-import LanguageSwitcher from '@/components/LanguageSwitcher.astro';
-import type { Locale } from '@/domain/Locale';
-import { pathTo } from '@/domain/routing/pathTo';
-import type { SiteTexts } from '@/domain/SiteTexts';
 import Button from './Button.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 import Logo from './Logo.astro';
 import MobileMenu from './MobileMenu.astro';
 import { navigationLinks } from './navigationLinks';
 import type { HeaderVariant } from './navigationLinks';
+import type { Locale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import type { SiteTexts } from '@/domain/SiteTexts';
 
 interface Props {
+  locale: Locale;
+  texts: SiteTexts;
+  alternates: Record<Locale, string>;
   variant?: HeaderVariant;
   current?: string;
   ctaLabel?: string;
   ctaHref?: string;
-  locale: Locale;
-  texts: SiteTexts;
-  alternates: Record<Locale, string>;
 }
 
-const { variant = 'site', current = 'home', ctaLabel, ctaHref, locale, texts, alternates } = Astro.props;
+const { locale, texts, alternates, variant = 'site', current = 'home', ctaLabel, ctaHref } = Astro.props;
 
 const links = navigationLinks(variant, locale, texts);
 const resolvedCtaLabel = ctaLabel ?? (variant === 'site' ? texts.nav.bookSession : undefined);
@@ -31,7 +31,7 @@ const navLabel = variant === 'obra' ? texts.a11y.obraNav : texts.a11y.mainNav;
 ---
 <header class="site-header">
   <div class="container site-header-row">
-    <Logo variant={variant === 'obra' ? 'obra' : 'default'} locale={locale} texts={texts} />
+    <Logo variant={variant === 'obra' ? 'obra' : 'default'} locale={locale} texts={texts.nav} />
     <nav class="site-nav" aria-label={navLabel}>
       {links.map((link) => (
         <a
@@ -44,15 +44,8 @@ const navLabel = variant === 'obra' ? texts.a11y.obraNav : texts.a11y.mainNav;
       ))}
     </nav>
     <div class="header-actions">
-      <LanguageSwitcher locale={locale} alternates={alternates} label={texts.a11y.languageSwitcher} />
-      <MobileMenu
-        links={links}
-        texts={texts.a11y}
-        locale={locale}
-        alternates={alternates}
-        {...(cta ? { ctaLabel: cta.label, ctaHref: cta.href } : {})}
-        current={currentHref}
-      />
+      <span class="header-switcher"><LanguageSwitcher locale={locale} alternates={alternates} label={texts.a11y.languageSwitcher} /></span>
+      <MobileMenu links={links} locale={locale} alternates={alternates} texts={texts.a11y} {...(cta ? { ctaLabel: cta.label, ctaHref: cta.href } : {})} current={currentHref} />
       {cta && <Button class="header-cta" href={cta.href} variant="primary">{cta.label}</Button>}
     </div>
   </div>
@@ -125,7 +118,8 @@ const navLabel = variant === 'obra' ? texts.a11y.obraNav : texts.a11y.mainNav;
   }
 
   @media (max-width: 899px) {
-    :global(html.js) .site-nav {
+    :global(html.js) .site-nav,
+    :global(html.js) .header-switcher {
       display: none;
     }
   }

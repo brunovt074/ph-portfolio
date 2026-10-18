@@ -29,6 +29,10 @@ describe('formatContactEmail', () => {
     expect(subject).toBe('Nueva consulta: A Bcc: x@y.com — Sofía Paredes');
   });
 
+  it('tells Sarah in which language the visitor wrote', () => {
+    expect(formatContactEmail({ ...base, locale: 'pt' }).text).toContain('Idioma: Portugués');
+  });
+
   it('mentions the print a collector asked about', () => {
     expect(formatContactEmail({ ...base, type: 'Copia de autor', copy: 'Sin título 03' }).text).toContain('Copia consultada: Sin título 03');
   });

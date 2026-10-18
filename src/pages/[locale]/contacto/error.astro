@@ -1,0 +1,29 @@
+---
+import ContactResult from '@/components/contact/ContactResult.astro';
+import { GetSiteTexts } from '@/application/GetSiteTexts';
+import { parseLocale } from '@/domain/Locale';
+import { pathTo } from '@/domain/routing/pathTo';
+import { fieldErrorKeys } from '@/forms/fieldErrorKeys';
+import type { FieldName } from '@/forms/FieldName';
+import { contentRepository } from '@/infrastructure/container';
+
+export const prerender = false;
+
+const locale = parseLocale(Astro.params.locale);
+const texts = await new GetSiteTexts(contentRepository).execute(locale);
+const fields = (Astro.url.searchParams.get('campos') ?? '').split(',');
+const problems = (Object.keys(fieldErrorKeys) as FieldName[])
+  .filter((key) => fields.includes(key))
+  .map((key) => texts.contact[fieldErrorKeys[key]]);
+const rateLimited = Astro.url.searchParams.get('motivo') === 'limite';
+const lead = rateLimited ? texts.contact.rateLimited : problems.length > 0 ? texts.contact.errorLead : texts.contact.unavailable;
+---
+<ContactResult
+  locale={locale}
+  texts={texts}
+  title={texts.contact.errorTitle}
+  lead={lead}
+  problems={problems}
+  backLabel={texts.contact.backToForm}
+  backHref={pathTo(locale, { route: 'home', hash: 'contacto' })}
+/>

@@ -10,8 +10,8 @@ describe('GetBrandsPage', () => {
 
     expect(page.facet.slug).toBe('marcas');
     expect(page.brands.packagesTitle).toBe('Paquetes');
-    expect(page.previous.href).toBe('/retratos');
-    expect(page.next.href).toBe('/eventos');
+    expect(page.previous.href).toBe('/es/retratos');
+    expect(page.next.href).toBe('/es/eventos');
     expect(page.settings.whatsapp).toBe('[NÚMERO]');
   });
 

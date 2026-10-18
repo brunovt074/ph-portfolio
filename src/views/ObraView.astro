@@ -10,9 +10,9 @@ import SeriesIndex from '@/components/obra/SeriesIndex.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetObraPage } from '@/application/GetObraPage';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
-import type { Locale } from '@/domain/Locale';
 import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { pathTo } from '@/domain/routing/pathTo';
+import type { Locale } from '@/domain/Locale';
 import { contentRepository } from '@/infrastructure/container';
 
 interface Props {
@@ -21,33 +21,33 @@ interface Props {
 
 const { locale } = Astro.props;
 const texts = await new GetSiteTexts(contentRepository).execute(locale);
-const { obra, series, settings } = await new GetObraPage(contentRepository).execute(locale);
 const alternates = alternatePaths(() => ({ route: 'obra' }));
+const { obra, series, settings } = await new GetObraPage(contentRepository).execute(locale);
 ---
 <BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={obra.translations}
+  skipLabel={texts.a11y.skipToContent}
   title={texts.nav.obra}
   description={texts.seo.obraDescription}
   theme="obra"
   image={obra.opening.photo}
-  locale={locale}
-  translations={obra.translations}
-  alternates={alternates}
-  skipLabel={texts.a11y.skipToContent}
 >
-  <Header slot="header" variant="obra" locale={locale} texts={texts} alternates={alternates} />
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} variant="obra" />
   <FilmGrain />
   <OpeningFigure opening={obra.opening} />
-  <ObraIntro quote={obra.quote} title={texts.nav.obra} />
-  <SeriesIndex title={obra.seriesTitle} series={series} locale={locale} texts={texts} />
+  <ObraIntro title={texts.nav.obra} quote={obra.quote} />
+  <SeriesIndex locale={locale} texts={texts.pages} viewSeries={texts.nav.viewSeries} title={obra.seriesTitle} series={series} />
   <AboutWork title={obra.aboutTitle} exhibitionsTitle={obra.exhibitionsTitle} settings={settings} />
-  <PrintsTeaser teaser={obra.printsTeaser} locale={locale} />
+  <PrintsTeaser locale={locale} teaser={obra.printsTeaser} />
   <FooterNav
     slot="footer"
+    locale={locale}
+    texts={texts}
     previous={{ label: texts.nav.encargos, href: pathTo(locale, { route: 'home', hash: 'encargos' }) }}
     next={{ label: texts.nav.copias, href: pathTo(locale, { route: 'copias' }) }}
     settings={settings}
-    locale={locale}
-    texts={texts}
     logoVariant="obra"
   />
 </BaseLayout>

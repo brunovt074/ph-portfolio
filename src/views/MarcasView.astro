@@ -10,9 +10,9 @@ import SectorCards from '@/components/brands/SectorCards.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { GetBrandsPage } from '@/application/GetBrandsPage';
 import { GetSiteTexts } from '@/application/GetSiteTexts';
-import type { Locale } from '@/domain/Locale';
 import { alternatePaths } from '@/domain/routing/alternatePaths';
 import { pathTo } from '@/domain/routing/pathTo';
+import type { Locale } from '@/domain/Locale';
 import { contentRepository } from '@/infrastructure/container';
 
 interface Props {
@@ -21,26 +21,25 @@ interface Props {
 
 const { locale } = Astro.props;
 const texts = await new GetSiteTexts(contentRepository).execute(locale);
-const { facet, brands, previous, next, settings } = await new GetBrandsPage(contentRepository).execute(locale);
-const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'marcas' }, hash: 'contacto' });
 const alternates = alternatePaths(() => ({ route: 'marcas' }));
+const { facet, brands, previous, next, settings } = await new GetBrandsPage(contentRepository).execute(locale);
 ---
 <BaseLayout
+  locale={locale}
+  alternates={alternates}
+  translations={brands.translations}
+  skipLabel={texts.a11y.skipToContent}
   title={texts.seo.marcasTitle}
   description={texts.seo.marcasDescription}
   theme="sand"
   image={facet.cover[0]}
-  locale={locale}
-  translations={brands.translations}
-  alternates={alternates}
-  skipLabel={texts.a11y.skipToContent}
 >
-  <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="marcas" ctaLabel={brands.headerCta} ctaHref={contactHref} />
-  <BrandsHero facet={facet} href={contactHref} />
+  <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="marcas" ctaLabel={brands.headerCta} ctaHref={pathTo(locale, { route: 'home', query: { tipo: 'marcas' }, hash: 'contacto' })} />
+  <BrandsHero facet={facet} locale={locale} />
   <SectorCards title={brands.sectorsTitle} sectors={brands.sectors} />
   <MoreWork title={brands.moreWorkTitle} photos={facet.gallery} />
-  <BeforeAfterSection title={brands.beforeAfterTitle} lead={brands.beforeAfterLead} pairs={brands.beforeAfter} />
+  <BeforeAfterSection texts={texts.pages} title={brands.beforeAfterTitle} lead={brands.beforeAfterLead} pairs={brands.beforeAfter} />
   <ProcessSteps title={brands.processTitle} steps={brands.steps} />
-  <PackagesSection title={brands.packagesTitle} cta={brands.packagesCta} packages={brands.packages} href={contactHref} featuredLabel={texts.pages.featuredPackage} />
-  <FooterNav slot="footer" previous={previous} next={next} settings={settings} locale={locale} texts={texts} />
+  <PackagesSection locale={locale} texts={texts.pages} title={brands.packagesTitle} cta={brands.packagesCta} packages={brands.packages} />
+  <FooterNav slot="footer" locale={locale} texts={texts} previous={previous} next={next} settings={settings} />
 </BaseLayout>

@@ -1,22 +1,22 @@
 ---
 import Arrow from '@/components/Arrow.astro';
-import LanguageSwitcher from '@/components/LanguageSwitcher.astro';
+import Button from './Button.astro';
 import type { Locale } from '@/domain/Locale';
 import type { SiteTexts } from '@/domain/SiteTexts';
-import Button from './Button.astro';
 import type { HeaderLink } from './HeaderLink';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
   links: HeaderLink[];
-  texts: SiteTexts['a11y'];
   locale: Locale;
   alternates: Record<Locale, string>;
+  texts: SiteTexts['a11y'];
   ctaLabel?: string;
   ctaHref?: string;
   current?: string | undefined;
 }
 
-const { links, texts, locale, alternates, ctaLabel, ctaHref, current } = Astro.props;
+const { links, locale, alternates, texts, ctaLabel, ctaHref, current } = Astro.props;
 ---
 <div class="mobile-menu" data-mobile-menu>
   <button type="button" class="t-nav mobile-menu-trigger" aria-expanded="false" aria-controls="mobile-menu-panel" data-menu-open>
@@ -34,7 +34,7 @@ const { links, texts, locale, alternates, ctaLabel, ctaHref, current } = Astro.p
       ))}
       {ctaLabel && ctaHref && <span class="mobile-menu-cta" style={`--i: ${links.length}`}><Button href={ctaHref} variant="primary">{ctaLabel}</Button></span>}
     </nav>
-    <div class="container mobile-menu-switcher">
+    <div class="mobile-menu-language container">
       <LanguageSwitcher locale={locale} alternates={alternates} label={texts.languageSwitcher} />
     </div>
   </div>
@@ -96,14 +96,13 @@ const { links, texts, locale, alternates, ctaLabel, ctaHref, current } = Astro.p
     color: var(--accent-current);
   }
 
+  .mobile-menu-language {
+    padding-block: 16px 48px;
+  }
+
   .mobile-menu-cta {
     display: inline-flex;
     margin-top: 24px;
-  }
-
-  .mobile-menu-switcher {
-    display: flex;
-    padding-bottom: var(--section-y);
   }
 
   @media (max-width: 899px) {

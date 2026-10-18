@@ -7,15 +7,15 @@ import type { SiteTexts } from '@/domain/SiteTexts';
 import Logo from './Logo.astro';
 
 interface Props {
+  locale: Locale;
+  texts: SiteTexts;
   previous?: NavLink | null;
   next?: NavLink | null;
   settings: SiteSettings;
   logoVariant?: 'default' | 'obra';
-  locale: Locale;
-  texts: SiteTexts;
 }
 
-const { previous, next, settings, logoVariant = 'default', locale, texts } = Astro.props;
+const { locale, texts, previous, next, settings, logoVariant = 'default' } = Astro.props;
 const hasPager = Boolean(previous || next);
 const year = new Date().getFullYear();
 const profile = (account: string) => `https://instagram.com/${account.replace(/^@/, '')}`;
@@ -41,7 +41,7 @@ const profile = (account: string) => `https://instagram.com/${account.replace(/^
       </nav>
     )}
     <div class:list={['footer-meta', !hasPager && 'footer-meta-bare']}>
-      <Logo variant={logoVariant} locale={locale} texts={texts} />
+      <Logo variant={logoVariant} locale={locale} texts={texts.nav} />
       <ul class="footer-social">
         {settings.instagram.map((account) => (
           <li>
