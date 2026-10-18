@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
+import { BLOCK_INDEXING } from 'astro:env/server';
+import { buildRobotsTxt } from '@/seo/buildRobotsTxt';
 
-export const GET: APIRoute = ({ site }) => {
-  const sitemap = new URL('/sitemap.xml', site).href;
-  return new Response(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /contacto/\nDisallow: /es/contacto/\nDisallow: /en/contacto/\nDisallow: /pt/contacto/\nDisallow: /reservas/\nDisallow: /api/\n\nSitemap: ${sitemap}\n`, {
+export const GET: APIRoute = ({ site }) =>
+  new Response(buildRobotsTxt(new URL('/sitemap.xml', site).href, BLOCK_INDEXING === 'true'), {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   });
-};

@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { BLOCK_INDEXING } from 'astro:env/server';
 import { ListSitemapEntries } from '@/application/ListSitemapEntries';
 import { contentRepository } from '@/infrastructure/container';
 
@@ -8,6 +9,9 @@ const escapeXml = (value: string): string =>
 export const prerender = true;
 
 export const GET: APIRoute = async ({ site }) => {
+  if (BLOCK_INDEXING === 'true') {
+    return new Response(null, { status: 404 });
+  }
   const absolute = (path: string) => escapeXml(new URL(path, site).href);
   const entries = await new ListSitemapEntries(contentRepository).execute();
   const urls = entries.map((entry) => {

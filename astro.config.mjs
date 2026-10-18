@@ -39,6 +39,7 @@ export default defineConfig({
       GOOGLE_SERVICE_ACCOUNT_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       SITE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      BLOCK_INDEXING: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
   build: { inlineStylesheets: 'always' },
