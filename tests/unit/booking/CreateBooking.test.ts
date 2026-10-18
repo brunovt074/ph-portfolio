@@ -3,6 +3,7 @@ import { aBookingOffer } from '../../fixtures/aBookingOffer';
 import { aBookingWorld } from '../../fixtures/aBookingWorld';
 import { aCreateBookingInput } from '../../fixtures/aCreateBookingInput';
 import { aSlotWorld, THURSDAY_MORNING_SLOT } from '../../fixtures/aBookingWorld';
+import { InProcessBookingLock } from '@/infrastructure/scheduling/InProcessBookingLock';
 import { FakePaymentGateway } from '../../fakes/FakePaymentGateway';
 
 describe('CreateBooking', () => {
@@ -313,9 +314,35 @@ describe('CreateBooking', () => {
       await expect(world.createBooking.execute(slotInput())).rejects.toThrow('boom');
     });
 
-    it('Mercado Pago down does not hold the turn', async () => {
+    it('Mercado Pago down releases the turn at once and leaves no payment behind', async () => {
       const world = aSlotWorld();
       world.gateway.failCheckoutsWith(new Error('mp down'));
+
+      const result = await world.createBooking.execute(slotInput());
+
+      expect(result).toEqual({ ok: false, error: 'gateway_unavailable' });
+      expect(world.bookings.all().map((booking) => booking.status)).toEqual(['cancelled']);
+      expect(world.payments.all()).toEqual([]);
+      const range = { start: new Date(THURSDAY_MORNING_SLOT), end: new Date('2026-10-22T14:30:00.000Z') };
+      const settings = await world.content.getSchedulingSettings();
+      expect(await world.availability.isFree({ settings, range, now: world.clock.now(), excludeBookingId: 'x' })).toBe(true);
+    });
+
+    it('a slow Mercado Pago does not block other clients, and the turn is already taken while the first one is paying', async () => {
+      const world = aSlotWorld({}, new InProcessBookingLock());
+      const release = world.gateway.holdsCheckoutsUntilReleased();
+
+      const first = world.createBooking.execute(slotInput());
+      const second = await world.createBooking.execute(slotInput({ name: 'Julieta Paz', email: 'julieta@example.com' }));
+      release();
+
+      expect(second).toEqual({ ok: false, error: 'slot_taken' });
+      expect((await first).ok).toBe(true);
+      expect(world.bookings.all()).toHaveLength(1);
+    });
+
+    it('a client without a registered payment provider cannot hold a turn', async () => {
+      const world = aSlotWorld({ defaultProvider: 'pix' });
 
       const result = await world.createBooking.execute(slotInput());
 

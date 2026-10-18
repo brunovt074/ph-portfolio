@@ -2,6 +2,7 @@ import type { BookingConfig } from '@/application/booking/BookingConfig';
 import { CreateBooking } from '@/application/booking/CreateBooking';
 import { GetBookingStatus } from '@/application/booking/GetBookingStatus';
 import { ProcessPaymentNotification } from '@/application/booking/ProcessPaymentNotification';
+import { ReconcileBookingReturn } from '@/application/booking/ReconcileBookingReturn';
 import { RetryDepositCheckout } from '@/application/booking/RetryDepositCheckout';
 import { ListAvailableSlots } from '@/application/booking/ListAvailableSlots';
 import { SlotAvailability } from '@/application/scheduling/SlotAvailability';
@@ -57,6 +58,7 @@ export const aBookingWorld = (options: BookingWorldOptions = {}, realLock: Booki
   const reporter = new FakeErrorReporter();
   const notifier = options.notifier ?? new RecordingNotifier();
   const availability = new SlotAvailability(bookings, calendar);
+  const processNotification = new ProcessPaymentNotification(bookings, payments, gateways, notifier, reporter, content, availability, calendar, lock, clock);
   return {
     content,
     bookings,
@@ -72,7 +74,8 @@ export const aBookingWorld = (options: BookingWorldOptions = {}, realLock: Booki
     availability,
     createBooking: new CreateBooking(content, bookings, payments, gateways, clock, ids, reporter, bookingConfig, availability, calendar, lock),
     listSlots: new ListAvailableSlots(content, availability, calendar, clock, reporter),
-    processNotification: new ProcessPaymentNotification(bookings, payments, gateways, notifier, reporter, content, availability, calendar, lock, clock),
+    processNotification,
+    reconcileReturn: new ReconcileBookingReturn(bookings, payments, gateways, processNotification, reporter),
     getStatus: new GetBookingStatus(bookings, payments, clock),
     retryCheckout: new RetryDepositCheckout(bookings, payments, gateways, clock, ids, reporter, bookingConfig),
   };

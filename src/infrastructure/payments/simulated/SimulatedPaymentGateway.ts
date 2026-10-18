@@ -2,6 +2,7 @@ import type { Checkout } from '@/domain/payment/Checkout';
 import type { CheckoutRequest } from '@/domain/payment/CheckoutRequest';
 import type { GatewayPayment } from '@/domain/payment/GatewayPayment';
 import type { IncomingNotification } from '@/domain/payment/IncomingNotification';
+import type { ParsedNotification } from '@/domain/payment/ParsedNotification';
 import type { PaymentGateway } from '@/domain/payment/PaymentGateway';
 import type { SimulatedCheckout } from './SimulatedCheckout';
 
@@ -54,9 +55,9 @@ export class SimulatedPaymentGateway implements PaymentGateway {
     return payment;
   }
 
-  parseNotification(notification: IncomingNotification): string | null {
+  parseNotification(notification: IncomingNotification): ParsedNotification {
     const body = notification.body as { paymentId?: unknown } | null;
     const paymentId = body?.paymentId;
-    return typeof paymentId === 'string' && this.payments.has(paymentId) ? paymentId : null;
+    return typeof paymentId === 'string' && this.payments.has(paymentId) ? { kind: 'payment', externalPaymentId: paymentId } : { kind: 'invalid' };
   }
 }

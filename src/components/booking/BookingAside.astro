@@ -16,9 +16,8 @@ const steps = [
   <section aria-labelledby="como-funciona">
     <h2 class="t-h3" id="como-funciona">{texts.howTitle}</h2>
     <ol class="steps">
-      {steps.map((step, index) => (
+      {steps.map((step) => (
         <li class="how-step">
-          <span class="t-numeral how-numeral" aria-hidden="true">{index + 1}</span>
           <div class="how-body">
             <h3 class="how-title">{step.title}</h3>
             <p class="how-text">{step.text}</p>
@@ -52,14 +51,10 @@ const steps = [
 
   .how-step {
     display: grid;
-    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
     padding-top: 20px;
     border-top: 1px solid var(--line);
-  }
-
-  .how-numeral {
-    color: var(--accent-current);
   }
 
   .how-title {

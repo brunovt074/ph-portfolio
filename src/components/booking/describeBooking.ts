@@ -35,11 +35,12 @@ export const describeBooking = (view: BookingStatusView, texts: BookingTexts, lo
     case 'payment_rejected':
     case 'awaiting_payment': {
       const expires = `${formatInstantDay(view.expiresAt, localeTag, timeZone)}, ${formatInstantTime(view.expiresAt, localeTag, timeZone)}`;
+      const awaiting = view.state === 'awaiting_payment';
       return {
-        title: texts.failedTitle,
-        lead: formatText(texts.failedLead, { expires }),
+        title: awaiting ? texts.awaitingTitle : texts.failedTitle,
+        lead: formatText(awaiting ? texts.awaitingLead : texts.failedLead, { expires }),
         note: retryNote(view, texts, localeTag, timeZone),
-        action: 'retry',
+        action: awaiting ? 'refresh_retry' : 'retry',
       };
     }
   }

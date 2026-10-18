@@ -62,6 +62,3 @@ export const payments = pgTable(
   },
   (table) => [index('payments_booking_idx').on(table.bookingId, table.kind, table.createdAt)],
 );
-
-export type BookingRow = typeof bookings.$inferSelect;
-export type PaymentRow = typeof payments.$inferSelect;

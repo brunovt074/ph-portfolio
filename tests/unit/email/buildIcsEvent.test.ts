@@ -37,7 +37,7 @@ describe('buildIcsEvent', () => {
   it('escapes commas, semicolons, backslashes and line breaks in the text', () => {
     const ics = buildIcsEvent(event({ summary: 'Retrato, familia; \\ amigos', description: 'Línea uno\nLínea dos' }));
 
-    expect(ics).toContain('SUMMARY:Retrato\\, familia\; \\\\ amigos\r\n');
+    expect(ics).toContain('SUMMARY:Retrato\\, familia\\; \\\\ amigos\r\n');
     expect(ics).toContain('DESCRIPTION:Línea uno\\nLínea dos\r\n');
   });
 

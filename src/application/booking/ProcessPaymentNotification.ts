@@ -1,4 +1,5 @@
 import type { Booking } from '@/domain/booking/Booking';
+import type { BookingStatus } from '@/domain/booking/BookingStatus';
 import type { BookingNotifier } from '@/domain/booking/BookingNotifier';
 import type { BookingRepository } from '@/domain/booking/BookingRepository';
 import type { Clock } from '@/domain/Clock';
@@ -7,6 +8,7 @@ import type { ErrorReporter } from '@/domain/ErrorReporter';
 import type { GatewayPayment } from '@/domain/payment/GatewayPayment';
 import type { IncomingNotification } from '@/domain/payment/IncomingNotification';
 import type { Payment } from '@/domain/payment/Payment';
+import type { PaymentStatus } from '@/domain/payment/PaymentStatus';
 import type { PaymentGateways } from '@/domain/payment/PaymentGateways';
 import type { PaymentRepository } from '@/domain/payment/PaymentRepository';
 import type { BookingLock } from '@/domain/scheduling/BookingLock';
@@ -41,26 +43,36 @@ export class ProcessPaymentNotification {
     if (!gateway) {
       return fail('unknown_provider');
     }
-    const externalPaymentId = gateway.parseNotification(notification);
-    if (externalPaymentId === null) {
+    const parsed = gateway.parseNotification(notification);
+    if (parsed.kind === 'ignored') {
+      return ok({ outcome: 'ignored' });
+    }
+    if (parsed.kind === 'invalid') {
+      this.reporter.report(new Error('[payments] rejected webhook signature'));
       return fail('invalid_notification');
     }
-    const remote = await gateway.fetchPayment(externalPaymentId);
-    return ok(await this.lock.runExclusive(() => this.apply(provider, remote)));
+    const remote = await gateway.fetchPayment(parsed.externalPaymentId);
+    return ok(await this.applyRemote(provider, remote));
   }
 
-  private async apply(provider: string, remote: GatewayPayment): Promise<ProcessedNotification> {
+  async applyRemote(provider: string, remote: GatewayPayment): Promise<ProcessedNotification> {
     const payment = await this.payments.findById(remote.reference);
     if (!payment || payment.provider !== provider) {
       return { outcome: 'ignored' };
     }
     const mismatch = this.hasAmountMismatch(remote, payment);
     const status = mismatch ? 'rejected' : remote.status;
-    if (payment.externalPaymentId === remote.externalPaymentId && payment.status === status) {
+    if (this.isSuperseded(payment, remote, status)) {
+      return { outcome: 'unchanged' };
+    }
+    const recorded = payment.externalPaymentId === remote.externalPaymentId && payment.status === status;
+    if (recorded && !(status === 'approved' && this.isBookingPayment(payment))) {
       return { outcome: 'unchanged' };
     }
     const updated: Payment = { ...payment, externalPaymentId: remote.externalPaymentId, status, raw: remote.raw };
-    await this.payments.update(updated);
+    if (!recorded) {
+      await this.payments.update(updated);
+    }
     if (mismatch) {
       this.reporter.report(new Error(`[payments] amount mismatch ${payment.id}`));
       return { outcome: 'amount_mismatch' };
@@ -69,12 +81,19 @@ export class ProcessPaymentNotification {
       return { outcome: 'updated' };
     }
     if (status === 'approved') {
-      return { outcome: await this.settle(updated) };
+      return { outcome: await this.settle(updated, recorded) };
     }
     if (status === 'refunded' && payment.status === 'approved') {
       await this.announceRefund(updated);
     }
     return { outcome: 'updated' };
+  }
+
+  private isSuperseded(payment: Payment, remote: GatewayPayment, status: PaymentStatus): boolean {
+    if (payment.status !== 'approved' || status === 'approved') {
+      return false;
+    }
+    return !(status === 'refunded' && payment.externalPaymentId === remote.externalPaymentId);
   }
 
   private isBookingPayment(payment: Payment): boolean {
@@ -92,43 +111,64 @@ export class ProcessPaymentNotification {
     return remote.status === 'approved' && (remote.amountCents !== payment.amountCents || remote.currency !== payment.currency);
   }
 
-  private async settle(payment: Payment): Promise<NotificationOutcome> {
+  private async settle(payment: Payment, recorded: boolean): Promise<NotificationOutcome> {
     const booking = await this.bookings.findById(payment.bookingId);
     if (!booking) {
       return 'updated';
     }
     if (booking.status !== 'awaiting_payment') {
+      if (recorded) {
+        return 'unchanged';
+      }
       this.reporter.report(new Error(`[payments] duplicate payment ${payment.id}`));
       await this.notify(() => this.notifier.duplicatePayment(booking, payment));
       return 'duplicate';
     }
     const schedule = booking.schedule;
-    if (schedule.kind === 'request') {
-      await this.confirm(booking, payment, null);
-    } else {
-      await this.settleSlot(booking, { start: schedule.start, end: schedule.end }, payment);
+    const range = schedule.kind === 'slot' ? { start: schedule.start, end: schedule.end } : null;
+    const claim = range ? await this.claimSlot(booking, range) : await this.claimTo(booking, 'confirmed');
+    if (!claim) {
+      return 'unchanged';
     }
+    if (claim.status === 'needs_rescheduling') {
+      await this.notify(() => this.notifier.slotConflict(claim, payment));
+      return 'updated';
+    }
+    const confirmed = range ? await this.attachCalendarEvent(claim, payment, range) : claim;
+    await this.notify(() => this.notifier.paymentConfirmed(confirmed, payment));
     return 'updated';
   }
 
-  private async settleSlot(booking: Booking, range: TimeRange, payment: Payment): Promise<void> {
+  private async claimSlot(booking: Booking, range: TimeRange): Promise<Booking | null> {
     const settings = await this.content.getSchedulingSettings();
-    const free = await this.isStillFree(booking, range, settings);
-    if (!free) {
-      const conflicted: Booking = { ...booking, status: 'needs_rescheduling' };
-      await this.bookings.update(conflicted);
-      await this.notify(() => this.notifier.slotConflict(conflicted, payment));
-      return;
+    return this.lock.runExclusive(async () => {
+      const free = await this.isStillFree(booking, range, settings);
+      return this.claimTo(booking, free ? 'confirmed' : 'needs_rescheduling');
+    });
+  }
+
+  private async claimTo(booking: Booking, status: BookingStatus): Promise<Booking | null> {
+    const next: Booking = { ...booking, status };
+    return (await this.bookings.transition(next, 'awaiting_payment')) ? next : null;
+  }
+
+  private async attachCalendarEvent(booking: Booking, payment: Payment, range: TimeRange): Promise<Booking> {
+    const calendarEventId = await this.createEvent(booking, payment, range);
+    if (calendarEventId === null) {
+      return booking;
     }
-    await this.confirm(booking, payment, await this.createEvent(booking, payment, range));
+    const withEvent: Booking = { ...booking, calendarEventId };
+    await this.notify(() => this.bookings.update(withEvent));
+    return withEvent;
   }
 
   private async isStillFree(booking: Booking, range: TimeRange, settings: SchedulingSettings): Promise<boolean> {
+    const query = { settings, range, now: this.clock.now(), excludeBookingId: booking.id };
     try {
-      return await this.availability.isFree({ settings, range, now: this.clock.now(), excludeBookingId: booking.id });
+      return await this.availability.isFree(query);
     } catch (error) {
       this.reporter.report(toError(error));
-      return true;
+      return this.availability.isFreeOfSiteBookings(query);
     }
   }
 
@@ -157,13 +197,7 @@ export class ProcessPaymentNotification {
     }
   }
 
-  private async confirm(booking: Booking, payment: Payment, calendarEventId: string | null): Promise<void> {
-    const confirmed: Booking = { ...booking, status: 'confirmed', calendarEventId };
-    await this.bookings.update(confirmed);
-    await this.notify(() => this.notifier.paymentConfirmed(confirmed, payment));
-  }
-
-  private async notify(send: () => Promise<void>): Promise<void> {
+  private async notify(send: () => Promise<unknown>): Promise<void> {
     try {
       await send();
     } catch (error) {

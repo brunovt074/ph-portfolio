@@ -188,6 +188,21 @@ test.describe('contact form without JavaScript', () => {
   });
 });
 
+test.describe('contact action called through a query string', () => {
+  test('is limited on any page like the contact form', async ({ request }) => {
+    const headers = { 'x-forwarded-for': uniqueAddress() };
+    const send = () => request.post('/contacto/error?_action=contact', { headers, form: { nombre: 'S', email: 'roto', mensaje: 'corto' }, maxRedirects: 0 });
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      expect((await send()).headers().location).not.toBe('/contacto/error?motivo=limite');
+    }
+    const blocked = await send();
+
+    expect(blocked.status()).toBe(303);
+    expect(blocked.headers().location).toBe('/contacto/error?motivo=limite');
+  });
+});
+
 test.describe('contact form rate limit with JavaScript', () => {
   test('tells the visitor to wait when the connection already sent too many inquiries', async ({ page, request }) => {
     const headers = { 'x-forwarded-for': uniqueAddress() };

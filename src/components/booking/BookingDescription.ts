@@ -1,4 +1,4 @@
-export type BookingAction = 'refresh' | 'retry' | 'new' | 'contact' | 'none';
+import type { BookingAction } from './BookingAction';
 
 export interface BookingDescription {
   title: string;

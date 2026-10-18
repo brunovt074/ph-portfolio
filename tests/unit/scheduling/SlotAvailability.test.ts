@@ -66,6 +66,7 @@ describe('SlotAvailability', () => {
       create: async () => {},
       findById: async () => null,
       update: async () => {},
+      transition: async () => false,
       findBlocking: async () => [aBooking({ id: 'proposed' })],
     };
 

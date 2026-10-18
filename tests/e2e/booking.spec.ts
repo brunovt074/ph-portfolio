@@ -195,7 +195,9 @@ test.describe('booking with turns', () => {
 
     await expect(page).toHaveURL(/\/reservas\/simulador\/sim_\d+/);
     await page.goto(resultUrl);
-    await expect(page.locator('h1')).toHaveText('El pago no se completó');
+    await expect(page.locator('h1')).toHaveText('Todavía no confirmamos tu pago');
+    await expect(page.locator('.t-lead')).not.toContainText('No se cobró nada');
+    await expect(page.getByRole('link', { name: 'Actualizar estado' })).toBeVisible();
     await capture(page, `qa/r2/resultado-pendiente-de-pago-${testInfo.project.name}.png`);
     await page.getByRole('button', { name: 'Reintentar el pago' }).click();
     await page.getByRole('button', { name: 'Aprobar pago' }).click();
@@ -240,7 +242,8 @@ test.describe('booking with turns', () => {
     await openForm(page);
     await chooseSession(page, 'maternidad');
 
-    await expect(page.locator('[data-slot-status]')).toContainText('No pude cargar la agenda');
+    await expect(page.locator('[data-request-notice]')).toContainText('No pude cargar la agenda');
+    await expect(page.locator('[data-request-notice]')).toBeVisible();
     await expect(page.locator('[data-panel="request"]')).toBeVisible();
     await page.locator('#reserva-fecha').fill(dateInDays(1));
     await fillCustomer(page);
@@ -276,6 +279,92 @@ test.describe('booking validation', () => {
     await submit(page);
 
     await expect(page.locator('#reserva-slot-error')).toHaveText('Elegí un horario.');
+  });
+
+  test('reports the missing turn in the first round together with the other errors', async ({ page }) => {
+    await openForm(page);
+    await chooseSession(page, 'maternidad');
+    await advanceToFreeWindow(page);
+
+    await submit(page);
+
+    await expect(page.locator('#reserva-slot-error')).toHaveText('Elegí un horario.');
+    await expect(page.locator('#reserva-nombre-error')).toHaveText('Contame cómo te llamás.');
+    await expect(page.locator('#reserva-slot-error')).not.toContainText('ocupar');
+  });
+
+  test('asks for a date, never says the turn was taken, when the agenda failed and no date is proposed', async ({ page }) => {
+    await page.route('**/api/bookings/slots*', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"calendar_unavailable"}' }));
+    await openForm(page);
+    await chooseSession(page, 'maternidad');
+    await expect(page.locator('[data-request-notice]')).toBeVisible();
+    await fillCustomer(page);
+
+    await submit(page);
+
+    await expect(page.locator('#reserva-fecha-error')).toBeVisible();
+    await expect(page.locator('#reserva-fecha-error')).not.toContainText('ocupar');
+    await expect(page.locator('#reserva-fecha')).toBeFocused();
+  });
+
+  test('clears an error as soon as the client fixes the field', async ({ page }) => {
+    await openForm(page);
+    await submit(page);
+    await expect(page.locator('#reserva-sesion-error')).toBeVisible();
+
+    await chooseSession(page, 'maternidad');
+    await page.locator('#reserva-nombre').fill('Camila Ríos');
+
+    await expect(page.locator('#reserva-sesion-error')).toBeHidden();
+    await expect(page.locator('[data-field="sesion"]')).not.toHaveAttribute('aria-invalid', 'true');
+    await expect(page.locator('#reserva-nombre-error')).toBeHidden();
+    await expect(page.locator('[data-form-status]')).toBeVisible();
+  });
+});
+
+test.describe('booking day strip', () => {
+  test('shows every day of the window in a grid without horizontal scroll, with its month range', async ({ page }) => {
+    await openForm(page);
+    await chooseSession(page, 'maternidad');
+    await settled(page);
+
+    const days = page.locator('[data-day]');
+    await expect(days).toHaveCount(14);
+    const inside = await days.evaluateAll((buttons) =>
+      buttons.every((button) => {
+        const box = button.getBoundingClientRect();
+        return box.left >= 0 && box.right <= window.innerWidth && box.width > 0;
+      }),
+    );
+    expect(inside).toBe(true);
+    const strip = await page.locator('[data-slot-days]').evaluate((element) => element.scrollWidth <= element.clientWidth);
+    expect(strip).toBe(true);
+    await expect(page.locator('[data-days-caption]')).toHaveText(/\d{1,2}.*\d{4}/);
+  });
+
+  test('names every day with its visible text and passes the label-in-name rule', async ({ page }) => {
+    await openForm(page);
+    await chooseSession(page, 'maternidad');
+    await settled(page);
+
+    const results = await new AxeBuilder({ page }).options({ runOnly: ['label-content-name-mismatch'] }).analyze();
+    expect(results.violations).toEqual([]);
+    const first = page.locator('[data-day]').first();
+    await expect(first).toHaveAccessibleName(/^\S+ \d{1,2} de \S+$/);
+  });
+
+  test('stops the next-days arrow at the horizon and tells so', async ({ page }) => {
+    await openForm(page);
+    await chooseSession(page, 'maternidad');
+    const next = page.locator('[data-days-next]');
+    for (let step = 0; step < 8 && (await next.isEnabled()); step += 1) {
+      await settled(page);
+      await next.click();
+    }
+    await settled(page);
+
+    await expect(next).toBeDisabled();
+    await expect(page.locator('[data-slot-status]')).not.toContainText('Probá más adelante');
   });
 });
 
@@ -316,7 +405,7 @@ test.describe('booking without JavaScript', () => {
 
     await page.goto(location);
     await expect(page.locator('h1')).toHaveText('No se pudo reservar');
-    await expect(page.locator('.result-problems li')).toHaveCount(4);
+    await expect(page.locator('.result-problems li')).toHaveCount(5);
   });
 
   test('explains a date that is too close', async ({ page, request }) => {
@@ -339,6 +428,19 @@ test.describe('booking rate limit', () => {
 
     for (let attempt = 0; attempt < 5; attempt += 1) {
       expect((await send()).status()).toBe(303);
+    }
+    const blocked = await send();
+
+    expect(blocked.status()).toBe(303);
+    expect(blocked.headers()['location']).toBe('/reservas/error?motivo=limite');
+  });
+
+  test('also limits the booking action called through a query string on any page', async ({ request }) => {
+    const headers = { 'x-forwarded-for': uniqueAddress() };
+    const send = () => request.post('/reservas/error?_action=booking', { headers, form: { sesion: 'maternidad' }, maxRedirects: 0 });
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      expect((await send()).headers()['location']).not.toBe('/reservas/error?motivo=limite');
     }
     const blocked = await send();
 

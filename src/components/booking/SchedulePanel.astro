@@ -23,6 +23,7 @@ const frames = [
 
     <div class="panel" data-panel="request">
       {hasSlotSessions && <p class="no-js-note">{texts.slotsNoScript}</p>}
+      <p class="slot-status" role="status" aria-live="polite" data-request-notice></p>
       <BookingField id="reserva-fecha" name="fecha" label={texts.dateLabel} type="date" required help={texts.dateHelp} />
       <div class="frames" role="radiogroup" aria-labelledby="reserva-franja-legend" data-field="franja">
         <p class="t-eyebrow" id="reserva-franja-legend">{texts.frameLegend}</p>
@@ -38,23 +39,26 @@ const frames = [
     </div>
 
     <div class="panel" data-panel="slots" data-slot-picker hidden>
-      <div class="days-row">
+      <div class="days-nav">
         <button class="arrow" type="button" data-days-previous aria-label={texts.daysPrevious}>
           <span aria-hidden="true">←</span>
         </button>
-        <div class="days" role="group" aria-label={texts.dayStripLabel} data-slot-days></div>
+        <p class="days-caption" data-days-caption></p>
         <button class="arrow" type="button" data-days-next aria-label={texts.daysNext}>
           <span aria-hidden="true">→</span>
         </button>
       </div>
+      <div class="days" role="group" aria-label={texts.dayStripLabel} data-slot-days></div>
       <div class="pills slot-grid" role="radiogroup" aria-label={texts.slotTimesLabel} aria-describedby="reserva-slot-error" tabindex="-1" data-field="slot" data-slot-grid></div>
       <p class="slot-status" role="status" aria-live="polite" data-slot-status></p>
       <p class="field-error" id="reserva-slot-error" data-error-for="slot" hidden></p>
       <p class="zone-note">{texts.timeZoneNote}</p>
       <template data-day-template>
         <button class="day" type="button" data-day>
+          <span class="sr-only" data-month-before></span>
           <span class="day-weekday" data-weekday></span>
           <span class="day-number" data-number></span>
+          <span class="sr-only" data-month-after></span>
         </button>
       </template>
       <template data-slot-template>
@@ -173,19 +177,24 @@ const frames = [
     border-color: var(--accent-current);
   }
 
-  .days-row {
+  .days-nav {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: 8px;
   }
 
+  .days-caption {
+    margin: 0;
+    text-align: center;
+    font-weight: 600;
+  }
+
   .days {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 4px;
     padding-block: 4px;
-    overflow-x: auto;
-    scrollbar-width: thin;
   }
 
   .arrow {
@@ -210,14 +219,13 @@ const frames = [
 
   .day {
     display: flex;
-    flex: 0 0 auto;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 2px;
-    min-width: 56px;
+    min-width: 0;
     min-height: 72px;
-    padding: 8px;
+    padding: 8px 2px;
     border: 1px solid transparent;
     border-bottom-color: var(--line);
     background: transparent;

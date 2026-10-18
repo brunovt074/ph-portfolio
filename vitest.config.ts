@@ -20,6 +20,7 @@ export default defineConfig({
         'src/infrastructure/seed/**',
         'src/infrastructure/db/Drizzle*.ts',
         'src/infrastructure/db/mapping/**',
+        'src/infrastructure/http/**',
         'src/infrastructure/payments/**',
         'src/infrastructure/scheduling/**',
         'src/infrastructure/texts/**',

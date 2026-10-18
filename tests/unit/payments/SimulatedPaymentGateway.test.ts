@@ -94,14 +94,14 @@ describe('SimulatedPaymentGateway', () => {
     await gateway.createCheckout(request());
     const paymentId = gateway.settle('sim_1', 'approved');
 
-    expect(gateway.parseNotification(notificationFor(paymentId))).toBe('simpay_1');
+    expect(gateway.parseNotification(notificationFor(paymentId))).toEqual({ kind: 'payment', externalPaymentId: 'simpay_1' });
   });
 
   it('refuses a notification for an unknown payment, without body or with a non string id', () => {
     const gateway = new SimulatedPaymentGateway('http://localhost:4321');
 
-    expect(gateway.parseNotification(notificationFor('simpay_9'))).toBeNull();
-    expect(gateway.parseNotification(notificationFor(42))).toBeNull();
-    expect(gateway.parseNotification({ headers: {}, query: {}, body: null })).toBeNull();
+    expect(gateway.parseNotification(notificationFor('simpay_9'))).toEqual({ kind: 'invalid' });
+    expect(gateway.parseNotification(notificationFor(42))).toEqual({ kind: 'invalid' });
+    expect(gateway.parseNotification({ headers: {}, query: {}, body: null })).toEqual({ kind: 'invalid' });
   });
 });

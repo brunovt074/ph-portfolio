@@ -1,5 +1,5 @@
 import type { Booking } from '@/domain/booking/Booking';
-import type { BookingRow } from '../schema';
+import type { BookingRow } from '../BookingRow';
 
 const toSchedule = (row: BookingRow): Booking['schedule'] =>
   row.scheduleKind === 'slot'

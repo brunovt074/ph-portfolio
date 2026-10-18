@@ -27,7 +27,7 @@ const shared = {
 };
 ---
 <div class="field">
-  <label class="t-eyebrow" for={id}>{label}{required && <span aria-hidden="true"> *</span>}</label>
+  <label class="t-eyebrow" for={id}>{label}{required && <span aria-hidden="true">&nbsp;*</span>}</label>
   {multiline ? <textarea rows="4" {...shared}></textarea> : <input type={type} inputmode={inputmode} {...shared} />}
   {help && <p class="field-help" id={`${id}-help`}>{help}</p>}
   <p class="field-error" id={`${id}-error`} data-error-for={name} hidden></p>

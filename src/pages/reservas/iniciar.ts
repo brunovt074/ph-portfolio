@@ -7,7 +7,7 @@ export const prerender = false;
 const reasonOf: Record<BookingProblem, string> = {
   offer: 'sesion',
   date: 'fecha',
-  slot_required: 'turno',
+  slot_required: 'fecha',
   slot_taken: 'turno',
   calendar: 'agenda',
   gateway: 'pago',

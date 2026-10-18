@@ -148,6 +148,13 @@ describe('MercadoPagoGateway', () => {
       });
     });
 
+    it('refuses an id that is not a Mercado Pago payment number before calling the api', async () => {
+      const api = new FakeMercadoPagoApi();
+
+      await expect(new MercadoPagoGateway(api, secret).fetchPayment('../users/me')).rejects.toThrow('Invalid Mercado Pago payment id');
+      expect(api.requestedPaymentIds).toEqual([]);
+    });
+
     it('requests the payment by its external id', async () => {
       const api = new FakeMercadoPagoApi(undefined, { id: 123456, status: 'approved' });
 
@@ -183,14 +190,14 @@ describe('MercadoPagoGateway', () => {
     const gateway = new MercadoPagoGateway(new FakeMercadoPagoApi(), secret);
 
     it('returns the payment id when the signature is valid', () => {
-      expect(gateway.parseNotification(signedNotification())).toBe('123456');
+      expect(gateway.parseNotification(signedNotification())).toEqual({ kind: 'payment', externalPaymentId: '123456' });
     });
 
     it('reads the type from the topic query param', () => {
       const notification = signedNotification();
       notification.query = { topic: 'payment', 'data.id': '123456' };
 
-      expect(gateway.parseNotification(notification)).toBe('123456');
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'payment', externalPaymentId: '123456' });
     });
 
     it('reads type and data id from the body when the query lacks them', () => {
@@ -198,43 +205,43 @@ describe('MercadoPagoGateway', () => {
       notification.query = {};
       notification.body = { type: 'payment', data: { id: 123456 } };
 
-      expect(gateway.parseNotification(notification)).toBe('123456');
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'payment', externalPaymentId: '123456' });
     });
 
     it('lowercases the data id when building the manifest', () => {
-      expect(gateway.parseNotification(signedNotification('ABC123'))).toBe('ABC123');
+      expect(gateway.parseNotification(signedNotification('ABC123'))).toEqual({ kind: 'payment', externalPaymentId: 'ABC123' });
     });
 
     it('rejects a signature computed with another secret', () => {
       const notification = signedNotification();
       notification.headers['x-signature'] = `ts=1700000000,v1=${sign('123456', 'req-1', '1700000000', 'other')}`;
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'invalid' });
     });
 
     it('rejects a signature of different length', () => {
       const notification = signedNotification();
       notification.headers['x-signature'] = 'ts=1700000000,v1=abc';
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'invalid' });
     });
 
     it('rejects a signature of the right length with a wrong value', () => {
       const notification = signedNotification();
       notification.headers['x-signature'] = `ts=1700000000,v1=${'0'.repeat(64)}`;
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'invalid' });
     });
 
     it('rejects when the webhook secret is not configured', () => {
-      expect(new MercadoPagoGateway(new FakeMercadoPagoApi(), '').parseNotification(signedNotification())).toBeNull();
+      expect(new MercadoPagoGateway(new FakeMercadoPagoApi(), '').parseNotification(signedNotification())).toEqual({ kind: 'invalid' });
     });
 
     it('ignores merchant order notifications', () => {
       const notification = signedNotification();
       notification.query = { topic: 'merchant_order', 'data.id': '123456' };
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'ignored' });
     });
 
     it('ignores notifications without any type', () => {
@@ -242,58 +249,66 @@ describe('MercadoPagoGateway', () => {
       notification.query = { 'data.id': '123456' };
       notification.body = null;
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'ignored' });
     });
 
-    it('rejects notifications without a data id', () => {
+    it('ignores notifications without a data id, like the legacy id and topic format', () => {
       const notification = signedNotification();
       notification.query = { type: 'payment' };
       notification.body = { data: {} };
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'ignored' });
     });
 
-    it('rejects notifications with an empty data id', () => {
+    it('ignores notifications with an empty data id', () => {
       const notification = signedNotification();
       notification.query = { type: 'payment', 'data.id': '' };
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'ignored' });
     });
 
-    it('rejects a null data id in the body', () => {
+    it('ignores a null data id in the body', () => {
       const notification = signedNotification();
       notification.query = {};
       notification.body = { type: 'payment', data: { id: null } };
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'ignored' });
     });
 
     it('rejects notifications without signature headers', () => {
       const notification = signedNotification();
       notification.headers = {};
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'invalid' });
     });
 
     it('rejects notifications without a request id', () => {
       const notification = signedNotification();
       notification.headers = { 'x-signature': notification.headers['x-signature'] as string };
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'invalid' });
     });
 
     it('rejects a signature header missing the timestamp', () => {
       const notification = signedNotification();
       notification.headers['x-signature'] = 'v1=abc';
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'invalid' });
     });
 
     it('rejects a signature header missing the hash', () => {
       const notification = signedNotification();
       notification.headers['x-signature'] = 'ts=1700000000';
 
-      expect(gateway.parseNotification(notification)).toBeNull();
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'invalid' });
+    });
+
+    it('ignores the legacy payment notification that only carries an id and a topic', () => {
+      const notification = signedNotification();
+      notification.query = { id: '123456', topic: 'payment' };
+      notification.body = null;
+
+      expect(gateway.parseNotification(notification)).toEqual({ kind: 'ignored' });
     });
   });
 });

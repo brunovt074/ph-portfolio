@@ -17,7 +17,7 @@ const sanityIntegrations = projectId
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://laravischi.com',
   output: 'static',
-  adapter: node({ mode: 'standalone' }),
+  adapter: node({ mode: 'standalone', bodySizeLimit: 1_048_576 }),
   integrations: [
     react(),
     sitemap({ filter: (page) => !/\/(admin|contacto|api)(\/|$)|\/reservas\/.+/.test(new URL(page).pathname) }),
