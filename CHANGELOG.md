@@ -23,4 +23,8 @@ proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 - Las URLs en español llevan prefijo `/es` (antes sin prefijo); `/` redirige a `/es/`. Las páginas de resultado del formulario quedan bajo `/{idioma}/contacto/…`.
 
 ### Corregido
+- Tipografía: los títulos en Bodoni Moda usan peso 500 y tamaño óptico fijo (`opsz` 11) para que los trazos finos (travesaños de la `t` y la `e`) no desaparezcan.
+- `/marcas`, `/retratos` y `/reservas` pasan a la paleta oscura (`ink`) como el resto del sitio; el modo claro queda para más adelante.
+- Se elimina la vista previa flotante de «Cuatro miradas» en la home (quedaba rezagada al cambiar de fila).
+- i18n desactivada temporalmente: solo se publica el castellano (`enabledLocales` en `src/domain/Locale.ts`); `/en` y `/pt` dejan de generarse y se oculta el selector de idioma. El código y los textos en/pt se conservan para retomar la tarea.
 - Unicidad de slug de serie por idioma y reserva de slugs fijos (`copias`, `prints`).

@@ -1,5 +1,5 @@
 ---
-import { locales, type Locale } from '@/domain/Locale';
+import { enabledLocales, type Locale } from '@/domain/Locale';
 
 interface Props {
   locale: Locale;
@@ -9,8 +9,9 @@ interface Props {
 
 const { locale, alternates, label } = Astro.props;
 ---
+{enabledLocales.length > 1 && (
 <nav class="language-switcher" aria-label={label}>
-  {locales.map((code, index) => (
+  {enabledLocales.map((code, index) => (
     <>
       {index > 0 && <span aria-hidden="true">·</span>}
       <a
@@ -23,6 +24,7 @@ const { locale, alternates, label } = Astro.props;
     </>
   ))}
 </nav>
+)}
 
 <style>
   .language-switcher {

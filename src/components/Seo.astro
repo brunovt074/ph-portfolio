@@ -1,5 +1,5 @@
 ---
-import { locales, type Locale } from '@/domain/Locale';
+import { enabledLocales, type Locale } from '@/domain/Locale';
 import type { Translations } from '@/domain/Translations';
 import { openGraphLocales } from '@/seo/openGraphLocales';
 import type { SeoImage } from '@/seo/SeoImage';
@@ -18,7 +18,7 @@ const { title, description, image, noindex = false, locale, alternates, translat
 const untranslated = !translations[locale];
 const canonicalPath = noindex ? Astro.url.pathname : untranslated ? alternates.es : alternates[locale];
 const canonical = new URL(canonicalPath, Astro.site).href;
-const alternateLocales = locales.filter((other) => other !== locale && translations[other]);
+const alternateLocales = enabledLocales.filter((other) => other !== locale && translations[other]);
 ---
 <link rel="canonical" href={canonical} />
 {(noindex || untranslated) && <meta name="robots" content="noindex" />}

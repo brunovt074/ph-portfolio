@@ -1,13 +1,10 @@
 ---
 import Arrow from '@/components/Arrow.astro';
-import { getImage } from 'astro:assets';
 import Photo from '@/components/Photo.astro';
 import type { Facet } from '@/domain/Facet';
 import type { Locale } from '@/domain/Locale';
 import { pathTo } from '@/domain/routing/pathTo';
 import type { Photo as PhotoModel } from '@/domain/Photo';
-import { sanityPhotoUrl } from '@/infrastructure/sanity/imageUrl';
-import { resolveLocalPhoto } from '@/infrastructure/images/localPhotos';
 
 interface Props {
   locale: Locale;
@@ -16,16 +13,10 @@ interface Props {
 }
 
 const { locale, facet, thumbnails } = Astro.props;
-const first = thumbnails[0];
-const previewSource = first
-  ? first.asset.provider === 'local'
-    ? (await getImage({ src: resolveLocalPhoto(first.asset.ref).image, width: 600, format: 'webp', quality: 72 })).src
-    : sanityPhotoUrl(first, 600)
-  : undefined;
 const number = String(facet.number).padStart(2, '0');
 ---
 <li class="index-item">
-  <a class="index-row" href={pathTo(locale, { route: facet.slug })} data-index-row data-facet={facet.slug} data-preview-src={previewSource}>
+  <a class="index-row" href={pathTo(locale, { route: facet.slug })} data-index-row>
     <span class="t-numeral index-number">{number}</span>
     <span class="index-body">
       <span class="t-list index-title">{facet.name}</span>

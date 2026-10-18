@@ -7,6 +7,8 @@
     "node": ">=22"
   },
   "scripts": {
+    "stop": "fuser -k 4321/tcp || true",
+    "restart": "npm run stop && npm run dev",
     "photos": "tsx scripts/prepare-dev-photos.ts",
     "seed": "tsx scripts/seed.ts",
     "db:generate": "drizzle-kit generate",

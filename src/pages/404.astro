@@ -22,8 +22,6 @@ const exits = [
   { label: texts.nav.marcas, href: pathTo(locale, { route: 'marcas' }) },
   { label: texts.nav.eventos, href: pathTo(locale, { route: 'eventos' }) },
   { label: texts.nav.obra, href: pathTo(locale, { route: 'obra' }) },
-  { label: 'English', href: alternates.en, lang: 'en' },
-  { label: 'Português', href: alternates.pt, lang: 'pt' },
 ];
 ---
 <BaseLayout
@@ -43,7 +41,7 @@ const exits = [
       <nav aria-label={texts.a11y.exits}>
         <ul class="not-found-exits">
           {exits.map((exit) => (
-            <li><a class="t-h3 not-found-exit" href={exit.href} lang={exit.lang} hreflang={exit.lang}>{exit.label}</a></li>
+            <li><a class="t-h3 not-found-exit" href={exit.href}>{exit.label}</a></li>
           ))}
         </ul>
       </nav>

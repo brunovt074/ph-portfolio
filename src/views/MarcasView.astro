@@ -31,7 +31,7 @@ const { facet, brands, previous, next, settings } = await new GetBrandsPage(cont
   skipLabel={texts.a11y.skipToContent}
   title={texts.seo.marcasTitle}
   description={texts.seo.marcasDescription}
-  theme="sand"
+  theme="ink"
   image={facet.cover[0]}
 >
   <Header slot="header" locale={locale} texts={texts} alternates={alternates} current="marcas" ctaLabel={brands.headerCta} ctaHref={pathTo(locale, { route: 'home', query: { tipo: 'marcas' }, hash: 'contacto' })} />

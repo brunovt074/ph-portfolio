@@ -43,7 +43,7 @@ const newBookingHref = pathTo('es', { route: 'reservas', query: { sesion: view.o
 const contactHref = pathTo('es', { route: 'home', query: { tipo: 'retratos' }, hash: 'contacto' });
 Astro.response.headers.set('Cache-Control', 'no-store');
 ---
-<BaseLayout title={plainTitle} description={description.lead} theme="paper" noindex locale="es" translations={{ es: true, en: false, pt: false }} alternates={alternates} skipLabel={texts.a11y.skipToContent}>
+<BaseLayout title={plainTitle} description={description.lead} theme="ink" noindex locale="es" translations={{ es: true, en: false, pt: false }} alternates={alternates} skipLabel={texts.a11y.skipToContent}>
   <Header slot="header" locale="es" texts={texts} alternates={alternates} current="reservas" />
   <section class="section">
     <div class="container result">
