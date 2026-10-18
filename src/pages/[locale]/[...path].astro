@@ -8,7 +8,7 @@ import { views } from '@/views/views';
 import type { ViewRouteKey } from '@/views/views';
 
 export const getStaticPaths = (async () => {
-  const targets: Locale[] = ['en', 'pt'];
+  const targets: Locale[] = ['es', 'en', 'pt'];
   const pages = await Promise.all(
     targets.map(async (locale) => {
       const slugs = await new ListSeriesSlugs(contentRepository).execute(locale);

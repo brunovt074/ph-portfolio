@@ -7,7 +7,7 @@ import { resolveClientKey } from '@/infrastructure/rateLimit/resolveClientKey';
 
 const FORM_PATH = '/contacto/enviar';
 const ACTION_PATH_PREFIX = '/_actions/contact';
-const limitRedirect = (referer: string | null) => `/contacto/error?motivo=limite&idioma=${localeFromReferer(referer)}`;
+const limitRedirect = (referer: string | null) => `/${localeFromReferer(referer)}/contacto/error?motivo=limite`;
 
 const isFormSubmission = (pathname: string) => pathname === FORM_PATH || pathname === `${FORM_PATH}/`;
 

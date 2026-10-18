@@ -1,17 +1,17 @@
 import { expect, test } from '@playwright/test';
 
 const indexablePages = [
-  '/',
-  '/editorial',
-  '/retratos',
-  '/marcas',
-  '/eventos',
-  '/obra',
-  '/obra/oficios',
-  '/obra/geometrias',
-  '/obra/lo-que-queda',
-  '/obra/viajes-en-color',
-  '/obra/copias',
+  '/es/',
+  '/es/editorial',
+  '/es/retratos',
+  '/es/marcas',
+  '/es/eventos',
+  '/es/obra',
+  '/es/obra/oficios',
+  '/es/obra/geometrias',
+  '/es/obra/lo-que-queda',
+  '/es/obra/viajes-en-color',
+  '/es/obra/copias',
 ];
 
 interface PageSeo {
@@ -50,7 +50,7 @@ test('every indexable page has its own title, description, canonical and share i
 });
 
 test('pages declare Open Graph and Twitter cards for Spanish speakers in Argentina', async ({ page }) => {
-  await page.goto('/marcas');
+  await page.goto('/es/marcas');
 
   await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'es_AR');
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
@@ -59,7 +59,7 @@ test('pages declare Open Graph and Twitter cards for Spanish speakers in Argenti
 });
 
 test('home describes Sarah as a person and a professional service in valid JSON-LD', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/es/');
 
   const blocks = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => node.textContent ?? ''));
   const schemas = blocks.map((block) => JSON.parse(block) as Record<string, unknown>);
@@ -73,7 +73,7 @@ test('home describes Sarah as a person and a professional service in valid JSON-
 });
 
 test('prints page lists every artwork without inventing prices', async ({ page }) => {
-  await page.goto('/obra/copias');
+  await page.goto('/es/obra/copias');
 
   const block = await page.locator('script[type="application/ld+json"]').first().textContent();
   const schema = JSON.parse(block ?? '{}') as { '@type': string; itemListElement: { item: Record<string, unknown> }[] };
@@ -91,7 +91,7 @@ test('sitemap and robots.txt respond and keep private paths out', async ({ reque
   const sitemap = await request.get('/sitemap.xml');
   expect(sitemap.status()).toBe(200);
   const body = await sitemap.text();
-  expect(body).toContain('/obra/copias</loc>');
+  expect(body).toContain('/es/obra/copias</loc>');
   expect(body).not.toContain('/contacto');
   expect(body).not.toContain('/admin');
 
@@ -103,14 +103,14 @@ test('sitemap and robots.txt respond and keep private paths out', async ({ reque
 });
 
 test('a Spanish page keeps its own canonical and stays indexable', async ({ page }) => {
-  await page.goto('/retratos');
+  await page.goto('/es/retratos');
 
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/retratos$/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/[^/]+\/es\/retratos$/);
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 });
 
 test('result pages of the form stay out of search results', async ({ page }) => {
-  await page.goto('/contacto/enviado');
+  await page.goto('/es/contacto/enviado');
 
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
 });

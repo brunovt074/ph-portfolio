@@ -1,4 +1,4 @@
 ---
-import HomeView from '@/views/HomeView.astro';
+export const prerender = false;
+return Astro.redirect('/es/', 301);
 ---
-<HomeView locale="es" />
