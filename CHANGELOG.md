@@ -17,6 +17,8 @@ proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 - Internacionalización es/en/pt con URLs traducidas y selector de idioma.
 - Textos de interfaz editables desde Sanity (`textosDelSitio`) con valores por defecto por idioma.
 - Migración `localize-fields` para contenidos previos al soporte de idiomas.
+- Deploy en VPS con Docker, Traefik y rebuild automático por webhook de Sanity (`docs/09-deploy-vps.md`).
+- Variable `BLOCK_INDEXING` para bloquear la indexación antes del lanzamiento.
 
 ### Cambiado
 - Los casos de uso y el repositorio de contenido reciben el idioma (`locale`).
