@@ -1,4 +1,5 @@
 import type { Photo } from '@/domain/Photo';
+import { BRAND } from '@/config/brand';
 import type { Locale } from '@/domain/Locale';
 import type { Print } from '@/domain/Print';
 import type { SiteSettings } from '@/domain/SiteSettings';
@@ -8,7 +9,7 @@ import { resolveImageUrl } from '@/infrastructure/images/resolveImageUrl';
 import { htmlLanguages as languageTags } from './htmlLanguages';
 import { isPlaceholder } from './isPlaceholder';
 
-const PERSON_NAME = 'Sarah Moreau';
+const PERSON_NAME = BRAND.fullName;
 const ARTWORK_IMAGE_WIDTH = 1200;
 
 const instagramProfiles = (settings: SiteSettings): string[] =>

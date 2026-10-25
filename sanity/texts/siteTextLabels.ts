@@ -124,7 +124,7 @@ export const siteTextLabels: SiteTextLabels = {
     title: 'Buscadores (SEO)',
     fields: {
       homeTitle: 'Título de la home',
-      jobTitle: 'Profesión de Sarah',
+      jobTitle: 'Profesión de la fotógrafa',
       artworkGenre: 'Género de las obras',
       editorialDescription: 'Descripción de Editorial',
       retratosDescription: 'Descripción de Retratos',

@@ -112,7 +112,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(packages.map((pack) => pack.order)).toEqual([0, 1, 2]);
   });
 
-  it('marks the before and after pair as provisional until Sarah uploads the real retouch', async () => {
+  it('marks the before and after pair as provisional until the photographer uploads the real retouch', async () => {
     const brands = await repository().getBrands('es');
 
     expect(brands.beforeAfter).toHaveLength(1);
@@ -153,7 +153,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   it('builds the settings with the portrait, exhibitions placeholder and print info', async () => {
     const settings = await repository().getSettings('es');
 
-    expect(settings.portrait.id).toBe('retrato-sarah');
+    expect(settings.portrait.id).toBe('retrato');
     expect(settings.portrait.alt).toBe('Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro');
     expect(settings.portrait.facet).toBe('retratos');
     expect(settings.portrait.featured).toBe(false);
@@ -294,7 +294,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(offers[3]?.priceCents).toBe(150_000);
   });
 
-  it('starts with no weekly windows so every session is booked by a proposed date until Sarah loads her agenda', async () => {
+  it('starts with no weekly windows so every session is booked by a proposed date until the photographer loads her agenda', async () => {
     expect(await repository().getSchedulingSettings()).toEqual({
       timeZone: 'America/Argentina/Buenos_Aires',
       windows: [],

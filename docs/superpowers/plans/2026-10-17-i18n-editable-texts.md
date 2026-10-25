@@ -2,7 +2,7 @@
 
 > **Para agentes:** SUB-SKILL REQUERIDA: usar superpowers:subagent-driven-development (recomendado) o superpowers:executing-plans para ejecutar este plan tarea por tarea. Los pasos usan checkboxes (`- [x]`).
 
-**Goal:** El sitio se publica en español, inglés y portugués con URLs traducidas, y Sarah puede editar desde `/admin` tanto el contenido de cada idioma como todos los textos fijos de la interfaz.
+**Goal:** El sitio se publica en español, inglés y portugués con URLs traducidas, y la fotógrafa puede editar desde `/admin` tanto el contenido de cada idioma como todos los textos fijos de la interfaz.
 
 **Architecture:** El idioma (`Locale`) y el mapa de rutas traducidas viven en `src/domain` como funciones puras. `ContentRepository` recibe el idioma en cada método y devuelve contenido ya resuelto (los tipos de dominio siguen siendo `string`); la resolución por idioma con fallback a español ocurre en los mappers de Sanity con `localize()`. Los textos de interfaz son un tipo `SiteTexts` (dos niveles, hojas `string`) con valores por defecto en código para es/en/pt y un singleton `textosDelSitio` en Sanity que los pisa campo por campo. Las páginas se mueven a vistas (`src/views/*View.astro`) que reciben `locale`; una sola ruta dinámica `src/pages/[locale]/[...path].astro` genera es/en/pt.
 
@@ -33,7 +33,7 @@
 | Modo semilla | `SeedContentRepository` ignora el idioma para el contenido (devuelve español) y devuelve los defaults de `SiteTexts` del idioma pedido. |
 | Interpolación | Plantillas con `{nombre}` resueltas por `formatText`. Placeholder desconocido o faltante se deja tal cual. |
 | Astro i18n | No se activa `i18n` en `astro.config.mjs`: con slugs traducidos su routing no ayuda. Hreflang, `lang`, canonical y sitemap se generan a mano. |
-| Formulario | Mensajes de error resueltos en el cliente (JS) o en `/contacto/error` (sin JS) a partir de códigos de campo. El mail a Sarah sigue en español y agrega `Idioma: …`. |
+| Formulario | Mensajes de error resueltos en el cliente (JS) o en `/contacto/error` (sin JS) a partir de códigos de campo. El mail a la fotógrafa sigue en español y agrega `Idioma: …`. |
 | 404 | Única, en español, con enlaces a `/en/` y `/pt/`. |
 | Studio | Sigue en español. Cada campo localizado muestra Español arriba y "Inglés y portugués" en un grupo colapsable. |
 
@@ -77,12 +77,12 @@ La página y la vista de `reservas` las crea `feature/bookings-payments` (ver "C
 
 ## Review Focus
 
-1. **Sarah borra un texto del admin** (campo vacío o solo espacios) → se ve el default de ese idioma, nunca un hueco. Test en Tarea 2 (`resolveSiteTexts`).
+1. **La fotógrafa borra un texto del admin** (campo vacío o solo espacios) → se ve el default de ese idioma, nunca un hueco. Test en Tarea 2 (`resolveSiteTexts`).
 2. **Traducción a medias** (serie con `titulo.en` pero sin `textoCuratorial.en`) → cada campo cae a español por separado, la página no se rompe. Test en Tarea 5 (`SanityContentRepository`).
 3. **Slug de serie que choca con una ruta fija** (`copias`, `prints`) o dos series con el mismo slug en un idioma → el build falla con `DuplicateRouteError` que nombra la ruta, y el Studio lo valida antes de publicar. Tests en Tareas 1 y 3.
 4. **Datos viejos de Sanity sin migrar** (campo todavía `string` plano) → `localize()` lo trata como español; el sitio sigue construyendo. Test en Tarea 5.
 5. **Visitante en `/en/…` que envía el formulario sin JS o es frenado por el rate limit** → ve la página de resultado en inglés. Tests en Tarea 8 (unit de `localeFromPath`/`parseLocale` + e2e).
-6. **Sarah traduce una sola página al inglés** → solo esa página entra al sitemap y a los `hreflang` en inglés; el resto de `/en/…` sigue con `noindex` y canonical a español. Tests en Tareas 5 (`translations`) y 7 (`ListSitemapEntries`, `HreflangLinks`).
+6. **La fotógrafa traduce una sola página al inglés** → solo esa página entra al sitemap y a los `hreflang` en inglés; el resto de `/en/…` sigue con `noindex` y canonical a español. Tests en Tareas 5 (`translations`) y 7 (`ListSitemapEntries`, `HreflangLinks`).
 
 ---
 
@@ -239,7 +239,7 @@ Reglas de contenido de los defaults:
 - [x] **Step 1: Tests que fallan**
 
 ```ts
-it('uses Sarah override for the requested language', () => {
+it('uses the photographer override for the requested language', () => {
   const texts = resolveSiteTexts({ nav: { bookSession: { es: 'Agendá', en: 'Book now' } } }, 'en');
   expect(texts.nav.bookSession).toBe('Book now');
 });
@@ -458,7 +458,7 @@ it('marks seed content as Spanish only', async () => {
 it('uses default texts when the site texts document does not exist', async () => {
   expect(await repositoryWith({ siteTexts: null }).getTexts('en')).toEqual(defaultSiteTexts.en);
 });
-it('applies Sarah overrides to site texts', async () => {
+it('applies the photographer overrides to site texts', async () => {
   const repository = repositoryWith({ siteTexts: aSanitySiteTexts({ nav: { bookSession: { en: 'Book now' } } }) });
   expect((await repository.getTexts('en')).nav.bookSession).toBe('Book now');
 });
@@ -571,7 +571,7 @@ test('interface copy is not left in Spanish', async ({ page }) => {
 Unit (sin depender del modo semilla):
 ```ts
 // tests/unit/ListSitemapEntries.test.ts
-it('lists an English page with its alternates once Sarah translates it', async () => {
+it('lists an English page with its alternates once the photographer translates it', async () => {
   const repository = new FakeContentRepository({ facets: allFacets().map((facet) =>
     facet.slug === 'retratos' ? { ...facet, translations: { es: true, en: true, pt: false } } : facet) });
   const entries = await new ListSitemapEntries(repository).execute();
@@ -625,7 +625,7 @@ export interface ContactMessage { name; email; type; message; copy: string; loca
 // middleware: LIMIT_REDIRECT usa localeFromPath(new URL(referer).pathname) → /contacto/error?motivo=limite&idioma=xx (referer ausente o inválido → es)
 // enviado.astro y error.astro: prerender = false; idioma = parseLocale(searchParams.get('idioma')); textos con GetSiteTexts; backHref = pathTo(idioma, { route: 'home', hash: 'contacto' }) / { route: 'home' }
 ```
-El valor oculto `tipo = 'Copia de autor'` de las consultas de copias no se traduce: es lo que lee Sarah en el mail.
+El valor oculto `tipo = 'Copia de autor'` de las consultas de copias no se traduce: es lo que lee la fotógrafa en el mail.
 
 - [x] **Step 1: Tests que fallan**
 
@@ -653,12 +653,12 @@ test('rate limited English visitor sees the English message', ...); // 6 envíos
 
 ---
 
-### Task 9: Documentación para Sarah
+### Task 9: Documentación para la fotógrafa
 
 **Files:**
-- Modify: `docs/04-cms.md` (tipos localizados, `textosDelSitio`), `docs/07-cms-setup.md` ("Guía para Sarah"), `CLAUDE.md` (mapa del sitio con rutas en/pt)
+- Modify: `docs/04-cms.md` (tipos localizados, `textosDelSitio`), `docs/07-cms-setup.md` ("Guía para la fotógrafa"), `CLAUDE.md` (mapa del sitio con rutas en/pt)
 
-- [x] **Step 1:** Guía para Sarah, en español y paso a paso: "Traducir una página" (abrir el documento → "Inglés y portugués" → completar → Publicar; lo que quede vacío se ve en español), "Cambiar un texto del sitio" (Textos del sitio → grupo → idioma → Publicar; vaciarlo vuelve al texto de ejemplo; mantener las palabras entre llaves), "Dirección en inglés de una serie" (campo Dirección web → Inglés; no cambiarla una vez publicada).
+- [x] **Step 1:** Guía para la fotógrafa, en español y paso a paso: "Traducir una página" (abrir el documento → "Inglés y portugués" → completar → Publicar; lo que quede vacío se ve en español), "Cambiar un texto del sitio" (Textos del sitio → grupo → idioma → Publicar; vaciarlo vuelve al texto de ejemplo; mantener las palabras entre llaves), "Dirección en inglés de una serie" (campo Dirección web → Inglés; no cambiarla una vez publicada).
 - [x] **Step 2:** Actualizar el mapa del sitio en `CLAUDE.md` con la tabla de segmentos.
 - [x] **Step 3:** Verificación final completa: `npm run check && npm test && npm run build && npm run test:e2e`; levantar `HOST=localhost PORT=4321 node dist/server/entry.mjs` y recorrer `/`, `/en/`, `/pt/obra/copias` a mano.
 - [x] **Step 4: Handoff** — `chore: document translations and site texts for the editor`

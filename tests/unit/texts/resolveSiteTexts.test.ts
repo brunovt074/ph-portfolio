@@ -3,7 +3,7 @@ import { defaultSiteTexts } from '@/infrastructure/texts/defaults/defaultSiteTex
 import { resolveSiteTexts } from '@/infrastructure/texts/resolveSiteTexts';
 
 describe('resolveSiteTexts', () => {
-  it('uses Sarah override for the requested language', () => {
+  it('uses the photographer override for the requested language', () => {
     const texts = resolveSiteTexts({ nav: { bookSession: { es: 'Agendá', en: 'Book now' } } }, 'en');
     expect(texts.nav.bookSession).toBe('Book now');
   });

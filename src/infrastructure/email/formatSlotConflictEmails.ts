@@ -1,4 +1,5 @@
 import type { Booking } from '@/domain/booking/Booking';
+import { BRAND } from '@/config/brand';
 import type { BookingEmails } from './BookingEmails';
 import { formatClock } from './formatClock';
 import { formatLongDate } from './formatLongDate';
@@ -31,7 +32,7 @@ export const formatSlotConflictEmails = (booking: Booking, timeZone: string): Bo
     `Sesión: ${booking.offerTitle}`,
     `Pagado: ${formatMoney(paid)}`,
     '',
-    'Sarah Moreau',
+    BRAND.fullName,
   ];
   return {
     toStudio: {

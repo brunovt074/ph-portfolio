@@ -13,7 +13,7 @@ export const ajustes = defineType({
     defineField({ name: 'sobreMi', title: 'Sobre mí', type: 'parrafoLocalizado', validation: (rule) => requiredSpanish(rule) }),
     defineField({
       name: 'retrato',
-      title: 'Retrato de Sarah',
+      title: 'Retrato de la fotógrafa',
       type: 'image',
       options: { hotspot: true, metadata: ['lqip'] },
       validation: (rule) => rule.required(),

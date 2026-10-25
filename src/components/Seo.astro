@@ -1,4 +1,5 @@
 ---
+import { BRAND } from '@/config/brand';
 import { enabledLocales, type Locale } from '@/domain/Locale';
 import type { Translations } from '@/domain/Translations';
 import { openGraphLocales } from '@/seo/openGraphLocales';
@@ -23,7 +24,7 @@ const alternateLocales = enabledLocales.filter((other) => other !== locale && tr
 <link rel="canonical" href={canonical} />
 {(noindex || untranslated) && <meta name="robots" content="noindex" />}
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Sarah Moreau" />
+<meta property="og:site_name" content={BRAND.fullName} />
 <meta property="og:locale" content={openGraphLocales[locale]} />
 {!untranslated && alternateLocales.map((other) => <meta property="og:locale:alternate" content={openGraphLocales[other]} />)}
 <meta property="og:title" content={title} />

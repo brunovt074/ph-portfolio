@@ -22,7 +22,7 @@ describe('DemoBookingContentRepository', () => {
     ]);
   });
 
-  it('never overrides a price or a duration Sarah loaded in the CMS', async () => {
+  it('never overrides a price or a duration the photographer loaded in the CMS', async () => {
     const inner = new FakeContentRepository({ bookingOffers: [aBookingOffer({ priceCents: 7_000_000, durationMinutes: 60 })] });
 
     const [offer] = await new DemoBookingContentRepository(inner, { ...noDemo, prices: { maternidad: 95_000 }, durations: { maternidad: 90 } }).getBookingOffers('es');
@@ -38,14 +38,14 @@ describe('DemoBookingContentRepository', () => {
     expect(offer).toMatchObject({ priceCents: null, durationMinutes: null });
   });
 
-  it('offers the demo weekly windows while Sarah has not loaded any', async () => {
+  it('offers the demo weekly windows while the photographer has not loaded any', async () => {
     const settings = await new DemoBookingContentRepository(createSeedRepository(), demoData).getSchedulingSettings();
 
     expect(settings.windows).toHaveLength(5);
     expect(settings.windows[0]).toEqual({ weekday: 2, from: '10:00', to: '13:00' });
   });
 
-  it('never overrides the windows Sarah loaded in the CMS', async () => {
+  it('never overrides the windows the photographer loaded in the CMS', async () => {
     const windows = [{ weekday: 1 as const, from: '08:00', to: '12:00' }];
     const inner = new FakeContentRepository({ scheduling: aSchedulingSettings({ windows }) });
 

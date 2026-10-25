@@ -59,7 +59,7 @@ test('pages declare Open Graph and Twitter cards for Spanish speakers in Argenti
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
 });
 
-test('home describes Sarah as a person and a professional service in valid JSON-LD', async ({ page }) => {
+test('home describes the photographer as a person and a professional service in valid JSON-LD', async ({ page }) => {
   await page.goto('/es/');
 
   const blocks = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => node.textContent ?? ''));

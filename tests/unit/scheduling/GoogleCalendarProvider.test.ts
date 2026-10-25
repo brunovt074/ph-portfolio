@@ -14,12 +14,12 @@ const event = {
 };
 
 describe('GoogleCalendarProvider', () => {
-  it('asks Google which ranges Sarah has busy in her calendar', async () => {
+  it('asks Google which ranges the photographer has busy in her calendar', async () => {
     const api = new FakeGoogleCalendarApi({
-      calendars: { 'sarah@group.calendar.google.com': { busy: [{ start: '2026-10-22T18:00:00Z', end: '2026-10-22T22:00:00Z' }] } },
+      calendars: { 'photographer@group.calendar.google.com': { busy: [{ start: '2026-10-22T18:00:00Z', end: '2026-10-22T22:00:00Z' }] } },
     });
 
-    const busy = await new GoogleCalendarProvider(api, 'sarah@group.calendar.google.com', zone).busy(range);
+    const busy = await new GoogleCalendarProvider(api, 'photographer@group.calendar.google.com', zone).busy(range);
 
     expect(busy).toEqual([{ start: new Date('2026-10-22T18:00:00Z'), end: new Date('2026-10-22T22:00:00Z') }]);
     expect(api.freeBusyBodies).toEqual([
@@ -27,7 +27,7 @@ describe('GoogleCalendarProvider', () => {
         timeMin: '2026-10-22T03:00:00.000Z',
         timeMax: '2026-10-23T03:00:00.000Z',
         timeZone: zone,
-        items: [{ id: 'sarah@group.calendar.google.com' }],
+        items: [{ id: 'photographer@group.calendar.google.com' }],
       },
     ]);
   });

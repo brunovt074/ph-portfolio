@@ -20,7 +20,7 @@ describe('schedulingModeFor', () => {
     expect(schedulingModeFor(aBookingOffer(), withWindows, new FakeCalendarProvider())).toBe('request');
   });
 
-  it('asks for a proposed date when Sarah has not loaded any window', () => {
+  it('asks for a proposed date when the photographer has not loaded any window', () => {
     expect(schedulingModeFor(timed, aSchedulingSettings(), new FakeCalendarProvider())).toBe('request');
   });
 });

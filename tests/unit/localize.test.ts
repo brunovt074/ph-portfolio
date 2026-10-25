@@ -24,7 +24,7 @@ describe('localize', () => {
     expect(localize('Retratos', 'en')).toBe('Retratos');
   });
 
-  it('returns nothing for a field Sarah never filled', () => {
+  it('returns nothing for a field the photographer never filled', () => {
     expect(localize(null, 'en')).toBeUndefined();
   });
 

@@ -30,7 +30,7 @@ const seed = JSON.parse(readFileSync(join(assetsDir, 'seed.json'), 'utf8')) as {
   ajustes: { retrato: string };
 };
 
-const portraitId = 'retrato-sarah';
+const portraitId = 'retrato';
 
 const resolveSources = (): Source[] => [
   ...seed.fotos.map((photo): Source => ({ id: photo.id, path: join(assetsDir, photo.archivo) })),
