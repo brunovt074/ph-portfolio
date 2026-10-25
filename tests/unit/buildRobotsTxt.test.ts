@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildRobotsTxt } from '@/seo/buildRobotsTxt';
 
-const sitemap = 'https://laravischi.com/sitemap.xml';
+const sitemap = 'https://sarahmoreau.example/sitemap.xml';
 
 describe('buildRobotsTxt', () => {
   it('blocks every crawler and advertises no sitemap before the launch', () => {

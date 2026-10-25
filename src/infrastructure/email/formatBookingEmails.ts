@@ -63,7 +63,7 @@ export const formatBookingEmails = (booking: Booking, timeZone: string): Booking
     ...scheduleLines(booking, timeZone),
     `Pagado: ${formatMoney(booking.paymentPlan === 'full' ? booking.totalCents : booking.depositCents)}`,
     '',
-    'Lara Vischi',
+    'Sarah Moreau',
   ];
   const studioKind = booking.paymentPlan === 'full' ? 'con pago completo' : 'con seña';
   const { schedule } = booking;
@@ -73,7 +73,7 @@ export const formatBookingEmails = (booking: Booking, timeZone: string): Booking
       text: toStudio.join('\n'),
     },
     toCustomer: {
-      subject: 'Tu reserva con Lara Vischi está confirmada',
+      subject: 'Tu reserva con Sarah Moreau está confirmada',
       text: toCustomer.join('\n'),
       ...(schedule.kind === 'slot'
         ? {
@@ -85,7 +85,7 @@ export const formatBookingEmails = (booking: Booking, timeZone: string): Booking
                   start: schedule.start,
                   end: schedule.end,
                   stamp: booking.updatedAt,
-                  summary: `${booking.offerTitle} con Lara Vischi`,
+                  summary: `${booking.offerTitle} con Sarah Moreau`,
                   description: `Reserva ${booking.id}`,
                 }),
               },

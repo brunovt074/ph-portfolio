@@ -24,7 +24,7 @@ import { aBookingOffer } from './aBookingOffer';
 import { aSchedulingSettings, tuesdayAndThursdayWindows } from './aSchedulingSettings';
 
 export const bookingConfig: BookingConfig = {
-  siteUrl: 'https://laravischi.com',
+  siteUrl: 'https://sarahmoreau.example',
   holdHours: 48,
   minLeadDays: 2,
   maxLeadDays: 365,

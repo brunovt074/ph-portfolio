@@ -29,7 +29,7 @@ describe('formatBookingEmails', () => {
   it('confirms the deposit to the client, mentions the balance and promises an answer within 48 hours', () => {
     const { toCustomer } = formatBookingEmails(aBooking({ schedule: { kind: 'request', preferredDate: '2026-11-20', timeSlot: 'afternoon' } }), zone);
 
-    expect(toCustomer.subject).toBe('Tu reserva con Lara Vischi está confirmada');
+    expect(toCustomer.subject).toBe('Tu reserva con Sarah Moreau está confirmada');
     expect(toCustomer.text).toContain('Hola Camila Ríos:');
     expect(toCustomer.text).toContain('Recibí tu seña. Dentro de las próximas 48 horas te escribo para confirmar la fecha y los detalles.');
     expect(toCustomer.text).toContain('El saldo de $ 47.500 se abona el día de la sesión.');
@@ -58,7 +58,7 @@ describe('formatBookingEmails', () => {
     expect(toCustomer.attachments).toHaveLength(1);
     expect(toCustomer.attachments?.[0]?.filename).toBe('reserva.ics');
     expect(toCustomer.attachments?.[0]?.content).toContain('DTSTART:20261022T130000Z');
-    expect(toCustomer.attachments?.[0]?.content).toContain('UID:booking-1@laravischi');
+    expect(toCustomer.attachments?.[0]?.content).toContain('UID:booking-1@sarahmoreau');
   });
 
   it('describes a client with no time preference', () => {

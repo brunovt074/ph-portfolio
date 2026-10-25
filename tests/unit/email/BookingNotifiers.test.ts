@@ -41,7 +41,7 @@ describe('ResendBookingNotifier', () => {
       from: 'sitio@example.com',
       to: 'camila@example.com',
       replyTo: 'lara@example.com',
-      subject: 'Tu reserva con Lara Vischi está confirmada',
+      subject: 'Tu reserva con Sarah Moreau está confirmada',
     });
   });
 

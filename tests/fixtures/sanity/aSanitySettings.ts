@@ -4,11 +4,11 @@ import { aBareSanityImage, aSanityPhoto } from './aSanityPhoto';
 export const aSanitySettings = (overrides: Partial<SanitySettingsDocument> = {}): SanitySettingsDocument => ({
   email: '[EMAIL]',
   whatsapp: '[NÚMERO]',
-  instagram: ['@laravischi.fotografia'],
+  instagram: ['@sarahmoreau.foto'],
   frase: { es: 'Cada fotografía es un registro de nuestro paso.' },
   sobreMi: { es: '[Trayectoria, ciudad y formación]' },
   statement: { es: '[Statement artístico]' },
-  retratoAlt: { es: 'Lara Vischi con su cámara, en blanco y negro' },
+  retratoAlt: { es: 'Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro' },
   retrato: aSanityPhoto({ id: 'x' }).image,
   muestras: [{ titulo: { es: '[Muestra o publicación]' }, lugar: '[Lugar]', anio: '[AÑO]' }],
   infoCopias: [{ titulo: { es: 'Envío' }, descripcion: { es: '[Zonas y tiempos de envío]' } }],

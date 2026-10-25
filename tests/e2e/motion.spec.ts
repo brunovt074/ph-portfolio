@@ -66,7 +66,7 @@ test('heading splits into masked characters and keeps its accessible name', asyn
   await page.goto('/es/');
 
   await expect(page.locator('h1 .split-char').first()).toBeAttached();
-  await expect(page.locator('h1[data-split]')).toHaveAttribute('aria-label', 'Lara Vischi');
+  await expect(page.locator('h1[data-split]')).toHaveAttribute('aria-label', 'Sarah Moreau');
   await expect(page.locator('html')).not.toHaveClass(/motion-pending/);
 });
 

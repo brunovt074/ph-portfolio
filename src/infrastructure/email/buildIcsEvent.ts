@@ -29,11 +29,11 @@ export const buildIcsEvent = ({ bookingId, start, end, stamp, summary, descripti
   [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Lara Vischi//Reservas//ES',
+    'PRODID:-//Sarah Moreau//Reservas//ES',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
-    `UID:${bookingId}@laravischi`,
+    `UID:${bookingId}@sarahmoreau`,
     `DTSTAMP:${toUtcStamp(stamp)}`,
     `DTSTART:${toUtcStamp(start)}`,
     `DTEND:${toUtcStamp(end)}`,

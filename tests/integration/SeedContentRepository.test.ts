@@ -40,8 +40,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   it('keeps the landing hero photo framed on the face so the Encargos label never hides it', async () => {
     const home = await repository().getHome('es');
 
-    expect(home.encargosDoor.photo.asset.hotspot).toEqual({ x: 0.5, y: 0.25 });
-    expect(home.obraDoor.photo.asset.hotspot).toBeUndefined();
+    expect(home.encargosDoor.photo.asset.hotspot).toEqual({ x: 0.445, y: 0.18 });
   });
 
   it('keeps the four facets ordered by number even if the content lists them shuffled', async () => {
@@ -155,7 +154,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     const settings = await repository().getSettings('es');
 
     expect(settings.portrait.id).toBe('retrato-lara');
-    expect(settings.portrait.alt).toBe('Lara Vischi con su cámara, en blanco y negro');
+    expect(settings.portrait.alt).toBe('Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro');
     expect(settings.portrait.facet).toBe('retratos');
     expect(settings.portrait.featured).toBe(false);
     expect(settings.quote).toBe('Cada fotografía es un registro de nuestro paso.');

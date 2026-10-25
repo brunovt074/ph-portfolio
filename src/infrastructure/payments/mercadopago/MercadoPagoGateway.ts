@@ -10,7 +10,7 @@ import { SystemClock } from '../../SystemClock';
 import type { MercadoPagoApi } from './MercadoPagoApi';
 import { mercadoPagoStatuses } from './mercadoPagoStatuses';
 
-const STATEMENT_DESCRIPTOR = 'LARA VISCHI';
+const STATEMENT_DESCRIPTOR = 'SARAH MOREAU';
 
 export class MercadoPagoGateway implements PaymentGateway {
   readonly provider = 'mercadopago';

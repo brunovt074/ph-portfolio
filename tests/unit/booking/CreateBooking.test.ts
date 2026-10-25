@@ -21,8 +21,8 @@ describe('CreateBooking', () => {
         currency: 'ARS',
         payerName: 'Camila Ríos',
         payerEmail: 'camila@example.com',
-        returnUrl: 'https://laravischi.com/reservas/id-1',
-        notificationUrl: 'https://laravischi.com/api/payments/webhook/fake',
+        returnUrl: 'https://sarahmoreau.example/reservas/id-1',
+        notificationUrl: 'https://sarahmoreau.example/api/payments/webhook/fake',
       },
     ]);
   });

@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-Sitio portfolio y comercial de Lara Vischi (fotografía y video). Astro + React, Sanity,
+Sitio portfolio y comercial de Sarah Moreau (fotografía y video). Astro + React, Sanity,
 Tailwind CSS v4, despliegue estático. Detalle en `CLAUDE.md` y `docs/`.
 
 ## Ramas activas

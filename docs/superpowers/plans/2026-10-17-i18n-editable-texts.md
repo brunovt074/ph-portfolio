@@ -589,9 +589,9 @@ it('uses the Spanish page as x-default when English is missing', async () => {
 it('announces only translated languages and English as x-default', async () => {
   const html = await container.renderToString(HreflangLinks, { props: {
     alternates: { es: '/retratos', en: '/en/portraits', pt: '/pt/retratos' },
-    translations: { es: true, en: true, pt: false }, site: new URL('https://laravischi.com') } });
-  expect(html).toContain('hreflang="en" href="https://laravischi.com/en/portraits"');
-  expect(html).toContain('hreflang="x-default" href="https://laravischi.com/en/portraits"');
+    translations: { es: true, en: true, pt: false }, site: new URL('https://sarahmoreau.example') } });
+  expect(html).toContain('hreflang="en" href="https://sarahmoreau.example/en/portraits"');
+  expect(html).toContain('hreflang="x-default" href="https://sarahmoreau.example/en/portraits"');
   expect(html).not.toContain('hreflang="pt"');
 });
 ```

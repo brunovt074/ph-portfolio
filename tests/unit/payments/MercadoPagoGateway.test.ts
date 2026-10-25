@@ -36,8 +36,8 @@ const request = (overrides: Partial<CheckoutRequest> = {}): CheckoutRequest => (
   currency: 'ARS',
   payerName: 'Camila Ríos',
   payerEmail: 'camila@example.com',
-  returnUrl: 'https://laravischi.com/reservas/booking-1',
-  notificationUrl: 'https://laravischi.com/api/payments/webhook/mercadopago',
+  returnUrl: 'https://sarahmoreau.example/reservas/booking-1',
+  notificationUrl: 'https://sarahmoreau.example/api/payments/webhook/mercadopago',
   ...overrides,
 });
 
@@ -61,14 +61,14 @@ describe('MercadoPagoGateway', () => {
       expect(api.sentBodies[0]).toEqual({
         items: [{ id: 'pay-1', title: 'Seña — Maternidad', quantity: 1, unit_price: 47_500, currency_id: 'ARS' }],
         external_reference: 'pay-1',
-        statement_descriptor: 'LARA VISCHI',
+        statement_descriptor: 'SARAH MOREAU',
         payer: { name: 'Camila Ríos', email: 'camila@example.com' },
         back_urls: {
-          success: 'https://laravischi.com/reservas/booking-1?estado=aprobado',
-          pending: 'https://laravischi.com/reservas/booking-1?estado=pendiente',
-          failure: 'https://laravischi.com/reservas/booking-1?estado=error',
+          success: 'https://sarahmoreau.example/reservas/booking-1?estado=aprobado',
+          pending: 'https://sarahmoreau.example/reservas/booking-1?estado=pendiente',
+          failure: 'https://sarahmoreau.example/reservas/booking-1?estado=error',
         },
-        notification_url: 'https://laravischi.com/api/payments/webhook/mercadopago',
+        notification_url: 'https://sarahmoreau.example/api/payments/webhook/mercadopago',
         auto_return: 'approved',
       });
     });

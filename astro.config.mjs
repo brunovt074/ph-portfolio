@@ -14,7 +14,7 @@ const sanityIntegrations = projectId
   : [];
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://laravischi.com',
+  site: process.env.SITE_URL ?? 'https://sarahmoreau.example',
   output: 'static',
   adapter: node({ mode: 'standalone', bodySizeLimit: 1_048_576 }),
   integrations: [

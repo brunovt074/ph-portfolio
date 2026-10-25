@@ -8,7 +8,7 @@ import { resolveImageUrl } from '@/infrastructure/images/resolveImageUrl';
 import { htmlLanguages as languageTags } from './htmlLanguages';
 import { isPlaceholder } from './isPlaceholder';
 
-const PERSON_NAME = 'Lara Vischi';
+const PERSON_NAME = 'Sarah Moreau';
 const ARTWORK_IMAGE_WIDTH = 1200;
 
 const instagramProfiles = (settings: SiteSettings): string[] =>

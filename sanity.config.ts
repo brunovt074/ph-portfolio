@@ -8,8 +8,8 @@ import { singletonIds } from './sanity/structure/singletonIds';
 const singletons: ReadonlySet<string> = new Set(singletonIds);
 
 export default defineConfig({
-  name: 'lara-vischi',
-  title: 'Lara Vischi — Contenidos',
+  name: 'sarah-moreau',
+  title: 'Sarah Moreau — Contenidos',
   basePath: '/admin',
   projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID ?? '',
   dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',

@@ -1,6 +1,6 @@
-# Lara Vischi — sitio de fotografía y video
+# Sarah Moreau — sitio de fotografía y video
 
-Sitio portfolio + comercial para **Lara Vischi**, fotógrafa y realizadora audiovisual (Argentina).
+Sitio portfolio + comercial para **Sarah Moreau**, fotógrafa y realizadora audiovisual (Argentina).
 Objetivo de negocio: que el sitio **venda** (sesiones, servicios para marcas, copias de autor) y
 que ella pueda **actualizarlo sola** desde un CMS, sin depender del desarrollador.
 
@@ -8,10 +8,9 @@ El diseño ya está aprobado en un mockup (canvas de Claude Design). Esta carpet
 de diseño a código. Leé este archivo completo antes de escribir código y consultá `docs/` cuando
 trabajes en cada área.
 
-> Contexto importante: el sitio es una **sorpresa** para Lara. Las fotos de `assets/fotos-baja/`
-> son capturas de su Instagram en baja resolución (~280 px). Sirven para maquetar; las finales
-> llegan desde el CMS. Si existe `assets/fotos-alta/<id>.jpg`, tiene prioridad sobre la baja.
-> Ver `docs/05-fotos.md`.
+> Contexto importante: Sarah Moreau es una fotógrafa ficticia y las fotos de `assets/fotos/` son de stock
+> de uso libre (Unsplash/Pexels) que representan cada sección; autores y licencias en `assets/fotos/CREDITS.md`.
+> Las finales llegan desde el CMS. Ver `docs/05-fotos.md`.
 
 ## Concepto: una marca, dos puertas
 
@@ -74,7 +73,7 @@ Detalle de cada página, sección por sección: `docs/02-paginas.md`.
 ## Reglas de diseño (no negociables)
 
 - **Tokens solamente.** Colores, tipos, espacios y radios salen de `design/tokens.css`. Nada de hex sueltos.
-- **Logotipo único:** `Lara <em>Vischi</em>` (apellido en itálica), Bodoni Moda 22 px. En Obra se agrega `/ obra` en gris.
+- **Logotipo único:** `Sarah <em>Moreau</em>` (apellido en itálica), Bodoni Moda 22 px. En Obra se agrega `/ obra` en gris.
 - **Una sola escala tipográfica** (ver `docs/01-design-system.md`). Todos los H1 de página usan `--text-display`.
 - **La foto manda.** Nada de sombras, gradientes decorativos, bordes redondeados en fotos ni tarjetas con borde izquierdo.
 - **Fluido y mobile-first.** Layouts con `flex-wrap` / `grid auto-fit`; sin anchos fijos en px. Probar a 375 px.
@@ -90,14 +89,14 @@ Plan completo por sección en `docs/03-animaciones.md`. Principios:
 
 ## CMS
 
-Esquemas, campos y qué edita Lara: `docs/04-cms.md`. `assets/seed.json` trae los datos iniciales
+Esquemas, campos y qué edita la fotógrafa: `docs/04-cms.md`. `assets/seed.json` trae los datos iniciales
 (fotos, facetas, series, títulos provisorios, textos alternativos) para poblar el CMS con un script.
 
 ## Criterios de terminado
 
 - Lighthouse ≥ 95 en Performance, Accessibility, Best Practices y SEO (mobile).
 - LCP < 2,5 s en 4G simulado con fotos reales en alta.
-- Lara puede, sin ayuda: subir una foto a una serie o faceta, cambiar un precio, publicar una copia nueva.
+- La fotógrafa puede, sin ayuda: subir una foto a una serie o faceta, cambiar un precio, publicar una copia nueva.
 - Las páginas se ven bien a 375, 768, 1280 y 1440 px.
 - Verificación visual con Playwright (screenshots) antes de dar algo por terminado.
 

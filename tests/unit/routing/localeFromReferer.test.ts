@@ -3,11 +3,11 @@ import { localeFromReferer } from '@/domain/routing/localeFromReferer';
 
 describe('localeFromReferer', () => {
   it('answers in Spanish when the form was sent from a disabled language page', () => {
-    expect(localeFromReferer('https://laravischi.com/en/work/prints')).toBe('es');
+    expect(localeFromReferer('https://sarahmoreau.example/en/work/prints')).toBe('es');
   });
 
   it('answers in Spanish when the form was sent from a Spanish page', () => {
-    expect(localeFromReferer('https://laravischi.com/es/marcas')).toBe('es');
+    expect(localeFromReferer('https://sarahmoreau.example/es/marcas')).toBe('es');
   });
 
   it('answers in Spanish when the browser sends no referer', () => {

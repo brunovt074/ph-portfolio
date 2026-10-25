@@ -16,8 +16,8 @@ describe('RetryDepositCheckout', () => {
       reference: 'id-1',
       amountCents: 4_750_000,
       title: 'Seña — Maternidad',
-      returnUrl: 'https://laravischi.com/reservas/booking-1',
-      notificationUrl: 'https://laravischi.com/api/payments/webhook/fake',
+      returnUrl: 'https://sarahmoreau.example/reservas/booking-1',
+      notificationUrl: 'https://sarahmoreau.example/api/payments/webhook/fake',
     });
     expect((await world.payments.findLatestForBooking('booking-1', 'deposit'))?.id).toBe('id-1');
   });

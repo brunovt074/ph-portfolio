@@ -26,8 +26,8 @@ La itálica de Bodoni es el gesto de la marca: se usa para **una palabra** dentr
 
 ### Logotipo
 
-`Lara <em>Vischi</em>` — Bodoni 22 px, tracking 0.01em, apellido en itálica. En el hero de la home
-se repite a `--text-display` con "Vischi" en color de acento. En Obra: `Lara <em>Vischi</em> <span>/ obra</span>`
+`Sarah <em>Moreau</em>` — Bodoni 22 px, tracking 0.01em, apellido en itálica. En el hero de la home
+se repite a `--text-display` con "Moreau" en color de acento. En Obra: `Sarah <em>Moreau</em> <span>/ obra</span>`
 con el sufijo en `--obra-muted`. Es un componente (`<Logo variant="default|obra" />`), no texto suelto.
 
 ## Color por sección

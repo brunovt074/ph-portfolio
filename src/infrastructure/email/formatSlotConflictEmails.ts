@@ -31,7 +31,7 @@ export const formatSlotConflictEmails = (booking: Booking, timeZone: string): Bo
     `Sesión: ${booking.offerTitle}`,
     `Pagado: ${formatMoney(paid)}`,
     '',
-    'Lara Vischi',
+    'Sarah Moreau',
   ];
   return {
     toStudio: {

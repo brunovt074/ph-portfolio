@@ -9,14 +9,14 @@ son los del mockup (se pueden cargar desde el CMS); lo que está entre corchetes
 
 1. **Header.**
 2. **Hero "dos puertas".**
-   - Fila superior: H1 `Lara Vischi` (Vischi en acento, itálica) + bajada a la derecha:
+   - Fila superior: H1 `Sarah Moreau` (Vischi en acento, itálica) + bajada a la derecha:
      "Fotografía y video. Encargos para personas y marcas, y una obra personal que se construye paso a paso."
    - Dos paneles foto a sangre, alto `clamp(440px, 68vh, 760px)`, proporción de ancho 3:2:
      - **Encargos** (foto editorial color) → ancla a la sección Encargos. Etiqueta "Puerta 1", subtítulo "Editorial · Retratos · Marcas · Eventos".
      - **Obra** (foto B/N) → `/obra`. Etiqueta "Puerta 2", "Obra" en itálica, "Series personales · Copias de autor".
    - Rótulo de cada panel: banda inferior `rgba(13,13,12,.8)` con texto.
 3. **Ticker**: Editorial ✦ Retratos ✦ Marcas ✦ Eventos ✦ Obra (Bodoni itálica, ✦ en acento).
-4. **Sobre mí** (fondo `--paper`): retrato de Lara en B/N + cita "Cada fotografía es un registro de nuestro paso." + párrafo [trayectoria] + botón "Trabajemos juntos".
+4. **Sobre mí** (fondo `--paper`): retrato de Sarah en B/N + cita "Cada fotografía es un registro de nuestro paso." + párrafo [trayectoria] + botón "Trabajemos juntos".
 5. **Encargos: cuatro miradas** (`id="encargos"`): 4 filas de índice (01–04) con miniaturas → cada faceta.
 6. **Tira editorial**: 5 fotos a sangre, `grid auto-fit`, gap 4 px.
 7. **Para marcas** (fondo `--sand`): H2 "La fotografía también construye identidad de marca." + lista de 4 servicios con "desde [PRECIO]" + botón → `/marcas`. A la derecha, grilla 2×2 escalonada.
@@ -24,7 +24,7 @@ son los del mockup (se pueden cargar desde el CMS); lo que está entre corchetes
 9. **Contacto** (`id="contacto"`, fondo `--surface-2`): "Hablemos." + email, WhatsApp, tres cuentas de Instagram + formulario (nombre, email, tipo de trabajo, mensaje).
 10. **Footer.**
 
-Instagram: `@laravischi.fotografia`, `@laravischiph`, `@laraendigital_`.
+Instagram: `@sarahmoreau.foto`, `@sarahmoreauph`, `@sarahmoreau.video`.
 
 ---
 
@@ -66,7 +66,7 @@ Instagram: `@laravischi.fotografia`, `@laravischiph`, `@laraendigital_`.
 
 ## `/obra` — fondo `--obra-bg` (mini-sitio)
 
-Header propio: `Lara Vischi / obra` · Series · Copias de autor · Sobre la obra · Encargos ↗ (gris).
+Header propio: `Sarah Moreau / obra` · Series · Copias de autor · Sobre la obra · Encargos ↗ (gris).
 
 1. Foto de apertura a casi pantalla completa (`82vh`) con pie "I. Oficios — *Sin título*, [AÑO]".
 2. H1 "*Obra*" + cita de su bio: "Una bitácora de mi trabajo, porque cada fotografía es un registro de nuestro paso."

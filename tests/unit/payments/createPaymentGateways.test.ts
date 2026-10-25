@@ -3,7 +3,7 @@ import { PaymentConfigurationError } from '@/infrastructure/payments/PaymentConf
 import { createPaymentGateways } from '@/infrastructure/payments/createPaymentGateways';
 
 const base = { provider: undefined, mercadoPagoAccessToken: undefined, mercadoPagoWebhookSecret: undefined, siteUrl: 'http://localhost:4321', bookingDemo: false };
-const production = { siteUrl: 'https://laravischi.com', mercadoPagoAccessToken: 'token', mercadoPagoWebhookSecret: 'secret' };
+const production = { siteUrl: 'https://sarahmoreau.example', mercadoPagoAccessToken: 'token', mercadoPagoWebhookSecret: 'secret' };
 
 describe('createPaymentGateways', () => {
   afterEach(() => vi.restoreAllMocks());
@@ -47,7 +47,7 @@ describe('createPaymentGateways', () => {
   ])('refuses %s on a public site url', (_name, flags) => {
     vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
-    expect(() => createPaymentGateways({ ...base, siteUrl: 'https://laravischi.com', ...flags })).toThrow('only allowed');
+    expect(() => createPaymentGateways({ ...base, siteUrl: 'https://sarahmoreau.example', ...flags })).toThrow('only allowed');
     expect(() => createPaymentGateways({ ...base, siteUrl: 'not a url', ...flags })).toThrow('only allowed');
   });
 
