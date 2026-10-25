@@ -47,7 +47,6 @@ Todas las fotos son de uso libre, incluso comercial y sin atribución obligatori
 | `fotos/obra/au02.jpg` | luthfian alfajr | Unsplash License | https://unsplash.com/photos/motorcycles-parked-along-a-sidewalk-with-spherical-bollards-qpuLGLjpmBU |
 | `fotos/obra/au03.jpg` | Bence Balla-Schottner | Unsplash License | https://unsplash.com/photos/grayscale-photo-of-a-person-walking-on-a-hallway-9EWIgV57WmM |
 | `fotos/obra/au04.jpg` | Sean Lim | Unsplash License | https://unsplash.com/photos/worm-view-photo-of-concrete-building-dyqdeiOKeyI |
-| `fotos/obra/au05.jpg` | Melchior Damu | Unsplash License | https://unsplash.com/photos/right-persons-palm-IvTCN1H4X1k |
 | `fotos/obra/au06.jpg` | malwina nogaj | Unsplash License | https://unsplash.com/photos/a-tall-brick-tower-with-a-sky-background-qx6U-etJXr4 |
 | `fotos/obra/au07.jpg` | Usman Kasi | Unsplash License | https://unsplash.com/photos/misty-mountain-landscape-with-a-solitary-bare-tree-eI7e4GQ06K8 |
 | `fotos/obra/au08.jpg` | Justin Eloo | Unsplash License | https://unsplash.com/photos/rainbow-mountain-in-peru-with-visitors-kTbZ0n9MzqI |
@@ -64,7 +63,8 @@ Todas las fotos son de uso libre, incluso comercial y sin atribución obligatori
 | `fotos/obra/au19.jpg` | Klim Musalimov | Unsplash License | https://unsplash.com/photos/brown-concrete-building-under-gray-sky-rJPwYtWcMxw |
 | `fotos/obra/au20.jpg` | John Noonan | Unsplash License | https://unsplash.com/photos/brown-leaf-on-asphalt-road-E-9CFTftQh4 |
 | `fotos/obra/au21.jpg` | Silvestre Leon | Unsplash License | https://unsplash.com/photos/Q7BcFI3RueM |
-| `fotos/obra/au22.jpg` | Sophia | Unsplash License | https://unsplash.com/photos/a-silhouette-of-a-woman-in-the-dark-Mjm6ot0FdNE |
+| `fotos/obra/au22.jpg` | Ali Molavi | Unsplash License | https://unsplash.com/photos/a-silhouetted-woman-against-a-dark-background-RJU-zBy8DoU |
+| `fotos/obra/au36.jpg` | horacio olavarria | Unsplash License | https://unsplash.com/photos/silhouette-photography-of-woman-LyuO4HcFJfM |
 | `fotos/obra/au23.jpg` | Ilona Panych | Unsplash License | https://unsplash.com/photos/woman-in-black-jacket-in-grayscale-photography-Ehk8v2Od018 |
 | `fotos/obra/au24.jpg` | Nayanika Mukherjee | Unsplash License | https://unsplash.com/photos/woman-in-white-coat-standing-gkhgvAth5Js |
 | `fotos/obra/au25.jpg` | Martino Pietropoli | Unsplash License | https://unsplash.com/photos/woman-walking-with-shadow-pirWeToS2mA |

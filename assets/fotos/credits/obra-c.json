@@ -16,13 +16,13 @@
   {
     "id": "au22",
     "file": "fotos/obra/au22.jpg",
-    "alt": "Silueta de perfil de una mujer de pelo largo contra un fondo gris con un halo de luz, en blanco y negro",
-    "sourceUrl": "https://unsplash.com/photos/a-silhouette-of-a-woman-in-the-dark-Mjm6ot0FdNE",
-    "author": "Sophia",
+    "alt": "Silueta de perfil de una mujer de pelo largo y flequillo, recortada contra humo en la oscuridad, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/a-silhouetted-woman-against-a-dark-background-RJU-zBy8DoU",
+    "author": "Ali Molavi",
     "license": "Unsplash License",
     "hotspot": {
-      "x": 0.62,
-      "y": 0.32,
+      "x": 0.6,
+      "y": 0.3,
       "width": 0.6,
       "height": 0.5
     }
@@ -207,6 +207,20 @@
       "y": 0.45,
       "width": 0.6,
       "height": 0.5
+    }
+  },
+  {
+    "id": "au36",
+    "file": "fotos/obra/au36.jpg",
+    "alt": "Perfil de una mujer de cabello largo recortado por un filo de luz sobre fondo negro, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/silhouette-photography-of-woman-LyuO4HcFJfM",
+    "author": "horacio olavarria",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.6,
+      "y": 0.5,
+      "width": 0.7,
+      "height": 0.8
     }
   }
 ]

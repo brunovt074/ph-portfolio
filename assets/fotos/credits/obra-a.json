@@ -42,20 +42,6 @@
     }
   },
   {
-    "id": "au05",
-    "file": "fotos/obra/au05.jpg",
-    "alt": "Mano abierta con la palma hacia arriba sobre fondo negro, en blanco y negro",
-    "sourceUrl": "https://unsplash.com/photos/right-persons-palm-IvTCN1H4X1k",
-    "author": "Melchior Damu",
-    "license": "Unsplash License",
-    "hotspot": {
-      "x": 0.49,
-      "y": 0.535,
-      "width": 0.88,
-      "height": 0.53
-    }
-  },
-  {
     "id": "au06",
     "file": "fotos/obra/au06.jpg",
     "alt": "Torre de ladrillo vista desde abajo contra un cielo cargado de nubes, en blanco y negro",

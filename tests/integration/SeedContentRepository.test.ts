@@ -132,7 +132,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   it('exposes the obra manifesto, opening photo and the first three print photos for the teaser', async () => {
     const obra = await repository().getObra('es');
 
-    expect(obra.opening.photo.id).toBe('au05');
+    expect(obra.opening.photo.id).toBe('au36');
     expect(obra.printsTeaser.photos.map((photo) => photo.id)).toEqual(['au03', 'au22', 'au14']);
     expect(obra.seriesPrintsBand.cta).toBe('Ver copias');
     expect(obra.opening.caption[0]).toEqual({ text: 'Sin título', italic: true });
