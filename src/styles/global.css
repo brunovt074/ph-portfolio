@@ -236,6 +236,11 @@ main:focus {
   }
 }
 
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .split-line-mask {
   padding-block: 0.08em;
   margin-block: -0.08em;
