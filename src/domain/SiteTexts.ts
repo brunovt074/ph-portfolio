@@ -1,6 +1,7 @@
 export interface SiteTexts {
   a11y: {
     skipToContent: string;
+    backToTop: string;
     opensInNewTab: string;
     instagramOpensInNewTab: string;
     editorialStrip: string;
@@ -58,9 +59,7 @@ export interface SiteTexts {
     seriesCount: string;
     printSeries: string;
     printsInquirySubmit: string;
-    placeholderCity: string;
-    placeholderYear: string;
-    placeholderCount: string;
+    editionOnly: string;
     beforeLabel: string;
     afterLabel: string;
     compareLabel: string;
@@ -123,6 +122,9 @@ export interface SiteTexts {
     title: string;
     lead: string;
     demoBanner: string;
+    localSaved: string;
+    localListTitle: string;
+    localCancel: string;
     formLabel: string;
     sessionLegend: string;
     scheduleLegend: string;

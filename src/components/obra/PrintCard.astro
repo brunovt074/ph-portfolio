@@ -18,10 +18,10 @@ interface Props {
 
 const { locale, texts, print, cta, editionLabel, priority = false } = Astro.props;
 const title = print.photo.title ?? texts.untitled;
-const edition = formatText(editionLabel, {
-  edicion: print.edition,
-  disponibles: print.available === null ? texts.placeholderCount : print.available,
-});
+const edition =
+  print.available === null
+    ? formatText(texts.editionOnly, { edicion: print.edition })
+    : formatText(editionLabel, { edicion: print.edition, disponibles: print.available });
 const inquiryHref = pathTo(locale, { route: 'copias', query: { copia: title }, hash: 'consulta' });
 ---
 <article class="print-card" data-reveal="darkroom">

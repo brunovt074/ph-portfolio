@@ -8,7 +8,7 @@ const routes = [
   { path: '/es/marcas', status: 200 },
   { path: '/es/eventos', status: 200 },
   { path: '/es/obra', status: 200 },
-  { path: '/es/obra/oficios', status: 200 },
+  { path: '/es/obra/contraluz', status: 200 },
   { path: '/es/obra/geometrias', status: 200 },
   { path: '/es/obra/lo-que-queda', status: 200 },
   { path: '/es/obra/viajes-en-color', status: 200 },
