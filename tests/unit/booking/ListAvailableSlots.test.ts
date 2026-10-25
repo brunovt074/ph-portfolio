@@ -15,7 +15,7 @@ describe('ListAvailableSlots', () => {
     expect(day?.slots.map((slot) => slot.label)).toEqual(['10:00', '10:30', '11:00', '11:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']);
   });
 
-  it('Lara blocks the afternoon in her Google Calendar and those turns disappear', async () => {
+  it('the photographer blocks the afternoon in her Google Calendar and those turns disappear', async () => {
     const world = aSlotWorld();
     world.calendar?.blocks({ start: new Date('2026-10-22T18:00:00Z'), end: new Date('2026-10-22T22:00:00Z') });
 

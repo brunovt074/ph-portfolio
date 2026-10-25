@@ -1,6 +1,6 @@
-# Sarah Moreau — sitio de fotografía y video
+# ph-portfolio — sitio de fotografía y video
 
-Sitio portfolio + comercial para **Sarah Moreau**, fotógrafa y realizadora audiovisual (Argentina).
+Plantilla de sitio portfolio + comercial para fotógrafos. La instancia actual es la de **Sarah Moreau**, fotógrafa y realizadora audiovisual (Argentina); su nombre vive en `src/config/brand.ts` y es el único lugar de código que hay que tocar para otro fotógrafo (el resto de los textos sale del CMS y de `src/infrastructure/texts/defaults/`).
 Objetivo de negocio: que el sitio **venda** (sesiones, servicios para marcas, copias de autor) y
 que ella pueda **actualizarlo sola** desde un CMS, sin depender del desarrollador.
 

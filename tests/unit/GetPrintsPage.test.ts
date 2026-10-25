@@ -4,7 +4,7 @@ import { FakeContentRepository } from '../fakes/FakeContentRepository';
 import { aPrint } from '../fixtures/aPrint';
 
 describe('GetPrintsPage', () => {
-  it('shows only the prints that Lara keeps active for sale', async () => {
+  it('shows only the prints that the photographer keeps active for sale', async () => {
     const repository = new FakeContentRepository({
       prints: [aPrint('copia-au01', 'oficios'), aPrint('copia-au03', 'geometrias', false)],
     });

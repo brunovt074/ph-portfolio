@@ -13,7 +13,7 @@ describe('payment alert emails for the studio', () => {
     );
   });
 
-  it('a refund asks Lara to free the turn in her calendar if needed', () => {
+  it('a refund asks the photographer to free the turn in her calendar if needed', () => {
     const email = formatRefundedPaymentEmail(aBooking(), aPayment());
 
     expect(email.text).toBe('Se devolvió el pago de la reserva booking-1 de Camila Ríos. Si corresponde, liberá el turno en tu calendario.');

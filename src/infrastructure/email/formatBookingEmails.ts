@@ -1,4 +1,5 @@
 import type { Booking } from '@/domain/booking/Booking';
+import { BRAND } from '@/config/brand';
 import type { TimeSlot } from '@/domain/booking/TimeSlot';
 import type { BookingEmails } from './BookingEmails';
 import { buildIcsEvent } from './buildIcsEvent';
@@ -63,7 +64,7 @@ export const formatBookingEmails = (booking: Booking, timeZone: string): Booking
     ...scheduleLines(booking, timeZone),
     `Pagado: ${formatMoney(booking.paymentPlan === 'full' ? booking.totalCents : booking.depositCents)}`,
     '',
-    'Sarah Moreau',
+    BRAND.fullName,
   ];
   const studioKind = booking.paymentPlan === 'full' ? 'con pago completo' : 'con seña';
   const { schedule } = booking;
@@ -73,7 +74,7 @@ export const formatBookingEmails = (booking: Booking, timeZone: string): Booking
       text: toStudio.join('\n'),
     },
     toCustomer: {
-      subject: 'Tu reserva con Sarah Moreau está confirmada',
+      subject: `Tu reserva con ${BRAND.fullName} está confirmada`,
       text: toCustomer.join('\n'),
       ...(schedule.kind === 'slot'
         ? {
@@ -85,7 +86,7 @@ export const formatBookingEmails = (booking: Booking, timeZone: string): Booking
                   start: schedule.start,
                   end: schedule.end,
                   stamp: booking.updatedAt,
-                  summary: `${booking.offerTitle} con Sarah Moreau`,
+                  summary: `${booking.offerTitle} con ${BRAND.fullName}`,
                   description: `Reserva ${booking.id}`,
                 }),
               },

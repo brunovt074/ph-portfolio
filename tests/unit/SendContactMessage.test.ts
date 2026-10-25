@@ -53,7 +53,7 @@ describe('SendContactMessage', () => {
     await expect(new SendContactMessage(new FailingMessageSender(), new FakeErrorReporter()).execute(aContactSubmission())).rejects.toBeInstanceOf(MessageDeliveryError);
   });
 
-  it('reports a failed delivery so Lara can notice the provider is down', async () => {
+  it('reports a failed delivery so the photographer can notice the provider is down', async () => {
     const reporter = new FakeErrorReporter();
 
     await expect(new SendContactMessage(new FailingMessageSender(), reporter).execute(aContactSubmission())).rejects.toBeInstanceOf(MessageDeliveryError);

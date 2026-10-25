@@ -120,7 +120,7 @@ describe('ProcessPaymentNotification', () => {
   });
 
   it.each(['confirmed', 'needs_rescheduling', 'cancelled'] as const)(
-    'a client pays again for a %s booking: nothing changes and Lara is warned to review a refund',
+    'a client pays again for a %s booking: nothing changes and the photographer is warned to review a refund',
     async (status) => {
       const world = aBookingWorld();
       await world.bookings.create(aBooking({ status }));
@@ -164,7 +164,7 @@ describe('ProcessPaymentNotification', () => {
     expect(world.reporter.reported.map((error) => error.message)).toEqual(['[payments] duplicate payment payment-1', 'resend down']);
   });
 
-  it('Mercado Pago refunds a confirmed deposit: Lara is told and the booking and the calendar stay untouched', async () => {
+  it('Mercado Pago refunds a confirmed deposit: the photographer is told and the booking and the calendar stay untouched', async () => {
     const world = await worldWithPendingDeposit();
     world.gateway.hasRemotePayment(aGatewayPayment());
     await world.processNotification.execute('fake', notification('ext-1'));
@@ -179,7 +179,7 @@ describe('ProcessPaymentNotification', () => {
     expect(world.reporter.reported).toEqual([]);
   });
 
-  it('a repeated refund notice does not warn Lara twice', async () => {
+  it('a repeated refund notice does not warn the photographer twice', async () => {
     const world = await worldWithPendingDeposit();
     world.gateway.hasRemotePayment(aGatewayPayment());
     await world.processNotification.execute('fake', notification('ext-1'));
@@ -192,7 +192,7 @@ describe('ProcessPaymentNotification', () => {
     expect(world.notifier.refunds).toHaveLength(1);
   });
 
-  it('a payment that was never approved and is then refunded does not warn Lara', async () => {
+  it('a payment that was never approved and is then refunded does not warn the photographer', async () => {
     const world = await worldWithPendingDeposit();
     world.gateway.hasRemotePayment(aGatewayPayment({ status: 'refunded' }));
 
@@ -420,7 +420,7 @@ describe('ProcessPaymentNotification', () => {
       return { bookingId: created.value.bookingId, notify: () => world.processNotification.execute('fake', notification(`ext-${payment.id}`)) };
     };
 
-    it('the payment of a free turn creates the event in Lara calendar and confirms the booking', async () => {
+    it('the payment of a free turn creates the event in the photographer calendar and confirms the booking', async () => {
       const world = aSlotWorld();
       const { bookingId, notify } = await bookAndPay(world);
 
@@ -473,7 +473,7 @@ describe('ProcessPaymentNotification', () => {
       expect(world.payments.all().filter((payment) => payment.status === 'approved')).toHaveLength(2);
     });
 
-    it('Lara blocks the turn in her calendar while the client is paying', async () => {
+    it('the photographer blocks the turn in her calendar while the client is paying', async () => {
       const world = aSlotWorld();
       const { bookingId, notify } = await bookAndPay(world);
       world.calendar?.blocks({ start: new Date('2026-10-22T13:00:00Z'), end: new Date('2026-10-22T14:00:00Z') });

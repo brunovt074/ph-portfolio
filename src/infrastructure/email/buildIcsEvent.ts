@@ -1,4 +1,5 @@
 import type { IcsEventInput } from './IcsEventInput';
+import { BRAND } from '@/config/brand';
 
 const MAX_LINE_OCTETS = 75;
 
@@ -29,11 +30,11 @@ export const buildIcsEvent = ({ bookingId, start, end, stamp, summary, descripti
   [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Sarah Moreau//Reservas//ES',
+    `PRODID:-//${BRAND.fullName}//Reservas//ES`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
-    `UID:${bookingId}@sarahmoreau`,
+    `UID:${bookingId}@${BRAND.identifier}`,
     `DTSTAMP:${toUtcStamp(stamp)}`,
     `DTSTART:${toUtcStamp(start)}`,
     `DTEND:${toUtcStamp(end)}`,

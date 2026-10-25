@@ -19,15 +19,15 @@ const clientReturning = (error: { message: string } | null) => {
 };
 
 describe('ResendMessageSender', () => {
-  it('sends the inquiry to Lara and lets her reply straight to the visitor', async () => {
+  it('sends the inquiry to the photographer and lets her reply straight to the visitor', async () => {
     const { client, payloads } = clientReturning(null);
 
-    await new ResendMessageSender(client, 'lara@example.com', 'Sitio <sitio@example.com>').send(message);
+    await new ResendMessageSender(client, 'photographer@example.com', 'Sitio <sitio@example.com>').send(message);
 
     expect(payloads).toEqual([
       {
         from: 'Sitio <sitio@example.com>',
-        to: 'lara@example.com',
+        to: 'photographer@example.com',
         replyTo: 'sofia@marca.com',
         subject: 'Nueva consulta: Evento — Sofía Paredes',
         text: 'Nombre: Sofía Paredes\nEmail: sofia@marca.com\nTipo de trabajo: Evento\nIdioma: Español\n\nNecesito cobertura para una comparsa.',
@@ -38,6 +38,6 @@ describe('ResendMessageSender', () => {
   it('reports a provider rejection as a delivery error', async () => {
     const { client } = clientReturning({ message: 'domain not verified' });
 
-    await expect(new ResendMessageSender(client, 'lara@example.com', 'sitio@example.com').send(message)).rejects.toBeInstanceOf(MessageDeliveryError);
+    await expect(new ResendMessageSender(client, 'photographer@example.com', 'sitio@example.com').send(message)).rejects.toBeInstanceOf(MessageDeliveryError);
   });
 });

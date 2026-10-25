@@ -11,7 +11,7 @@ export const toSettings = (document: SanitySettingsDocument, locale: Locale): Si
   instagram: document.instagram,
   quote: localizeText(document.frase, locale),
   about: localizeText(document.sobreMi, locale),
-  portrait: toImagePhoto('retrato-lara', localizeText(document.retratoAlt, locale), 'retratos', document.retrato),
+  portrait: toImagePhoto('retrato', localizeText(document.retratoAlt, locale), 'retratos', document.retrato),
   artistStatement: localizeText(document.statement, locale),
   exhibitions: (document.muestras ?? []).map((show) => ({ title: localizeText(show.titulo, locale), place: show.lugar, year: show.anio })),
   printInfo: (document.infoCopias ?? []).map((item) => toInfoItem(item, locale)),

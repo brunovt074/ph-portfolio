@@ -259,7 +259,7 @@ describe('CreateBooking', () => {
       expect(second.ok).toBe(true);
     });
 
-    it('Lara blocks the afternoon in her calendar and those turns cannot be booked', async () => {
+    it('the photographer blocks the afternoon in her calendar and those turns cannot be booked', async () => {
       const world = aSlotWorld();
       world.calendar?.blocks({ start: new Date('2026-10-22T18:00:00Z'), end: new Date('2026-10-22T22:00:00Z') });
 

@@ -7,7 +7,7 @@ export const aSettings = (): SiteSettings => ({
   instagram: ['@sarahmoreau.foto'],
   quote: 'Cada fotografía es un registro de nuestro paso.',
   about: '[Trayectoria, ciudad y formación]',
-  portrait: aPhoto({ id: 'retrato-lara', facet: 'retratos' }),
+  portrait: aPhoto({ id: 'retrato', facet: 'retratos' }),
   artistStatement: '[Statement artístico]',
   exhibitions: [],
   printInfo: [],

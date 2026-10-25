@@ -7,6 +7,6 @@ describe('GetSiteSettings', () => {
     const settings = await new GetSiteSettings(new FakeContentRepository()).execute('es');
 
     expect(settings.instagram).toEqual(['@sarahmoreau.foto']);
-    expect(settings.portrait.id).toBe('retrato-lara');
+    expect(settings.portrait.id).toBe('retrato');
   });
 });
