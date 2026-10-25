@@ -94,7 +94,10 @@ export class SlotPicker {
         this.options.onFallback('');
         return;
       }
-      this.slotsByDay = new Map(body.days.filter((day) => day.slots.length > 0).map((day) => [day.date, day.slots]));
+      const freeDays = body.days
+        .map((day) => ({ date: day.date, slots: day.slots.filter((slot) => !this.options.isTaken(slot.start)) }))
+        .filter((day) => day.slots.length > 0);
+      this.slotsByDay = new Map(freeDays.map((day) => [day.date, day.slots]));
       this.show(from);
     } catch {
       if (token === this.requestToken) {

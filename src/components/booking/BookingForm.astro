@@ -15,9 +15,10 @@ interface Props {
   texts: SiteTexts['booking'];
   locale: Locale;
   timeZone: string;
+  localReservations: boolean;
 }
 
-const { offers, texts, locale, timeZone } = Astro.props;
+const { offers, texts, locale, timeZone, localReservations } = Astro.props;
 const hasSlotSessions = offers.some((offer) => offer.bookable && offer.scheduling === 'slots');
 const firstBookable = offers.find((offer) => offer.bookable);
 const { horizonDays } = await getBookingCatalog().content.getSchedulingSettings();
@@ -37,11 +38,18 @@ const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'retratos' },
     data-locale-tag={localeTagOf(locale)}
     data-horizon-days={horizonDays}
     data-slots-endpoint="/api/bookings/slots"
+    data-local-reservations={localReservations ? 'true' : 'false'}
   >
     <SessionCards offers={offers} texts={texts} locale={locale} />
     <SchedulePanel texts={texts} hasSlotSessions={hasSlotSessions} locale={locale} />
     <CustomerFields texts={texts} />
     <PaymentStep texts={texts} depositPercent={firstBookable.depositPercent} conditionsHref={`${pathTo(locale, { route: 'reservas' })}#condiciones`} />
+    {localReservations && (
+      <section class="local-bookings" aria-labelledby="reservas-locales-titulo" data-local-bookings hidden>
+        <h2 class="t-h3" id="reservas-locales-titulo">{texts.localListTitle}</h2>
+        <ul class="local-list" data-local-list></ul>
+      </section>
+    )}
   </form>
 ) : (
   <section id="reserva" class="booking-form" aria-label={texts.formLabel}>
@@ -56,6 +64,39 @@ const contactHref = pathTo(locale, { route: 'home', query: { tipo: 'retratos' },
     gap: clamp(40px, 5vw, 72px);
     min-width: 0;
     scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+
+  .local-bookings {
+    display: grid;
+    gap: 16px;
+  }
+
+  .local-list {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .local-list :global(.local-item) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .local-list :global(.local-cancel) {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
   }
 
   .no-offers {

@@ -7,5 +7,6 @@ export interface BookingCatalog {
   calendar: CalendarProvider | null;
   listBookingOffers: ListBookingOffers;
   demoPricing: boolean;
+  localReservations: boolean;
   timeZone: string;
 }

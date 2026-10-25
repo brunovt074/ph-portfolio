@@ -86,14 +86,14 @@ test.describe('booking page', () => {
     await openForm(page);
 
     await expect(page.locator('h1')).toContainText('Reservá tu sesión');
-    await expect(page.locator('.demo-banner')).toHaveText('Precios de demostración — todavía no son los precios reales.');
+    await expect(page.locator('.demo-banner')).toHaveText('Modo demostración: los precios y las reservas son de prueba y no generan ningún cobro.');
     await expect(page.locator('.card')).toHaveCount(4);
     const maternity = page.locator('.card', { hasText: 'Maternidad' });
     await expect(maternity).toContainText('Total');
-    await expect(maternity).toContainText('95.000');
+    await expect(maternity).toContainText('US$ 150');
     await expect(maternity).toContainText('Seña');
-    await expect(maternity).toContainText('47.500');
-    await expect(page.locator('.policy')).toHaveText('[POLÍTICA DE CANCELACIÓN]');
+    await expect(maternity).toContainText('US$ 75');
+    await expect(page.locator('.policy')).toContainText('sin cargo hasta 48 horas antes de la sesión');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     expect(consoleErrors).toEqual([]);
 
@@ -115,7 +115,7 @@ test.describe('booking page', () => {
     await openForm(page, '/es/reservas?sesion=familias');
 
     await expect(page.locator('#reserva-sesion-familias')).toBeChecked();
-    await expect(page.locator('[data-summary]')).toContainText('55.000');
+    await expect(page.locator('[data-summary]')).toContainText('US$ 90');
     await expect(page.locator('[data-panel="slots"]')).toBeVisible();
   });
 
@@ -124,13 +124,13 @@ test.describe('booking page', () => {
     await capture(page, `qa/r2/reservas-vacio-${testInfo.project.name}.png`);
 
     await chooseSession(page, 'maternidad');
-    await expect(page.locator('[data-summary]')).toHaveText(/Seña a pagar ahora: .*47\.500/);
-    await expect(page.locator('[data-booking-form] button[type="submit"]')).toHaveText(/Ir al pago de .*47\.500/);
+    await expect(page.locator('[data-summary]')).toHaveText(/Seña a pagar ahora: .*US\$\s75/);
+    await expect(page.locator('[data-booking-form] button[type="submit"]')).toHaveText(/Ir al pago de .*US\$\s75/);
 
     await page.locator('label.plan', { hasText: 'total' }).click();
 
-    await expect(page.locator('[data-summary]')).toHaveText(/Total a pagar ahora: .*95\.000/);
-    await expect(page.locator('[data-booking-form] button[type="submit"]')).toHaveText(/Ir al pago de .*95\.000/);
+    await expect(page.locator('[data-summary]')).toHaveText(/Total a pagar ahora: .*US\$\s150/);
+    await expect(page.locator('[data-booking-form] button[type="submit"]')).toHaveText(/Ir al pago de .*US\$\s150/);
     await chooseRandomSlot(page);
     await capture(page, `qa/r2/reservas-sesion-${testInfo.project.name}.png`);
   });
@@ -147,7 +147,7 @@ test.describe('booking with turns', () => {
 
     await expect(page).toHaveURL(/\/reservas\/simulador\/sim_\d+/);
     await expect(page.locator('.simulator-banner')).toContainText('no se cobra nada');
-    await expect(page.locator('.amount')).toContainText('47.500');
+    await expect(page.locator('.amount')).toContainText('US$ 75');
 
     await page.getByRole('button', { name: 'Aprobar pago' }).click();
 
@@ -156,7 +156,7 @@ test.describe('booking with turns', () => {
     await expect(page.locator('.t-lead')).toContainText('Recibí tu seña, Camila');
     await expect(page.locator('.t-lead')).toContainText(/a las \d{2}:\d{2}/);
     await expect(page.locator('.summary')).toContainText('Maternidad');
-    await expect(page.locator('.summary')).toContainText('47.500');
+    await expect(page.locator('.summary')).toContainText('US$ 75');
     await capture(page, `qa/r2/resultado-confirmado-${testInfo.project.name}.png`);
   });
 
@@ -168,7 +168,7 @@ test.describe('booking with turns', () => {
     await page.locator('label.plan', { hasText: 'total' }).click();
 
     await submit(page);
-    await expect(page.locator('.amount')).toContainText('85.000');
+    await expect(page.locator('.amount')).toContainText('US$ 120');
     await page.getByRole('button', { name: 'Aprobar pago' }).click();
 
     await expect(page.locator('h1')).toHaveText('¡Tu lugar está reservado!');

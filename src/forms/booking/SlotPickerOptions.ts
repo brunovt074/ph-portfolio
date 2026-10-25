@@ -6,5 +6,6 @@ export interface SlotPickerOptions {
   timeZone: string;
   localeTag: string;
   horizonDays: number;
+  isTaken: (slotStart: string) => boolean;
   onFallback: (message: string) => void;
 }

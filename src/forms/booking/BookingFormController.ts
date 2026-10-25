@@ -1,5 +1,6 @@
 import { applyScheduleMode } from './scheduleMode';
 import { findSelectedOffer } from './findSelectedOffer';
+import { isSlotTakenLocally } from './localBookingsStore';
 import { SlotPicker } from './SlotPicker';
 import type { BookingTexts } from './BookingTexts';
 import { updateAmounts } from './updateAmounts';
@@ -8,10 +9,12 @@ export class BookingFormController {
   readonly picker: SlotPicker | null;
   readonly texts: BookingTexts;
   readonly localeTag: string;
+  readonly localReservations: boolean;
 
   constructor(readonly form: HTMLFormElement) {
     this.texts = JSON.parse(form.dataset['texts'] ?? '{}') as BookingTexts;
     this.localeTag = form.dataset['localeTag'] ?? 'es-AR';
+    this.localReservations = form.dataset['localReservations'] === 'true';
     const panel = form.querySelector<HTMLElement>('[data-slot-picker]');
     this.picker = panel
       ? new SlotPicker(panel, {
@@ -20,6 +23,7 @@ export class BookingFormController {
           timeZone: form.dataset['timeZone'] ?? 'UTC',
           localeTag: this.localeTag,
           horizonDays: Number(form.dataset['horizonDays'] ?? 90),
+          isTaken: (slotStart) => this.localReservations && isSlotTakenLocally(slotStart),
           onFallback: (message) => {
             applyScheduleMode(form, 'request');
             this.showNotice(message);
