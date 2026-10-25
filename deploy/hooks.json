@@ -1,0 +1,10 @@
+[
+  {
+    "id": "sarahmoreauph-rebuild",
+    "execute-command": "/opt/sarahmoreauph/trigger.sh",
+    "command-working-directory": "/opt/sarahmoreauph",
+    "trigger-rule": {
+      "match": { "type": "value", "value": "REPLACE_WITH_REBUILD_SECRET", "parameter": { "source": "header", "name": "X-Rebuild-Secret" } }
+    }
+  }
+]
