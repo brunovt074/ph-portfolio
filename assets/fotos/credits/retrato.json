@@ -1,0 +1,16 @@
+[
+  {
+    "id": "retrato-sarah",
+    "file": "fotos/retrato-sarah.jpg",
+    "alt": "Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro",
+    "sourceUrl": "https://www.pexels.com/photo/portrait-of-a-female-photographer-in-studio-setting-36580588/",
+    "author": "Enes Türkoğlu",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.61,
+      "y": 0.38,
+      "width": 0.36,
+      "height": 0.34
+    }
+  }
+]

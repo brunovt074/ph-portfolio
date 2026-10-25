@@ -150,7 +150,7 @@
   },
   "settings": {
     "exhibitions": [ { "title": "[Muestra o publicación]", "place": "[Lugar]", "year": "[AÑO]" } ],
-    "portraitAlt": "Sarah Moreau con su cámara, en blanco y negro"
+    "portraitAlt": "Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro"
   },
   "bookingOffers": [
     { "slug": "retrato-personal", "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 1 },

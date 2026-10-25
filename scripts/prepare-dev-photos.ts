@@ -18,8 +18,6 @@ interface Lqip {
 interface Source {
   id: string;
   path: string;
-  kind: 'alta' | 'baja';
-  crop: { left: number; top: number; width: number; height: number } | null;
 }
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -27,36 +25,17 @@ const assetsDir = join(root, 'assets');
 const outDir = join(assetsDir, 'fotos-dev');
 const lqipPath = join(outDir, 'lqip.json');
 
-const seed = JSON.parse(readFileSync(join(assetsDir, 'seed.json'), 'utf8')) as { fotos: SeedPhoto[] };
+const seed = JSON.parse(readFileSync(join(assetsDir, 'seed.json'), 'utf8')) as {
+  fotos: SeedPhoto[];
+  ajustes: { retrato: string };
+};
 
 const portraitId = 'retrato-sarah';
-const portraitHigh = join(assetsDir, 'fotos-alta', 'retrato-sarah-provisorio.png');
-const portraitLow = join(assetsDir, 'fotos-baja', 'retrato-sarah-provisorio.jpg');
 
-const resolveSources = (): Source[] => {
-  const photos = seed.fotos.map((photo): Source => {
-    const jpg = join(assetsDir, 'fotos-alta', `${photo.id}.jpg`);
-    const png = join(assetsDir, 'fotos-alta', `${photo.id}.png`);
-    const high = [jpg, png].find((candidate) => existsSync(candidate));
-    return high
-      ? { id: photo.id, path: high, kind: 'alta', crop: null }
-      : { id: photo.id, path: join(assetsDir, photo.archivo), kind: 'baja', crop: null };
-  });
-  const portrait: Source = existsSync(portraitHigh)
-    ? { id: portraitId, path: portraitHigh, kind: 'alta', crop: { left: 45, top: 40, width: 570, height: 760 } }
-    : { id: portraitId, path: portraitLow, kind: 'baja', crop: null };
-  return [...photos, portrait];
-};
-
-const bottomCropOverrides: Record<string, number> = { rt02: 0.14 };
-
-const highCrop = (id: string, width: number, height: number) => {
-  const left = Math.round(width * 0.04);
-  const top = Math.round(height * 0.03);
-  const right = Math.round(width * 0.06);
-  const bottom = Math.round(height * (bottomCropOverrides[id] ?? 0.06));
-  return { left, top, width: width - left - right, height: height - top - bottom };
-};
+const resolveSources = (): Source[] => [
+  ...seed.fotos.map((photo): Source => ({ id: photo.id, path: join(assetsDir, photo.archivo) })),
+  { id: portraitId, path: join(assetsDir, seed.ajustes.retrato) },
+];
 
 const isFresh = (source: string, target: string): boolean =>
   existsSync(target) && statSync(target).mtimeMs >= statSync(source).mtimeMs;
@@ -84,14 +63,7 @@ const buildLqip = async (file: string): Promise<Lqip> => {
 
 const processSource = async (source: Source): Promise<void> => {
   const target = join(outDir, `${source.id}.jpg`);
-  let pipeline = sharp(source.path).rotate();
-  if (source.crop) {
-    pipeline = pipeline.extract(source.crop);
-  } else if (source.kind === 'alta') {
-    const { width, height } = await readDimensions(source.path);
-    pipeline = pipeline.extract(highCrop(source.id, width, height));
-  }
-  await pipeline.toColourspace('srgb').jpeg({ quality: 90, mozjpeg: true }).toFile(target);
+  await sharp(source.path).rotate().toColourspace('srgb').jpeg({ quality: 90, mozjpeg: true }).toFile(target);
 };
 
 const run = async (): Promise<void> => {
@@ -109,8 +81,7 @@ const run = async (): Promise<void> => {
     }
   }
   writeFileSync(lqipPath, JSON.stringify(lqip));
-  const high = sources.filter((source) => source.kind === 'alta').length;
-  console.log(`${sources.length} fotos (${high} alta, ${sources.length - high} baja)`);
+  console.log(`${sources.length} fotos`);
 };
 
 await run();

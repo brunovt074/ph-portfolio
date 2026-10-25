@@ -1,0 +1,142 @@
+[
+  {
+    "id": "rt01",
+    "file": "fotos/retratos/rt01.jpg",
+    "alt": "Retrato de cuerpo entero de una mujer vestida de negro, con anteojos y sombrero de ala ancha, sosteniendo el ala con ambas manos frente a una persiana gris",
+    "sourceUrl": "https://www.pexels.com/photo/woman-in-black-clothes-holding-her-hat-looking-sideways-5400263/",
+    "author": "Thirdman",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.54,
+      "y": 0.17,
+      "width": 0.36,
+      "height": 0.22
+    }
+  },
+  {
+    "id": "rt02",
+    "file": "fotos/retratos/rt02.jpg",
+    "alt": "Primer plano de una mujer con boina negra, labios rojos y flequillo, con las manos junto al cuello y una pared de madera de fondo",
+    "sourceUrl": "https://unsplash.com/photos/a-woman-with-long-hair-wearing-a-black-hat-XWwJAEriW38",
+    "author": "Amir Abbaspoor",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.54,
+      "y": 0.38,
+      "width": 0.56,
+      "height": 0.42
+    }
+  },
+  {
+    "id": "rt03",
+    "file": "fotos/retratos/rt03.jpg",
+    "alt": "Retrato de maternidad de perfil: mujer embarazada con vestido negro de cuello alto sobre fondo gris oscuro, con una mano en el vientre y otra en la cadera",
+    "sourceUrl": "https://unsplash.com/photos/a-pregnant-woman-in-a-black-dress-poses-for-a-picture-UZW3MZpHea4",
+    "author": "Alexander Mass",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.6,
+      "y": 0.43,
+      "width": 0.72,
+      "height": 0.72
+    }
+  },
+  {
+    "id": "rt04",
+    "file": "fotos/retratos/rt04.jpg",
+    "alt": "Familia de cuatro personas, con dos adultos y dos niños, posando de pie frente a una cabaña de madera oscura con techo en A rodeada de pinos",
+    "sourceUrl": "https://www.pexels.com/photo/family-posing-near-a-wooden-cabin-9222073/",
+    "author": "Ron Lach",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.49,
+      "y": 0.67,
+      "width": 0.46,
+      "height": 0.52
+    }
+  },
+  {
+    "id": "rt05",
+    "file": "fotos/retratos/rt05.jpg",
+    "alt": "Mujer de cabello largo y rizado abrazando a un bebé sonriente, con vestido blanco y un fondo de flores secas en tonos azulados",
+    "sourceUrl": "https://unsplash.com/photos/a-woman-holding-a-baby-in-her-arms-tDd2s-XD7tk",
+    "author": "Junior REIS",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.37,
+      "width": 0.5,
+      "height": 0.26
+    }
+  },
+  {
+    "id": "rt06",
+    "file": "fotos/retratos/rt06.jpg",
+    "alt": "Retrato de belleza de una mujer con la mirada baja, delineado gráfico y sombras doradas y anaranjadas, largos aretes metálicos dorados y la mano junto a la oreja, sobre fondo azul grisáceo",
+    "sourceUrl": "https://www.pexels.com/photo/modern-portrait-with-artistic-makeup-and-accessories-39613143/",
+    "author": "julio cesar resendiz resendiz",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.375,
+      "width": 0.7,
+      "height": 0.45
+    }
+  },
+  {
+    "id": "rt07",
+    "file": "fotos/retratos/rt07.jpg",
+    "alt": "Retrato profesional de una joven de cabello largo y oscuro, con blazer azul marino sobre una remera negra, sonriendo sobre fondo gris claro",
+    "sourceUrl": "https://www.pexels.com/photo/portrait-of-a-pretty-brunette-wearing-a-navy-blue-jacket-19989572/",
+    "author": "Weijia MA",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.54,
+      "y": 0.17,
+      "width": 0.32,
+      "height": 0.26
+    }
+  },
+  {
+    "id": "rt08",
+    "file": "fotos/retratos/rt08.jpg",
+    "alt": "Mujer mayor de cabello blanco y corto, con campera de cuero y pantalón claro, de pie y de perfil con los brazos cruzados, sonriendo a la luz de una ventana en un estudio vacío",
+    "sourceUrl": "https://www.pexels.com/photo/a-stylish-woman-wearing-a-leather-jacket-5335404/",
+    "author": "Moe Magners",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.53,
+      "y": 0.545,
+      "width": 0.34,
+      "height": 0.85
+    }
+  },
+  {
+    "id": "rt09",
+    "file": "fotos/retratos/rt09.jpg",
+    "alt": "Pareja de un hombre y una mujer con las cabezas apoyadas, con trazos de maquillaje artístico de colores en el rostro, vestidos de negro frente a un cielo claro",
+    "sourceUrl": "https://unsplash.com/photos/a-man-and-a-woman-with-painted-faces-UCguU-yLZa8",
+    "author": "Joshua Rondeau",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.47,
+      "y": 0.415,
+      "width": 0.68,
+      "height": 0.43
+    }
+  },
+  {
+    "id": "rt10",
+    "file": "fotos/retratos/rt10.jpg",
+    "alt": "Mujer de pie con boina roja, blazer negro y pollera plisada en un huerto de árboles en flor, sobre pasto verde iluminado por el sol",
+    "sourceUrl": "https://www.pexels.com/photo/young-woman-in-coat-mini-skirt-and-red-beret-posing-in-a-spring-park-17500752/",
+    "author": "ömer aliko",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.66,
+      "width": 0.28,
+      "height": 0.44
+    }
+  }
+]
