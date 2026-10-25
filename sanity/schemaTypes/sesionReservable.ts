@@ -20,7 +20,7 @@ export const sesionReservable = defineType({
       name: 'precio',
       title: 'Precio',
       type: 'number',
-      description: 'Precio total en pesos. Dejalo vacío para que la sesión se muestre sin precio y sin reserva online.',
+      description: 'Precio total en dólares (USD). Dejalo vacío para que la sesión se muestre sin precio y sin reserva online.',
       validation: (rule) => rule.min(1),
     }),
     defineField({

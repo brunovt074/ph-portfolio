@@ -158,7 +158,7 @@ export class CreateBooking {
       offerTitle: offer.title,
       totalCents,
       depositCents: calculateDeposit(totalCents, offer.depositPercent),
-      currency: 'ARS',
+      currency: 'USD',
       paymentPlan: input.paymentPlan,
       schedule,
       calendarEventId: null,

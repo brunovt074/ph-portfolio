@@ -9,7 +9,7 @@ export interface Booking {
   offerTitle: string;
   totalCents: number;
   depositCents: number;
-  currency: 'ARS';
+  currency: 'USD';
   paymentPlan: PaymentPlan;
   schedule: BookingSchedule;
   calendarEventId: string | null;

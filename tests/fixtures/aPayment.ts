@@ -10,7 +10,7 @@ export const aPayment = (overrides: Partial<Payment> = {}): Payment => ({
   externalPaymentId: null,
   status: 'pending',
   amountCents: 4_750_000,
-  currency: 'ARS',
+  currency: 'USD',
   raw: {},
   createdAt: new Date('2026-10-17T15:00:00Z'),
   updatedAt: new Date('2026-10-17T15:00:00Z'),

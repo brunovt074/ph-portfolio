@@ -78,7 +78,7 @@ describe('ResendBookingNotifier', () => {
     await new ResendBookingNotifier(client, 'photographer@example.com', 'sitio@example.com', zone).paymentRefunded(aBooking(), aPayment());
 
     expect(payloads).toHaveLength(1);
-    expect(payloads[0]).toMatchObject({ to: 'photographer@example.com', subject: 'Pago devuelto: Camila Ríos ($ 47.500)' });
+    expect(payloads[0]).toMatchObject({ to: 'photographer@example.com', subject: 'Pago devuelto: Camila Ríos (US$ 47.500)' });
   });
 
   it('fails when the studio alert is rejected', async () => {

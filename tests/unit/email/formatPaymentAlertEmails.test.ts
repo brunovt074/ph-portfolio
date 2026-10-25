@@ -9,7 +9,7 @@ describe('payment alert emails for the studio', () => {
     const email = formatDuplicatePaymentEmail(aBooking(), aPayment({ amountCents: 4_750_000 }));
 
     expect(email.text).toBe(
-      'Entró un segundo pago para la reserva booking-1 de Camila Ríos por $ 47.500. Revisá si corresponde devolverlo desde Mercado Pago.',
+      'Entró un segundo pago para la reserva booking-1 de Camila Ríos por US$ 47.500. Revisá si corresponde devolverlo desde Mercado Pago.',
     );
   });
 

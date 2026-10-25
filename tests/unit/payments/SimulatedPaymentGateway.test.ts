@@ -6,7 +6,7 @@ const request = (overrides: Partial<CheckoutRequest> = {}): CheckoutRequest => (
   reference: 'pay-1',
   title: 'Seña — Maternidad',
   amountCents: 4_750_000,
-  currency: 'ARS',
+  currency: 'USD',
   payerName: 'Camila Ríos',
   payerEmail: 'camila@example.com',
   returnUrl: 'http://localhost:4321/reservas/booking-1',
@@ -27,7 +27,7 @@ describe('SimulatedPaymentGateway', () => {
       checkoutId: 'sim_1',
       reference: 'pay-1',
       amountCents: 4_750_000,
-      currency: 'ARS',
+      currency: 'USD',
       returnUrl: 'http://localhost:4321/reservas/booking-1',
       title: 'Seña — Maternidad',
     });
@@ -58,7 +58,7 @@ describe('SimulatedPaymentGateway', () => {
       reference: 'pay-1',
       status: 'approved',
       amountCents: 4_750_000,
-      currency: 'ARS',
+      currency: 'USD',
       raw: { simulated: true, checkoutId: 'sim_1', status: 'approved' },
     });
   });

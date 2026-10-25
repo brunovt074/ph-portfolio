@@ -5,7 +5,7 @@ export const aGatewayPayment = (overrides: Partial<GatewayPayment> = {}): Gatewa
   reference: 'payment-1',
   status: 'approved',
   amountCents: 4_750_000,
-  currency: 'ARS',
+  currency: 'USD',
   raw: { id: 'ext-1' },
   ...overrides,
 });
