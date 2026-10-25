@@ -19,7 +19,7 @@ son los del mockup (se pueden cargar desde el CMS); lo que está entre corchetes
 4. **Sobre mí** (fondo `--paper`): retrato de Sarah en B/N + cita "Cada fotografía es un registro de nuestro paso." + párrafo [trayectoria] + botón "Trabajemos juntos".
 5. **Encargos: cuatro miradas** (`id="encargos"`): 4 filas de índice (01–04) con miniaturas → cada faceta.
 6. **Tira editorial**: 5 fotos a sangre, `grid auto-fit`, gap 4 px.
-7. **Para marcas** (fondo `--sand`): H2 "La fotografía también construye identidad de marca." + lista de 4 servicios con "desde [PRECIO]" + botón → `/marcas`. A la derecha, grilla 2×2 escalonada.
+7. **Para marcas** (fondo `--sand`): H2 "La fotografía también construye identidad de marca." + lista de 4 servicios con "desde USD …" + botón → `/marcas`. A la derecha, grilla 2×2 escalonada.
 8. **Teaser de Obra**: H2 "Obra" + 4 fotos B/N + link "Entrar a la obra →".
 9. **Contacto** (`id="contacto"`, fondo `--surface-2`): "Hablemos." + email, WhatsApp, tres cuentas de Instagram + formulario (nombre, email, tipo de trabajo, mensaje).
 10. **Footer.**
@@ -41,7 +41,7 @@ Instagram: `@sarahmoreau.foto`, `@sarahmoreauph`, `@sarahmoreau.video`.
 ## `/retratos` — fondo `--paper`
 
 1. Header. 2. Intro + 2 fotos escalonadas. 3. Galería `grid auto-fit` 3:4 (8 fotos).
-4. **Sesiones**: 4 columnas (Retrato personal, Maternidad, Familias, Marca personal) con descripción y [PRECIO].
+4. **Sesiones**: 4 columnas (Retrato personal, Maternidad, Familias, Marca personal) con descripción y precio en USD.
 5. Banda oscura con cita: "Creemos que tenemos mucho *tiempo*. Las fotos nos recuerdan que no." + CTA.
 6. Footer.
 
@@ -53,7 +53,7 @@ Instagram: `@sarahmoreau.foto`, `@sarahmoreauph`, `@sarahmoreau.video`.
 4. Grilla cuadrada de 6 trabajos más.
 5. **Antes / después** del retoque (NUEVO en código, no está en el mockup): slider comparativo. Ella ya publica este contenido; es el argumento de venta más fuerte.
 6. **Cómo trabajamos**: 4 pasos (Brief, Concepto, Producción, Entrega).
-7. **Paquetes** (fondo `--ink`): Esencial · Identidad (destacado, invertido) · Mensual. Todos [PRECIO].
+7. **Paquetes** (fondo `--ink`): Esencial · Identidad (destacado, invertido) · Mensual. Todos con precio en USD.
 8. Footer.
 
 ## `/eventos` — fondo `--eventos-bg`, acento lima
@@ -68,10 +68,10 @@ Instagram: `@sarahmoreau.foto`, `@sarahmoreauph`, `@sarahmoreau.video`.
 
 Header propio: `Sarah Moreau / obra` · Series · Copias de autor · Sobre la obra · Encargos ↗ (gris).
 
-1. Foto de apertura a casi pantalla completa (`82vh`) con pie "I. Oficios — *Sin título*, [AÑO]".
+1. Foto de apertura a casi pantalla completa (`82vh`) con pie "I. Contraluz — *Sin título*, París, 2022".
 2. H1 "*Obra*" + cita de su bio: "Una bitácora de mi trabajo, porque cada fotografía es un registro de nuestro paso."
 3. **Series** (`id="series"`): 4 capítulos alternando imagen izquierda/derecha. Cada uno: numeral romano en acento, título, "N fotografías · [AÑOS]", una línea curatorial, 3–4 fotos con alturas distintas, "Ver serie →".
-   - I. Oficios · II. Geometrías · III. Lo que queda · IV. Viajes en color
+   - I. Contraluz · II. Geometrías · III. Lo que queda · IV. Viajes en color · V. Rojo sobre gris
 4. **Sobre la obra** (`id="sobre"`, fondo marfil): [statement artístico] + lista de muestras y publicaciones.
 5. Teaser de copias → `/obra/copias`.
 6. Footer.

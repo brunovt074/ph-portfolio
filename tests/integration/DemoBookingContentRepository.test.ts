@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import demoData from '../../assets/booking-demo.json';
 import { DemoBookingContentRepository } from '@/infrastructure/seed/DemoBookingContentRepository';
-import { createSeedRepository } from '@/infrastructure/seed/createSeedRepository';
 import { FakeContentRepository } from '../fakes/FakeContentRepository';
 import { aBookingOffer } from '../fixtures/aBookingOffer';
 import { aSchedulingSettings } from '../fixtures/aSchedulingSettings';
@@ -10,7 +9,8 @@ const noDemo = { prices: {}, durations: {}, windows: [] };
 
 describe('DemoBookingContentRepository', () => {
   it('fills the unpriced sessions with the demo prices and durations so a demo shows the full booking flow', async () => {
-    const repository = new DemoBookingContentRepository(createSeedRepository(), demoData);
+    const unpriced = ['retrato-personal', 'maternidad', 'familias', 'marca-personal'].map((slug) => aBookingOffer({ slug, priceCents: null, durationMinutes: null }));
+    const repository = new DemoBookingContentRepository(new FakeContentRepository({ bookingOffers: unpriced }), demoData);
 
     const offers = await repository.getBookingOffers('es');
 
@@ -39,7 +39,8 @@ describe('DemoBookingContentRepository', () => {
   });
 
   it('offers the demo weekly windows while the photographer has not loaded any', async () => {
-    const settings = await new DemoBookingContentRepository(createSeedRepository(), demoData).getSchedulingSettings();
+    const inner = new FakeContentRepository({ scheduling: aSchedulingSettings({ windows: [] }) });
+    const settings = await new DemoBookingContentRepository(inner, demoData).getSchedulingSettings();
 
     expect(settings.windows).toHaveLength(5);
     expect(settings.windows[0]).toEqual({ weekday: 2, from: '10:00', to: '13:00' });

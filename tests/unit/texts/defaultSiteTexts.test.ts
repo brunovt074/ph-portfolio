@@ -25,9 +25,9 @@ describe('defaultSiteTexts', () => {
     }
   });
 
-  it('keeps the cancellation policy visible as a placeholder in every language', () => {
+  it('ships no bracketed placeholder in any default text', () => {
     for (const locale of locales) {
-      expect(defaultSiteTexts[locale].booking.cancellationPolicy).toMatch(/^\[[^\]]+\]$/);
+      expect(JSON.stringify(defaultSiteTexts[locale])).not.toMatch(/\[[^\]]+\]/);
     }
   });
 

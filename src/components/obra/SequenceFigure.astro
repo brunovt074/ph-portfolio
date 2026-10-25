@@ -18,6 +18,7 @@ const { texts, series, entry, position, sizes, layout } = Astro.props;
 const { photo } = entry;
 const aspect = photoAspect(photo);
 const first = position === 1;
+const details = [photo.place, photo.year].filter((detail) => detail !== undefined && detail !== null && detail !== '').join(', ');
 const bleed = layout === 'bleed';
 ---
 <figure class:list={['sequence-figure', `sequence-figure-${layout}`]} style={`--aspect: ${aspect}`} data-reveal="darkroom" data-position={position}>
@@ -29,7 +30,7 @@ const bleed = layout === 'bleed';
     transitionName={first ? `serie-${series.slug}-1` : undefined}
   />
   <figcaption class:list={['sequence-caption', { container: bleed }]} data-caption>
-    {series.number}.{position} — <em>{photo.title ?? texts.untitled}</em>, {photo.place ?? texts.placeholderCity}, {photo.year ?? texts.placeholderYear}
+    {series.number}.{position} — <em>{photo.title ?? texts.untitled}</em>{details && `, ${details}`}
   </figcaption>
 </figure>
 

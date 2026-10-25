@@ -65,9 +65,9 @@ describe('ProcessPaymentNotification', () => {
     expect(world.reporter.reported).toHaveLength(1);
   });
 
-  it('a payment in dollars does not confirm the booking', async () => {
+  it('a payment in pesos does not confirm the booking', async () => {
     const world = await worldWithPendingDeposit();
-    world.gateway.hasRemotePayment(aGatewayPayment({ currency: 'USD' }));
+    world.gateway.hasRemotePayment(aGatewayPayment({ currency: 'ARS' as 'USD' }));
 
     const result = await world.processNotification.execute('fake', notification('ext-1'));
 
@@ -436,7 +436,7 @@ describe('ProcessPaymentNotification', () => {
             'Email: camila@example.com',
             'Teléfono: +54 9 341 000 0000',
             'Plan: seña',
-            'Pagado: ARS 47500',
+            'Pagado: USD 47500',
             'Notas: Prefiero luz natural',
             `Reserva: ${bookingId}`,
           ].join('\n'),
@@ -453,7 +453,7 @@ describe('ProcessPaymentNotification', () => {
       await notify();
 
       expect(world.calendar?.events[0]?.description).toContain('Plan: pago completo');
-      expect(world.calendar?.events[0]?.description).toContain('Pagado: ARS 95000');
+      expect(world.calendar?.events[0]?.description).toContain('Pagado: USD 95000');
       expect(world.calendar?.events[0]?.description).toContain('Notas: Sin notas');
     });
 

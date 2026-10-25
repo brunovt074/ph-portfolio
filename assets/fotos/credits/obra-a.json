@@ -1,19 +1,5 @@
 [
   {
-    "id": "au01",
-    "file": "fotos/obra/au01.jpg",
-    "alt": "Hombre mayor de pelo blanco caminando por un patio de adoquines con un balde de metal en cada mano, en blanco y negro",
-    "sourceUrl": "https://unsplash.com/photos/elderly-man-carrying-two-large-buckets-outdoors-gMTpjV3h3Ms",
-    "author": "Mesut Yalçın",
-    "license": "Unsplash License",
-    "hotspot": {
-      "x": 0.425,
-      "y": 0.57,
-      "width": 0.75,
-      "height": 0.78
-    }
-  },
-  {
     "id": "au02",
     "file": "fotos/obra/au02.jpg",
     "alt": "Fila de motos y scooters estacionados sobre una vereda, con una esfera de piedra en primer plano, en blanco y negro",
@@ -51,7 +37,7 @@
     "hotspot": {
       "x": 0.5,
       "y": 0.275,
-      "width": 1.0,
+      "width": 1,
       "height": 0.55
     }
   },

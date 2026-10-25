@@ -9,18 +9,10 @@ interface Props {
   texts: SiteTexts['pages'];
 }
 
-const OFF_TOPIC_PHOTO_ID = 'ev10';
-const OFF_TOPIC_POSITION = 5;
 const TALL_POSITION = 0;
 const WIDE_POSITION = 3;
 
 const { photos, texts } = Astro.props;
-
-const arranged = photos.filter((photo) => photo.id !== OFF_TOPIC_PHOTO_ID);
-const offTopic = photos.find((photo) => photo.id === OFF_TOPIC_PHOTO_ID);
-if (offTopic) {
-  arranged.splice(Math.min(OFF_TOPIC_POSITION, arranged.length), 0, offTopic);
-}
 
 const shapeOf = (index: number) => {
   if (index === TALL_POSITION) return 'dense-tall';
@@ -30,7 +22,7 @@ const shapeOf = (index: number) => {
 ---
 <h2 class="sr-only">{texts.gallery}</h2>
 <div class="dense-gallery" data-lightbox-group>
-  {arranged.map((photo, index) => (
+  {photos.map((photo, index) => (
     <figure class:list={['dense-item', shapeOf(index)]} data-reveal>
       <LightboxLink photo={photo}>
         <Photo

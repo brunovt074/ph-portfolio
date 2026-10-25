@@ -1,12 +1,13 @@
 ---
 interface Props {
-  direction: 'right' | 'left' | 'up-right';
+  direction: 'right' | 'left' | 'up' | 'up-right';
 }
 
 const { direction } = Astro.props;
 const shapes = {
   right: 'M1.5 8H14.5M9 2.5L14.5 8L9 13.5',
   left: 'M14.5 8H1.5M7 2.5L1.5 8L7 13.5',
+  up: 'M8 14.5V1.5M2.5 7L8 1.5L13.5 7',
   'up-right': 'M2.5 13.5L13.5 2.5M5.5 2.5H13.5V10.5',
 };
 ---

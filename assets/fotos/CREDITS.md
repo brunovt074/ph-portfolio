@@ -15,7 +15,7 @@ Todas las fotos son de uso libre, incluso comercial y sin atribución obligatori
 | `fotos/editorial/ed09.jpg` | Vika Glitter | Pexels License | https://www.pexels.com/photo/elegant-woman-in-vintage-white-dress-with-unique-jewelry-30661277/ |
 | `fotos/editorial/ed10.jpg` | Alexander | Unsplash License | https://unsplash.com/photos/a-person-covering-their-face-with-a-pink-mask-BQfbZ6h-0Dc |
 | `fotos/editorial/ed11.jpg` | Nemmy Media | Pexels License | https://www.pexels.com/photo/black-and-white-studio-shot-of-two-women-in-creative-makeup-looks-19804968/ |
-| `fotos/editorial/ed12.jpg` | Pavel Danilyuk | Pexels License | https://www.pexels.com/photo/a-man-in-black-long-sleeves-standing-beside-a-woman-in-black-abaya-8526454/ |
+| `fotos/editorial/ed12.jpg` | Almaz Nourzhanov | Unsplash License | https://unsplash.com/photos/a-woman-leans-on-a-mans-back-kQQ3EBVdd1o |
 | `fotos/editorial/ed13.jpg` | Vladimir Konoplev | Pexels License | https://www.pexels.com/photo/young-blonde-woman-in-glasses-and-bonnet-11885563/ |
 | `fotos/editorial/ed14.jpg` | Following NYC | Pexels License | https://www.pexels.com/photo/nyfw-2024-20306636/ |
 | `fotos/eventos/ev01.jpg` | Edgar Santos T. | Pexels License | https://www.pexels.com/photo/vibrant-carnival-costume-in-pachuca-de-soto-36349328/ |
@@ -27,7 +27,12 @@ Todas las fotos son de uso libre, incluso comercial y sin atribución obligatori
 | `fotos/eventos/ev07.jpg` | Maxwell Araujo | Pexels License | https://www.pexels.com/photo/a-ballerina-dancing-in-blue-lighting-and-smoke-23286321/ |
 | `fotos/eventos/ev08.jpg` | Cole Kitchen | Pexels License | https://www.pexels.com/photo/portrait-of-woman-in-festival-costume-14034651/ |
 | `fotos/eventos/ev09.jpg` | Frédéric Hayen | Pexels License | https://www.pexels.com/photo/vibrant-carnival-costume-with-feather-headdress-36356224/ |
-| `fotos/eventos/ev10.jpg` | Henry Suwardi | Pexels License | https://www.pexels.com/photo/young-woman-playing-padel-tennis-indoors-40399379/ |
+| `fotos/eventos/ev11.jpg` | Hulki Okan Tabak | Unsplash License | https://unsplash.com/photos/woman-dancing-on-stage-under-light-GKx96wY_MoA |
+| `fotos/eventos/ev12.jpg` | Kyle Head | Unsplash License | https://unsplash.com/photos/silhouette-of-three-performers-on-stage-p6rNTdAPbuk |
+| `fotos/eventos/ev13.jpg` | stefano stacchini | Unsplash License | https://unsplash.com/photos/stage-set-with-chairs-and-tables-jhPSJDhiRyQ |
+| `fotos/eventos/ev14.jpg` | Kamil Feczko | Unsplash License | https://unsplash.com/photos/man-singing-while-holding-microphone-r1UCyK3dIfI |
+| `fotos/eventos/ev15.jpg` | Claudia Raya | Unsplash License | https://unsplash.com/photos/woman-in-white-and-black-plaid-shirt-holding-microphone-Ol0wJhWu3-s |
+| `fotos/eventos/ev16.jpg` | Hulki Okan Tabak | Unsplash License | https://unsplash.com/photos/a-couple-of-people-that-are-dancing-on-a-stage-Z3rRKj4e6FE |
 | `fotos/marcas/mk01.jpg` | kaboompics.com (Kaboompics) | Pexels License | https://www.pexels.com/photo/flat-lay-of-beauty-products-5632335/ |
 | `fotos/marcas/mk02.jpg` | Daria Liudnaya | Pexels License | https://www.pexels.com/photo/a-spray-bottle-on-a-purple-surface-8166452/ |
 | `fotos/marcas/mk03.jpg` | Gabriel Gotti | Pexels License | https://www.pexels.com/photo/a-pile-of-chocolate-cakes-with-different-fillings-16777946/ |
@@ -39,7 +44,6 @@ Todas las fotos son de uso libre, incluso comercial y sin atribución obligatori
 | `fotos/marcas/mk09.jpg` | Đậu Photograph | Pexels License | https://www.pexels.com/photo/cozy-minimalist-bedroom-with-warm-lighting-31728409/ |
 | `fotos/marcas/mk10.jpg` | Dario Garcia | Pexels License | https://www.pexels.com/photo/a-person-pouring-an-olive-oil-on-fresh-salad-6094524/ |
 | `fotos/marcas/mk11.jpg` | Miguel Rodríguez | Pexels License | https://www.pexels.com/photo/fashion-portrait-of-woman-in-denim-outfit-33983879/ |
-| `fotos/obra/au01.jpg` | Mesut Yalçın | Unsplash License | https://unsplash.com/photos/elderly-man-carrying-two-large-buckets-outdoors-gMTpjV3h3Ms |
 | `fotos/obra/au02.jpg` | luthfian alfajr | Unsplash License | https://unsplash.com/photos/motorcycles-parked-along-a-sidewalk-with-spherical-bollards-qpuLGLjpmBU |
 | `fotos/obra/au03.jpg` | Bence Balla-Schottner | Unsplash License | https://unsplash.com/photos/grayscale-photo-of-a-person-walking-on-a-hallway-9EWIgV57WmM |
 | `fotos/obra/au04.jpg` | Sean Lim | Unsplash License | https://unsplash.com/photos/worm-view-photo-of-concrete-building-dyqdeiOKeyI |
@@ -59,6 +63,21 @@ Todas las fotos son de uso libre, incluso comercial y sin atribución obligatori
 | `fotos/obra/au18.jpg` | danilo mililli | Unsplash License | https://unsplash.com/photos/a-seagull-perched-on-an-angel-statues-head-8e7ZS1-qtVA |
 | `fotos/obra/au19.jpg` | Klim Musalimov | Unsplash License | https://unsplash.com/photos/brown-concrete-building-under-gray-sky-rJPwYtWcMxw |
 | `fotos/obra/au20.jpg` | John Noonan | Unsplash License | https://unsplash.com/photos/brown-leaf-on-asphalt-road-E-9CFTftQh4 |
+| `fotos/obra/au21.jpg` | Silvestre Leon | Unsplash License | https://unsplash.com/photos/Q7BcFI3RueM |
+| `fotos/obra/au22.jpg` | Sophia | Unsplash License | https://unsplash.com/photos/a-silhouette-of-a-woman-in-the-dark-Mjm6ot0FdNE |
+| `fotos/obra/au23.jpg` | Ilona Panych | Unsplash License | https://unsplash.com/photos/woman-in-black-jacket-in-grayscale-photography-Ehk8v2Od018 |
+| `fotos/obra/au24.jpg` | Nayanika Mukherjee | Unsplash License | https://unsplash.com/photos/woman-in-white-coat-standing-gkhgvAth5Js |
+| `fotos/obra/au25.jpg` | Martino Pietropoli | Unsplash License | https://unsplash.com/photos/woman-walking-with-shadow-pirWeToS2mA |
+| `fotos/obra/au26.jpg` | Bruno BD | Unsplash License | https://unsplash.com/photos/people-on-cobblestone-street-at-golden-hour-ScBtoCFcuk8 |
+| `fotos/obra/au27.jpg` | Michał Mendel | Unsplash License | https://unsplash.com/photos/person-in-red-jacket-riding-bicycle-on-road-during-daytime-pCjWbVjHw0E |
+| `fotos/obra/au28.jpg` | Wes Hicks | Unsplash License | https://unsplash.com/photos/foggy-gray-concrete-road-rsBVnIf7WDE |
+| `fotos/obra/au29.jpg` | Alexander Grigoryev | Unsplash License | https://unsplash.com/photos/a-woman-with-her-hair-blowing-in-the-wind-QBwJWL3ER6Y |
+| `fotos/obra/au30.jpg` | Hassan Pasha | Unsplash License | https://unsplash.com/photos/person-walking-and-holding-umbrella-cC4zgdDxNCc |
+| `fotos/obra/au31.jpg` | John Tracey | Unsplash License | https://unsplash.com/photos/woman-in-black-jacket-holding-red-umbrella-90-7aNZ4wro |
+| `fotos/obra/au32.jpg` | Rene Böhmer | Unsplash License | https://unsplash.com/photos/selectrive-color-photography-of-person-with-umbrellas-pfuoqnpClno |
+| `fotos/obra/au33.jpg` | Alexandru Acea | Unsplash License | https://unsplash.com/photos/person-holding-red-umbrella-standing-near-black-suv-Dsw_PlgYzgU |
+| `fotos/obra/au34.jpg` | Sahal Pattanayil | Unsplash License | https://unsplash.com/photos/red-umbrella-on-green-grass-field-during-daytime-vKDhSppqQMI |
+| `fotos/obra/au35.jpg` | Helen Williams | Unsplash License | https://unsplash.com/photos/woman-holding-red-umbrella-standing-on-rocks-IY-0g_xD7NE |
 | `fotos/retrato-sarah.jpg` | Enes Türkoğlu | Pexels License | https://www.pexels.com/photo/portrait-of-a-female-photographer-in-studio-setting-36580588/ |
 | `fotos/retratos/rt01.jpg` | Thirdman | Pexels License | https://www.pexels.com/photo/woman-in-black-clothes-holding-her-hat-looking-sideways-5400263/ |
 | `fotos/retratos/rt02.jpg` | Amir Abbaspoor | Unsplash License | https://unsplash.com/photos/a-woman-with-long-hair-wearing-a-black-hat-XWwJAEriW38 |

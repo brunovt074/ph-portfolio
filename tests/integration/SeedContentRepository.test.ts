@@ -16,7 +16,7 @@ const cloneContent = () => structuredClone(realContent);
 const cloneSeed = () => structuredClone(realSeed);
 
 describe('SeedContentRepository with the real handoff data', () => {
-  it('resolves every photo referenced by the content out of the 65 in the seed', async () => {
+  it('resolves every photo referenced by the content out of the 84 in the seed', async () => {
     const facets = await repository().getFacets('es');
     const home = await repository().getHome('es');
     const brands = await repository().getBrands('es');
@@ -30,10 +30,10 @@ describe('SeedContentRepository with the real handoff data', () => {
     brands.sectors.forEach((sector) => ids.add(sector.photo.id));
     series.forEach((item) => item.photos.forEach((entry) => ids.add(entry.photo.id)));
 
-    expect(realSeed.fotos).toHaveLength(65);
+    expect(realSeed.fotos).toHaveLength(84);
     expect(ids.size).toBeGreaterThan(40);
     expect(home.encargosDoor.photo.id).toBe('ed02');
-    expect(home.obraDoor.photo.id).toBe('au01');
+    expect(home.obraDoor.photo.id).toBe('au21');
     expect(home.obraDoor.title).toEqual([{ text: 'Obra', italic: true }]);
   });
 
@@ -56,52 +56,54 @@ describe('SeedContentRepository with the real handoff data', () => {
     ]);
     expect(facets[1]?.quote).toBeDefined();
     expect(facets[0]?.quote).toBeUndefined();
-    expect(facets[1]?.services[0]?.price).toBe('[PRECIO]');
+    expect(facets[1]?.services[0]?.price).toBe('USD 120');
     expect(facets[0]?.services[0]?.price).toBeUndefined();
     expect(facets[2]?.services).toEqual([]);
   });
 
-  it('builds the four series with the expected slugs, layouts and display titles', async () => {
+  it('builds the five series with the expected slugs, layouts and display titles', async () => {
     const series = await repository().getSeries('es');
 
-    expect(series.map((item) => item.slug)).toEqual(['oficios', 'geometrias', 'lo-que-queda', 'viajes-en-color']);
-    expect(series.map((item) => item.number)).toEqual(['I', 'II', 'III', 'IV']);
-    expect(series[0]?.photos.map((entry) => entry.layout)).toEqual(['center', 'left', 'right', 'bleed']);
+    expect(series.map((item) => item.slug)).toEqual(['contraluz', 'geometrias', 'lo-que-queda', 'viajes-en-color', 'rojo-sobre-gris']);
+    expect(series.map((item) => item.number)).toEqual(['I', 'II', 'III', 'IV', 'V']);
+    expect(series[0]?.photos.map((entry) => entry.layout)).toEqual(['center', 'left', 'right', 'pair', 'pair', 'bleed']);
     expect(series[1]?.photos.some((entry) => entry.layout === 'pair')).toBe(true);
     expect(series[0]?.displayTitle).toEqual([
-      { text: 'Ofi', italic: false },
-      { text: 'cios', italic: true },
+      { text: 'Contra', italic: false },
+      { text: 'luz', italic: true },
     ]);
-    expect(series[0]?.curatorialText).toBe('[Texto curatorial de la serie]');
+    expect(series[0]?.curatorialText).toContain('Siluetas, sombras y rostros');
   });
 
-  it('links each of the 6 prints to the series that contains its photo', async () => {
+  it('links each of the 8 prints to the series that contains its photo', async () => {
     const prints = await repository().getPrints('es');
     const bySeries = Object.fromEntries(prints.map((print) => [print.id, print.series.slug]));
 
-    expect(prints).toHaveLength(6);
+    expect(prints).toHaveLength(8);
     expect(bySeries).toEqual({
       'copia-au03': 'geometrias',
-      'copia-au01': 'oficios',
+      'copia-au22': 'contraluz',
       'copia-au14': 'lo-que-queda',
       'copia-au18': 'lo-que-queda',
       'copia-au17': 'geometrias',
       'copia-au08': 'viajes-en-color',
+      'copia-au31': 'rojo-sobre-gris',
+      'copia-au29': 'viajes-en-color',
     });
-    expect(prints.every((print) => print.active && print.available === null)).toBe(true);
-    expect(prints[0]?.sizes[0]).toEqual({ size: '30 × 40 cm', price: '[PRECIO]' });
+    expect(prints.every((print) => print.active && print.available !== null)).toBe(true);
+    expect(prints[0]?.sizes[0]).toEqual({ size: '30 × 40 cm', price: 'USD 180' });
   });
 
   it('keeps the available count of a print that already has a numbered stock', async () => {
     const withStock = cloneSeed();
     const first = withStock.copias[0];
     if (first) {
-      first.disponibles = 7;
+      first.disponibles = 3;
     }
 
     const prints = await new SeedContentRepository(withStock, realContent).getPrints('es');
 
-    expect(prints[0]?.available).toBe(7);
+    expect(prints[0]?.available).toBe(3);
   });
 
   it('offers 3 brand packages with Identidad as the featured one', async () => {
@@ -131,26 +133,26 @@ describe('SeedContentRepository with the real handoff data', () => {
     const obra = await repository().getObra('es');
 
     expect(obra.opening.photo.id).toBe('au05');
-    expect(obra.printsTeaser.photos.map((photo) => photo.id)).toEqual(['au03', 'au01', 'au14']);
+    expect(obra.printsTeaser.photos.map((photo) => photo.id)).toEqual(['au03', 'au22', 'au14']);
     expect(obra.seriesPrintsBand.cta).toBe('Ver copias');
     expect(obra.opening.caption[0]).toEqual({ text: 'Sin título', italic: true });
   });
 
-  it('keeps provisional titles, placeholders and null years on obra photos only', async () => {
+  it('keeps provisional titles, places and years on obra photos only', async () => {
     const series = await repository().getSeries('es');
-    const bidones = series[0]?.photos[0]?.photo;
+    const visor = series[0]?.photos[0]?.photo;
     const home = await repository().getHome('es');
 
-    expect(bidones?.title).toBe('Bidones');
-    expect(bidones?.provisionalTitle).toBe(true);
-    expect(bidones?.place).toBe('[Ciudad]');
-    expect(bidones?.year).toBeNull();
+    expect(visor?.title).toBe('Visor');
+    expect(visor?.provisionalTitle).toBe(true);
+    expect(visor?.place).toBe('París');
+    expect(visor?.year).toBe(2023);
     expect(home.facetThumbnails.editorial[0]?.title).toBeUndefined();
     expect(home.facetThumbnails.editorial[0]?.featured).toBe(true);
     expect(home.facetThumbnails.retratos[2]?.featured).toBe(false);
   });
 
-  it('builds the settings with the portrait, exhibitions placeholder and print info', async () => {
+  it('builds the settings with the portrait, exhibitions and print info', async () => {
     const settings = await repository().getSettings('es');
 
     expect(settings.portrait.id).toBe('retrato');
@@ -159,9 +161,9 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(settings.portrait.featured).toBe(false);
     expect(settings.quote).toBe('Cada fotografía es un registro de nuestro paso.');
     expect(settings.instagram).toHaveLength(3);
-    expect(settings.exhibitions).toHaveLength(1);
+    expect(settings.exhibitions).toHaveLength(3);
     expect(settings.printInfo).toHaveLength(4);
-    expect(settings.email).toBe('[EMAIL]');
+    expect(settings.email).toBe('hola@sarahmoreau.com');
   });
 
   it('serves the default interface texts of the requested language', async () => {
@@ -178,7 +180,7 @@ describe('SeedContentRepository with the real handoff data', () => {
       { text: 'Cuatro ', italic: false },
       { text: 'miradas', italic: true },
     ]);
-    expect(home.brandServices[0]).toEqual({ title: 'Producto & e-commerce', price: 'desde [PRECIO]' });
+    expect(home.brandServices[0]).toEqual({ title: 'Producto & e-commerce', price: 'desde USD 250' });
     expect(home.workTypes).toHaveLength(6);
     expect(home.ticker).toHaveLength(5);
     expect(printsContent.title).toEqual([
@@ -254,7 +256,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   it('gives every seed series the same slug in all languages', async () => {
     const [series] = await repository().getSeries('en');
 
-    expect(series?.slugs).toEqual({ es: 'oficios', en: 'oficios', pt: 'oficios' });
+    expect(series?.slugs).toEqual({ es: 'contraluz', en: 'contraluz', pt: 'contraluz' });
   });
 
   it('marks every seed page as Spanish only', async () => {
@@ -270,12 +272,12 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect((await repository().getPrintsContent('en')).translations).toEqual(spanishOnly);
   });
 
-  it('offers the four portrait sessions as bookable without any invented price', async () => {
+  it('offers the four portrait sessions as bookable with their USD price and duration', async () => {
     const offers = await repository().getBookingOffers('es');
 
     expect(offers.map((offer) => offer.slug)).toEqual(['retrato-personal', 'maternidad', 'familias', 'marca-personal']);
     expect(
-      offers.every((offer) => offer.priceCents === null && offer.durationMinutes === null && offer.depositPercent === 50 && offer.facet === 'retratos'),
+      offers.every((offer) => offer.priceCents !== null && offer.durationMinutes !== null && offer.depositPercent === 50 && offer.facet === 'retratos'),
     ).toBe(true);
     expect(offers[1]).toMatchObject({ title: 'Maternidad', description: 'La espera, en clave íntima y sin apuro.', order: 2 });
   });
@@ -294,10 +296,29 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(offers[3]?.priceCents).toBe(150_000);
   });
 
-  it('starts with no weekly windows so every session is booked by a proposed date until the photographer loads her agenda', async () => {
+  it('leaves a session without price unpriced so it cannot be booked online', async () => {
+    const unpriced = cloneContent();
+    const [first] = unpriced.bookingOffers;
+    if (first) {
+      first.price = null;
+    }
+
+    const offers = await new SeedContentRepository(realSeed, unpriced).getBookingOffers('es');
+
+    expect(offers[0]?.priceCents).toBeNull();
+    expect(offers[1]?.priceCents).toBe(15_000);
+  });
+
+  it('offers the weekly windows of the seed so every session shows its calendar', async () => {
     expect(await repository().getSchedulingSettings()).toEqual({
       timeZone: 'America/Argentina/Buenos_Aires',
-      windows: [],
+      windows: [
+        { weekday: 2, from: '10:00', to: '13:00' },
+        { weekday: 2, from: '15:00', to: '19:00' },
+        { weekday: 4, from: '10:00', to: '13:00' },
+        { weekday: 4, from: '15:00', to: '19:00' },
+        { weekday: 6, from: '09:00', to: '13:00' },
+      ],
       slotStepMinutes: 30,
       bufferMinutes: 30,
       minNoticeHours: 48,

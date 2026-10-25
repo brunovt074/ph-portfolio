@@ -7,7 +7,7 @@ const indexablePages = [
   '/es/marcas',
   '/es/eventos',
   '/es/obra',
-  '/es/obra/oficios',
+  '/es/obra/contraluz',
   '/es/obra/geometrias',
   '/es/obra/lo-que-queda',
   '/es/obra/viajes-en-color',

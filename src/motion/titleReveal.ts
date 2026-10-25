@@ -9,9 +9,10 @@ const revealTitle = (title: HTMLElement) => {
   let entered = false;
 
   const split = SplitText.create(title, {
-    type: 'lines,chars',
+    type: 'lines,words,chars',
     mask: 'lines',
     linesClass: 'split-line',
+    wordsClass: 'split-word',
     charsClass: 'split-char',
     autoSplit: true,
     onSplit: (self) => {

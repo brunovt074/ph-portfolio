@@ -33,7 +33,7 @@ const request = (overrides: Partial<CheckoutRequest> = {}): CheckoutRequest => (
   reference: 'pay-1',
   title: 'Seña — Maternidad',
   amountCents: 4_750_000,
-  currency: 'ARS',
+  currency: 'USD',
   payerName: 'Camila Ríos',
   payerEmail: 'camila@example.com',
   returnUrl: 'https://sarahmoreau.example/reservas/booking-1',
@@ -59,7 +59,7 @@ describe('MercadoPagoGateway', () => {
 
       expect(checkout).toEqual({ checkoutId: 'pref-1', checkoutUrl: 'https://mp.test/pay/pref-1' });
       expect(api.sentBodies[0]).toEqual({
-        items: [{ id: 'pay-1', title: 'Seña — Maternidad', quantity: 1, unit_price: 47_500, currency_id: 'ARS' }],
+        items: [{ id: 'pay-1', title: 'Seña — Maternidad', quantity: 1, unit_price: 47_500, currency_id: 'USD' }],
         external_reference: 'pay-1',
         statement_descriptor: 'SARAH MOREAU',
         payer: { name: 'Camila Ríos', email: 'camila@example.com' },
@@ -136,14 +136,14 @@ describe('MercadoPagoGateway', () => {
     const fetchWith = (payment: PaymentResult) => new MercadoPagoGateway(new FakeMercadoPagoApi(undefined, payment), secret).fetchPayment('123456');
 
     it('maps an approved payment with its reference, amount in cents and currency', async () => {
-      const payment = { id: 123456, status: 'approved', external_reference: 'pay-1', transaction_amount: 47_500.5, currency_id: 'ARS' };
+      const payment = { id: 123456, status: 'approved', external_reference: 'pay-1', transaction_amount: 47_500.5, currency_id: 'USD' };
 
       expect(await fetchWith(payment)).toEqual({
         externalPaymentId: '123456',
         reference: 'pay-1',
         status: 'approved',
         amountCents: 4_750_050,
-        currency: 'ARS',
+        currency: 'USD',
         raw: payment,
       });
     });

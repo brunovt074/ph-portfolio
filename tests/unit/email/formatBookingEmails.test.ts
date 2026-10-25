@@ -17,9 +17,9 @@ describe('formatBookingEmails', () => {
         'Sesión: Maternidad',
         'Fecha propuesta: viernes, 20 de noviembre de 2026',
         'Franja: por la mañana',
-        'Seña pagada: $ 47.500',
-        'Saldo a abonar el día de la sesión: $ 47.500',
-        'Total de la sesión: $ 95.000',
+        'Seña pagada: US$ 47.500',
+        'Saldo a abonar el día de la sesión: US$ 47.500',
+        'Total de la sesión: US$ 95.000',
         'Notas: Prefiero luz natural',
         'Reserva: booking-1',
       ].join('\n'),
@@ -32,9 +32,9 @@ describe('formatBookingEmails', () => {
     expect(toCustomer.subject).toBe('Tu reserva con Sarah Moreau está confirmada');
     expect(toCustomer.text).toContain('Hola Camila Ríos:');
     expect(toCustomer.text).toContain('Recibí tu seña. Dentro de las próximas 48 horas te escribo para confirmar la fecha y los detalles.');
-    expect(toCustomer.text).toContain('El saldo de $ 47.500 se abona el día de la sesión.');
+    expect(toCustomer.text).toContain('El saldo de US$ 47.500 se abona el día de la sesión.');
     expect(toCustomer.text).toContain('Franja: por la tarde');
-    expect(toCustomer.text).toContain('Pagado: $ 47.500');
+    expect(toCustomer.text).toContain('Pagado: US$ 47.500');
     expect(toCustomer.attachments).toBeUndefined();
   });
 
@@ -42,10 +42,10 @@ describe('formatBookingEmails', () => {
     const { toCustomer, toStudio } = formatBookingEmails(aBooking({ paymentPlan: 'full' }), zone);
 
     expect(toCustomer.text).toContain('Recibí el pago completo de tu sesión.');
-    expect(toCustomer.text).toContain('Pagado: $ 95.000');
+    expect(toCustomer.text).toContain('Pagado: US$ 95.000');
     expect(toCustomer.text).not.toContain('saldo');
     expect(toStudio.subject).toBe('Nueva reserva con pago completo: Maternidad — Camila Ríos');
-    expect(toStudio.text).toContain('Pago completo: $ 95.000');
+    expect(toStudio.text).toContain('Pago completo: US$ 95.000');
     expect(toStudio.text).not.toContain('Saldo');
   });
 

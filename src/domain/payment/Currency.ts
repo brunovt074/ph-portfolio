@@ -1,1 +1,1 @@
-export type Currency = 'ARS';
+export type Currency = 'USD';

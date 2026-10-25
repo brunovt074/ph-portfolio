@@ -50,8 +50,69 @@ const navLabel = variant === 'obra' ? texts.a11y.obraNav : texts.a11y.mainNav;
     </div>
   </div>
 </header>
+<button class="back-to-top" type="button" aria-label={texts.a11y.backToTop} data-back-to-top data-visible="false"><Arrow direction="up" /></button>
 
 <style>
+  :global(html.js) .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--bg);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .site-header {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  :global(html.js) .site-header[data-hidden='true'] {
+    transform: translateY(-100%);
+  }
+
+  .back-to-top {
+    position: fixed;
+    right: var(--gutter);
+    bottom: clamp(16px, 3vh, 32px);
+    z-index: 30;
+    display: inline-grid;
+    place-items: center;
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .back-to-top[data-visible='true'] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .back-to-top {
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+  }
+
+  .back-to-top:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  :global(body:has([data-series-counter])) .back-to-top {
+    bottom: calc(clamp(16px, 3vh, 32px) + 48px);
+  }
+
+  :global(html:not(.js)) .back-to-top {
+    display: none;
+  }
+
   .site-header-row {
     display: flex;
     flex-wrap: wrap;

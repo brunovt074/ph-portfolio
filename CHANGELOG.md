@@ -20,7 +20,17 @@ proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 - Deploy en VPS con Docker, Traefik y rebuild automático por webhook de Sanity (`docs/09-deploy-vps.md`).
 - Variable `BLOCK_INDEXING` para bloquear la indexación antes del lanzamiento.
 
+### Añadido (navegación y reservas de demostración)
+- Header fijo que se oculta al bajar y reaparece al subir, y botón discreto «Volver arriba».
+- Reservas de demostración guardadas en `localStorage` cuando no hay Mercado Pago configurado (sin `MERCADOPAGO_ACCESS_TOKEN` ni `PAYMENT_PROVIDER=simulado`).
+
 ### Cambiado
+- Obra: se retira la serie «Oficios» y la foto de los bidones; nuevas series «Contraluz» (I) y «Rojo sobre gris» (V) y fotos a color en «Viajes en color». La puerta de Obra de la home usa la foto `au21`.
+- Eventos: se retira la foto de pádel y se suman fotos de teatro y recitales (`ev11`–`ev16`). Editorial: `ed12` reemplazada por una foto sin connotación religiosa.
+- Retratos: nuevo título y cita; las palabras de los títulos animados ya no parten la coma sola en otra línea.
+- Se reemplazan los placeholders entre corchetes por datos de ejemplo (precios en USD, ciudades, años, textos) en `assets/seed.json`, `assets/content.json` y los textos por defecto.
+- Moneda de reservas y precios: USD.
+- Reservas: sin el aviso de 48 horas en la bajada.
 - Fotógrafa ficticia (Sarah Moreau) y fotos de uso libre en `assets/fotos/` con créditos en `assets/fotos/CREDITS.md`; se retiran las fotos originales de la autora anterior. Dominio, usuarios de Instagram y datos de contacto son ficticios.
 - Los casos de uso y el repositorio de contenido reciben el idioma (`locale`).
 - Las URLs en español llevan prefijo `/es` (antes sin prefijo); `/` redirige a `/es/`. Las páginas de resultado del formulario quedan bajo `/{idioma}/contacto/…`.

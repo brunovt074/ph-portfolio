@@ -38,9 +38,9 @@ const alternates = alternatePaths(() => ({ route: 'reservas' }));
         <h1 class="t-display" data-split><RichText title={parseRichTitle(booking.title)} /></h1>
         <p class="t-lead">{booking.lead}</p>
       </header>
-      {catalog.demoPricing && <p class="demo-banner" role="note">{booking.demoBanner}</p>}
+      {(catalog.demoPricing || catalog.localReservations) && <p class="demo-banner" role="note">{booking.demoBanner}</p>}
       <div class="booking-layout">
-        <BookingForm offers={offers} texts={booking} locale={locale} timeZone={catalog.timeZone} />
+        <BookingForm offers={offers} texts={booking} locale={locale} timeZone={catalog.timeZone} localReservations={catalog.localReservations} />
         <BookingAside texts={booking} />
       </div>
     </div>

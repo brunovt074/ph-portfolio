@@ -1,0 +1,212 @@
+[
+  {
+    "id": "au21",
+    "file": "fotos/obra/au21.jpg",
+    "alt": "Mujer con sombrero de ala ancha sosteniendo una cámara réflex frente al rostro, en blanco y negro sobre fondo oscuro",
+    "sourceUrl": "https://unsplash.com/photos/Q7BcFI3RueM",
+    "author": "Silvestre Leon",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.53,
+      "y": 0.26,
+      "width": 0.5,
+      "height": 0.3
+    }
+  },
+  {
+    "id": "au22",
+    "file": "fotos/obra/au22.jpg",
+    "alt": "Silueta de perfil de una mujer de pelo largo contra un fondo gris con un halo de luz, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/a-silhouette-of-a-woman-in-the-dark-Mjm6ot0FdNE",
+    "author": "Sophia",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.62,
+      "y": 0.32,
+      "width": 0.6,
+      "height": 0.5
+    }
+  },
+  {
+    "id": "au23",
+    "file": "fotos/obra/au23.jpg",
+    "alt": "Retrato en blanco y negro de una mujer con los ojos cerrados y sombras de persiana sobre el rostro",
+    "sourceUrl": "https://unsplash.com/photos/woman-in-black-jacket-in-grayscale-photography-Ehk8v2Od018",
+    "author": "Ilona Panych",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.47,
+      "y": 0.45,
+      "width": 0.45,
+      "height": 0.7
+    }
+  },
+  {
+    "id": "au24",
+    "file": "fotos/obra/au24.jpg",
+    "alt": "Mujer de perfil con camisa clara frente a una pared blanca, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/woman-in-white-coat-standing-gkhgvAth5Js",
+    "author": "Nayanika Mukherjee",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.45,
+      "width": 0.55,
+      "height": 0.85
+    }
+  },
+  {
+    "id": "au25",
+    "file": "fotos/obra/au25.jpg",
+    "alt": "Sombra alargada de una persona sobre un piso blanco con luz dura, y unas piernas con falda clara al borde del cuadro, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/woman-walking-with-shadow-pirWeToS2mA",
+    "author": "Martino Pietropoli",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.6,
+      "y": 0.5,
+      "width": 0.8,
+      "height": 0.8
+    }
+  },
+  {
+    "id": "au26",
+    "file": "fotos/obra/au26.jpg",
+    "alt": "Calle adoquinada a contraluz al atardecer, con ciclistas y peatones recortados por el sol bajo",
+    "sourceUrl": "https://unsplash.com/photos/people-on-cobblestone-street-at-golden-hour-ScBtoCFcuk8",
+    "author": "Bruno BD",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.5,
+      "width": 0.6,
+      "height": 0.8
+    }
+  },
+  {
+    "id": "au27",
+    "file": "fotos/obra/au27.jpg",
+    "alt": "Repartidor en bicicleta con campera roja por una calle en tonos verde azulado, con el faro de un auto a la derecha",
+    "sourceUrl": "https://unsplash.com/photos/person-in-red-jacket-riding-bicycle-on-road-during-daytime-pCjWbVjHw0E",
+    "author": "Michał Mendel",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.55,
+      "y": 0.45,
+      "width": 0.4,
+      "height": 0.3
+    }
+  },
+  {
+    "id": "au28",
+    "file": "fotos/obra/au28.jpg",
+    "alt": "Ruta con doble línea amarilla que se pierde en una niebla densa",
+    "sourceUrl": "https://unsplash.com/photos/foggy-gray-concrete-road-rsBVnIf7WDE",
+    "author": "Wes Hicks",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.65,
+      "width": 0.5,
+      "height": 0.6
+    }
+  },
+  {
+    "id": "au29",
+    "file": "fotos/obra/au29.jpg",
+    "alt": "Silueta de una mujer de perfil con el rostro hacia arriba sobre un fondo turquesa",
+    "sourceUrl": "https://unsplash.com/photos/a-woman-with-her-hair-blowing-in-the-wind-QBwJWL3ER6Y",
+    "author": "Alexander Grigoryev",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.4,
+      "width": 0.7,
+      "height": 0.5
+    }
+  },
+  {
+    "id": "au30",
+    "file": "fotos/obra/au30.jpg",
+    "alt": "Persona con un paraguas rojo caminando sobre un pavimento gris desenfocado, en blanco y negro con un único detalle rojo",
+    "sourceUrl": "https://unsplash.com/photos/person-walking-and-holding-umbrella-cC4zgdDxNCc",
+    "author": "Hassan Pasha",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.35,
+      "y": 0.55,
+      "width": 0.4,
+      "height": 0.5
+    }
+  },
+  {
+    "id": "au31",
+    "file": "fotos/obra/au31.jpg",
+    "alt": "Persona con un paraguas rojo junto a un muro de hormigón, en blanco y negro con un único detalle rojo",
+    "sourceUrl": "https://unsplash.com/photos/woman-in-black-jacket-holding-red-umbrella-90-7aNZ4wro",
+    "author": "John Tracey",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.3,
+      "y": 0.72,
+      "width": 0.3,
+      "height": 0.25
+    }
+  },
+  {
+    "id": "au32",
+    "file": "fotos/obra/au32.jpg",
+    "alt": "Persona de espaldas bajo un paraguas oscuro frente a un vidrio con reflejos y otro paraguas rojo desenfocado, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/selectrive-color-photography-of-person-with-umbrellas-pfuoqnpClno",
+    "author": "Rene Böhmer",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.6,
+      "y": 0.5,
+      "width": 0.5,
+      "height": 0.8
+    }
+  },
+  {
+    "id": "au33",
+    "file": "fotos/obra/au33.jpg",
+    "alt": "Vista cenital de un auto negro en un estacionamiento y una persona con un paraguas rojo, en blanco y negro con un único detalle rojo",
+    "sourceUrl": "https://unsplash.com/photos/person-holding-red-umbrella-standing-near-black-suv-Dsw_PlgYzgU",
+    "author": "Alexandru Acea",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.56,
+      "y": 0.32,
+      "width": 0.5,
+      "height": 0.3
+    }
+  },
+  {
+    "id": "au34",
+    "file": "fotos/obra/au34.jpg",
+    "alt": "Paraguas rojo sobre un pastizal bajo un cielo gris y neblinoso, en tonos apagados",
+    "sourceUrl": "https://unsplash.com/photos/red-umbrella-on-green-grass-field-during-daytime-vKDhSppqQMI",
+    "author": "Sahal Pattanayil",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.62,
+      "width": 0.5,
+      "height": 0.2
+    }
+  },
+  {
+    "id": "au35",
+    "file": "fotos/obra/au35.jpg",
+    "alt": "Mujer de espaldas con un paraguas rojo frente a un lago y montañas entre la bruma",
+    "sourceUrl": "https://unsplash.com/photos/woman-holding-red-umbrella-standing-on-rocks-IY-0g_xD7NE",
+    "author": "Helen Williams",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.6,
+      "y": 0.45,
+      "width": 0.6,
+      "height": 0.5
+    }
+  }
+]

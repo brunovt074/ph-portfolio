@@ -11,7 +11,7 @@ describe('formatSlotConflictEmails', () => {
     expect(toStudio.subject).toBe('Pago recibido sin turno disponible: Maternidad — Camila Ríos');
     expect(toStudio.text).toContain('Entró un pago pero el turno ya no está libre: coordiná otro horario o devolvé el pago.');
     expect(toStudio.text).toContain('Turno elegido: jueves, 22 de octubre de 2026, 10:00 h');
-    expect(toStudio.text).toContain('Pagado: $ 47.500');
+    expect(toStudio.text).toContain('Pagado: US$ 47.500');
     expect(toStudio.text).toContain('Notas: Con mi pareja');
   });
 
@@ -20,7 +20,7 @@ describe('formatSlotConflictEmails', () => {
 
     expect(toCustomer.subject).toBe('Recibí tu pago: coordinemos otro horario');
     expect(toCustomer.text).toContain('Recibí tu pago. El horario que elegiste se ocupó mientras pagabas; te escribo hoy para coordinar otro.');
-    expect(toCustomer.text).toContain('Pagado: $ 95.000');
+    expect(toCustomer.text).toContain('Pagado: US$ 95.000');
   });
 
   it('does not break for a booking without a turn and without notes', () => {

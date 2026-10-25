@@ -149,22 +149,22 @@
     "hotspot": {
       "x": 0.5,
       "y": 0.4,
-      "width": 1.0,
+      "width": 1,
       "height": 0.7
     }
   },
   {
     "id": "ed12",
     "file": "fotos/editorial/ed12.jpg",
-    "alt": "Dos modelos vestidos de negro, un hombre y una mujer con atuendo largo, vistos desde abajo frente a torres de vidrio y un cielo con nubes",
-    "sourceUrl": "https://www.pexels.com/photo/a-man-in-black-long-sleeves-standing-beside-a-woman-in-black-abaya-8526454/",
-    "author": "Pavel Danilyuk",
-    "license": "Pexels License",
+    "alt": "Hombre de espaldas con ropa negra y una mujer apoyada en él con la mano en la mejilla, sobre un fondo gris oscuro",
+    "sourceUrl": "https://unsplash.com/photos/a-woman-leans-on-a-mans-back-kQQ3EBVdd1o",
+    "author": "Almaz Nourzhanov",
+    "license": "Unsplash License",
     "hotspot": {
-      "x": 0.58,
-      "y": 0.42,
-      "width": 0.4,
-      "height": 0.3
+      "x": 0.55,
+      "y": 0.45,
+      "width": 0.7,
+      "height": 0.9
     }
   },
   {

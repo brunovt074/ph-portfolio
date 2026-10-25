@@ -6,7 +6,7 @@ export const aBooking = (overrides: Partial<Booking> = {}): Booking => ({
   offerTitle: 'Maternidad',
   totalCents: 9_500_000,
   depositCents: 4_750_000,
-  currency: 'ARS',
+  currency: 'USD',
   paymentPlan: 'deposit',
   schedule: { kind: 'request', preferredDate: '2026-11-20', timeSlot: 'morning' },
   calendarEventId: null,

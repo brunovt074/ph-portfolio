@@ -216,6 +216,7 @@ export const buildDocuments = (seed: SeedData, content: ContentData, assetIdOf: 
     slug: { _type: 'slug', current: offer.slug },
     faceta: reference(`faceta-${offer.facet}`),
     descripcion: localized(offer.description),
+    ...(offer.price === null ? {} : { precio: offer.price }),
     ...(offer.duration === null ? {} : { duracionMinutos: offer.duration }),
     porcentajeSena: offer.depositPercent,
     activa: true,
