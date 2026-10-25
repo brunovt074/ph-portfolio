@@ -1,0 +1,29 @@
+http:
+  services:
+    sarahmoreauph-svc:
+      loadBalancer:
+        servers:
+          - url: "http://172.18.0.1:4321/"
+        passHostHeader: true
+    sarahmoreauph-hooks-svc:
+      loadBalancer:
+        servers:
+          - url: "http://172.18.0.1:9000/"
+        passHostHeader: true
+  routers:
+    sarahmoreauph:
+      rule: "(Host(`sarahmoreauph.l6pr0s.easypanel.host`) || Host(`72-60-247-32.sslip.io`))"
+      service: sarahmoreauph-svc
+      entryPoints:
+        - https
+      priority: 100
+      tls:
+        certResolver: letsencrypt
+    sarahmoreauph-hooks:
+      rule: "(Host(`sarahmoreauph.l6pr0s.easypanel.host`) || Host(`72-60-247-32.sslip.io`)) && PathPrefix(`/hooks`)"
+      service: sarahmoreauph-hooks-svc
+      entryPoints:
+        - https
+      priority: 200
+      tls:
+        certResolver: letsencrypt
