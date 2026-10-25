@@ -264,7 +264,7 @@ describe('SanityContentRepository', () => {
     it('builds the portrait photo and the contact data', async () => {
       const settings = await repositoryWith().getSettings('es');
 
-      expect(settings.portrait).toMatchObject({ id: 'retrato-sarah', facet: 'retratos', alt: 'Sarah Moreau con su cámara, en blanco y negro' });
+      expect(settings.portrait).toMatchObject({ id: 'retrato-sarah', facet: 'retratos', alt: 'Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro' });
       expect(settings.exhibitions).toEqual([{ title: '[Muestra o publicación]', place: '[Lugar]', year: '[AÑO]' }]);
       expect(settings.printInfo).toEqual([{ title: 'Envío', description: '[Zonas y tiempos de envío]' }]);
       expect(settings.quote).toBe('Cada fotografía es un registro de nuestro paso.');

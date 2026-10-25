@@ -33,7 +33,7 @@ export const buildIcsEvent = ({ bookingId, start, end, stamp, summary, descripti
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
-    `UID:${bookingId}@laramoreau`,
+    `UID:${bookingId}@sarahmoreau`,
     `DTSTAMP:${toUtcStamp(stamp)}`,
     `DTSTART:${toUtcStamp(start)}`,
     `DTEND:${toUtcStamp(end)}`,

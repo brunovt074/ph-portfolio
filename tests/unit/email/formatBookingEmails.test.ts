@@ -58,7 +58,7 @@ describe('formatBookingEmails', () => {
     expect(toCustomer.attachments).toHaveLength(1);
     expect(toCustomer.attachments?.[0]?.filename).toBe('reserva.ics');
     expect(toCustomer.attachments?.[0]?.content).toContain('DTSTART:20261022T130000Z');
-    expect(toCustomer.attachments?.[0]?.content).toContain('UID:booking-1@laramoreau');
+    expect(toCustomer.attachments?.[0]?.content).toContain('UID:booking-1@sarahmoreau');
   });
 
   it('describes a client with no time preference', () => {

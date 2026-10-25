@@ -24,7 +24,7 @@ son los del mockup (se pueden cargar desde el CMS); lo que está entre corchetes
 9. **Contacto** (`id="contacto"`, fondo `--surface-2`): "Hablemos." + email, WhatsApp, tres cuentas de Instagram + formulario (nombre, email, tipo de trabajo, mensaje).
 10. **Footer.**
 
-Instagram: `@sarahmoreau.ph`, `@sarahmoreau.ph`, `@sarahmoreau.studio`.
+Instagram: `@sarahmoreau.foto`, `@sarahmoreauph`, `@sarahmoreau.video`.
 
 ---
 

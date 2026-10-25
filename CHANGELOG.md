@@ -21,6 +21,7 @@ proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 - Variable `BLOCK_INDEXING` para bloquear la indexación antes del lanzamiento.
 
 ### Cambiado
+- Fotógrafa ficticia (Sarah Moreau) y fotos de uso libre en `assets/fotos/` con créditos en `assets/fotos/CREDITS.md`; se retiran las fotos originales de la autora anterior. Dominio, usuarios de Instagram y datos de contacto son ficticios.
 - Los casos de uso y el repositorio de contenido reciben el idioma (`locale`).
 - Las URLs en español llevan prefijo `/es` (antes sin prefijo); `/` redirige a `/es/`. Las páginas de resultado del formulario quedan bajo `/{idioma}/contacto/…`.
 
