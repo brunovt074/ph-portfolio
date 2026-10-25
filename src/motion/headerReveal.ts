@@ -44,7 +44,10 @@ onPageReady(() => {
 
   const scrollToTop = () => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    const handledBySmoothScroll = !window.dispatchEvent(new CustomEvent('lv:scroll-top', { cancelable: true }));
+    if (!handledBySmoothScroll) {
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    }
     header.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
   };
 
