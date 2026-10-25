@@ -29,7 +29,7 @@ import { MissingContentError } from './MissingContentError';
 import { parseRichTitle } from './parseRichTitle';
 import { UnknownPhotoError } from './UnknownPhotoError';
 
-const PORTRAIT_ID = 'retrato-sarah';
+const PORTRAIT_ID = 'retrato';
 
 const spanishOnly = (): Translations => ({ es: true, en: false, pt: false });
 

@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ev01",
+    "file": "fotos/eventos/ev01.jpg",
+    "alt": "Mujer sonriente con traje de lentejuelas verdes y un gran plumaje verde y amarillo a la espalda, durante un desfile de carnaval",
+    "sourceUrl": "https://www.pexels.com/photo/vibrant-carnival-costume-in-pachuca-de-soto-36349328/",
+    "author": "Edgar Santos T.",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.55,
+      "y": 0.39,
+      "width": 0.34,
+      "height": 0.24
+    }
+  },
+  {
+    "id": "ev02",
+    "file": "fotos/eventos/ev02.jpg",
+    "alt": "Bailarina de carnaval sonriendo con los brazos en alto, con un tocado de plumas verdes y lima y un corpiño de lentejuelas verdes y naranjas, a pleno sol",
+    "sourceUrl": "https://www.pexels.com/photo/vibrant-carnival-dancer-in-pachuca-de-soto-mexico-36308753/",
+    "author": "Diana Reyes",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.425,
+      "y": 0.475,
+      "width": 0.45,
+      "height": 0.45
+    }
+  },
+  {
+    "id": "ev03",
+    "file": "fotos/eventos/ev03.jpg",
+    "alt": "Artista de comparsa con alas de plumas blancas y un tocado dorado con joyas, sosteniendo un cetro, frente a un fondo verde",
+    "sourceUrl": "https://www.pexels.com/photo/vibrant-parade-performer-in-argentina-carnival-36299231/",
+    "author": "maria daniela varela",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.455,
+      "y": 0.3,
+      "width": 0.35,
+      "height": 0.4
+    }
+  },
+  {
+    "id": "ev04",
+    "file": "fotos/eventos/ev04.jpg",
+    "alt": "Cantante de ojos cerrados junto a un micrófono clásico de metal, iluminado por luz verde entre humo en un escenario",
+    "sourceUrl": "https://www.pexels.com/photo/a-man-holding-a-microphone-while-singing-on-a-stage-with-smoke-effects-9008841/",
+    "author": "Yan Krukau",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.41,
+      "y": 0.3,
+      "width": 0.42,
+      "height": 0.3
+    }
+  },
+  {
+    "id": "ev05",
+    "file": "fotos/eventos/ev05.jpg",
+    "alt": "Bailarina en pleno salto entre humo de color verde azulado, con el cuerpo extendido en el aire",
+    "sourceUrl": "https://www.pexels.com/photo/woman-dancing-among-smoke-19629386/",
+    "author": "Osman Arabacı",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.55,
+      "y": 0.51,
+      "width": 0.8,
+      "height": 0.42
+    }
+  },
+  {
+    "id": "ev06",
+    "file": "fotos/eventos/ev06.jpg",
+    "alt": "Bailarina de negro con una pierna en alto, en perfil, entre humo y una luz verde intensa sobre fondo oscuro",
+    "sourceUrl": "https://www.pexels.com/photo/woman-dancing-in-a-dark-smoky-room-18860293/",
+    "author": "Alparslan Uzun",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.65,
+      "y": 0.475,
+      "width": 0.6,
+      "height": 0.55
+    }
+  },
+  {
+    "id": "ev07",
+    "file": "fotos/eventos/ev07.jpg",
+    "alt": "Bailarina sobre puntas con una amplia falda estampada que sostiene con una mano y el otro brazo en alto, sobre un fondo de humo turquesa",
+    "sourceUrl": "https://www.pexels.com/photo/a-ballerina-dancing-in-blue-lighting-and-smoke-23286321/",
+    "author": "Maxwell Araujo",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.6,
+      "y": 0.325,
+      "width": 0.6,
+      "height": 0.55
+    }
+  },
+  {
+    "id": "ev08",
+    "file": "fotos/eventos/ev08.jpg",
+    "alt": "Retrato de una mujer sonriente con un tocado de piedras plateadas, collar de cristales y plumas turquesa, en un desfile al aire libre",
+    "sourceUrl": "https://www.pexels.com/photo/portrait-of-woman-in-festival-costume-14034651/",
+    "author": "Cole Kitchen",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.42,
+      "y": 0.33,
+      "width": 0.4,
+      "height": 0.28
+    }
+  },
+  {
+    "id": "ev09",
+    "file": "fotos/eventos/ev09.jpg",
+    "alt": "Bailarina riendo sobre una carroza de noche, con un gran penacho de plumas rojas, un abanico rojo y un disco dorado con plumas blancas detrás",
+    "sourceUrl": "https://www.pexels.com/photo/vibrant-carnival-costume-with-feather-headdress-36356224/",
+    "author": "Frédéric Hayen",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.55,
+      "y": 0.35,
+      "width": 0.5,
+      "height": 0.4
+    }
+  },
+  {
+    "id": "ev10",
+    "file": "fotos/eventos/ev10.jpg",
+    "alt": "Jugadora de pádel en posición de espera con la paleta en alto, sobre una cancha cubierta de color rojizo",
+    "sourceUrl": "https://www.pexels.com/photo/young-woman-playing-padel-tennis-indoors-40399379/",
+    "author": "Henry Suwardi",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.32,
+      "width": 0.4,
+      "height": 0.2
+    }
+  }
+]

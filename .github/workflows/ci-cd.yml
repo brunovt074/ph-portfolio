@@ -1,0 +1,47 @@
+name: ci-cd
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npx vitest run
+
+  deploy:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: deploy-production
+    env:
+      DEPLOY_PATH: /opt/sarahmoreauph
+      VPS_USER: root
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure SSH
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: Sync sources
+        run: |
+          rsync -az --delete --exclude-from=.dockerignore --exclude=/.git \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            ./ "${VPS_USER}@${{ secrets.VPS_HOST }}:${DEPLOY_PATH}/src/"
+      - name: Build and restart
+        run: |
+          ssh -i ~/.ssh/deploy_key "${VPS_USER}@${{ secrets.VPS_HOST }}" \
+            "cd ${DEPLOY_PATH} && BUILD_ID=${GITHUB_SHA} docker compose up -d --build && docker image prune -f"
+      - name: Smoke test
+        run: curl --fail --silent --show-error --retry 10 --retry-delay 5 --retry-all-errors "${{ vars.SITE_URL }}/es/" -o /dev/null

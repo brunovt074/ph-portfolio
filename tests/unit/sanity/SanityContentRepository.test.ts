@@ -41,7 +41,7 @@ describe('SanityContentRepository', () => {
       });
     });
 
-    it('centers a photo that Sarah never gave a hotspot', async () => {
+    it('centers a photo that the photographer never gave a hotspot', async () => {
       const photo = aSanityPhoto({ image: aBareSanityImage(), destacada: null, facets: null });
       const repository = repositoryWith({ facets: [aSanityFacet({ galeria: [photo] })] });
 
@@ -67,7 +67,7 @@ describe('SanityContentRepository', () => {
       expect(facet?.cover).toHaveLength(1);
     });
 
-    it('skips a photo whose image Sarah has not uploaded yet', async () => {
+    it('skips a photo whose image the photographer has not uploaded yet', async () => {
       const unfinished = aSanityPhoto({ id: 'foto-sin-imagen', image: { asset: null } as unknown as SanityPhotoDocument['image'] });
       const repository = repositoryWith({ facets: [aSanityFacet({ galeria: [unfinished, aSanityPhoto({ id: 'foto-rt01' })] })] });
 
@@ -129,7 +129,7 @@ describe('SanityContentRepository', () => {
       expect(facet?.title).toEqual([{ text: 'Solo itálica', italic: true }]);
     });
 
-    it('maps services and omits the prices Sarah left blank', async () => {
+    it('maps services and omits the prices the photographer left blank', async () => {
       const [facet] = await repositoryWith().getFacets('es');
 
       expect(facet?.services).toEqual([
@@ -240,7 +240,7 @@ describe('SanityContentRepository', () => {
       expect(home.translations).toEqual({ es: true, en: false, pt: true });
     });
 
-    it('treats a work type list Sarah never filled as empty', async () => {
+    it('treats a work type list the photographer never filled as empty', async () => {
       const home = await repositoryWith({ home: aSanityHome({ tiposDeTrabajo: null }) }).getHome('es');
 
       expect(home.workTypes).toEqual([]);
@@ -252,7 +252,7 @@ describe('SanityContentRepository', () => {
       expect(home.brandServices).toEqual([]);
     });
 
-    it('explains which document is missing when Sarah has not created the home yet', async () => {
+    it('explains which document is missing when the photographer has not created the home yet', async () => {
       const repository = repositoryWith({ home: null });
 
       await expect(repository.getHome('es')).rejects.toThrow(SanityDocumentNotFoundError);
@@ -264,7 +264,7 @@ describe('SanityContentRepository', () => {
     it('builds the portrait photo and the contact data', async () => {
       const settings = await repositoryWith().getSettings('es');
 
-      expect(settings.portrait).toMatchObject({ id: 'retrato-sarah', facet: 'retratos', alt: 'Sarah Moreau con su cámara, en blanco y negro' });
+      expect(settings.portrait).toMatchObject({ id: 'retrato', facet: 'retratos', alt: 'Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro' });
       expect(settings.exhibitions).toEqual([{ title: '[Muestra o publicación]', place: '[Lugar]', year: '[AÑO]' }]);
       expect(settings.printInfo).toEqual([{ title: 'Envío', description: '[Zonas y tiempos de envío]' }]);
       expect(settings.quote).toBe('Cada fotografía es un registro de nuestro paso.');
@@ -295,7 +295,7 @@ describe('SanityContentRepository', () => {
   });
 
   describe('brands', () => {
-    it('reflects the new price when Sarah changes a package', async () => {
+    it('reflects the new price when the photographer changes a package', async () => {
       const repository = repositoryWith({ packages: [aSanityPackage({ nombre: 'Esencial', precio: '$ 150.000', destacado: true })] });
 
       const brands = await repository.getBrands('es');
@@ -425,7 +425,7 @@ describe('SanityContentRepository', () => {
       expect(result?.slugs).toEqual({ es: 'oficios', en: 'oficios', pt: 'oficios' });
     });
 
-    it('leaves the slug empty while Sarah has not generated it', async () => {
+    it('leaves the slug empty while the photographer has not generated it', async () => {
       const [result] = await repositoryWith({ series: [aSanitySeries({ slug: null })] }).getSeries('es');
 
       expect(result?.slug).toBe('');
@@ -439,7 +439,7 @@ describe('SanityContentRepository', () => {
       expect(result?.translations).toEqual({ es: true, en: true, pt: false });
     });
 
-    it('returns an empty series while Sarah has not added photos yet', async () => {
+    it('returns an empty series while the photographer has not added photos yet', async () => {
       const repository = repositoryWith({ series: [aSanitySeries({ fotos: null })] });
 
       const [series] = await repository.getSeries('es');
@@ -531,7 +531,7 @@ describe('SanityContentRepository', () => {
       expect(await repositoryWith({ siteTexts: null }).getTexts('en')).toEqual(defaultSiteTexts.en);
     });
 
-    it('applies Sarah overrides to site texts', async () => {
+    it('applies the photographer overrides to site texts', async () => {
       const repository = repositoryWith({ siteTexts: aSanitySiteTexts({ nav: { bookSession: { en: 'Book now' } } }) });
 
       expect((await repository.getTexts('en')).nav.bookSession).toBe('Book now');
@@ -629,7 +629,7 @@ describe('SanityContentRepository', () => {
       expect(offer).toMatchObject({ title: 'Maternity', description: 'The wait.', translations: { es: true, en: true, pt: true } });
     });
 
-    it('falls back to Spanish for the language Sarah has not translated yet', async () => {
+    it('falls back to Spanish for the language the photographer has not translated yet', async () => {
       const repository = repositoryWith({
         bookingOffers: [aSanityBookingOffer({ titulo: { es: 'Maternidad', en: 'Maternity' }, descripcion: { es: 'La espera.' } })],
       });
@@ -665,7 +665,7 @@ describe('SanityContentRepository', () => {
       expect(offer?.priceCents).toBeNull();
     });
 
-    it('falls back to a half deposit, empty description and first position when Sarah left them empty', async () => {
+    it('falls back to a half deposit, empty description and first position when the photographer left them empty', async () => {
       const repository = repositoryWith({ bookingOffers: [aSanityBookingOffer({ porcentajeSena: null, descripcion: null, orden: null })] });
 
       const [offer] = await repository.getBookingOffers('es');
@@ -697,7 +697,7 @@ describe('SanityContentRepository', () => {
   });
 
   describe('scheduling settings', () => {
-    it('uses the defaults when Sarah has not opened the agenda document yet', async () => {
+    it('uses the defaults when the photographer has not opened the agenda document yet', async () => {
       expect(await repositoryWith().getSchedulingSettings()).toEqual({
         timeZone: 'America/Argentina/Buenos_Aires',
         windows: [],
@@ -709,7 +709,7 @@ describe('SanityContentRepository', () => {
       });
     });
 
-    it('maps the weekly windows and the numbers Sarah chose', async () => {
+    it('maps the weekly windows and the numbers the photographer chose', async () => {
       const repository = repositoryWith({
         scheduling: {
           ventanas: [

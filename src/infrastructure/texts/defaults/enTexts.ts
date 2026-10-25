@@ -1,4 +1,5 @@
 import type { SiteTexts } from '@/domain/SiteTexts';
+import { BRAND } from '@/config/brand';
 
 export const enTexts: SiteTexts = {
   a11y: {
@@ -40,8 +41,8 @@ export const enTexts: SiteTexts = {
     nextSeries: 'Next series',
     viewSeries: 'View series',
     backHome: 'Back to home',
-    logoHome: 'Sarah Moreau — home',
-    logoObra: 'Sarah Moreau — work',
+    logoHome: `${BRAND.fullName} — home`,
+    logoObra: `${BRAND.fullName} — work`,
   },
   pages: {
     gallery: 'Gallery',
@@ -105,15 +106,15 @@ export const enTexts: SiteTexts = {
     backToForm: 'Back to the form',
   },
   seo: {
-    homeTitle: 'Sarah Moreau — Photography and video',
+    homeTitle: `${BRAND.fullName} — Photography and video`,
     jobTitle: 'Photographer and audiovisual filmmaker',
     artworkGenre: 'Photography',
-    editorialDescription: 'Campaigns, lookbooks and model books with art direction, from the idea to the retouched image. Editorial and fashion photography by Sarah Moreau.',
-    retratosDescription: 'Personal sessions, maternity, families and personal branding, in the studio or in your space. Unposed portraits by Sarah Moreau.',
+    editorialDescription: `Campaigns, lookbooks and model books with art direction, from the idea to the retouched image. Editorial and fashion photography by ${BRAND.fullName}.`,
+    retratosDescription: `Personal sessions, maternity, families and personal branding, in the studio or in your space. Unposed portraits by ${BRAND.fullName}.`,
     marcasTitle: 'Photography for brands',
     marcasDescription: 'Product, food, jewelry and space photography for your online store, your social media and your campaigns. Request your quote.',
-    eventosDescription: 'Carnival, comparsas, shows and social events: coverage that follows the movement and delivers on time. Event photography by Sarah Moreau.',
-    obraDescription: 'Personal work by Sarah Moreau: photographic series, a log of the passage of time and fine art prints in limited editions.',
+    eventosDescription: `Carnival, comparsas, shows and social events: coverage that follows the movement and delivers on time. Event photography by ${BRAND.fullName}.`,
+    obraDescription: `Personal work by ${BRAND.fullName}: photographic series, a log of the passage of time and fine art prints in limited editions.`,
     copiasTitle: 'Fine art prints',
     notFoundTitle: 'Page not found',
     notFoundDescription: 'This page does not exist.',

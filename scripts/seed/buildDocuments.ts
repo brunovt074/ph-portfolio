@@ -7,7 +7,7 @@ import { imageField, reference, referenceList, withKeys } from './references';
 import type { SeedDocument } from './SeedDocument';
 import { slugify } from './slugify';
 
-export const PORTRAIT_ID = 'retrato-sarah';
+export const PORTRAIT_ID = 'retrato';
 
 export type AssetIdOf = (imageId: string) => string;
 

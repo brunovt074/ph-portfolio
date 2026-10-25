@@ -8,7 +8,7 @@ El MVP asume una sola instancia del server. La exclusión mutua que evita que do
 
 - Sin `CALENDAR_PROVIDER`, o con una sesión sin duración, o sin horarios cargados en Sanity: la clienta propone fecha y franja.
 - Con calendario, duración y horarios: la clienta elige un turno. Se retiene mientras paga (por defecto 30 minutos) y solo se aceptan medios de pago instantáneos.
-- El calendario de Sarah es la fuente de lo ocupado (`freeBusy`) y recibe un evento al confirmarse el pago.
+- El calendario de la fotógrafa es la fuente de lo ocupado (`freeBusy`) y recibe un evento al confirmarse el pago.
 
 ## Cómo funciona la reserva
 
@@ -24,7 +24,7 @@ awaiting_payment ──pago aprobado──> confirmed
 awaiting_payment ──pago en proceso──> pending_payment ──aprobado──> confirmed
 awaiting_payment ──pago rechazado──> payment_rejected ──reintento──> awaiting_payment
 awaiting_payment ──vence el plazo──> expired
-confirmed ──turno ocupado mientras pagaba──> needs_rescheduling (Sarah coordina otro)
+confirmed ──turno ocupado mientras pagaba──> needs_rescheduling (la fotógrafa coordina otro)
 confirmed / needs_rescheduling ──cancelación──> cancelled
 ```
 
@@ -74,7 +74,7 @@ Con turnos del calendario la reserva se retiene 30 minutos mientras se paga; en 
 
 Se hace desde el panel de Mercado Pago, fuera del sistema.
 
-## Guía para Sarah
+## Guía para la fotógrafa
 
 - Los precios se cargan en Studio, en Reservas > Sesiones reservables. Sin precio la sesión aparece como `[PRECIO]` y no se puede pagar.
 - Los horarios semanales se cargan en la agenda de reservas; Google Calendar es tu agenda y Mercado Pago tu caja.

@@ -9,7 +9,7 @@ describe('createSeedRepository', () => {
     const settings = await repository.getSettings('es');
 
     expect(facets).toHaveLength(4);
-    expect(settings.instagram).toContain('@sarahmoreau.ph');
+    expect(settings.instagram).toContain('@sarahmoreau.foto');
   });
 
   it('marks seed content as Spanish only', async () => {

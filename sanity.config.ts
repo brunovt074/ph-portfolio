@@ -1,3 +1,4 @@
+import { BRAND } from './src/config/brand';
 import { visionTool } from '@sanity/vision';
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
@@ -8,8 +9,8 @@ import { singletonIds } from './sanity/structure/singletonIds';
 const singletons: ReadonlySet<string> = new Set(singletonIds);
 
 export default defineConfig({
-  name: 'sarah-moreau',
-  title: 'Sarah Moreau — Contenidos',
+  name: 'ph-portfolio',
+  title: `${BRAND.fullName} — Contenidos`,
   basePath: '/admin',
   projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID ?? '',
   dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',

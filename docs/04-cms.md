@@ -1,9 +1,9 @@
 # 04 · CMS (Sanity)
 
 Studio embebido en `/admin` con `@sanity/astro`. Interfaz en español (títulos y descripciones de
-cada campo en español; Sarah no es técnica). Plan gratuito de Sanity alcanza para este volumen.
+cada campo en español; la fotógrafa no es técnica). Plan gratuito de Sanity alcanza para este volumen.
 
-Principio: **Sarah tiene que poder hacer sola** subir fotos, ordenarlas, cambiar precios, publicar
+Principio: **La fotógrafa tiene que poder hacer sola** subir fotos, ordenarlas, cambiar precios, publicar
 una copia o una serie nueva. Todo lo demás (estructura, diseño) queda fijo en código.
 
 ## Documentos
@@ -49,7 +49,7 @@ una copia o una serie nueva. Todo lo demás (estructura, diseño) queda fijo en 
 `foto` (ref), `serie` (ref), `edicion` (number, ej. 10), `disponibles` (number), `tamanos` (array de `{medida, precio}`), `activa` (boolean).
 
 ### `ajustes` (singleton)
-Email, WhatsApp, cuentas de Instagram, texto "Sobre mí", retrato de Sarah, statement artístico,
+Email, WhatsApp, cuentas de Instagram, texto "Sobre mí", retrato de la fotógrafa, statement artístico,
 muestras y publicaciones (array `{titulo, lugar, anio}`), info de impresión/envío/enmarcado de copias.
 
 ## Idiomas y textos del sitio
@@ -74,11 +74,11 @@ El sitio se publica en español (`es`, sin prefijo), inglés (`en`) y portugués
 
 ## Seed
 
-`assets/seed.json` contiene las 65 fotos del mockup (más el retrato provisorio de Sarah) con faceta, alt, y para Obra la serie, título
+`assets/seed.json` contiene las 65 fotos del mockup (más el retrato provisorio de la fotógrafa) con faceta, alt, y para Obra la serie, título
 provisorio y layout. Escribir un script (`scripts/seed.ts`) que suba las imágenes de
-`assets/fotos-baja/` y cree los documentos. Al llegar las fotos en alta, Sarah reemplaza la imagen
+`assets/fotos-baja/` y cree los documentos. Al llegar las fotos en alta, la fotógrafa reemplaza la imagen
 de cada documento y conserva todo lo demás.
 
 ## Publicación
 
-Webhook de Sanity → deploy hook del hosting: cada vez que Sarah publica, el sitio se reconstruye (~1 min).
+Webhook de Sanity → deploy hook del hosting: cada vez que la fotógrafa publica, el sitio se reconstruye (~1 min).

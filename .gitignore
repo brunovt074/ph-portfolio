@@ -3,8 +3,6 @@ dist/
 .astro/
 .env*
 !.env.example
-assets/fotos-alta/*
-!assets/fotos-alta/.gitkeep
 assets/fotos-dev/
 coverage/
 test-results/

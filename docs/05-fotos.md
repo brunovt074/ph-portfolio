@@ -2,33 +2,28 @@
 
 ## Estado actual
 
-`assets/fotos-baja/` tiene 65 fotos (más un retrato provisorio de Sarah) recortadas de capturas del Instagram de Sarah, a ~280 px de ancho.
-Organizadas por carpeta (`editorial/`, `retratos/`, `marcas/`, `eventos/`, `obra/`) y descritas en `assets/seed.json`.
-Sirven para **maquetar y poblar el CMS**, no para producción.
+`assets/fotos/` tiene 65 fotos de uso libre (Unsplash License y Pexels License, aptas para uso comercial) más el retrato de la fotógrafa.
+Organizadas por carpeta (`editorial/`, `retratos/`, `marcas/`, `eventos/`, `obra/`) y descritas en `assets/seed.json`
+(campo `archivo` relativo a `assets/`, `alt` y `hotspot`).
+Resolución: 1600–2400 px de lado largo, JPG sRGB. Autor, licencia y fuente de cada una: `assets/fotos/CREDITS.md`
+y `assets/fotos/credits/*.json`.
 
-Algunas tienen restos de íconos de Instagram en una esquina; se van con las fotos en alta.
+Son fotos de stock que representan cada sección; el portfolio es una demostración.
 
-## Para desarrollo: 5 o 6 fotos en alta
+## Cómo se usan
 
-Para probar el comportamiento real (srcset, LQIP, LCP, transición miniatura → grande, revelado)
-alcanza con unas pocas en alta resolución (≥ 1080 px). Prioridad, de `assets/fotos-a-pedir.jpg`:
+- **Desarrollo y build:** `npm run photos` (corre solo en `predev` y `prebuild`) genera `assets/fotos-dev/<id>.jpg` y `lqip.json` desde `archivo`.
+  `assets/fotos-dev/` va en `.gitignore`.
+- **Sanity:** `npm run seed` sube las imágenes (usa `fotos-dev/<id>.jpg` si existe, si no `archivo`) y recrea los documentos.
 
-1. Hero de la home: **#4** (pelo rojo enrulado, puerta Encargos) y **#14** (hombre con bidones, puerta Obra).
-2. Un par de galería editorial: **#1** y **#2**.
-3. Una de Obra a pantalla completa: **#16** o la de escalera al cielo.
+## Cambiar una foto
 
-### Dónde ponerlas
+1. Guardar la nueva en `assets/fotos/<faceta>/<id>.jpg` (mismo id que en `seed.json`).
+2. Actualizar `alt` y `hotspot` en `seed.json` y la fila en `assets/fotos/CREDITS.md`.
+3. `npm run photos` y, para el CMS, `npm run seed`.
 
-`assets/fotos-alta/`, con **el mismo id como nombre** que su versión baja (ej. `ed02.jpg`, `au01.jpg`;
-los ids están en `seed.json` y en la hoja `fotos-a-pedir.jpg`). Sin subcarpetas.
-El script de seed usa la versión alta si existe y si no cae a `fotos-baja/`.
-`assets/fotos-alta/` va en `.gitignore`: las fotos en alta viven en Sanity, no en el repo.
-
-Si todavía no hay originales, usar fotos libres en alta (Unsplash) con proporciones similares
-**solo en desarrollo**; nunca subirlas al CMS de producción.
+Solo se admiten fotos con licencia que permita uso comercial sin atribución obligatoria; sin marcas ni logos visibles.
 
 ## Para producción
 
-Las finales las sube Sarah al CMS cuando conozca el proyecto (originales de su disco o la
-descarga de datos de Instagram: Configuración › Tu actividad › Descargar tu información).
-Recomendación para ella: JPG a 2400–3000 px del lado largo, sRGB. Sanity se encarga del resto.
+La fotógrafa sube sus originales al CMS (JPG a 2400–3000 px del lado largo, sRGB). Sanity se encarga del resto.

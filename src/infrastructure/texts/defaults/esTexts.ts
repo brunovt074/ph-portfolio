@@ -1,4 +1,5 @@
 import type { SiteTexts } from '@/domain/SiteTexts';
+import { BRAND } from '@/config/brand';
 
 export const esTexts: SiteTexts = {
   a11y: {
@@ -40,8 +41,8 @@ export const esTexts: SiteTexts = {
     nextSeries: 'Serie siguiente',
     viewSeries: 'Ver serie',
     backHome: 'Volver al inicio',
-    logoHome: 'Sarah Moreau — inicio',
-    logoObra: 'Sarah Moreau — obra',
+    logoHome: `${BRAND.fullName} — inicio`,
+    logoObra: `${BRAND.fullName} — obra`,
   },
   pages: {
     gallery: 'Galería',
@@ -105,15 +106,15 @@ export const esTexts: SiteTexts = {
     backToForm: 'Volver al formulario',
   },
   seo: {
-    homeTitle: 'Sarah Moreau — Fotografía y video',
+    homeTitle: `${BRAND.fullName} — Fotografía y video`,
     jobTitle: 'Fotógrafa y realizadora audiovisual',
     artworkGenre: 'Fotografía',
-    editorialDescription: 'Campañas, lookbooks y books de modelo con dirección de arte, de la idea a la imagen retocada. Fotografía editorial y de moda por Sarah Moreau.',
-    retratosDescription: 'Sesiones personales, maternidad, familias y marca personal, en estudio o en tu espacio. Retratos sin pose por Sarah Moreau.',
+    editorialDescription: `Campañas, lookbooks y books de modelo con dirección de arte, de la idea a la imagen retocada. Fotografía editorial y de moda por ${BRAND.fullName}.`,
+    retratosDescription: `Sesiones personales, maternidad, familias y marca personal, en estudio o en tu espacio. Retratos sin pose por ${BRAND.fullName}.`,
     marcasTitle: 'Fotografía para marcas',
     marcasDescription: 'Fotografía de producto, gastronomía, joyería y espacios para tu tienda online, tus redes y tus campañas. Pedí tu presupuesto.',
-    eventosDescription: 'Carnaval, comparsas, shows y eventos sociales: cobertura que sigue el movimiento y entrega a tiempo. Fotografía de eventos por Sarah Moreau.',
-    obraDescription: 'Obra personal de Sarah Moreau: series fotográficas, una bitácora del paso del tiempo y copias de autor en edición limitada.',
+    eventosDescription: `Carnaval, comparsas, shows y eventos sociales: cobertura que sigue el movimiento y entrega a tiempo. Fotografía de eventos por ${BRAND.fullName}.`,
+    obraDescription: `Obra personal de ${BRAND.fullName}: series fotográficas, una bitácora del paso del tiempo y copias de autor en edición limitada.`,
     copiasTitle: 'Copias de autor',
     notFoundTitle: 'Página no encontrada',
     notFoundDescription: 'Esta página no existe.',

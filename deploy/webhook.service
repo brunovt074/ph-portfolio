@@ -1,0 +1,10 @@
+[Unit]
+Description=sarahmoreauph rebuild webhook
+After=network.target docker.service
+
+[Service]
+ExecStart=/usr/bin/webhook -hooks /etc/sarahmoreauph-hooks.json -port 9000 -ip 172.18.0.1
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

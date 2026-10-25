@@ -1,4 +1,5 @@
 ---
+import { BRAND } from '@/config/brand';
 import Arrow from '@/components/Arrow.astro';
 import type { Locale } from '@/domain/Locale';
 import type { NavLink } from '@/domain/NavLink';
@@ -51,7 +52,7 @@ const profile = (account: string) => `https://instagram.com/${account.replace(/^
           </li>
         ))}
       </ul>
-      <p class="footer-copy">© {year} Sarah Moreau</p>
+      <p class="footer-copy">© {year} {BRAND.fullName}</p>
     </div>
   </div>
 </footer>

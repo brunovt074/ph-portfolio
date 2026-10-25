@@ -1,6 +1,6 @@
-# Sarah Moreau — sitio de fotografía y video
+# ph-portfolio — sitio de fotografía y video
 
-Sitio portfolio + comercial para **Sarah Moreau**, fotógrafa y realizadora audiovisual (Argentina).
+Plantilla de sitio portfolio + comercial para fotógrafos. La instancia actual es la de **Sarah Moreau**, fotógrafa y realizadora audiovisual (Argentina); su nombre vive en `src/config/brand.ts` y es el único lugar de código que hay que tocar para otro fotógrafo (el resto de los textos sale del CMS y de `src/infrastructure/texts/defaults/`).
 Objetivo de negocio: que el sitio **venda** (sesiones, servicios para marcas, copias de autor) y
 que ella pueda **actualizarlo sola** desde un CMS, sin depender del desarrollador.
 
@@ -8,10 +8,9 @@ El diseño ya está aprobado en un mockup (canvas de Claude Design). Esta carpet
 de diseño a código. Leé este archivo completo antes de escribir código y consultá `docs/` cuando
 trabajes en cada área.
 
-> Contexto importante: el sitio es una **sorpresa** para Sarah. Las fotos de `assets/fotos-baja/`
-> son capturas de su Instagram en baja resolución (~280 px). Sirven para maquetar; las finales
-> llegan desde el CMS. Si existe `assets/fotos-alta/<id>.jpg`, tiene prioridad sobre la baja.
-> Ver `docs/05-fotos.md`.
+> Contexto importante: Sarah Moreau es una fotógrafa ficticia y las fotos de `assets/fotos/` son de stock
+> de uso libre (Unsplash/Pexels) que representan cada sección; autores y licencias en `assets/fotos/CREDITS.md`.
+> Las finales llegan desde el CMS. Ver `docs/05-fotos.md`.
 
 ## Concepto: una marca, dos puertas
 
@@ -90,14 +89,14 @@ Plan completo por sección en `docs/03-animaciones.md`. Principios:
 
 ## CMS
 
-Esquemas, campos y qué edita Sarah: `docs/04-cms.md`. `assets/seed.json` trae los datos iniciales
+Esquemas, campos y qué edita la fotógrafa: `docs/04-cms.md`. `assets/seed.json` trae los datos iniciales
 (fotos, facetas, series, títulos provisorios, textos alternativos) para poblar el CMS con un script.
 
 ## Criterios de terminado
 
 - Lighthouse ≥ 95 en Performance, Accessibility, Best Practices y SEO (mobile).
 - LCP < 2,5 s en 4G simulado con fotos reales en alta.
-- Sarah puede, sin ayuda: subir una foto a una serie o faceta, cambiar un precio, publicar una copia nueva.
+- La fotógrafa puede, sin ayuda: subir una foto a una serie o faceta, cambiar un precio, publicar una copia nueva.
 - Las páginas se ven bien a 375, 768, 1280 y 1440 px.
 - Verificación visual con Playwright (screenshots) antes de dar algo por terminado.
 

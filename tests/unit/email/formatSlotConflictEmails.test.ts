@@ -5,7 +5,7 @@ import { aBooking, aSlotBooking } from '../../fixtures/aBooking';
 const zone = 'America/Argentina/Buenos_Aires';
 
 describe('formatSlotConflictEmails', () => {
-  it('asks Sarah to coordinate another time or refund, with the turn that was lost', () => {
+  it('asks the photographer to coordinate another time or refund, with the turn that was lost', () => {
     const { toStudio } = formatSlotConflictEmails(aSlotBooking({ notes: 'Con mi pareja' }), zone);
 
     expect(toStudio.subject).toBe('Pago recibido sin turno disponible: Maternidad — Camila Ríos');
@@ -15,7 +15,7 @@ describe('formatSlotConflictEmails', () => {
     expect(toStudio.text).toContain('Notas: Con mi pareja');
   });
 
-  it('tells the client her payment arrived and that Sarah will write today', () => {
+  it('tells the client her payment arrived and that the photographer will write today', () => {
     const { toCustomer } = formatSlotConflictEmails(aSlotBooking({ paymentPlan: 'full' }), zone);
 
     expect(toCustomer.subject).toBe('Recibí tu pago: coordinemos otro horario');

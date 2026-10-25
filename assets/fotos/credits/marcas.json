@@ -1,0 +1,156 @@
+[
+  {
+    "id": "mk01",
+    "file": "fotos/marcas/mk01.jpg",
+    "alt": "Frasco transparente con líquido violeta y tapa verde, frasquito gotero rosa y pote de crema sobre una superficie verde agua con fondo lila, en una composición diagonal.",
+    "sourceUrl": "https://www.pexels.com/photo/flat-lay-of-beauty-products-5632335/",
+    "author": "kaboompics.com (Kaboompics)",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.515,
+      "y": 0.55,
+      "width": 0.67,
+      "height": 0.5
+    }
+  },
+  {
+    "id": "mk02",
+    "file": "fotos/marcas/mk02.jpg",
+    "alt": "Frasco blanco con atomizador negro sobre fondo violeta, junto a una esfera y un triángulo de espuma color durazno, vista cenital.",
+    "sourceUrl": "https://www.pexels.com/photo/a-spray-bottle-on-a-purple-surface-8166452/",
+    "author": "Daria Liudnaya",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.535,
+      "width": 0.7,
+      "height": 0.73
+    }
+  },
+  {
+    "id": "mk03",
+    "file": "fotos/marcas/mk03.jpg",
+    "alt": "Pila de alfajores de chocolate cortados al medio que muestran rellenos de dulce de leche, crema blanca y ganache, sobre una tabla de madera con fondo oscuro.",
+    "sourceUrl": "https://www.pexels.com/photo/a-pile-of-chocolate-cakes-with-different-fillings-16777946/",
+    "author": "Gabriel Gotti",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.44,
+      "y": 0.52,
+      "width": 0.38,
+      "height": 0.9
+    }
+  },
+  {
+    "id": "mk04",
+    "file": "fotos/marcas/mk04.jpg",
+    "alt": "Manos enharinadas aplastando un bollo de masa de pizza sobre una mesada cubierta de harina.",
+    "sourceUrl": "https://www.pexels.com/photo/person-preparing-a-pizza-15735160/",
+    "author": "Boris Hamer",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.4,
+      "y": 0.59,
+      "width": 0.8,
+      "height": 0.42
+    }
+  },
+  {
+    "id": "mk05",
+    "file": "fotos/marcas/mk05.jpg",
+    "alt": "Pizza de pepperoni en caja de cartón abierta sobre una mesada junto a una ventana con persianas, luz natural.",
+    "sourceUrl": "https://www.pexels.com/photo/pizza-in-a-box-beside-a-window-5056866/",
+    "author": "Max Avans",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.725,
+      "width": 0.7,
+      "height": 0.25
+    }
+  },
+  {
+    "id": "mk06",
+    "file": "fotos/marcas/mk06.jpg",
+    "alt": "Anillo de oro rosa con un diamante solitario sobre fondo gris claro liso, en primer plano.",
+    "sourceUrl": "https://www.pexels.com/photo/close-up-shot-of-a-diamond-ring-on-white-surface-14466162/",
+    "author": "The Glorious Studio",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.51,
+      "y": 0.51,
+      "width": 0.42,
+      "height": 0.58
+    }
+  },
+  {
+    "id": "mk07",
+    "file": "fotos/marcas/mk07.jpg",
+    "alt": "Collares de plata con colgantes de brillantes, un anillo y una pulsera de eslabones sobre una superficie turquesa claro, en diagonal.",
+    "sourceUrl": "https://www.pexels.com/photo/necklaces-with-diamonds-on-blue-surface-12197267/",
+    "author": "The Glorious Studio",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.375,
+      "width": 0.8,
+      "height": 0.55
+    }
+  },
+  {
+    "id": "mk08",
+    "file": "fotos/marcas/mk08.jpg",
+    "alt": "Cuatro frascos de vidrio ámbar —con dispensador, gotero y tapón— sobre una bandeja de madera, con una hoja verde y tela de lino beige de fondo.",
+    "sourceUrl": "https://www.pexels.com/photo/amber-glass-bottles-on-wooden-tray-7795755/",
+    "author": "Alesia Kozik",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.52,
+      "y": 0.5,
+      "width": 0.58,
+      "height": 0.8
+    }
+  },
+  {
+    "id": "mk09",
+    "file": "fotos/marcas/mk09.jpg",
+    "alt": "Dormitorio luminoso con panel de madera clara de listones verticales como respaldo de cama y ropa de cama blanca.",
+    "sourceUrl": "https://www.pexels.com/photo/cozy-minimalist-bedroom-with-warm-lighting-31728409/",
+    "author": "Đậu Photograph",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.55,
+      "y": 0.595,
+      "width": 0.7,
+      "height": 0.35
+    }
+  },
+  {
+    "id": "mk10",
+    "file": "fotos/marcas/mk10.jpg",
+    "alt": "Aceite de oliva cayendo en hilo desde una botella de vidrio sobre una ensalada con tomates cherry, kale y crutones, con un bol de frutos rojos desenfocado al fondo.",
+    "sourceUrl": "https://www.pexels.com/photo/a-person-pouring-an-olive-oil-on-fresh-salad-6094524/",
+    "author": "Dario Garcia",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.45,
+      "y": 0.375,
+      "width": 0.7,
+      "height": 0.65
+    }
+  },
+  {
+    "id": "mk11",
+    "file": "fotos/marcas/mk11.jpg",
+    "alt": "Torso de una mujer con top de jean oscuro bordado con un sol dorado y cinturón de eslabones con soles dorados sobre pollera de jean, frente a un muro de piedra.",
+    "sourceUrl": "https://www.pexels.com/photo/fashion-portrait-of-woman-in-denim-outfit-33983879/",
+    "author": "Miguel Rodríguez",
+    "license": "Pexels License",
+    "hotspot": {
+      "x": 0.475,
+      "y": 0.45,
+      "width": 0.75,
+      "height": 0.6
+    }
+  }
+]

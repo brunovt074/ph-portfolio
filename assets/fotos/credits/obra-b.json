@@ -1,0 +1,142 @@
+[
+  {
+    "id": "au11",
+    "file": "fotos/obra/au11.jpg",
+    "alt": "Camioneta pickup roja estacionada sobre un camino de grava, bajo un árbol grande y frente a una cabaña cubierta de hiedra",
+    "sourceUrl": "https://unsplash.com/photos/red-crew-cab-pickup-truck-parked-near-green-trees-during-daytime-kXoDFVzYwaI",
+    "author": "Kadri Karmo",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.375,
+      "y": 0.64,
+      "width": 0.75,
+      "height": 0.38
+    }
+  },
+  {
+    "id": "au12",
+    "file": "fotos/obra/au12.jpg",
+    "alt": "Retrato en blanco y negro de una mujer de cabello oscuro que mira a cámara entre hojas desenfocadas",
+    "sourceUrl": "https://unsplash.com/photos/a-woman-peeking-through-lush-green-foliage-2rtbt1wYSGg",
+    "author": "Oleg Rostovtsev",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.63,
+      "y": 0.46,
+      "width": 0.42,
+      "height": 0.36
+    }
+  },
+  {
+    "id": "au13",
+    "file": "fotos/obra/au13.jpg",
+    "alt": "Persona en bicicleta vista de espaldas por un callejón empedrado entre edificios de ladrillo, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/a-person-riding-a-bike-down-a-cobblestone-street-pn7SGVgZFqc",
+    "author": "Bryan Dijkhuizen",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.49,
+      "y": 0.66,
+      "width": 0.22,
+      "height": 0.32
+    }
+  },
+  {
+    "id": "au14",
+    "file": "fotos/obra/au14.jpg",
+    "alt": "Hoja esquelética translúcida con su nervadura visible, sobre fondo negro, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/black-leaf-Camm4HZQlmw",
+    "author": "Herbert Goetsch",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.5,
+      "width": 0.7,
+      "height": 0.8
+    }
+  },
+  {
+    "id": "au15",
+    "file": "fotos/obra/au15.jpg",
+    "alt": "Fachada de un edificio con ventanas y varios aparatos de aire acondicionado que proyectan sombras, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/ac-units-mounted-on-wall-outside-building-_MoKCEyU4YE",
+    "author": "Danny Feng",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.55,
+      "y": 0.5,
+      "width": 0.7,
+      "height": 0.8
+    }
+  },
+  {
+    "id": "au16",
+    "file": "fotos/obra/au16.jpg",
+    "alt": "Pórtico de un edificio neoclásico con columnas de capitel ornamentado y una reja al fondo, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/a-large-building-with-columns-and-a-gate-oeiWrAK-ICs",
+    "author": "Alex Quezada",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.5,
+      "width": 0.7,
+      "height": 0.7
+    }
+  },
+  {
+    "id": "au17",
+    "file": "fotos/obra/au17.jpg",
+    "alt": "Gran explanada de baldosas con una escalera que sube entre dos muros oscuros hacia un cielo de nubes, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/a-black-and-white-photo-of-a-stairway-leading-to-a-building-S4H-p-q4upA",
+    "author": "Frank Weichelt",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.575,
+      "width": 0.4,
+      "height": 0.35
+    }
+  },
+  {
+    "id": "au18",
+    "file": "fotos/obra/au18.jpg",
+    "alt": "Estatua de piedra de un ángel con una gaviota posada sobre la cabeza, contra un cielo nublado, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/a-seagull-perched-on-an-angel-statues-head-8e7ZS1-qtVA",
+    "author": "danilo mililli",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.505,
+      "y": 0.65,
+      "width": 0.85,
+      "height": 0.7
+    }
+  },
+  {
+    "id": "au19",
+    "file": "fotos/obra/au19.jpg",
+    "alt": "Edificio de ladrillo con ventanas visto en ángulo desde abajo contra un cielo gris, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/brown-concrete-building-under-gray-sky-rJPwYtWcMxw",
+    "author": "Klim Musalimov",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.525,
+      "y": 0.625,
+      "width": 0.85,
+      "height": 0.75
+    }
+  },
+  {
+    "id": "au20",
+    "file": "fotos/obra/au20.jpg",
+    "alt": "Hoja seca sobre el asfalto mojado y oscuro, con gotas y reflejos, en blanco y negro",
+    "sourceUrl": "https://unsplash.com/photos/brown-leaf-on-asphalt-road-E-9CFTftQh4",
+    "author": "John Noonan",
+    "license": "Unsplash License",
+    "hotspot": {
+      "x": 0.51,
+      "y": 0.47,
+      "width": 0.58,
+      "height": 0.4
+    }
+  }
+]

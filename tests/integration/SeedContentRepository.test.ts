@@ -40,8 +40,7 @@ describe('SeedContentRepository with the real handoff data', () => {
   it('keeps the landing hero photo framed on the face so the Encargos label never hides it', async () => {
     const home = await repository().getHome('es');
 
-    expect(home.encargosDoor.photo.asset.hotspot).toEqual({ x: 0.5, y: 0.25 });
-    expect(home.obraDoor.photo.asset.hotspot).toBeUndefined();
+    expect(home.encargosDoor.photo.asset.hotspot).toEqual({ x: 0.445, y: 0.18 });
   });
 
   it('keeps the four facets ordered by number even if the content lists them shuffled', async () => {
@@ -113,7 +112,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(packages.map((pack) => pack.order)).toEqual([0, 1, 2]);
   });
 
-  it('marks the before and after pair as provisional until Sarah uploads the real retouch', async () => {
+  it('marks the before and after pair as provisional until the photographer uploads the real retouch', async () => {
     const brands = await repository().getBrands('es');
 
     expect(brands.beforeAfter).toHaveLength(1);
@@ -154,8 +153,8 @@ describe('SeedContentRepository with the real handoff data', () => {
   it('builds the settings with the portrait, exhibitions placeholder and print info', async () => {
     const settings = await repository().getSettings('es');
 
-    expect(settings.portrait.id).toBe('retrato-sarah');
-    expect(settings.portrait.alt).toBe('Sarah Moreau con su cámara, en blanco y negro');
+    expect(settings.portrait.id).toBe('retrato');
+    expect(settings.portrait.alt).toBe('Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro');
     expect(settings.portrait.facet).toBe('retratos');
     expect(settings.portrait.featured).toBe(false);
     expect(settings.quote).toBe('Cada fotografía es un registro de nuestro paso.');
@@ -295,7 +294,7 @@ describe('SeedContentRepository with the real handoff data', () => {
     expect(offers[3]?.priceCents).toBe(150_000);
   });
 
-  it('starts with no weekly windows so every session is booked by a proposed date until Sarah loads her agenda', async () => {
+  it('starts with no weekly windows so every session is booked by a proposed date until the photographer loads her agenda', async () => {
     expect(await repository().getSchedulingSettings()).toEqual({
       timeZone: 'America/Argentina/Buenos_Aires',
       windows: [],

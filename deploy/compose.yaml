@@ -1,0 +1,21 @@
+name: sarahmoreauph
+services:
+  web:
+    build:
+      context: ./src
+      args:
+        PUBLIC_SANITY_PROJECT_ID: stjdzgt4
+        PUBLIC_SANITY_DATASET: production
+        SITE_URL: https://sarahmoreauph.l6pr0s.easypanel.host
+        BLOCK_INDEXING: "true"
+        BUILD_ID: ${BUILD_ID:-0}
+    image: sarahmoreauph:latest
+    container_name: sarahmoreauph
+    restart: unless-stopped
+    env_file: app.env
+    ports:
+      - "172.18.0.1:4321:4321"
+    volumes:
+      - pglite:/app/.data
+volumes:
+  pglite:

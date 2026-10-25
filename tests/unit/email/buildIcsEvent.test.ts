@@ -21,7 +21,7 @@ describe('buildIcsEvent', () => {
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
         'BEGIN:VEVENT',
-        'UID:booking-1@laramoreau',
+        'UID:booking-1@sarahmoreau',
         'DTSTAMP:20261017T150000Z',
         'DTSTART:20261022T130000Z',
         'DTEND:20261022T143000Z',

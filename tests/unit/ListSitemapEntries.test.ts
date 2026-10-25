@@ -17,7 +17,7 @@ describe('ListSitemapEntries', () => {
     expect(entries.find((entry) => entry.path === '/es/retratos')?.alternates).toEqual({ es: '/es/retratos', 'x-default': '/es/retratos' });
   });
 
-  it.skip('lists an English page with its alternates once Sarah translates it', async () => {
+  it.skip('lists an English page with its alternates once the photographer translates it', async () => {
     const entries = await new ListSitemapEntries(new FakeContentRepository({ facets: retratosTranslated(true, false) })).execute();
 
     expect(entries).toContainEqual({
