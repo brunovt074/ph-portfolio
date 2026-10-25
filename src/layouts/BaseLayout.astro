@@ -81,4 +81,5 @@ const seoImage = image && Astro.site ? await resolveSeoImage(image, Astro.site) 
   import { afterLoad } from '@/motion/afterLoad';
   afterLoad(() => import('@/motion/smoothScroll'));
   afterLoad(() => import('@/motion/titleReveal'));
+  afterLoad(() => import('@/motion/headerReveal'));
 </script>
