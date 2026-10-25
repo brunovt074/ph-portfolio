@@ -1,16 +1,16 @@
 {
   "_nota": "Datos iniciales del mockup. Títulos de obra provisorios: los define Sarah. Fotos en baja resolución (~280px).",
   "ajustes": {
-    "email": "[EMAIL]",
-    "whatsapp": "[NÚMERO]",
+    "email": "hola@sarahmoreau.com",
+    "whatsapp": "+54 9 11 5555 0142",
     "instagram": [
       "@sarahmoreau.foto",
       "@sarahmoreauph",
       "@sarahmoreau.video"
     ],
     "frase": "Cada fotografía es un registro de nuestro paso.",
-    "sobre_mi": "[Trayectoria, ciudad y formación]",
-    "statement": "[Statement artístico]",
+    "sobre_mi": "Fotógrafa y realizadora audiovisual argentina. Estudió fotografía en Milán y se formó en retrato y dirección de arte en Nueva York. Hoy trabaja entre Buenos Aires y París, en encargos para personas y marcas y en una obra personal que se construye paso a paso.",
+    "statement": "Fotografío lo que está a punto de irse: la luz que cambia, una silueta que cruza la calle, un gesto que nadie mira dos veces. Busco el silencio dentro de la imagen y, cuando hace falta, un único acento de rojo.",
     "retrato": "fotos/retrato-sarah.jpg"
   },
   "fotos": [
@@ -153,7 +153,7 @@
       "hotspot": {
         "x": 0.5,
         "y": 0.4,
-        "width": 1.0,
+        "width": 1,
         "height": 0.7
       }
     },
@@ -161,13 +161,13 @@
       "id": "ed12",
       "archivo": "fotos/editorial/ed12.jpg",
       "faceta": "editorial",
-      "alt": "Dos modelos vestidos de negro, un hombre y una mujer con atuendo largo, vistos desde abajo frente a torres de vidrio y un cielo con nubes",
+      "alt": "Hombre de espaldas con ropa negra y una mujer apoyada en él con la mano en la mejilla, sobre un fondo gris oscuro",
       "destacada": false,
       "hotspot": {
-        "x": 0.58,
-        "y": 0.42,
-        "width": 0.4,
-        "height": 0.3
+        "x": 0.55,
+        "y": 0.45,
+        "width": 0.7,
+        "height": 0.9
       }
     },
     {
@@ -587,32 +587,81 @@
       }
     },
     {
-      "id": "ev10",
-      "archivo": "fotos/eventos/ev10.jpg",
+      "id": "ev11",
+      "archivo": "fotos/eventos/ev11.jpg",
       "faceta": "eventos",
-      "alt": "Jugadora de pádel en posición de espera con la paleta en alto, sobre una cancha cubierta de color rojizo",
+      "alt": "Bailarina de espaldas en el escenario bajo una luz anaranjada cálida y humo",
       "destacada": false,
       "hotspot": {
-        "x": 0.5,
-        "y": 0.32,
-        "width": 0.4,
-        "height": 0.2
+        "x": 0.75,
+        "y": 0.55,
+        "width": 0.35,
+        "height": 0.8
       }
     },
     {
-      "id": "au01",
-      "archivo": "fotos/obra/au01.jpg",
-      "faceta": "obra",
-      "alt": "Hombre mayor de pelo blanco caminando por un patio de adoquines con un balde de metal en cada mano, en blanco y negro",
-      "titulo": "Bidones",
-      "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "id": "ev12",
+      "archivo": "fotos/eventos/ev12.jpg",
+      "faceta": "eventos",
+      "alt": "Siluetas de tres intérpretes frente a un telón rojo de teatro",
+      "destacada": false,
       "hotspot": {
-        "x": 0.425,
-        "y": 0.57,
-        "width": 0.75,
-        "height": 0.78
+        "x": 0.5,
+        "y": 0.5,
+        "width": 0.9,
+        "height": 0.9
+      }
+    },
+    {
+      "id": "ev13",
+      "archivo": "fotos/eventos/ev13.jpg",
+      "faceta": "eventos",
+      "alt": "Escenario de teatro con luces azules y una ventana al fondo, con sillones y mesas en primer plano",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.55,
+        "width": 0.5,
+        "height": 0.6
+      }
+    },
+    {
+      "id": "ev14",
+      "archivo": "fotos/eventos/ev14.jpg",
+      "faceta": "eventos",
+      "alt": "Cantante con el micrófono en la mano y la cabeza hacia atrás bajo luces amarillas, verdes y turquesas",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.6,
+        "width": 0.8,
+        "height": 0.7
+      }
+    },
+    {
+      "id": "ev15",
+      "archivo": "fotos/eventos/ev15.jpg",
+      "faceta": "eventos",
+      "alt": "Cantante sonriendo con el micrófono entre luces y humo violeta",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.55,
+        "width": 0.6,
+        "height": 0.5
+      }
+    },
+    {
+      "id": "ev16",
+      "archivo": "fotos/eventos/ev16.jpg",
+      "faceta": "eventos",
+      "alt": "Pareja bailando con movimiento desenfocado en tonos azules, violetas y dorados frente a un telón oscuro",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.5,
+        "width": 0.5,
+        "height": 0.8
       }
     },
     {
@@ -622,8 +671,8 @@
       "alt": "Fila de motos y scooters estacionados sobre una vereda, con una esfera de piedra en primer plano, en blanco y negro",
       "titulo": "Motos",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Milán",
+      "anio": 2022,
       "hotspot": {
         "x": 0.675,
         "y": 0.43,
@@ -638,8 +687,8 @@
       "alt": "Mano abierta con la palma hacia arriba sobre fondo negro, en blanco y negro",
       "titulo": "Mano",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "París",
+      "anio": 2022,
       "hotspot": {
         "x": 0.49,
         "y": 0.535,
@@ -654,8 +703,8 @@
       "alt": "Persona en bicicleta vista de espaldas por un callejón empedrado entre edificios de ladrillo, en blanco y negro",
       "titulo": "Callejón",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Praga",
+      "anio": 2022,
       "hotspot": {
         "x": 0.49,
         "y": 0.66,
@@ -670,8 +719,8 @@
       "alt": "Fila de pórticos metálicos negros que se repiten en perspectiva sobre un piso de baldosas, en blanco y negro",
       "titulo": "Fuga",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Nueva York",
+      "anio": 2022,
       "hotspot": {
         "x": 0.505,
         "y": 0.51,
@@ -686,12 +735,12 @@
       "alt": "Fachada ondulada de un edificio vista desde abajo contra un cielo claro, en blanco y negro",
       "titulo": "Ola de piedra",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Nueva York",
+      "anio": 2023,
       "hotspot": {
         "x": 0.5,
         "y": 0.275,
-        "width": 1.0,
+        "width": 1,
         "height": 0.55
       }
     },
@@ -702,8 +751,8 @@
       "alt": "Torre de ladrillo vista desde abajo contra un cielo cargado de nubes, en blanco y negro",
       "titulo": "Campanario",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Praga",
+      "anio": 2023,
       "hotspot": {
         "x": 0.505,
         "y": 0.58,
@@ -718,8 +767,8 @@
       "alt": "Fachada de un edificio con ventanas y varios aparatos de aire acondicionado que proyectan sombras, en blanco y negro",
       "titulo": "Diagonal",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Nueva York",
+      "anio": 2023,
       "hotspot": {
         "x": 0.55,
         "y": 0.5,
@@ -734,8 +783,8 @@
       "alt": "Edificio de ladrillo con ventanas visto en ángulo desde abajo contra un cielo gris, en blanco y negro",
       "titulo": "Cornisa",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Praga",
+      "anio": 2023,
       "hotspot": {
         "x": 0.525,
         "y": 0.625,
@@ -750,8 +799,8 @@
       "alt": "Pórtico de un edificio neoclásico con columnas de capitel ornamentado y una reja al fondo, en blanco y negro",
       "titulo": "Pórtico",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "París",
+      "anio": 2024,
       "hotspot": {
         "x": 0.5,
         "y": 0.5,
@@ -766,8 +815,8 @@
       "alt": "Gran explanada de baldosas con una escalera que sube entre dos muros oscuros hacia un cielo de nubes, en blanco y negro",
       "titulo": "Escalera al cielo",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Milán",
+      "anio": 2022,
       "hotspot": {
         "x": 0.5,
         "y": 0.575,
@@ -782,8 +831,8 @@
       "alt": "Estatua de piedra de un ángel con una gaviota posada sobre la cabeza, contra un cielo nublado, en blanco y negro",
       "titulo": "Visita",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "París",
+      "anio": 2024,
       "hotspot": {
         "x": 0.505,
         "y": 0.65,
@@ -798,8 +847,8 @@
       "alt": "Retrato en blanco y negro de una mujer de cabello oscuro que mira a cámara entre hojas desenfocadas",
       "titulo": "Follaje",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "París",
+      "anio": 2023,
       "hotspot": {
         "x": 0.63,
         "y": 0.46,
@@ -814,8 +863,8 @@
       "alt": "Hoja seca sobre el asfalto mojado y oscuro, con gotas y reflejos, en blanco y negro",
       "titulo": "Hoja caída",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Nueva York",
+      "anio": 2022,
       "hotspot": {
         "x": 0.51,
         "y": 0.47,
@@ -830,8 +879,8 @@
       "alt": "Hoja esquelética translúcida con su nervadura visible, sobre fondo negro, en blanco y negro",
       "titulo": "Nervadura",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Milán",
+      "anio": 2024,
       "hotspot": {
         "x": 0.5,
         "y": 0.5,
@@ -846,8 +895,8 @@
       "alt": "Árbol sin hojas en un campo de pasto seco, con un cerro asomando entre la bruma, en blanco y negro",
       "titulo": "Cerros",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Praga",
+      "anio": 2024,
       "hotspot": {
         "x": 0.495,
         "y": 0.68,
@@ -862,8 +911,8 @@
       "alt": "Cerro de franjas de colores rojizas, verdes y ocres bajo un cielo azul, con un grupo de personas en la cima",
       "titulo": "Cerros de colores",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Milán",
+      "anio": 2023,
       "hotspot": {
         "x": 0.525,
         "y": 0.5,
@@ -878,8 +927,8 @@
       "alt": "Camino cubierto de nieve entre árboles de ramas cubiertas de escarcha bajo un cielo gris",
       "titulo": "Niebla",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Praga",
+      "anio": 2024,
       "hotspot": {
         "x": 0.525,
         "y": 0.525,
@@ -894,8 +943,8 @@
       "alt": "Camioneta pickup roja estacionada sobre un camino de grava, bajo un árbol grande y frente a una cabaña cubierta de hiedra",
       "titulo": "Camioneta roja",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "Nueva York",
+      "anio": 2023,
       "hotspot": {
         "x": 0.375,
         "y": 0.64,
@@ -910,29 +959,269 @@
       "alt": "Mano sosteniendo una copa de vino blanco, con follaje verde desenfocado de fondo",
       "titulo": "Copa",
       "titulo_provisorio": true,
-      "lugar": "[Ciudad]",
-      "anio": null,
+      "lugar": "París",
+      "anio": 2024,
       "hotspot": {
         "x": 0.55,
         "y": 0.51,
         "width": 0.5,
         "height": 0.82
       }
+    },
+    {
+      "id": "au21",
+      "archivo": "fotos/obra/au21.jpg",
+      "faceta": "obra",
+      "alt": "Mujer con sombrero de ala ancha sosteniendo una cámara réflex frente al rostro, en blanco y negro sobre fondo oscuro",
+      "titulo": "Visor",
+      "titulo_provisorio": true,
+      "lugar": "París",
+      "anio": 2023,
+      "hotspot": {
+        "x": 0.53,
+        "y": 0.26,
+        "width": 0.5,
+        "height": 0.3
+      }
+    },
+    {
+      "id": "au22",
+      "archivo": "fotos/obra/au22.jpg",
+      "faceta": "obra",
+      "alt": "Silueta de perfil de una mujer de pelo largo contra un fondo gris con un halo de luz, en blanco y negro",
+      "titulo": "Halo",
+      "titulo_provisorio": true,
+      "lugar": "Milán",
+      "anio": 2023,
+      "hotspot": {
+        "x": 0.62,
+        "y": 0.32,
+        "width": 0.6,
+        "height": 0.5
+      }
+    },
+    {
+      "id": "au23",
+      "archivo": "fotos/obra/au23.jpg",
+      "faceta": "obra",
+      "alt": "Retrato en blanco y negro de una mujer con los ojos cerrados y sombras de persiana sobre el rostro",
+      "titulo": "Persiana",
+      "titulo_provisorio": true,
+      "lugar": "Nueva York",
+      "anio": 2022,
+      "hotspot": {
+        "x": 0.47,
+        "y": 0.45,
+        "width": 0.45,
+        "height": 0.7
+      }
+    },
+    {
+      "id": "au24",
+      "archivo": "fotos/obra/au24.jpg",
+      "faceta": "obra",
+      "alt": "Mujer de perfil con camisa clara frente a una pared blanca, en blanco y negro",
+      "titulo": "Perfil",
+      "titulo_provisorio": true,
+      "lugar": "Praga",
+      "anio": 2022,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.45,
+        "width": 0.55,
+        "height": 0.85
+      }
+    },
+    {
+      "id": "au25",
+      "archivo": "fotos/obra/au25.jpg",
+      "faceta": "obra",
+      "alt": "Sombra alargada de una persona sobre un piso blanco con luz dura, y unas piernas con falda clara al borde del cuadro, en blanco y negro",
+      "titulo": "Sombra larga",
+      "titulo_provisorio": true,
+      "lugar": "Milán",
+      "anio": 2024,
+      "hotspot": {
+        "x": 0.6,
+        "y": 0.5,
+        "width": 0.8,
+        "height": 0.8
+      }
+    },
+    {
+      "id": "au26",
+      "archivo": "fotos/obra/au26.jpg",
+      "faceta": "obra",
+      "alt": "Calle adoquinada a contraluz al atardecer, con ciclistas y peatones recortados por el sol bajo",
+      "titulo": "Hora dorada",
+      "titulo_provisorio": true,
+      "lugar": "Praga",
+      "anio": 2023,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.5,
+        "width": 0.6,
+        "height": 0.8
+      }
+    },
+    {
+      "id": "au27",
+      "archivo": "fotos/obra/au27.jpg",
+      "faceta": "obra",
+      "alt": "Repartidor en bicicleta con campera roja por una calle en tonos verde azulado, con el faro de un auto a la derecha",
+      "titulo": "Entrega",
+      "titulo_provisorio": true,
+      "lugar": "Nueva York",
+      "anio": 2024,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.45,
+        "width": 0.4,
+        "height": 0.3
+      }
+    },
+    {
+      "id": "au28",
+      "archivo": "fotos/obra/au28.jpg",
+      "faceta": "obra",
+      "alt": "Ruta con doble línea amarilla que se pierde en una niebla densa",
+      "titulo": "Niebla en ruta",
+      "titulo_provisorio": true,
+      "lugar": "París",
+      "anio": 2023,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.65,
+        "width": 0.5,
+        "height": 0.6
+      }
+    },
+    {
+      "id": "au29",
+      "archivo": "fotos/obra/au29.jpg",
+      "faceta": "obra",
+      "alt": "Silueta de una mujer de perfil con el rostro hacia arriba sobre un fondo turquesa",
+      "titulo": "Turquesa",
+      "titulo_provisorio": true,
+      "lugar": "Milán",
+      "anio": 2024,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.4,
+        "width": 0.7,
+        "height": 0.5
+      }
+    },
+    {
+      "id": "au30",
+      "archivo": "fotos/obra/au30.jpg",
+      "faceta": "obra",
+      "alt": "Persona con un paraguas rojo caminando sobre un pavimento gris desenfocado, en blanco y negro con un único detalle rojo",
+      "titulo": "Paraguas",
+      "titulo_provisorio": true,
+      "lugar": "París",
+      "anio": 2024,
+      "hotspot": {
+        "x": 0.35,
+        "y": 0.55,
+        "width": 0.4,
+        "height": 0.5
+      }
+    },
+    {
+      "id": "au31",
+      "archivo": "fotos/obra/au31.jpg",
+      "faceta": "obra",
+      "alt": "Persona con un paraguas rojo junto a un muro de hormigón, en blanco y negro con un único detalle rojo",
+      "titulo": "Número 510",
+      "titulo_provisorio": true,
+      "lugar": "Nueva York",
+      "anio": 2024,
+      "hotspot": {
+        "x": 0.3,
+        "y": 0.72,
+        "width": 0.3,
+        "height": 0.25
+      }
+    },
+    {
+      "id": "au32",
+      "archivo": "fotos/obra/au32.jpg",
+      "faceta": "obra",
+      "alt": "Persona de espaldas bajo un paraguas oscuro frente a un vidrio con reflejos y otro paraguas rojo desenfocado, en blanco y negro",
+      "titulo": "Lluvia",
+      "titulo_provisorio": true,
+      "lugar": "París",
+      "anio": 2023,
+      "hotspot": {
+        "x": 0.6,
+        "y": 0.5,
+        "width": 0.5,
+        "height": 0.8
+      }
+    },
+    {
+      "id": "au33",
+      "archivo": "fotos/obra/au33.jpg",
+      "faceta": "obra",
+      "alt": "Vista cenital de un auto negro en un estacionamiento y una persona con un paraguas rojo, en blanco y negro con un único detalle rojo",
+      "titulo": "Estacionamiento",
+      "titulo_provisorio": true,
+      "lugar": "Milán",
+      "anio": 2024,
+      "hotspot": {
+        "x": 0.56,
+        "y": 0.32,
+        "width": 0.5,
+        "height": 0.3
+      }
+    },
+    {
+      "id": "au34",
+      "archivo": "fotos/obra/au34.jpg",
+      "faceta": "obra",
+      "alt": "Paraguas rojo sobre un pastizal bajo un cielo gris y neblinoso, en tonos apagados",
+      "titulo": "Rojo en la niebla",
+      "titulo_provisorio": true,
+      "lugar": "Praga",
+      "anio": 2023,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.62,
+        "width": 0.5,
+        "height": 0.2
+      }
+    },
+    {
+      "id": "au35",
+      "archivo": "fotos/obra/au35.jpg",
+      "faceta": "obra",
+      "alt": "Mujer de espaldas con un paraguas rojo frente a un lago y montañas entre la bruma",
+      "titulo": "Lago",
+      "titulo_provisorio": true,
+      "lugar": "Praga",
+      "anio": 2022,
+      "hotspot": {
+        "x": 0.6,
+        "y": 0.45,
+        "width": 0.6,
+        "height": 0.5
+      }
     }
   ],
   "series": [
     {
       "numero": "I",
-      "titulo": "Oficios",
-      "lineaCuratorial": "Gente trabajando, calles que se repiten, gestos que nadie mira dos veces.",
-      "anios": "[AÑOS]",
+      "titulo": "Contraluz",
+      "lineaCuratorial": "La figura humana contada desde la luz: siluetas, sombras y rostros apenas dichos.",
+      "anios": "2022–2024",
       "fotos": [
         {
-          "foto": "au01",
+          "foto": "au21",
           "layout": "centro"
         },
         {
-          "foto": "au02",
+          "foto": "au22",
           "layout": "izquierda"
         },
         {
@@ -940,7 +1229,15 @@
           "layout": "derecha"
         },
         {
-          "foto": "au13",
+          "foto": "au24",
+          "layout": "par"
+        },
+        {
+          "foto": "au23",
+          "layout": "par"
+        },
+        {
+          "foto": "au25",
           "layout": "sangre"
         }
       ]
@@ -949,7 +1246,7 @@
       "numero": "II",
       "titulo": "Geometrías",
       "lineaCuratorial": "La arquitectura mirada desde abajo: líneas, sombras y el cielo como fondo neutro.",
-      "anios": "[AÑOS]",
+      "anios": "2022–2024",
       "fotos": [
         {
           "foto": "au03",
@@ -961,6 +1258,14 @@
         },
         {
           "foto": "au06",
+          "layout": "derecha"
+        },
+        {
+          "foto": "au02",
+          "layout": "izquierda"
+        },
+        {
+          "foto": "au13",
           "layout": "derecha"
         },
         {
@@ -985,7 +1290,7 @@
       "numero": "III",
       "titulo": "Lo que queda",
       "lineaCuratorial": "Hojas, piedra y piel. Lo pequeño que sobrevive al paso del tiempo.",
-      "anios": "[AÑOS]",
+      "anios": "2022–2024",
       "fotos": [
         {
           "foto": "au18",
@@ -1012,8 +1317,8 @@
     {
       "numero": "IV",
       "titulo": "Viajes en color",
-      "lineaCuratorial": "La única serie en color: paisajes y escenas encontradas en el camino.",
-      "anios": "[AÑOS]",
+      "lineaCuratorial": "Paisajes y escenas encontradas en el camino, con la luz del atardecer, la niebla y los verdes azulados.",
+      "anios": "2022–2024",
       "fotos": [
         {
           "foto": "au08",
@@ -1030,6 +1335,54 @@
         {
           "foto": "au10",
           "layout": "centro"
+        },
+        {
+          "foto": "au27",
+          "layout": "izquierda"
+        },
+        {
+          "foto": "au29",
+          "layout": "derecha"
+        },
+        {
+          "foto": "au28",
+          "layout": "centro"
+        },
+        {
+          "foto": "au26",
+          "layout": "sangre"
+        }
+      ]
+    },
+    {
+      "numero": "V",
+      "titulo": "Rojo sobre gris",
+      "lineaCuratorial": "Un único acento de rojo en un mundo en blanco y negro.",
+      "anios": "2022–2024",
+      "fotos": [
+        {
+          "foto": "au30",
+          "layout": "centro"
+        },
+        {
+          "foto": "au31",
+          "layout": "izquierda"
+        },
+        {
+          "foto": "au32",
+          "layout": "derecha"
+        },
+        {
+          "foto": "au33",
+          "layout": "par"
+        },
+        {
+          "foto": "au34",
+          "layout": "par"
+        },
+        {
+          "foto": "au35",
+          "layout": "centro"
         }
       ]
     }
@@ -1038,90 +1391,120 @@
     {
       "foto": "au03",
       "edicion": 10,
-      "disponibles": null,
+      "disponibles": 7,
       "tamanos": [
         {
           "medida": "30 × 40 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 180"
         },
         {
           "medida": "50 × 70 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 340"
         }
       ]
     },
     {
-      "foto": "au01",
+      "foto": "au22",
       "edicion": 10,
-      "disponibles": null,
+      "disponibles": 6,
       "tamanos": [
         {
           "medida": "30 × 40 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 180"
         },
         {
           "medida": "50 × 70 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 340"
         }
       ]
     },
     {
       "foto": "au14",
       "edicion": 10,
-      "disponibles": null,
+      "disponibles": 9,
       "tamanos": [
         {
           "medida": "30 × 40 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 160"
         },
         {
           "medida": "50 × 70 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 300"
         }
       ]
     },
     {
       "foto": "au18",
       "edicion": 10,
-      "disponibles": null,
+      "disponibles": 5,
       "tamanos": [
         {
           "medida": "30 × 40 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 180"
         },
         {
           "medida": "50 × 70 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 340"
         }
       ]
     },
     {
       "foto": "au17",
       "edicion": 10,
-      "disponibles": null,
+      "disponibles": 8,
       "tamanos": [
         {
           "medida": "30 × 40 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 200"
         },
         {
           "medida": "50 × 70 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 380"
         }
       ]
     },
     {
       "foto": "au08",
       "edicion": 10,
-      "disponibles": null,
+      "disponibles": 10,
       "tamanos": [
         {
           "medida": "30 × 40 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 180"
         },
         {
           "medida": "50 × 70 cm",
-          "precio": "[PRECIO]"
+          "precio": "USD 340"
+        }
+      ]
+    },
+    {
+      "foto": "au31",
+      "edicion": 10,
+      "disponibles": 4,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "USD 220"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "USD 420"
+        }
+      ]
+    },
+    {
+      "foto": "au29",
+      "edicion": 10,
+      "disponibles": 7,
+      "tamanos": [
+        {
+          "medida": "30 × 40 cm",
+          "precio": "USD 200"
+        },
+        {
+          "medida": "50 × 70 cm",
+          "precio": "USD 380"
         }
       ]
     }
@@ -1129,7 +1512,7 @@
   "paquetesMarca": [
     {
       "nombre": "Esencial",
-      "precio": "[PRECIO]",
+      "precio": "USD 450",
       "items": [
         "Hasta 10 productos",
         "Fondo liso, luz de estudio",
@@ -1138,7 +1521,7 @@
     },
     {
       "nombre": "Identidad",
-      "precio": "[PRECIO]",
+      "precio": "USD 1.200",
       "destacado": true,
       "items": [
         "Concepto y dirección de arte",
@@ -1148,7 +1531,7 @@
     },
     {
       "nombre": "Mensual",
-      "precio": "[PRECIO] / mes",
+      "precio": "USD 800 / mes",
       "items": [
         "Contenido fresco cada mes",
         "Foto + video para redes",

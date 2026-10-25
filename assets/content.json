@@ -1,10 +1,10 @@
 {
-  "_nota": "Textos de página y selección de fotos del mockup. Se migran al CMS junto con seed.json. Los títulos usan *asteriscos* para marcar la palabra en itálica. Lo que está entre corchetes es un placeholder que completa Sarah.",
+  "_nota": "Textos de página y selección de fotos del mockup. Se migran al CMS junto con seed.json. Los títulos usan *asteriscos* para marcar la palabra en itálica. Los textos de ejemplo se reemplazan desde el CMS.",
   "home": {
     "lead": "Fotografía y video. Encargos para personas y marcas, y una obra personal que se construye paso a paso.",
     "doors": {
       "encargos": { "photo": "ed02", "label": "Puerta 1", "title": "Encargos", "subtitle": "Editorial · Retratos · Marcas · Eventos" },
-      "obra": { "photo": "au01", "label": "Puerta 2", "title": "*Obra*", "subtitle": "Series personales · Copias de autor" }
+      "obra": { "photo": "au21", "label": "Puerta 2", "title": "*Obra*", "subtitle": "Series personales · Copias de autor" }
     },
     "ticker": ["Editorial", "Retratos", "Marcas", "Eventos", "Obra"],
     "about": { "cta": "Trabajemos juntos" },
@@ -14,15 +14,15 @@
       "eyebrow": "Para marcas",
       "title": "La fotografía también construye *identidad* de marca.",
       "services": [
-        { "title": "Producto & e-commerce", "price": "desde [PRECIO]" },
-        { "title": "Gastronomía", "price": "desde [PRECIO]" },
-        { "title": "Joyería & accesorios", "price": "desde [PRECIO]" },
-        { "title": "Contenido mensual para redes", "price": "desde [PRECIO] / mes" }
+        { "title": "Producto & e-commerce", "price": "desde USD 250" },
+        { "title": "Gastronomía", "price": "desde USD 300" },
+        { "title": "Joyería & accesorios", "price": "desde USD 280" },
+        { "title": "Contenido mensual para redes", "price": "desde USD 800 / mes" }
       ],
       "cta": "Ver servicios para marcas",
       "grid": ["mk01", "mk03", "mk07", "mk09"]
     },
-    "obraTeaser": { "title": "*Obra*", "lead": "Series personales en blanco y negro, hechas sin encargo y sin apuro.", "photos": ["au01", "au05", "au12", "au14"], "cta": "Entrar a la obra" },
+    "obraTeaser": { "title": "*Obra*", "lead": "Series personales en blanco y negro, con irrupciones de color y de rojo, hechas sin encargo y sin apuro.", "photos": ["au22", "au30", "au26", "au14"], "cta": "Entrar a la obra" },
     "contact": {
       "title": "Hablemos.",
       "lead": "Contame qué tenés en mente: una sesión, una campaña, un evento o una copia de autor. Te respondo con disponibilidad y presupuesto.",
@@ -51,18 +51,18 @@
       "slug": "retratos",
       "number": 2,
       "name": "Retratos & Estudio",
-      "title": "Personas, *sin pose*",
+      "title": "Retratos con *presencia*",
       "lead": "Sesiones en estudio o en tu espacio, con tiempo para que la cámara deje de ser una cámara. Retratos para guardar, regalar o presentarte.",
       "indexDescription": "Sesiones personales, maternidad, familias y marca personal.",
       "cover": ["rt02", "rt03"],
       "gallery": ["rt01", "rt04", "rt05", "rt06", "rt07", "rt08", "rt09", "rt10"],
       "services": [
-        { "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "price": "[PRECIO]" },
-        { "title": "Maternidad", "description": "La espera, en clave íntima y sin apuro.", "price": "[PRECIO]" },
-        { "title": "Familias", "description": "Juego, abrazos y lo que pase en el medio.", "price": "[PRECIO]" },
-        { "title": "Marca personal", "description": "Retratos para tu web, tu perfil profesional y tus redes.", "price": "[PRECIO]" }
+        { "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "price": "USD 120" },
+        { "title": "Maternidad", "description": "La espera, en clave íntima y sin apuro.", "price": "USD 150" },
+        { "title": "Familias", "description": "Juego, abrazos y lo que pase en el medio.", "price": "USD 180" },
+        { "title": "Marca personal", "description": "Retratos para tu web, tu perfil profesional y tus redes.", "price": "USD 200" }
       ],
-      "quote": "Creemos que tenemos mucho *tiempo*. Las fotos nos recuerdan que no.",
+      "quote": "Hay momentos que merecen *quedarse*. Una foto los guarda.",
       "ctaText": "Reservá tu sesión",
       "ctaButton": "Reservar sesión"
     },
@@ -87,11 +87,11 @@
       "lead": "Carnaval, comparsas, shows y eventos sociales. Cobertura que sigue el movimiento y entrega a tiempo.",
       "indexDescription": "Carnaval, comparsas, shows y eventos sociales.",
       "cover": ["ev01", "ev02", "ev06"],
-      "gallery": ["ev01", "ev02", "ev03", "ev04", "ev05", "ev06", "ev07", "ev08", "ev09", "ev10"],
+      "gallery": ["ev01", "ev02", "ev11", "ev03", "ev12", "ev04", "ev05", "ev14", "ev06", "ev07", "ev13", "ev08", "ev15", "ev09", "ev16"],
       "services": [
         { "title": "Carnaval & comparsas", "description": "Desfiles, ensayos y retratos de comparsa, de la previa al corso." },
         { "title": "Shows & escenario", "description": "Danza, música y teatro con la luz del escenario." },
-        { "title": "Sociales & deportes", "description": "Cumpleaños, celebraciones y competencias." }
+        { "title": "Sociales", "description": "Cumpleaños, casamientos y celebraciones." }
       ],
       "ctaText": "¿Cuándo es tu evento?",
       "ctaButton": "Consultar fecha"
@@ -125,15 +125,21 @@
     "packagesCta": "Elegir este paquete"
   },
   "obra": {
-    "opening": { "photo": "au05", "seriesNumber": "I", "seriesTitle": "Oficios", "caption": "*Sin título*, [AÑO]" },
+    "opening": { "photo": "au05", "seriesNumber": "I", "seriesTitle": "Contraluz", "caption": "*Sin título*, París, 2022" },
     "quote": "Una bitácora de mi trabajo, porque cada fotografía es un registro de nuestro paso.",
     "seriesTitle": "Series",
     "aboutTitle": "Sobre la *obra*",
     "exhibitionsTitle": "Muestras y publicaciones",
     "printsTeaser": { "title": "Copias *de autor*", "lead": "Ediciones limitadas, firmadas y numeradas.", "cta": "Ver copias disponibles" },
-    "seriesSlugs": { "I": "oficios", "II": "geometrias", "III": "lo-que-queda", "IV": "viajes-en-color" },
-    "seriesDisplayTitles": { "I": "Ofi*cios*", "II": "Geo*metrías*", "III": "Lo que *queda*", "IV": "Viajes en *color*" },
-    "seriesCuratorialTexts": { "I": "[Texto curatorial de la serie]", "II": "[Texto curatorial de la serie]", "III": "[Texto curatorial de la serie]", "IV": "[Texto curatorial de la serie]" },
+    "seriesSlugs": { "I": "contraluz", "II": "geometrias", "III": "lo-que-queda", "IV": "viajes-en-color", "V": "rojo-sobre-gris" },
+    "seriesDisplayTitles": { "I": "Contra*luz*", "II": "Geo*metrías*", "III": "Lo que *queda*", "IV": "Viajes en *color*", "V": "Rojo sobre *gris*" },
+    "seriesCuratorialTexts": {
+      "I": "Siluetas, sombras y rostros apenas dichos. Una serie sobre la figura humana cuando la luz decide cuánto mostrar.",
+      "II": "Edificios mirados desde abajo, donde la arquitectura se vuelve línea, sombra y cielo. Una ciudad sin gente, hecha solo de ángulos.",
+      "III": "Hojas, piedra y piel: lo pequeño que sobrevive al paso del tiempo. Fotografías de lo que queda cuando todo lo demás se fue.",
+      "IV": "Paisajes y escenas encontradas en el camino: el atardecer sobre el adoquín, la niebla en la ruta, los verdes azulados de la noche.",
+      "V": "Un paraguas, un abrigo, una puerta: el rojo como único gesto dentro de un mundo gris. La serie más quieta y más ruidosa de la obra."
+    },
     "seriesPrintsBand": { "title": "Esta serie está disponible como *copias de autor*", "cta": "Ver copias" }
   },
   "prints": {
@@ -142,21 +148,31 @@
     "cta": "Consultar esta copia",
     "editionLabel": "Edición de {edicion} · quedan {disponibles}",
     "info": [
-      { "title": "Impresión", "description": "[Papel y técnica de impresión]" },
-      { "title": "Firma y certificado", "description": "[Detalle de firma y certificado de autenticidad]" },
-      { "title": "Envío", "description": "[Zonas y tiempos de envío]" },
-      { "title": "Enmarcado", "description": "[Opciones de enmarcado]" }
+      { "title": "Impresión", "description": "Impresión pigmentaria de archivo sobre papel de algodón 300 g, con márgenes blancos para enmarcar." },
+      { "title": "Firma y certificado", "description": "Cada copia va firmada y numerada a mano, con certificado de autenticidad." },
+      { "title": "Envío", "description": "Envíos a todo el mundo en tubo o caja rígida, con seguimiento. Entre 5 y 15 días hábiles según el destino." },
+      { "title": "Enmarcado", "description": "Marco de madera o aluminio, con vidrio museo y paspartú. Se cotiza aparte." }
     ]
   },
   "settings": {
-    "exhibitions": [ { "title": "[Muestra o publicación]", "place": "[Lugar]", "year": "[AÑO]" } ],
+    "exhibitions": [
+      { "title": "Contraluz — muestra individual", "place": "Milán", "year": "2024" },
+      { "title": "Lo que queda — fotolibro", "place": "París", "year": "2023" },
+      { "title": "Geometrías — muestra colectiva", "place": "Praga", "year": "2022" }
+    ],
     "portraitAlt": "Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro"
   },
   "bookingOffers": [
-    { "slug": "retrato-personal", "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 1 },
-    { "slug": "maternidad", "title": "Maternidad", "description": "La espera, en clave íntima y sin apuro.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 2 },
-    { "slug": "familias", "title": "Familias", "description": "Juego, abrazos y lo que pase en el medio.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 3 },
-    { "slug": "marca-personal", "title": "Marca personal", "description": "Retratos para tu web, tu perfil profesional y tus redes.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 4 }
+    { "slug": "retrato-personal", "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "facet": "retratos", "price": 120, "duration": 90, "depositPercent": 50, "order": 1 },
+    { "slug": "maternidad", "title": "Maternidad", "description": "La espera, en clave íntima y sin apuro.", "facet": "retratos", "price": 150, "duration": 90, "depositPercent": 50, "order": 2 },
+    { "slug": "familias", "title": "Familias", "description": "Juego, abrazos y lo que pase en el medio.", "facet": "retratos", "price": 180, "duration": 120, "depositPercent": 50, "order": 3 },
+    { "slug": "marca-personal", "title": "Marca personal", "description": "Retratos para tu web, tu perfil profesional y tus redes.", "facet": "retratos", "price": 200, "duration": 120, "depositPercent": 50, "order": 4 }
   ],
-  "scheduling": { "timeZone": "America/Argentina/Buenos_Aires", "windows": [], "slotStepMinutes": 30, "bufferMinutes": 30, "minNoticeHours": 48, "horizonDays": 90, "holdMinutes": 30 }
+  "scheduling": { "timeZone": "America/Argentina/Buenos_Aires", "windows": [
+      { "weekday": 2, "from": "10:00", "to": "13:00" },
+      { "weekday": 2, "from": "15:00", "to": "19:00" },
+      { "weekday": 4, "from": "10:00", "to": "13:00" },
+      { "weekday": 4, "from": "15:00", "to": "19:00" },
+      { "weekday": 6, "from": "09:00", "to": "13:00" }
+    ], "slotStepMinutes": 30, "bufferMinutes": 30, "minNoticeHours": 48, "horizonDays": 90, "holdMinutes": 30 }
 }
