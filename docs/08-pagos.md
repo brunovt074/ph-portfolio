@@ -63,6 +63,8 @@ Con turnos del calendario la reserva se retiene 30 minutos mientras se paga; en 
 
 `PAYMENT_PROVIDER=simulado` y `CALENDAR_PROVIDER=simulado` habilitan una pasarela y una agenda falsas. `BOOKING_DEMO=true` carga precios, duraciones y horarios de demostración desde `assets/booking-demo.json` y muestra un aviso en la página. Nunca usarlos en producción.
 
+Sin `MERCADOPAGO_ACCESS_TOKEN` y sin `PAYMENT_PROVIDER=simulado`, `/reservas` funciona en modo demostración: el calendario sale de `scheduling.windows` y las reservas se guardan solo en el `localStorage` del navegador (sin cobro ni email).
+
 ## Agregar una pasarela nueva (Pix, adquirente bancario)
 
 1. Implementar `PaymentGateway` (`src/domain/payment`).
