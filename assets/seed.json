@@ -1,534 +1,923 @@
 {
-  "_nota": "Datos iniciales del mockup. Títulos de obra provisorios: los define Lara. Fotos en baja resolución (~280px).",
+  "_nota": "Datos iniciales del mockup. Títulos de obra provisorios: los define Sarah. Fotos en baja resolución (~280px).",
   "ajustes": {
     "email": "[EMAIL]",
     "whatsapp": "[NÚMERO]",
     "instagram": [
-      "@laravischi.fotografia",
-      "@laravischiph",
-      "@laraendigital_"
+      "@sarahmoreau.foto",
+      "@sarahmoreauph",
+      "@sarahmoreau.video"
     ],
     "frase": "Cada fotografía es un registro de nuestro paso.",
     "sobre_mi": "[Trayectoria, ciudad y formación]",
     "statement": "[Statement artístico]",
-    "retrato": "fotos-baja/retrato-lara-provisorio.jpg"
+    "retrato": "fotos/retrato-sarah.jpg"
   },
   "fotos": [
     {
       "id": "ed01",
-      "archivo": "fotos-baja/editorial/ed01.jpg",
+      "archivo": "fotos/editorial/ed01.jpg",
       "faceta": "editorial",
-      "alt": "Modelo de peluca roja con gorro de piel blanco y reflejos múltiples",
-      "destacada": true
+      "alt": "Modelo de cabello ondulado rojo y negro con gorro de piel blanco y abrigo de piel, sentada entre algodón blanco sobre fondo lila claro",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.62,
+        "y": 0.285,
+        "width": 0.4,
+        "height": 0.27
+      }
     },
     {
       "id": "ed02",
-      "archivo": "fotos-baja/editorial/ed02.jpg",
+      "archivo": "fotos/editorial/ed02.jpg",
       "faceta": "editorial",
-      "alt": "Modelo de cabello rojo enrulado sobre fondo verde",
+      "alt": "Modelo de cabello rojo enrulado sobre fondo verde agua, con vestido negro sin tirantes con encaje y mirada a cámara",
       "destacada": true,
-      "hotspot": { "x": 0.5, "y": 0.25, "width": 0.5, "height": 0.35 }
+      "hotspot": {
+        "x": 0.445,
+        "y": 0.18,
+        "width": 0.65,
+        "height": 0.28
+      }
     },
     {
       "id": "ed03",
-      "archivo": "fotos-baja/editorial/ed03.jpg",
+      "archivo": "fotos/editorial/ed03.jpg",
       "faceta": "editorial",
-      "alt": "Modelo con traje rosa sentado sobre un cielo de nubes",
-      "destacada": true
+      "alt": "Modelo con traje magenta de pata de gallo y pañuelo floral verde, sentado con las piernas abiertas sobre un banco, sobre fondo de tela clara",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.53,
+        "y": 0.23,
+        "width": 0.3,
+        "height": 0.2
+      }
     },
     {
       "id": "ed04",
-      "archivo": "fotos-baja/editorial/ed04.jpg",
+      "archivo": "fotos/editorial/ed04.jpg",
       "faceta": "editorial",
-      "alt": "Modelo con vestido de tul lila entre juncos",
-      "destacada": false
+      "alt": "Modelo con falda larga de tul lila y top negro, con un brazo en alto frente a un lago y un cielo azul con nubes",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.57,
+        "y": 0.285,
+        "width": 0.2,
+        "height": 0.23
+      }
     },
     {
       "id": "ed05",
-      "archivo": "fotos-baja/editorial/ed05.jpg",
+      "archivo": "fotos/editorial/ed05.jpg",
       "faceta": "editorial",
-      "alt": "Modelo con gorro de piel sobre fondo de damero ondulado",
-      "destacada": true
+      "alt": "Modelo con body negro y botas de plataforma con hebillas sobre un fondo gráfico de ondas en blanco y negro",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.37,
+        "y": 0.385,
+        "width": 0.5,
+        "height": 0.25
+      }
     },
     {
       "id": "ed06",
-      "archivo": "fotos-baja/editorial/ed06.jpg",
+      "archivo": "fotos/editorial/ed06.jpg",
       "faceta": "editorial",
-      "alt": "Retrato en blanco y negro con delineado gráfico",
-      "destacada": true
+      "alt": "Retrato en blanco y negro de una mujer con delineado alado y labios oscuros, con luz dramática sobre fondo negro",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.425,
+        "width": 0.8,
+        "height": 0.65
+      }
     },
     {
       "id": "ed07",
-      "archivo": "fotos-baja/editorial/ed07.jpg",
+      "archivo": "fotos/editorial/ed07.jpg",
       "faceta": "editorial",
-      "alt": "Retrato bañado en luz azul",
-      "destacada": true
+      "alt": "Retrato de una mujer con pañuelo azul sobre la cabeza, bañada en luz azul y mirando hacia arriba sobre una pared azul",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.49,
+        "y": 0.33,
+        "width": 0.38,
+        "height": 0.34
+      }
     },
     {
       "id": "ed08",
-      "archivo": "fotos-baja/editorial/ed08.jpg",
+      "archivo": "fotos/editorial/ed08.jpg",
       "faceta": "editorial",
-      "alt": "Modelo con chaqueta de cuero y cintas gráficas en blanco y negro",
-      "destacada": false
+      "alt": "Modelo en blanco y negro con chaqueta de cuero, anteojos oscuros redondos y manos cruzadas sobre las rodillas, sobre fondo claro",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.48,
+        "y": 0.41,
+        "width": 0.4,
+        "height": 0.32
+      }
     },
     {
       "id": "ed09",
-      "archivo": "fotos-baja/editorial/ed09.jpg",
+      "archivo": "fotos/editorial/ed09.jpg",
       "faceta": "editorial",
-      "alt": "Modelo con guante blanco luminoso sobre fondo oscuro",
-      "destacada": false
+      "alt": "Modelo de cabello ondulado cobrizo con vestido blanco de un solo hombro y guante largo blanco levantado, con luz violeta sobre fondo oscuro",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.41,
+        "y": 0.235,
+        "width": 0.58,
+        "height": 0.33
+      }
     },
     {
       "id": "ed10",
-      "archivo": "fotos-baja/editorial/ed10.jpg",
+      "archivo": "fotos/editorial/ed10.jpg",
       "faceta": "editorial",
-      "alt": "Modelo con pasamontañas rosa",
-      "destacada": false
+      "alt": "Modelo con pasamontañas rosa fucsia con las manos sobre la cabeza, camiseta rosa pálido y fondo azul degradado",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.4,
+        "y": 0.4,
+        "width": 0.7,
+        "height": 0.6
+      }
     },
     {
       "id": "ed11",
-      "archivo": "fotos-baja/editorial/ed11.jpg",
+      "archivo": "fotos/editorial/ed11.jpg",
       "faceta": "editorial",
-      "alt": "Dos retratos femeninos en blanco y negro",
-      "destacada": false
+      "alt": "Retrato en blanco y negro de dos mujeres con delineado gráfico blanco, con los rostros muy juntos frente a la cámara",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.4,
+        "width": 1.0,
+        "height": 0.7
+      }
     },
     {
       "id": "ed12",
-      "archivo": "fotos-baja/editorial/ed12.jpg",
+      "archivo": "fotos/editorial/ed12.jpg",
       "faceta": "editorial",
-      "alt": "Dos modelos con abrigos frente a torres de vidrio",
-      "destacada": false
+      "alt": "Dos modelos vestidos de negro, un hombre y una mujer con atuendo largo, vistos desde abajo frente a torres de vidrio y un cielo con nubes",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.58,
+        "y": 0.42,
+        "width": 0.4,
+        "height": 0.3
+      }
     },
     {
       "id": "ed13",
-      "archivo": "fotos-baja/editorial/ed13.jpg",
+      "archivo": "fotos/editorial/ed13.jpg",
       "faceta": "editorial",
-      "alt": "Modelo con anteojos oscuros y anillos de plata",
-      "destacada": false
+      "alt": "Retrato en blanco y negro de una modelo con boina, anteojos de montura fina y varios anillos de plata, con la mano apoyada en el mentón",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.405,
+        "width": 0.7,
+        "height": 0.45
+      }
     },
     {
       "id": "ed14",
-      "archivo": "fotos-baja/editorial/ed14.jpg",
+      "archivo": "fotos/editorial/ed14.jpg",
       "faceta": "editorial",
-      "alt": "Estilismo urbano con gorro de piel y chaqueta estampada",
-      "destacada": false
+      "alt": "Modelo con gran gorro de piel oscuro, anteojos negros y un top de malla metálica sobre campera negra, en la calle",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.505,
+        "y": 0.29,
+        "width": 0.65,
+        "height": 0.36
+      }
     },
     {
       "id": "rt01",
-      "archivo": "fotos-baja/retratos/rt01.jpg",
+      "archivo": "fotos/retratos/rt01.jpg",
       "faceta": "retratos",
-      "alt": "Retrato de estudio con boina negra",
-      "destacada": false
+      "alt": "Retrato de cuerpo entero de una mujer vestida de negro, con anteojos y sombrero de ala ancha, sosteniendo el ala con ambas manos frente a una persiana gris",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.54,
+        "y": 0.17,
+        "width": 0.36,
+        "height": 0.22
+      }
     },
     {
       "id": "rt02",
-      "archivo": "fotos-baja/retratos/rt02.jpg",
+      "archivo": "fotos/retratos/rt02.jpg",
       "faceta": "retratos",
-      "alt": "Primer plano con boina negra y manos en el rostro",
-      "destacada": true
+      "alt": "Primer plano de una mujer con boina negra, labios rojos y flequillo, con las manos junto al cuello y una pared de madera de fondo",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.54,
+        "y": 0.38,
+        "width": 0.56,
+        "height": 0.42
+      }
     },
     {
       "id": "rt03",
-      "archivo": "fotos-baja/retratos/rt03.jpg",
+      "archivo": "fotos/retratos/rt03.jpg",
       "faceta": "retratos",
-      "alt": "Retrato de maternidad en clave baja",
-      "destacada": true
+      "alt": "Retrato de maternidad de perfil: mujer embarazada con vestido negro de cuello alto sobre fondo gris oscuro, con una mano en el vientre y otra en la cadera",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.6,
+        "y": 0.43,
+        "width": 0.72,
+        "height": 0.72
+      }
     },
     {
       "id": "rt04",
-      "archivo": "fotos-baja/retratos/rt04.jpg",
+      "archivo": "fotos/retratos/rt04.jpg",
       "faceta": "retratos",
-      "alt": "Familia jugando en una casita de madera",
-      "destacada": false
+      "alt": "Familia de cuatro personas, con dos adultos y dos niños, posando de pie frente a una cabaña de madera oscura con techo en A rodeada de pinos",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.49,
+        "y": 0.67,
+        "width": 0.46,
+        "height": 0.52
+      }
     },
     {
       "id": "rt05",
-      "archivo": "fotos-baja/retratos/rt05.jpg",
+      "archivo": "fotos/retratos/rt05.jpg",
       "faceta": "retratos",
-      "alt": "Madre abrazando a su bebé",
-      "destacada": false
+      "alt": "Mujer de cabello largo y rizado abrazando a un bebé sonriente, con vestido blanco y un fondo de flores secas en tonos azulados",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.37,
+        "width": 0.5,
+        "height": 0.26
+      }
     },
     {
       "id": "rt06",
-      "archivo": "fotos-baja/retratos/rt06.jpg",
+      "archivo": "fotos/retratos/rt06.jpg",
       "faceta": "retratos",
-      "alt": "Retrato con maquillaje en tonos cálidos",
-      "destacada": false
+      "alt": "Retrato de belleza de una mujer con la mirada baja, delineado gráfico y sombras doradas y anaranjadas, largos aretes metálicos dorados y la mano junto a la oreja, sobre fondo azul grisáceo",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.375,
+        "width": 0.7,
+        "height": 0.45
+      }
     },
     {
       "id": "rt07",
-      "archivo": "fotos-baja/retratos/rt07.jpg",
+      "archivo": "fotos/retratos/rt07.jpg",
       "faceta": "retratos",
-      "alt": "Retrato profesional con blazer azul",
-      "destacada": false
+      "alt": "Retrato profesional de una joven de cabello largo y oscuro, con blazer azul marino sobre una remera negra, sonriendo sobre fondo gris claro",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.54,
+        "y": 0.17,
+        "width": 0.32,
+        "height": 0.26
+      }
     },
     {
       "id": "rt08",
-      "archivo": "fotos-baja/retratos/rt08.jpg",
+      "archivo": "fotos/retratos/rt08.jpg",
       "faceta": "retratos",
-      "alt": "Mujer de cabello blanco sonriendo en estudio",
-      "destacada": false
+      "alt": "Mujer mayor de cabello blanco y corto, con campera de cuero y pantalón claro, de pie y de perfil con los brazos cruzados, sonriendo a la luz de una ventana en un estudio vacío",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.53,
+        "y": 0.545,
+        "width": 0.34,
+        "height": 0.85
+      }
     },
     {
       "id": "rt09",
-      "archivo": "fotos-baja/retratos/rt09.jpg",
+      "archivo": "fotos/retratos/rt09.jpg",
       "faceta": "retratos",
-      "alt": "Pareja con maquillaje artístico",
-      "destacada": false
+      "alt": "Pareja de un hombre y una mujer con las cabezas apoyadas, con trazos de maquillaje artístico de colores en el rostro, vestidos de negro frente a un cielo claro",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.47,
+        "y": 0.415,
+        "width": 0.68,
+        "height": 0.43
+      }
     },
     {
       "id": "rt10",
-      "archivo": "fotos-baja/retratos/rt10.jpg",
+      "archivo": "fotos/retratos/rt10.jpg",
       "faceta": "retratos",
-      "alt": "Retrato al aire libre entre árboles",
-      "destacada": false
+      "alt": "Mujer de pie con boina roja, blazer negro y pollera plisada en un huerto de árboles en flor, sobre pasto verde iluminado por el sol",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.66,
+        "width": 0.28,
+        "height": 0.44
+      }
     },
     {
       "id": "mk01",
-      "archivo": "fotos-baja/marcas/mk01.jpg",
+      "archivo": "fotos/marcas/mk01.jpg",
       "faceta": "marcas",
-      "alt": "Sérum facial sobre agua lila",
-      "destacada": true
+      "alt": "Frasco transparente con líquido violeta y tapa verde, frasquito gotero rosa y pote de crema sobre una superficie verde agua con fondo lila, en una composición diagonal.",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.515,
+        "y": 0.55,
+        "width": 0.67,
+        "height": 0.5
+      }
     },
     {
       "id": "mk02",
-      "archivo": "fotos-baja/marcas/mk02.jpg",
+      "archivo": "fotos/marcas/mk02.jpg",
       "faceta": "marcas",
-      "alt": "Frascos de cosmética sobre fondo lila",
-      "destacada": false
+      "alt": "Frasco blanco con atomizador negro sobre fondo violeta, junto a una esfera y un triángulo de espuma color durazno, vista cenital.",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.535,
+        "width": 0.7,
+        "height": 0.73
+      }
     },
     {
       "id": "mk03",
-      "archivo": "fotos-baja/marcas/mk03.jpg",
+      "archivo": "fotos/marcas/mk03.jpg",
       "faceta": "marcas",
-      "alt": "Alfajores en clave oscura",
-      "destacada": true
+      "alt": "Pila de alfajores de chocolate cortados al medio que muestran rellenos de dulce de leche, crema blanca y ganache, sobre una tabla de madera con fondo oscuro.",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.44,
+        "y": 0.52,
+        "width": 0.38,
+        "height": 0.9
+      }
     },
     {
       "id": "mk04",
-      "archivo": "fotos-baja/marcas/mk04.jpg",
+      "archivo": "fotos/marcas/mk04.jpg",
       "faceta": "marcas",
-      "alt": "Manos amasando masa de pizza",
-      "destacada": false
+      "alt": "Manos enharinadas aplastando un bollo de masa de pizza sobre una mesada cubierta de harina.",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.4,
+        "y": 0.59,
+        "width": 0.8,
+        "height": 0.42
+      }
     },
     {
       "id": "mk05",
-      "archivo": "fotos-baja/marcas/mk05.jpg",
+      "archivo": "fotos/marcas/mk05.jpg",
       "faceta": "marcas",
-      "alt": "Pizza en su caja",
-      "destacada": false
+      "alt": "Pizza de pepperoni en caja de cartón abierta sobre una mesada junto a una ventana con persianas, luz natural.",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.725,
+        "width": 0.7,
+        "height": 0.25
+      }
     },
     {
       "id": "mk06",
-      "archivo": "fotos-baja/marcas/mk06.jpg",
+      "archivo": "fotos/marcas/mk06.jpg",
       "faceta": "marcas",
-      "alt": "Anillo dorado sobre fondo blanco",
-      "destacada": false
+      "alt": "Anillo de oro rosa con un diamante solitario sobre fondo gris claro liso, en primer plano.",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.51,
+        "y": 0.51,
+        "width": 0.42,
+        "height": 0.58
+      }
     },
     {
       "id": "mk07",
-      "archivo": "fotos-baja/marcas/mk07.jpg",
+      "archivo": "fotos/marcas/mk07.jpg",
       "faceta": "marcas",
-      "alt": "Collares de plata sobre fondo verde",
-      "destacada": true
+      "alt": "Collares de plata con colgantes de brillantes, un anillo y una pulsera de eslabones sobre una superficie turquesa claro, en diagonal.",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.375,
+        "width": 0.8,
+        "height": 0.55
+      }
     },
     {
       "id": "mk08",
-      "archivo": "fotos-baja/marcas/mk08.jpg",
+      "archivo": "fotos/marcas/mk08.jpg",
       "faceta": "marcas",
-      "alt": "Línea de sérums sobre fondo terracota",
-      "destacada": false
+      "alt": "Cuatro frascos de vidrio ámbar —con dispensador, gotero y tapón— sobre una bandeja de madera, con una hoja verde y tela de lino beige de fondo.",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.52,
+        "y": 0.5,
+        "width": 0.58,
+        "height": 0.8
+      }
     },
     {
       "id": "mk09",
-      "archivo": "fotos-baja/marcas/mk09.jpg",
+      "archivo": "fotos/marcas/mk09.jpg",
       "faceta": "marcas",
-      "alt": "Dormitorio con panel de madera",
-      "destacada": true
+      "alt": "Dormitorio luminoso con panel de madera clara de listones verticales como respaldo de cama y ropa de cama blanca.",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.595,
+        "width": 0.7,
+        "height": 0.35
+      }
     },
     {
       "id": "mk10",
-      "archivo": "fotos-baja/marcas/mk10.jpg",
+      "archivo": "fotos/marcas/mk10.jpg",
       "faceta": "marcas",
-      "alt": "Aceite de oliva cayendo sobre una ensalada",
-      "destacada": false
+      "alt": "Aceite de oliva cayendo en hilo desde una botella de vidrio sobre una ensalada con tomates cherry, kale y crutones, con un bol de frutos rojos desenfocado al fondo.",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.45,
+        "y": 0.375,
+        "width": 0.7,
+        "height": 0.65
+      }
     },
     {
       "id": "mk11",
-      "archivo": "fotos-baja/marcas/mk11.jpg",
+      "archivo": "fotos/marcas/mk11.jpg",
       "faceta": "marcas",
-      "alt": "Prenda de jean con hebilla de sol",
-      "destacada": false
+      "alt": "Torso de una mujer con top de jean oscuro bordado con un sol dorado y cinturón de eslabones con soles dorados sobre pollera de jean, frente a un muro de piedra.",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.475,
+        "y": 0.45,
+        "width": 0.75,
+        "height": 0.6
+      }
     },
     {
       "id": "ev01",
-      "archivo": "fotos-baja/eventos/ev01.jpg",
+      "archivo": "fotos/eventos/ev01.jpg",
       "faceta": "eventos",
-      "alt": "Bailarina de comparsa con plumas verdes",
-      "destacada": true
+      "alt": "Mujer sonriente con traje de lentejuelas verdes y un gran plumaje verde y amarillo a la espalda, durante un desfile de carnaval",
+      "destacada": true,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.39,
+        "width": 0.34,
+        "height": 0.24
+      }
     },
     {
       "id": "ev02",
-      "archivo": "fotos-baja/eventos/ev02.jpg",
+      "archivo": "fotos/eventos/ev02.jpg",
       "faceta": "eventos",
-      "alt": "Pasista de carnaval con tocado de plumas",
-      "destacada": false
+      "alt": "Bailarina de carnaval sonriendo con los brazos en alto, con un tocado de plumas verdes y lima y un corpiño de lentejuelas verdes y naranjas, a pleno sol",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.425,
+        "y": 0.475,
+        "width": 0.45,
+        "height": 0.45
+      }
     },
     {
       "id": "ev03",
-      "archivo": "fotos-baja/eventos/ev03.jpg",
+      "archivo": "fotos/eventos/ev03.jpg",
       "faceta": "eventos",
-      "alt": "Artista con hombreras de plumas blancas",
-      "destacada": false
+      "alt": "Artista de comparsa con alas de plumas blancas y un tocado dorado con joyas, sosteniendo un cetro, frente a un fondo verde",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.455,
+        "y": 0.3,
+        "width": 0.35,
+        "height": 0.4
+      }
     },
     {
       "id": "ev04",
-      "archivo": "fotos-baja/eventos/ev04.jpg",
+      "archivo": "fotos/eventos/ev04.jpg",
       "faceta": "eventos",
-      "alt": "Show sobre escenario con luces verdes",
-      "destacada": false
+      "alt": "Cantante de ojos cerrados junto a un micrófono clásico de metal, iluminado por luz verde entre humo en un escenario",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.41,
+        "y": 0.3,
+        "width": 0.42,
+        "height": 0.3
+      }
     },
     {
       "id": "ev05",
-      "archivo": "fotos-baja/eventos/ev05.jpg",
+      "archivo": "fotos/eventos/ev05.jpg",
       "faceta": "eventos",
-      "alt": "Bailarín saltando en el escenario",
-      "destacada": false
+      "alt": "Bailarina en pleno salto entre humo de color verde azulado, con el cuerpo extendido en el aire",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.51,
+        "width": 0.8,
+        "height": 0.42
+      }
     },
     {
       "id": "ev06",
-      "archivo": "fotos-baja/eventos/ev06.jpg",
+      "archivo": "fotos/eventos/ev06.jpg",
       "faceta": "eventos",
-      "alt": "Bailarina entre humo verde",
-      "destacada": false
+      "alt": "Bailarina de negro con una pierna en alto, en perfil, entre humo y una luz verde intensa sobre fondo oscuro",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.65,
+        "y": 0.475,
+        "width": 0.6,
+        "height": 0.55
+      }
     },
     {
       "id": "ev07",
-      "archivo": "fotos-baja/eventos/ev07.jpg",
+      "archivo": "fotos/eventos/ev07.jpg",
       "faceta": "eventos",
-      "alt": "Niña bailando en el escenario",
-      "destacada": false
+      "alt": "Bailarina sobre puntas con una amplia falda estampada que sostiene con una mano y el otro brazo en alto, sobre un fondo de humo turquesa",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.6,
+        "y": 0.325,
+        "width": 0.6,
+        "height": 0.55
+      }
     },
     {
       "id": "ev08",
-      "archivo": "fotos-baja/eventos/ev08.jpg",
+      "archivo": "fotos/eventos/ev08.jpg",
       "faceta": "eventos",
-      "alt": "Reina de carnaval con tocado plateado",
-      "destacada": false
+      "alt": "Retrato de una mujer sonriente con un tocado de piedras plateadas, collar de cristales y plumas turquesa, en un desfile al aire libre",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.42,
+        "y": 0.33,
+        "width": 0.4,
+        "height": 0.28
+      }
     },
     {
       "id": "ev09",
-      "archivo": "fotos-baja/eventos/ev09.jpg",
+      "archivo": "fotos/eventos/ev09.jpg",
       "faceta": "eventos",
-      "alt": "Carroza con plumas amarillas y azules",
-      "destacada": false
+      "alt": "Bailarina riendo sobre una carroza de noche, con un gran penacho de plumas rojas, un abanico rojo y un disco dorado con plumas blancas detrás",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.35,
+        "width": 0.5,
+        "height": 0.4
+      }
     },
     {
       "id": "ev10",
-      "archivo": "fotos-baja/eventos/ev10.jpg",
+      "archivo": "fotos/eventos/ev10.jpg",
       "faceta": "eventos",
-      "alt": "Partido de pádel en cancha roja",
-      "destacada": false
+      "alt": "Jugadora de pádel en posición de espera con la paleta en alto, sobre una cancha cubierta de color rojizo",
+      "destacada": false,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.32,
+        "width": 0.4,
+        "height": 0.2
+      }
     },
     {
       "id": "au01",
-      "archivo": "fotos-baja/obra/au01.jpg",
+      "archivo": "fotos/obra/au01.jpg",
       "faceta": "obra",
-      "alt": "Hombre cargando bidones frente a una pared de chapa",
+      "alt": "Hombre mayor de pelo blanco caminando por un patio de adoquines con un balde de metal en cada mano, en blanco y negro",
       "titulo": "Bidones",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.425,
+        "y": 0.57,
+        "width": 0.75,
+        "height": 0.78
+      }
     },
     {
       "id": "au02",
-      "archivo": "fotos-baja/obra/au02.jpg",
+      "archivo": "fotos/obra/au02.jpg",
       "faceta": "obra",
-      "alt": "Motos estacionadas en una vereda",
+      "alt": "Fila de motos y scooters estacionados sobre una vereda, con una esfera de piedra en primer plano, en blanco y negro",
       "titulo": "Motos",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.675,
+        "y": 0.43,
+        "width": 0.65,
+        "height": 0.62
+      }
     },
     {
       "id": "au05",
-      "archivo": "fotos-baja/obra/au05.jpg",
+      "archivo": "fotos/obra/au05.jpg",
       "faceta": "obra",
-      "alt": "Mano abierta en blanco y negro",
+      "alt": "Mano abierta con la palma hacia arriba sobre fondo negro, en blanco y negro",
       "titulo": "Mano",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.49,
+        "y": 0.535,
+        "width": 0.88,
+        "height": 0.53
+      }
     },
     {
       "id": "au13",
-      "archivo": "fotos-baja/obra/au13.jpg",
+      "archivo": "fotos/obra/au13.jpg",
       "faceta": "obra",
-      "alt": "Ciclista en un callejón empedrado",
+      "alt": "Persona en bicicleta vista de espaldas por un callejón empedrado entre edificios de ladrillo, en blanco y negro",
       "titulo": "Callejón",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.49,
+        "y": 0.66,
+        "width": 0.22,
+        "height": 0.32
+      }
     },
     {
       "id": "au03",
-      "archivo": "fotos-baja/obra/au03.jpg",
+      "archivo": "fotos/obra/au03.jpg",
       "faceta": "obra",
-      "alt": "Columnas oscuras alineadas en fuga",
+      "alt": "Fila de pórticos metálicos negros que se repiten en perspectiva sobre un piso de baldosas, en blanco y negro",
       "titulo": "Fuga",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.505,
+        "y": 0.51,
+        "width": 0.45,
+        "height": 0.72
+      }
     },
     {
       "id": "au04",
-      "archivo": "fotos-baja/obra/au04.jpg",
+      "archivo": "fotos/obra/au04.jpg",
       "faceta": "obra",
-      "alt": "Fachada ondulante vista desde abajo",
+      "alt": "Fachada ondulada de un edificio vista desde abajo contra un cielo claro, en blanco y negro",
       "titulo": "Ola de piedra",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.275,
+        "width": 1.0,
+        "height": 0.55
+      }
     },
     {
       "id": "au06",
-      "archivo": "fotos-baja/obra/au06.jpg",
+      "archivo": "fotos/obra/au06.jpg",
       "faceta": "obra",
-      "alt": "Torre de ladrillo contra el cielo",
+      "alt": "Torre de ladrillo vista desde abajo contra un cielo cargado de nubes, en blanco y negro",
       "titulo": "Campanario",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.505,
+        "y": 0.58,
+        "width": 0.95,
+        "height": 0.8
+      }
     },
     {
       "id": "au15",
-      "archivo": "fotos-baja/obra/au15.jpg",
+      "archivo": "fotos/obra/au15.jpg",
       "faceta": "obra",
-      "alt": "Fachada con aires acondicionados y un cable en diagonal",
+      "alt": "Fachada de un edificio con ventanas y varios aparatos de aire acondicionado que proyectan sombras, en blanco y negro",
       "titulo": "Diagonal",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.5,
+        "width": 0.7,
+        "height": 0.8
+      }
     },
     {
       "id": "au19",
-      "archivo": "fotos-baja/obra/au19.jpg",
+      "archivo": "fotos/obra/au19.jpg",
       "faceta": "obra",
-      "alt": "Edificio de ladrillo en ángulo contra un cielo oscuro",
+      "alt": "Edificio de ladrillo con ventanas visto en ángulo desde abajo contra un cielo gris, en blanco y negro",
       "titulo": "Cornisa",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.525,
+        "y": 0.625,
+        "width": 0.85,
+        "height": 0.75
+      }
     },
     {
       "id": "au16",
-      "archivo": "fotos-baja/obra/au16.jpg",
+      "archivo": "fotos/obra/au16.jpg",
       "faceta": "obra",
-      "alt": "Pórtico con columnas y tejado ornamentado",
+      "alt": "Pórtico de un edificio neoclásico con columnas de capitel ornamentado y una reja al fondo, en blanco y negro",
       "titulo": "Pórtico",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.5,
+        "width": 0.7,
+        "height": 0.7
+      }
     },
     {
       "id": "au17",
-      "archivo": "fotos-baja/obra/au17.jpg",
+      "archivo": "fotos/obra/au17.jpg",
       "faceta": "obra",
-      "alt": "Terraza con escalones hacia un cielo de nubes",
+      "alt": "Gran explanada de baldosas con una escalera que sube entre dos muros oscuros hacia un cielo de nubes, en blanco y negro",
       "titulo": "Escalera al cielo",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.575,
+        "width": 0.4,
+        "height": 0.35
+      }
     },
     {
       "id": "au18",
-      "archivo": "fotos-baja/obra/au18.jpg",
+      "archivo": "fotos/obra/au18.jpg",
       "faceta": "obra",
-      "alt": "Estatua de piedra con un pájaro posado",
+      "alt": "Estatua de piedra de un ángel con una gaviota posada sobre la cabeza, contra un cielo nublado, en blanco y negro",
       "titulo": "Visita",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.505,
+        "y": 0.65,
+        "width": 0.85,
+        "height": 0.7
+      }
     },
     {
       "id": "au12",
-      "archivo": "fotos-baja/obra/au12.jpg",
+      "archivo": "fotos/obra/au12.jpg",
       "faceta": "obra",
-      "alt": "Retrato entre hojas en blanco y negro",
+      "alt": "Retrato en blanco y negro de una mujer de cabello oscuro que mira a cámara entre hojas desenfocadas",
       "titulo": "Follaje",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.63,
+        "y": 0.46,
+        "width": 0.42,
+        "height": 0.36
+      }
     },
     {
       "id": "au20",
-      "archivo": "fotos-baja/obra/au20.jpg",
+      "archivo": "fotos/obra/au20.jpg",
       "faceta": "obra",
-      "alt": "Hoja sobre el pavimento mojado",
+      "alt": "Hoja seca sobre el asfalto mojado y oscuro, con gotas y reflejos, en blanco y negro",
       "titulo": "Hoja caída",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.51,
+        "y": 0.47,
+        "width": 0.58,
+        "height": 0.4
+      }
     },
     {
       "id": "au14",
-      "archivo": "fotos-baja/obra/au14.jpg",
+      "archivo": "fotos/obra/au14.jpg",
       "faceta": "obra",
-      "alt": "Hoja translúcida sobre fondo negro",
+      "alt": "Hoja esquelética translúcida con su nervadura visible, sobre fondo negro, en blanco y negro",
       "titulo": "Nervadura",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.5,
+        "y": 0.5,
+        "width": 0.7,
+        "height": 0.8
+      }
     },
     {
       "id": "au07",
-      "archivo": "fotos-baja/obra/au07.jpg",
+      "archivo": "fotos/obra/au07.jpg",
       "faceta": "obra",
-      "alt": "Cerros y árboles secos en blanco y negro",
+      "alt": "Árbol sin hojas en un campo de pasto seco, con un cerro asomando entre la bruma, en blanco y negro",
       "titulo": "Cerros",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.495,
+        "y": 0.68,
+        "width": 0.35,
+        "height": 0.24
+      }
     },
     {
       "id": "au08",
-      "archivo": "fotos-baja/obra/au08.jpg",
+      "archivo": "fotos/obra/au08.jpg",
       "faceta": "obra",
-      "alt": "Cerros de colores en la puna",
+      "alt": "Cerro de franjas de colores rojizas, verdes y ocres bajo un cielo azul, con un grupo de personas en la cima",
       "titulo": "Cerros de colores",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.525,
+        "y": 0.5,
+        "width": 0.85,
+        "height": 0.6
+      }
     },
     {
       "id": "au09",
-      "archivo": "fotos-baja/obra/au09.jpg",
+      "archivo": "fotos/obra/au09.jpg",
       "faceta": "obra",
-      "alt": "Camino nevado en la niebla",
+      "alt": "Camino cubierto de nieve entre árboles de ramas cubiertas de escarcha bajo un cielo gris",
       "titulo": "Niebla",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.525,
+        "y": 0.525,
+        "width": 0.85,
+        "height": 0.85
+      }
     },
     {
       "id": "au11",
-      "archivo": "fotos-baja/obra/au11.jpg",
+      "archivo": "fotos/obra/au11.jpg",
       "faceta": "obra",
-      "alt": "Camioneta roja bajo un árbol",
+      "alt": "Camioneta pickup roja estacionada sobre un camino de grava, bajo un árbol grande y frente a una cabaña cubierta de hiedra",
       "titulo": "Camioneta roja",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.375,
+        "y": 0.64,
+        "width": 0.75,
+        "height": 0.38
+      }
     },
     {
       "id": "au10",
-      "archivo": "fotos-baja/obra/au10.jpg",
+      "archivo": "fotos/obra/au10.jpg",
       "faceta": "obra",
-      "alt": "Copa de vidrio sostenida por una mano",
+      "alt": "Mano sosteniendo una copa de vino blanco, con follaje verde desenfocado de fondo",
       "titulo": "Copa",
       "titulo_provisorio": true,
       "lugar": "[Ciudad]",
-      "anio": null
+      "anio": null,
+      "hotspot": {
+        "x": 0.55,
+        "y": 0.51,
+        "width": 0.5,
+        "height": 0.82
+      }
     }
   ],
   "series": [

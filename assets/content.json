@@ -1,5 +1,5 @@
 {
-  "_nota": "Textos de página y selección de fotos del mockup. Se migran al CMS junto con seed.json. Los títulos usan *asteriscos* para marcar la palabra en itálica. Lo que está entre corchetes es un placeholder que completa Lara.",
+  "_nota": "Textos de página y selección de fotos del mockup. Se migran al CMS junto con seed.json. Los títulos usan *asteriscos* para marcar la palabra en itálica. Lo que está entre corchetes es un placeholder que completa Sarah.",
   "home": {
     "lead": "Fotografía y video. Encargos para personas y marcas, y una obra personal que se construye paso a paso.",
     "doors": {
@@ -150,7 +150,7 @@
   },
   "settings": {
     "exhibitions": [ { "title": "[Muestra o publicación]", "place": "[Lugar]", "year": "[AÑO]" } ],
-    "portraitAlt": "Lara Vischi con su cámara, en blanco y negro"
+    "portraitAlt": "Sarah Moreau con su cámara profesional entre las manos, mirando de frente, en blanco y negro"
   },
   "bookingOffers": [
     { "slug": "retrato-personal", "title": "Retrato personal", "description": "Una sesión para vos, en estudio o al aire libre.", "facet": "retratos", "price": null, "duration": null, "depositPercent": 50, "order": 1 },
