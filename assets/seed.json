@@ -681,22 +681,6 @@
       }
     },
     {
-      "id": "au05",
-      "archivo": "fotos/obra/au05.jpg",
-      "faceta": "obra",
-      "alt": "Mano abierta con la palma hacia arriba sobre fondo negro, en blanco y negro",
-      "titulo": "Mano",
-      "titulo_provisorio": true,
-      "lugar": "París",
-      "anio": 2022,
-      "hotspot": {
-        "x": 0.49,
-        "y": 0.535,
-        "width": 0.88,
-        "height": 0.53
-      }
-    },
-    {
       "id": "au13",
       "archivo": "fotos/obra/au13.jpg",
       "faceta": "obra",
@@ -988,14 +972,14 @@
       "id": "au22",
       "archivo": "fotos/obra/au22.jpg",
       "faceta": "obra",
-      "alt": "Silueta de perfil de una mujer de pelo largo contra un fondo gris con un halo de luz, en blanco y negro",
-      "titulo": "Halo",
+      "alt": "Silueta de perfil de una mujer de pelo largo y flequillo, recortada contra humo en la oscuridad, en blanco y negro",
+      "titulo": "Humo",
       "titulo_provisorio": true,
       "lugar": "Milán",
       "anio": 2023,
       "hotspot": {
-        "x": 0.62,
-        "y": 0.32,
+        "x": 0.6,
+        "y": 0.3,
         "width": 0.6,
         "height": 0.5
       }
@@ -1207,6 +1191,22 @@
         "width": 0.6,
         "height": 0.5
       }
+    },
+    {
+      "id": "au36",
+      "archivo": "fotos/obra/au36.jpg",
+      "faceta": "obra",
+      "alt": "Perfil de una mujer de cabello largo recortado por un filo de luz sobre fondo negro, en blanco y negro",
+      "titulo": "Filo de luz",
+      "titulo_provisorio": true,
+      "lugar": "París",
+      "anio": 2022,
+      "hotspot": {
+        "x": 0.6,
+        "y": 0.5,
+        "width": 0.7,
+        "height": 0.8
+      }
     }
   ],
   "series": [
@@ -1225,7 +1225,7 @@
           "layout": "izquierda"
         },
         {
-          "foto": "au05",
+          "foto": "au36",
           "layout": "derecha"
         },
         {
